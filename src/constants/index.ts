@@ -48,8 +48,8 @@ export const WORK_ITEMS: WorkItem[] = [
     status: 'Deploying',
     title: 'Agora-AI — Campus Assistant',
     description:
-      '學校 API 無任何文件，<b>逆向工程</b>後包成 agent 工具鏈，讓學生用自然語言查詢課表、成績、出缺勤，並支援請假申請的完整 CRUD。SSE streaming 回應、BYOK 自訂 LLM、可選 Loki / Grafana 可觀測性堆疊。FastAPI · Next.js · Docker Compose · Caddy。',
-    metrics: ['105 commits', 'SSE streaming', 'BYOK LLM', 'Docker + Caddy'],
+      '學生不用再開 portal——<b>逆向工程無文件的校務 API</b>，包成 10-tool agent 鏈，自然語言查課表、成績、出缺勤、請假 CRUD 全包。SSE streaming · BYOK LLM · Loki / Grafana。',
+    metrics: ['10 agent tools', '69 tests', 'BYOK LLM', 'Docker + Caddy'],
     link: 'https://github.com/alaner652/Agora-AI',
   },
   {
@@ -57,16 +57,16 @@ export const WORK_ITEMS: WorkItem[] = [
     status: 'Ongoing · authorized',
     title: 'Application & Infrastructure Security',
     description:
-      '從負責任揭露開始的一條線——向 <b>HITCON ZeroDay</b> 通報後，校方聘請主導修補。發現並修補 XSS、IDOR、clickjacking、憑證外洩等真實漏洞，並提出 WAF / reverse-proxy 強化方案。',
-    metrics: ['responsible disclosure', 'authorized assessments', 'WAF / reverse-proxy 提案', 'Python 內部工具'],
+      '向 <b>HITCON ZeroDay</b> 通報多項高風險漏洞（IDOR、XSS、clickjacking、憑證外洩）——隨後獲聘入電算中心主導修補，並提出 WAF / reverse-proxy 強化方案由校方採用。',
+    metrics: ['HITCON ZeroDay', 'authorized assessments', 'WAF 提案落地', 'Python 內部工具'],
   },
   {
     id: 'W·03',
     status: 'Shipped · open source',
     title: 'Easy TPCU — 校務系統查詢自動化',
     description:
-      '以 Burp Suite 分析校務系統 HTTP 流程，逆向出登入與缺曠查詢 API 後，用 Python 自動化整個流程——將出缺勤紀錄轉為視覺化圖表並推送至 Discord Webhook。Agora-AI 逆向工程的早期概念驗證。',
-    metrics: ['Python', 'BeautifulSoup', 'Matplotlib', 'Discord Webhook'],
+      '把「每天手動查出缺勤」這件事全自動化——統計圖表 Discord 推送，零手動操作。Agora-AI 逆向工程的早期概念驗證。',
+    metrics: ['Python', 'Burp Suite', 'Matplotlib', 'Discord Webhook'],
     link: 'https://github.com/alaner652/tpcu-absence-notifier',
   },
   {
@@ -74,7 +74,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: 'Archived',
     title: 'Ave Mujica Bot — 影像檢索自動化',
     description:
-      '為動畫粉絲設計的影像檢索工具。以 OCR 從影片自動擷取字幕與時間碼，建立 JSON 索引庫，使用者輸入台詞關鍵字即可秒級取得對應截圖。首個獨立規劃與部署的全端管線。',
+      '輸入台詞關鍵字，秒出對應動畫截圖。OCR 逐幀建字幕索引，Discord Bot 查詢——讓粉絲找截圖從翻影片變成一秒的事。',
     metrics: ['PaddleOCR', 'Discord.py', 'Python', 'JSON pipeline'],
     link: 'https://www.youtube.com/watch?v=2rXTrJ6X4a8',
   },
@@ -83,7 +83,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: 'Offline · archived',
     title: 'Foodie AI — 語意餐廳推薦',
     description:
-      '願景是對的，但技術實作當時過於單純——沒有錯誤處理、架構不穩定，後端現在已壞掉。它的價值在於讓我第一次摸清 LLM + 外部 API 整合的真實複雜度，以及「技術能跑起來」跟「產品能撐住」之間的落差。',
+      '願景對，架構太簡單——後端現在壞了。第一次真正搞清楚「技術能跑起來」跟「產品能撐住」之間的落差。',
     metrics: ['Gemini API', 'Google Places API', 'Next.js 15'],
     link: 'https://github.com/alaner652/FoodieAI',
   },
@@ -92,7 +92,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: 'Shipped · v1.0.0',
     title: 'osu! Map Manager — 譜面管理工具',
     description:
-      '掃描本機已安裝的 osu! 譜面並匯出 CSV，支援批次下載與斷點續傳。以 PyInstaller 打包為 Windows 獨立執行檔，無需安裝 Python 環境即可使用。',
+      '解決自己的需求，順手發佈。掃描本機譜面、批次下載、斷點續傳，PyInstaller 打包成 Windows 獨立執行檔，不需要裝 Python。',
     metrics: ['Python', 'PyInstaller', 'CSV export', '斷點續傳'],
     link: 'https://github.com/alaner652/osu_map_manager',
   },
