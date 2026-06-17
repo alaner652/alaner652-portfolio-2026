@@ -1,190 +1,79 @@
 ---
-title: "個人履歷"
+title: "Resume"
 date: "2026-06-17"
-description: "吳宸麒 / Full-Stack Engineer · Security Researcher · Systems Software Enthusiast"
+description: "吳宸麒 — Full-Stack Engineer · Security Researcher"
 tags: ["resume"]
 wide: true
+hidden: true
 ---
 
-## 吳宸麒 (Chen-Chi Wu)
+## Education
 
-**Full-Stack Engineer · Security Researcher · Systems Software Enthusiast**
+**Taipei City University of Science and Technology**
+B.Eng. Information Engineering, 5-Year Program · Year 3 · 2022 – 2027 (Expected)
 
-**個人網站：** [alaner652.com](https://alaner652.com) ｜ **GitHub：** [github.com/alaner652](https://github.com/alaner652)
-
----
-
-## 自我介紹 (Summary)
-
-我對技術的執著源自對「系統如何運作」的本質好奇。從國中自學遊戲開發、高中完成跨國接案，到現在獨立經營 **Mindoyo**——一個以我為核心的創作與工程工作室，負責從問題定義到部署上線的完整產品週期。
-
-目前正在部署 **Agora-AI**：一個 LLM 驅動的學生行政助理。學校的 API 沒有任何文件，所以我把它逆向出來，包成 10 個 agent 工具，讓學生用自然語言查詢校務。同步進行的還有校園點餐系統，以及授權範圍內持續進行的資安評估與修補工作。
+Relevant Coursework: Information Security, Object-Oriented Systems Design, Operating System Principles, Data Structures
 
 ---
 
-## 技術棧 (Technical Skills)
+## Experience
 
-| 類別 | 內容 |
-| :--- | :--- |
-| 程式語言 | Python、TypeScript / JavaScript、Luau、Java、C/C++ |
-| 前後端開發 | Next.js、React、FastAPI、SQLite、REST API 設計 |
-| AI / LLM | Agent 工具鏈設計、Prompt Engineering、Gemini API |
-| 系統維運 | Arch Linux (Daily driver)、Ubuntu Server、Proxmox VE、Docker、Nginx、Cloudflare Tunnel |
-| 工具環境 | Neovim (Lazy.nvim)、Hyprland (Wayland)、Shell Scripting、Git |
+**Security Consultant & Technical Advisor · TPCU Computer Center**
+2026 – Present
 
-<Columns>
-  <img
-    src="https://github-readme-stats.vercel.app/api?username=alaner652&show_icons=true&theme=tokyonight&hide_border=true&count_private=true&hide=issues&card_width=400"
-    height="165"
-    alt="Alaner652 GitHub stats"
-  />
-  <img
-    src="https://github-readme-stats.vercel.app/api/top-langs/?username=alaner652&layout=compact&theme=tokyonight&hide_border=true&langs_count=6&card_width=400"
-    height="165"
-    alt="Alaner652 top languages"
-  />
-</Columns>
+- Discovered and responsibly disclosed multiple high-severity web vulnerabilities (IDOR, XSS, Clickjacking, credential exposure) via HITCON ZeroDay, converting a responsible disclosure into a formal institutional security consulting engagement
+- Conducted authorized black-box security assessments across campus web services, identifying critical logical flaws and executing remediation strategies before external exploitation
+- Architected WAF and reverse-proxy hardening proposal; successfully aligned institutional stakeholders to adopt the architecture, reducing automated layer-7 attack surface across internal services
+- Engineered Python automation scripts to streamline core operational workflows, reducing manual administrative overhead within the computer center
+
+**Lead Scripter · Independent Game Studio (Roblox)**
+2022 – 2024
+
+- Architected and implemented modular combat system, FPS framework, and skill mechanics in Luau for a live multiplayer environment
+- Collaborated within an international team in a fully English-speaking async environment, delivering functional modules on schedule
 
 ---
 
-## 專業成就 (Achievements)
+## Projects
 
-<Card>
-  <h3>資安漏洞通報 ｜ HITCON ZeroDay</h3>
-  <p><strong>通報編號：</strong> <a href="https://zeroday.hitcon.org/vulnerability/ZD-2026-00351">ZD-2026-00351</a>、<a href="https://zeroday.hitcon.org/vulnerability/ZD-2026-00341">ZD-2026-00341</a></p>
-  <p>獨立發現並通報校務系統高風險 Web 安全漏洞，涵蓋 XSS、IDOR、Clickjacking 與憑證外洩等多種類型。具備完整的漏洞挖掘、技術報告撰寫與負責任揭露（Responsible Disclosure）實戰能力。通報後獲校方聘請，進一步主導 WAF / reverse-proxy 強化方案的提案與授權評估。</p>
-</Card>
+**Agora-AI** — Campus LLM Administrative Assistant (Deploying)
+github.com/alaner652/Agora-AI · FastAPI · Next.js 16 · SQLite · Docker Compose · Caddy
 
----
+- Reverse-engineered undocumented institutional APIs to construct a 10-tool LLM agent tool-chain, enabling natural-language queries for schedules, grades, attendance, and leave management CRUD — eliminating manual portal navigation entirely
+- Hardened system reliability with SSE streaming, rate limiting (10 req/min login · 20 req/min chat), BYOK LLM configuration, and optional Loki / Grafana full-stack observability
+- Validated correctness with 69 automated tests across a dual-stack TypeScript (61.4%) and Python (37.3%) codebase; deployed via Docker Compose + Caddy on institutional VM
 
-## 工作經歷 (Work Experience)
+**HITCON ZeroDay · Responsible Disclosure**
 
-<Stack>
-  <Card>
-    <h3>Mindoyo ｜ Founder & Builder</h3>
-    <p>2025 — 至今</p>
-    <ul>
-      <li>自有品牌工作室，所有核心專案都在這裡孵化：Agora-AI 校園助理、校園點餐系統、資安工作。</li>
-      <li>從問題定義、系統設計、開發到部署，負責完整產品週期的每個環節。</li>
-    </ul>
-  </Card>
+- Independently discovered a high-severity IDOR vulnerability in the university student information system, enabling unauthorized cross-account access to sensitive academic records
+- Authored comprehensive technical report including proof-of-concept, impact analysis, and actionable remediation recommendations; patch was deployed immediately upon disclosure
+- Directly engaged institutional stakeholders through the disclosure process, resulting in a formal security consulting engagement
 
-  <Card>
-    <h3>臺北城市科技大學 電算中心 ｜ Security & Tooling</h3>
-    <p>2025 — 至今</p>
-    <ul>
-      <li>起點是主動對校務系統進行安全研究，負責任揭露多項高風險漏洞後，獲校方聘請進入電算中心主導修補工作。</li>
-      <li>在授權範圍內持續執行應用程式與基礎設施安全評估，發現並修補 XSS、IDOR、Clickjacking 等真實漏洞。</li>
-      <li>提出並推進 WAF / reverse-proxy 強化方案，提升校內 Web 服務的整體防護層級。</li>
-      <li>使用 Python 與 Shell Scripting 開發內部自動化工具，縮短重複性工作週期。</li>
-    </ul>
-  </Card>
+**MINDSCAPE** — LLM-Powered Fitness Tracker (In Development)
+Go · Flutter · Next.js · LLM Integration
 
-  <Card>
-    <h3>遊戲工作室 ｜ Lead Scripter</h3>
-    <p>Earlier</p>
-    <ul>
-      <li>負責遊戲系統開發、腳本架構與技術實作，帶領團隊完成多個功能模組的設計與交付。</li>
-      <li>在全英文環境與國際開發者協作，學到最關鍵的一課：做出來不等於有人要，市場驗證比技術更早該做。</li>
-    </ul>
-  </Card>
-</Stack>
+- Designed full-stack architecture spanning mobile (Flutter), web (Next.js), and backend (Go) for AI-driven workout logging
+- Integrated LLM pipeline to parse unstructured natural-language fitness entries into structured JSON data models, reducing user input friction
+
+**Easy TPCU** — Academic Portal Automation
+github.com/alaner652/tpcu-absence-notifier · Python · BeautifulSoup · Matplotlib · Discord Webhook
+
+- Reverse-engineered school portal HTTP session flow using Burp Suite, automating login and attendance data extraction
+- Built visualization pipeline generating statistical charts with automated Discord push notifications, eliminating manual query process; served as early proof-of-concept for Agora-AI
+
+**osu! Map Manager** — Beatmap Management Utility
+github.com/alaner652/osu_map_manager · Python · PyInstaller
+
+- Developed local beatmap scanner with CSV export, batch download, and resume-capable download manager supporting interrupted transfers
+- Packaged as standalone Windows executable via PyInstaller for zero-dependency distribution · v1.0.0 released
 
 ---
 
-## 核心專案 (Selected Projects)
+## Skills
 
-<Stack>
-  <Card>
-    <h3>Agora-AI ｜ 校園 AI 行政助理（部署中）</h3>
-    <ul>
-      <li><strong>技術：</strong> FastAPI、Next.js、SQLite、Docker、Cloudflare Tunnel、LLM Agent</li>
-      <li><strong>核心：</strong> 學校的校務 API 無任何公開文件，透過逆向工程完整解析後包裝成 10 個 agent 工具，讓學生用自然語言查詢出缺勤、成績、課表等資訊，並實現 session 持久化。</li>
-      <li><strong>規模：</strong> 10 個 agent tools、69 個通過測試，正透過 Cloudflare Tunnel 部署至學校 VM 正式上線。</li>
-    </ul>
-  </Card>
-
-  <Card>
-    <h3><a href="https://www.youtube.com/watch?v=2rXTrJ6X4a8">Ave Mujica Discord Bot ｜ 影像檢索自動化</a>（暫停維護）</h3>
-    <ul>
-      <li><strong>技術：</strong> Python、Discord.py、OCR (PaddleOCR)、JSON Processing</li>
-      <li><strong>成果：</strong> 建立從影片預處理到 API 檢索的完整管線，實現關鍵字「秒級」取得對應動畫截圖，解決大規模影像資料人力翻找的痛點。</li>
-      <li><strong>收穫：</strong> 首個獨立部署的全端專案，深刻體會系統解耦（Decoupling）的重要性，成為日後精進架構設計的契機。</li>
-    </ul>
-  </Card>
-
-  <Card>
-    <h3><a href="https://foodie-ai.alaner652.com/">Foodie AI ｜ 智慧餐廳推薦工具</a>（暫停維護）</h3>
-    <ul>
-      <li><strong>技術：</strong> Next.js、Gemini API、Google Maps API</li>
-      <li><strong>成果：</strong> 結合 LLM 語意分析與地理位置服務，開發出超越關鍵字過濾的語意搜尋推薦系統（如：「找適合讀書的安靜咖啡廳」）。</li>
-      <li><strong>收穫：</strong> 驗證 LLM 處理非結構化需求的潛力；促使我深入思考 AI 功能與營運成本之間的商業平衡策略。</li>
-    </ul>
-  </Card>
-
-  <Card>
-    <h3><a href="https://github.com/alaner652/tpcu-absence-notifier">Easy TPCU ｜ 校務系統查詢自動化</a></h3>
-    <ul>
-      <li><strong>技術：</strong> Python、Requests、BeautifulSoup、Matplotlib、Discord Webhook</li>
-      <li><strong>成果：</strong> 自動化登入、資料爬取，並將出缺勤紀錄轉化為視覺化統計圖表，消除手動查詢的摩擦。此專案也是後續逆向校務 API（Agora-AI）的早期基礎。</li>
-    </ul>
-  </Card>
-
-  <Card>
-    <h3>Roblox Cooking Game ｜ 互動系統設計（停止開發）</h3>
-    <ul>
-      <li><strong>技術：</strong> Roblox Studio、Luau、NPC 行為架構</li>
-      <li><strong>成果：</strong> 設計並實踐一套具備高度互動性的料理系統，涵蓋食材處理邏輯、玩家互動框架與自定義技能系統。</li>
-      <li><strong>收穫：</strong> 在遊戲性能與邏輯複雜度之間取得平衡，理解玩家行為如何反向影響系統設計決策。</li>
-    </ul>
-  </Card>
-</Stack>
-
----
-
-## 相關經歷 (Experience)
-
-<Stack>
-  <Card>
-    <h3>遊戲開發者（獨立 / 接案）｜ Roblox 平台</h3>
-    <ul>
-      <li>課餘時間持續獨立開發與接案，從零研究戰鬥系統邏輯與創作者經濟模型，並完成與國際開發者的技術交流與跨國協作。</li>
-    </ul>
-  </Card>
-
-  <Card>
-    <h3>技術自學與社群參與</h3>
-    <ul>
-      <li>以英文官方文件與開源工具為主要學習資源；固定參與技術社群活動（Meetup、SITCON 2026）並完成 Next.js 全端課程。</li>
-    </ul>
-  </Card>
-
-  <Card>
-    <h3>校內貢獻</h3>
-    <ul>
-      <li>擔任課程助教，協助同學建立資安實務與基礎程式語言的核心概念。</li>
-    </ul>
-  </Card>
-</Stack>
-
----
-
-## 教育背景 (Education)
-
-<Card>
-  <h3>臺北城市科技大學 ｜ 資訊工程系（五專部）</h3>
-  <p>預計畢業：2027</p>
-  <ul>
-    <li><strong>核心課程：</strong> 資訊安全、物件導向系統、作業系統原理、計算機概論</li>
-    <li><strong>進修規劃：</strong> 積極備戰 2026 年大學特殊選才（目標：交大百川），強化演算法理論、攻防實務與分散式系統設計。</li>
-  </ul>
-</Card>
-
----
-
-## 未來目標 (Future Goals)
-
-<TaskList
-  title="目標清單"
-  tasks='[{"title":"Agora-AI 上線：完成部署至學校 VM，推廣給第一批真實使用者，收集回饋並迭代。","completed":false},{"title":"學業進修：完成 2026 年大學特殊選才申請（交大百川），深化演算法理論、攻防實務與分散式系統設計。","completed":true},{"title":"職涯實踐：進入具規模的企業實習，將開發經驗與資安思維轉化為具備商業價值的穩定產品。","completed":false},{"title":"技術沉澱：持續輸出技術文章，透過寫作梳理學習過程，建立個人技術品牌。","completed":true}]'
-/>
+**Languages:** Go, Python, TypeScript / JavaScript, Luau, Java, C/C++
+**Frontend / Backend:** Next.js, React, Flutter, FastAPI, SQLite, REST API Design
+**AI / LLM:** Agent tool-chain design, Prompt Engineering, Gemini API
+**Security:** Web vulnerability research (XSS, IDOR, CSRF, Clickjacking), Burp Suite, Responsible Disclosure
+**Infrastructure:** Arch Linux, Ubuntu Server, Proxmox VE, Docker Compose, Caddy, Nginx
+**Tools:** Neovim, Git, Shell Scripting

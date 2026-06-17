@@ -25,7 +25,18 @@ export function Work() {
                   </span>
                 </div>
                 <h3 className="font-display font-semibold text-[1.4rem] tracking-[-0.01em] mb-[10px]">
-                  {item.title}
+                  {item.link ? (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-amber transition-colors duration-[180ms]"
+                    >
+                      {item.title} ↗
+                    </a>
+                  ) : (
+                    item.title
+                  )}
                 </h3>
                 <p
                   className="text-dim text-[0.98rem] max-w-[54ch]"

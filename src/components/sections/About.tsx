@@ -12,13 +12,19 @@ export function About() {
               It started with a bug I probably shouldn&rsquo;t have found.
             </h2>
           </div>
-          <p className="max-w-[62ch] text-dim text-[1.06rem]">
-            我的起點是一個漏洞:我在學校的系統裡找到了安全問題，
-            <b className="text-txt font-medium">負責任地揭露</b>
-            它，後來被請進電算中心去把它修好。從那之後，我做的事情就一直繞著同一條線——
-            <b className="text-txt font-medium">找問題、研究問題、設計系統、把它做出來</b>
-            。現在我在電算中心負責授權範圍內的資安評估、修補與內部工具，同時開發自己的 AI 產品。擅長全端開發、架構設計、資安與部署，也很喜歡鑽研各種怪東西。
-          </p>
+          <div className="max-w-[62ch] space-y-[1.1em] text-dim text-[1.06rem]">
+            <p>
+              2019 年自學 Roblox 遊戲開發起步，後加入國際工作室任 Lead Scripter。進入五專後技術重心轉向全端開發與資安研究。
+            </p>
+            <p>
+              對校務系統做安全研究期間發現多項高風險漏洞，向{' '}
+              <b className="text-txt font-medium">HITCON ZeroDay 負責任揭露</b>
+              ，隨後獲聘入電算中心主導修補。
+            </p>
+            <p>
+              目前在電算中心執行授權範圍內的安全評估與修補。
+            </p>
+          </div>
         </RevealWrapper>
       </div>
     </section>

@@ -15,9 +15,6 @@ export function Writing() {
               記錄研究與思考。
             </h2>
           </div>
-          <p className="max-w-[62ch] text-dim text-[1.06rem] mb-[28px]">
-            每篇 case study 都包含問題背景、研究過程、技術決策、架構設計、上線結果與後續反思。我想展示的不只是成果，而是解決問題的思考方式。
-          </p>
 
           {posts.length > 0 ? (
             <div className="grid gap-[14px]">

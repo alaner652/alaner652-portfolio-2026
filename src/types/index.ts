@@ -22,6 +22,7 @@ export interface WorkItem {
   title: string
   description: string
   metrics: string[]
+  link?: string
 }
 
 export interface ExperienceItem {
@@ -31,14 +32,6 @@ export interface ExperienceItem {
   description: string
 }
 
-export interface MindoyoTag {
-  label: string
-}
-
-export interface WritingTopic {
-  label: string
-  href: string
-}
 
 export interface NowItem {
   text: string
@@ -50,6 +43,7 @@ export interface BlogPostFrontmatter {
   description: string
   tags?: string[]
   wide?: boolean
+  hidden?: boolean
 }
 
 export interface BlogPost {

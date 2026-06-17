@@ -17,6 +17,7 @@ export function getAllPosts(): BlogPost[] {
       const { data } = matter(raw)
       return { slug, frontmatter: data as BlogPostFrontmatter }
     })
+    .filter((post) => !post.frontmatter.hidden)
     .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())
 }
 

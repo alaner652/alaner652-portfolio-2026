@@ -8,14 +8,14 @@ export function Hero() {
     <header className="pt-[64px] pb-[86px]">
       <div className="max-w-[1080px] mx-auto px-6">
         <a id="top" />
-        <Eyebrow>Engineer → Founder · in progress</Eyebrow>
+        <Eyebrow>Full-Stack Engineer · Security Researcher · Builder</Eyebrow>
 
         <h1 className="font-display font-semibold text-[clamp(2.3rem,6.4vw,4.4rem)] leading-[1.04] tracking-[-0.02em] mt-[22px] mb-[22px] max-w-[18ch]">
-          I build tools that reduce <em className="not-italic text-amber">friction</em> in everyday life.
+          I build systems — then find what&rsquo;s <em className="not-italic text-amber">broken</em> in them.
         </h1>
 
         <p className="text-dim text-[clamp(1rem,1.6vw,1.12rem)] max-w-[46ch]">
-          18 歲，全端工程師與資工系學生。我找漏洞、修系統、做產品——目前在學校電算中心，以及自己的 AI 專案上。擅長全端開發、架構設計、資安與部署。
+          全端工程師 · 資安研究者，臺北城市科技大學資工系。
         </p>
 
         <StatusPanel />

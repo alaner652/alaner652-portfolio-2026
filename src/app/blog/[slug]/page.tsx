@@ -11,6 +11,8 @@ import { isValidElement, type ReactNode } from 'react'
 import { Card } from '@/components/common/Card'
 import { Columns } from '@/components/common/Columns'
 import { Stack } from '@/components/common/Stack'
+import { MetricChip } from '@/components/common/MetricChip'
+import { RevealWrapper } from '@/components/common/RevealWrapper'
 
 function Pre({ children }: { children: ReactNode }) {
   if (isValidElement(children)) {
@@ -22,7 +24,7 @@ function Pre({ children }: { children: ReactNode }) {
   return <pre>{children}</pre>
 }
 
-const mdxComponents = { TaskList, Mermaid, pre: Pre, Card, Columns, Stack }
+const mdxComponents = { TaskList, Mermaid, pre: Pre, Card, Columns, Stack, Eyebrow, MetricChip, RevealWrapper }
 const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } }
 
 export async function generateStaticParams() {
