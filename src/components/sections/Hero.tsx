@@ -33,6 +33,12 @@ export function Hero() {
           >
             Read writing
           </a>
+          <a
+            href="/resume"
+            className="font-mono text-[0.8rem] tracking-[0.04em] px-[20px] py-[12px] rounded-[8px] border border-line text-txt transition-[border-color,transform] duration-[180ms] inline-flex items-center gap-[8px] hover:border-faint hover:translate-y-[-1px]"
+          >
+            View CV
+          </a>
         </div>
 
         <div
