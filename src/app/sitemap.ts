@@ -1,0 +1,22 @@
+import type { MetadataRoute } from 'next'
+import { getAllPosts } from '@/lib/mdx'
+import { SITE_CONFIG } from '@/constants'
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const posts = getAllPosts()
+  const base = SITE_CONFIG.url
+
+  const staticRoutes: MetadataRoute.Sitemap = [
+    { url: base, lastModified: new Date(), changeFrequency: 'monthly', priority: 1 },
+    { url: `${base}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+  ]
+
+  const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${base}/blog/${post.slug}`,
+    lastModified: new Date(post.frontmatter.date),
+    changeFrequency: 'yearly',
+    priority: 0.6,
+  }))
+
+  return [...staticRoutes, ...postRoutes]
+}

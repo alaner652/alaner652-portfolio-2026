@@ -49,6 +49,7 @@ export interface BlogPostFrontmatter {
   date: string
   description: string
   tags?: string[]
+  wide?: boolean
 }
 
 export interface BlogPost {

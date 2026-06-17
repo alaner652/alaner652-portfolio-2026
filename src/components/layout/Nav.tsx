@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { NAV_LINKS, SITE_CONFIG } from '@/constants'
 import { cn } from '@/lib/utils'
 
 export function Nav() {
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export function Nav() {
     >
       <div className="max-w-[1080px] mx-auto px-6 flex items-center justify-between h-[62px]">
         <a
-          href="#top"
+          href={pathname === '/' ? '#top' : '/'}
           className="font-mono font-bold text-[0.95rem] tracking-[0.02em] flex items-center gap-[0.6em]"
         >
           <PulseDot />

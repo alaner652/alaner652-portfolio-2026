@@ -1,5 +1,18 @@
+import type { Metadata } from 'next'
 import { getAllPosts } from '@/lib/mdx'
 import { Eyebrow } from '@/components/common/Eyebrow'
+
+export const metadata: Metadata = {
+  title: 'Writing',
+  description: '記錄研究、系統設計、資安與產品開發的思考過程。',
+  alternates: { canonical: '/blog' },
+  openGraph: {
+    title: 'Writing | alaner652',
+    description: '記錄研究、系統設計、資安與產品開發的思考過程。',
+    url: '/blog',
+    type: 'website',
+  },
+}
 
 export default function BlogPage() {
   const posts = getAllPosts()

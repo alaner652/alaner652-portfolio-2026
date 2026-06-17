@@ -1,7 +1,29 @@
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
 import { getAllPosts, getPostBySlug } from '@/lib/mdx'
 import { Eyebrow } from '@/components/common/Eyebrow'
+import { TaskList } from '@/components/common/TaskList'
+import { Mermaid } from '@/components/common/Mermaid'
+import { SITE_CONFIG } from '@/constants'
+
+import { isValidElement, type ReactNode } from 'react'
+import { Card } from '@/components/common/Card'
+import { Columns } from '@/components/common/Columns'
+import { Stack } from '@/components/common/Stack'
+
+function Pre({ children }: { children: ReactNode }) {
+  if (isValidElement(children)) {
+    const { className, children: code } = children.props as { className?: string; children?: unknown }
+    if (className === 'language-mermaid' && typeof code === 'string') {
+      return <Mermaid chart={code} />
+    }
+  }
+  return <pre>{children}</pre>
+}
+
+const mdxComponents = { TaskList, Mermaid, pre: Pre, Card, Columns, Stack }
+const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } }
 
 export async function generateStaticParams() {
   const posts = getAllPosts()
@@ -12,9 +34,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const post = getPostBySlug(slug)
   if (!post) return {}
+  const canonicalUrl = `/blog/${slug}`
   return {
     title: post.frontmatter.title,
     description: post.frontmatter.description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title: post.frontmatter.title,
+      description: post.frontmatter.description,
+      url: canonicalUrl,
+      type: 'article',
+      publishedTime: post.frontmatter.date,
+      tags: post.frontmatter.tags,
+      siteName: SITE_CONFIG.name,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.frontmatter.title,
+      description: post.frontmatter.description,
+    },
   }
 }
 
@@ -23,12 +61,30 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const post = getPostBySlug(slug)
   if (!post) notFound()
 
+  const maxWidth = post.frontmatter.wide ? 'max-w-[900px]' : 'max-w-[720px]'
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.frontmatter.title,
+    description: post.frontmatter.description,
+    datePublished: post.frontmatter.date,
+    author: { '@type': 'Person', name: SITE_CONFIG.name, url: SITE_CONFIG.url },
+    publisher: { '@type': 'Person', name: SITE_CONFIG.name, url: SITE_CONFIG.url },
+    url: `${SITE_CONFIG.url}/blog/${slug}`,
+    keywords: post.frontmatter.tags?.join(', '),
+  }
+
   return (
-    <div className="max-w-[720px] mx-auto px-6 py-[72px]">
+    <div className={`${maxWidth} mx-auto px-6 py-[72px]`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <div className="mb-[48px]">
         <a
           href="/blog"
-          className="font-mono text-[0.78rem] text-faint hover:text-dim transition-colors duration-[180ms] inline-flex items-center gap-[6px] mb-[32px]"
+          className="font-mono text-[0.78rem] text-faint hover:text-dim transition-colors duration-[180ms] flex w-fit items-center gap-[6px] mb-[32px]"
         >
           ← All posts
         </a>
@@ -50,7 +106,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       </div>
 
       <div className="prose-portfolio">
-        <MDXRemote source={post.content} />
+        <MDXRemote source={post.content} components={mdxComponents} options={mdxOptions} />
       </div>
     </div>
   )

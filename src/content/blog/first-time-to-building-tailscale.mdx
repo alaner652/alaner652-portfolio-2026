@@ -1,0 +1,109 @@
+---
+title: "【實戰紀錄】OpenWrt：Tailscale 安裝與環境調校紀錄"
+date: "2026-05-03"
+description: "這是一篇關於在 OpenWrt 23.05.3 環境下部署 Tailscale 的技術筆記。紀錄了從嘗試錯誤、參數修正，到最終成功配置 Subnet Router 與 Exit Node 的過程，並附上安裝指南與防火牆建議。"
+tags: ["networking", "homelab", "openwrt", "tailscale", "vpn"]
+---
+
+## 1. 踩坑紀錄與反思
+
+在這次部署過程中，我意識到即使是對指令熟悉的開發者，在處理 Tailscale 的特定參數邏輯時仍需格外注意。
+
+### 遇到的錯誤
+
+- **參數覆蓋機制**：當我想要同時啟用 `--advertise-routes` 和 `--advertise-exit-node` 時，直接分開執行指令，卻收到了錯誤提示：`Error: changing settings via 'tailscale up' requires mentioning all non-default flags.`
+
+- **原因**：Tailscale 的 `up` 指令會覆蓋先前的設定。如果要調整參數，必須在同一行指令中完整列出所有非預設標籤，或是使用 `--reset`。
+
+### 經驗總結
+
+- **備份的重要性**：在動家裡的網路設備前，若有先做設定備份，就算搞壞了也能快速恢復，避免全家斷網。
+
+- **查證大於速度**：教學影片中的文件路徑或區塊可能隨版本更新而變動，操作前必須先確認當下軟體版本與官方文件的匹配度。
+
+---
+
+## 2. 實作流程紀錄
+
+### 系統環境
+
+- **OS**: OpenWrt 23.05.3
+
+### 安裝與初始化過程
+
+首先更新軟體包清單並安裝 Tailscale：
+
+```bash
+opkg update
+opkg install tailscale
+```
+
+安裝完成後，啟動服務並設定開機自啟：
+
+```bash
+/etc/init.d/tailscale enable
+/etc/init.d/tailscale start
+```
+
+接著進行設備驗證，根據終端機產生的 URL 進行登入：
+
+```bash
+tailscale up
+```
+
+### 進階功能配置
+
+為了讓 OpenWrt 作為家中網路的跳板（Subnet Router）與出口節點（Exit Node），執行以下指令（**注意必須合併參數**）：
+
+```bash
+# 同時宣告內網網段與出口節點功能
+tailscale up --advertise-exit-node --advertise-routes=10.0.0.0/24 --snat-subnet-routes=false
+```
+
+---
+
+## 3. 完整安裝與配置指南 (Setup Guide)
+
+以下是整理後的標準安裝流程，建議依序執行。
+
+### 步驟一：連線與安裝
+
+使用 SSH 進入 OpenWrt 後執行：
+
+1. `opkg update`
+2. `opkg install tailscale`
+3. `/etc/init.d/tailscale enable`
+4. `/etc/init.d/tailscale start`
+
+> **注意**：若使用 OpenWrt 22.03 版本，啟動時建議加入 `--netfilter-mode=off` 以避免與新版 nftables 衝突。
+
+### 步驟二：防火牆與介面設定 (LuCI 介面)
+
+為了確保流量正常轉發，需手動建立介面與區域：
+
+1. **建立介面**：
+   - 名稱：`tailscale`
+   - 協定：`不管理 (Unmanaged)`
+   - 設備：`tailscale0`
+2. **防火牆區域設定**：
+   - 入站 (Input) / 出站 (Output)：`ACCEPT`
+   - 偽裝 (Masquerading)：`開啟 (ON)`
+   - 涵蓋網路：`tailscale`
+   - 轉發 (Forwarding)：依需求允許 `tailscale` ↔ `LAN` 互通。
+
+### 步驟三：宣告功能
+
+在終端機執行：
+
+```bash
+# 宣告區域網路段與出口節點
+tailscale up --advertise-routes=192.168.1.0/24 --advertise-exit-node --snat-subnet-routes=false
+```
+
+最後，務必前往 **Tailscale Admin Console** 手動批准 (Approve) 這些路由與節點。
+
+---
+
+## 相關參考資源
+
+- [OpenWrt Tailscale 官方指南](https://openwrt.org/docs/guide-user/services/vpn/tailscale/start?s[]=open&s[]=general)

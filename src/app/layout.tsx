@@ -24,8 +24,34 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: `${SITE_CONFIG.name} — Software Engineer, Student, Builder`,
+  metadataBase: new URL(SITE_CONFIG.url),
+  title: {
+    default: `${SITE_CONFIG.name} — Software Engineer, Student, Builder`,
+    template: `%s | ${SITE_CONFIG.name}`,
+  },
   description: SITE_CONFIG.description,
+  keywords: [
+    'alaner652',
+    '全端工程師',
+    'Full Stack Engineer',
+    'Software Engineer',
+    'Agora-AI',
+    'Security Research',
+    'Next.js',
+    'TypeScript',
+    'Taipei',
+    'TPCU',
+  ],
+  authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
+  creator: SITE_CONFIG.name,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
+  alternates: {
+    canonical: SITE_CONFIG.url,
+  },
   openGraph: {
     title: `${SITE_CONFIG.name} — Software Engineer, Student, Builder`,
     description: SITE_CONFIG.description,
@@ -33,6 +59,12 @@ export const metadata: Metadata = {
     siteName: SITE_CONFIG.name,
     locale: 'zh_TW',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${SITE_CONFIG.name} — Software Engineer, Student, Builder`,
+    description: SITE_CONFIG.description,
+    creator: `@${SITE_CONFIG.handle}`,
   },
 }
 
