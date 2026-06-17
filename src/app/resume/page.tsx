@@ -3,7 +3,9 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { getPostBySlug } from '@/lib/mdx'
 import { SITE_CONFIG } from '@/constants'
+import { Globe, GitFork, MapPin, GraduationCap, Briefcase, FolderOpen, Cpu } from 'lucide-react'
 import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: 'Resume',
@@ -17,6 +19,25 @@ export const metadata: Metadata = {
   },
 }
 
+const SECTION_ICONS: Record<string, ReactNode> = {
+  Education: <GraduationCap size={17} className="text-amber" />,
+  Experience: <Briefcase size={17} className="text-amber" />,
+  Projects: <FolderOpen size={17} className="text-amber" />,
+  Skills: <Cpu size={17} className="text-amber" />,
+}
+
+function CVHeading({ children }: { children?: ReactNode }) {
+  const text = typeof children === 'string' ? children : ''
+  const icon = SECTION_ICONS[text]
+  return (
+    <h2 className="font-display font-semibold text-[clamp(1.1rem,2vw,1.3rem)] tracking-[-0.015em] text-txt mt-[2.2em] mb-[0.7em] flex items-center gap-[8px]">
+      {icon}
+      {children}
+    </h2>
+  )
+}
+
+const mdxComponents = { h2: CVHeading }
 const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } }
 
 export default function ResumePage() {
@@ -37,27 +58,32 @@ export default function ResumePage() {
             Full-Stack Engineer · Security Researcher
           </p>
         </div>
-        <div className="flex items-center gap-[16px] font-mono text-[0.78rem] text-dim pt-[4px] flex-wrap">
+        <div className="flex items-center gap-[20px] font-mono text-[0.78rem] text-dim pt-[4px] flex-wrap">
           <a
             href={SITE_CONFIG.url}
-            className="hover:text-amber transition-colors duration-[180ms]"
+            className="flex items-center gap-[6px] hover:text-amber transition-colors duration-[180ms]"
           >
-            portfolio ↗
+            <Globe size={13} />
+            portfolio
           </a>
           <a
             href={SITE_CONFIG.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-amber transition-colors duration-[180ms]"
+            className="flex items-center gap-[6px] hover:text-amber transition-colors duration-[180ms]"
           >
-            github ↗
+            <GitFork size={13} />
+            github
           </a>
-          <span className="text-faint">Taipei, Taiwan</span>
+          <span className="flex items-center gap-[6px] text-faint">
+            <MapPin size={13} />
+            Taipei, Taiwan
+          </span>
         </div>
       </div>
 
       <div className="prose-portfolio">
-        <MDXRemote source={post.content} options={mdxOptions} />
+        <MDXRemote source={post.content} components={mdxComponents} options={mdxOptions} />
       </div>
     </div>
   )
