@@ -10,7 +10,7 @@ export function StatusPanel() {
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) {
-      setBooted(true)
+      requestAnimationFrame(() => setBooted(true))
       return
     }
     requestAnimationFrame(() => setBooted(true))

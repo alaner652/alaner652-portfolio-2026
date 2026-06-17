@@ -11,6 +11,14 @@ export const metadata: Metadata = {
     description: '記錄研究、系統設計、資安與產品開發的思考過程。',
     url: '/blog',
     type: 'website',
+    locale: 'zh_TW',
+    siteName: 'alaner652',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Writing | alaner652',
+    description: '記錄研究、系統設計、資安與產品開發的思考過程。',
+    creator: '@alaner652',
   },
 }
 

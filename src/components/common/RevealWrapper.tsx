@@ -15,7 +15,7 @@ export function RevealWrapper({ children, className }: RevealWrapperProps) {
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced || !('IntersectionObserver' in window)) {
-      setVisible(true)
+      requestAnimationFrame(() => setVisible(true))
       return
     }
 

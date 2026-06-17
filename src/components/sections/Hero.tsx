@@ -1,6 +1,5 @@
 import { Eyebrow } from '@/components/common/Eyebrow'
 import { StatusPanel } from '@/components/common/StatusPanel'
-import { MetricChip } from '@/components/common/MetricChip'
 import { HERO_STATS } from '@/constants'
 
 export function Hero() {

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
@@ -49,11 +50,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       publishedTime: post.frontmatter.date,
       tags: post.frontmatter.tags,
       siteName: SITE_CONFIG.name,
+      locale: 'zh_TW',
+      authors: [SITE_CONFIG.name],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.frontmatter.title,
       description: post.frontmatter.description,
+      creator: `@${SITE_CONFIG.handle}`,
     },
   }
 }
@@ -67,14 +71,17 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
     headline: post.frontmatter.title,
     description: post.frontmatter.description,
     datePublished: post.frontmatter.date,
+    dateModified: post.frontmatter.date,
     author: { '@type': 'Person', name: SITE_CONFIG.name, url: SITE_CONFIG.url },
     publisher: { '@type': 'Person', name: SITE_CONFIG.name, url: SITE_CONFIG.url },
     url: `${SITE_CONFIG.url}/blog/${slug}`,
     keywords: post.frontmatter.tags?.join(', '),
+    inLanguage: 'zh-Hant-TW',
+    image: `${SITE_CONFIG.url}/blog/${slug}/opengraph-image`,
   }
 
   return (
@@ -84,12 +91,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
       <div className="mb-[48px]">
-        <a
+        <Link
           href="/blog"
           className="font-mono text-[0.78rem] text-faint hover:text-dim transition-colors duration-[180ms] flex w-fit items-center gap-[6px] mb-[32px]"
         >
           ← All posts
-        </a>
+        </Link>
         <Eyebrow>Writing</Eyebrow>
         <h1 className="font-display font-semibold text-[clamp(1.7rem,3.6vw,2.4rem)] tracking-[-0.02em] mt-[12px] leading-[1.1]">
           {post.frontmatter.title}

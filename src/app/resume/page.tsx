@@ -15,7 +15,15 @@ export const metadata: Metadata = {
     title: `Resume | ${SITE_CONFIG.name}`,
     description: '吳宸麒 (Wu Chen-Chi) — Full-Stack Engineer · Security Researcher',
     url: '/resume',
-    type: 'article',
+    type: 'profile',
+    locale: 'zh_TW',
+    siteName: SITE_CONFIG.name,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Resume | ${SITE_CONFIG.name}`,
+    description: '吳宸麒 (Wu Chen-Chi) — Full-Stack Engineer · Security Researcher',
+    creator: `@${SITE_CONFIG.handle}`,
   },
 }
 
@@ -40,12 +48,32 @@ function CVHeading({ children }: { children?: ReactNode }) {
 const mdxComponents = { h2: CVHeading }
 const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } }
 
+const resumeJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@type': 'Person',
+    name: 'Wu Chen-Chi',
+    alternateName: ['吳宸麒', 'alaner652'],
+    url: SITE_CONFIG.url,
+    sameAs: [SITE_CONFIG.github],
+    jobTitle: 'Full-Stack Engineer',
+    description: '吳宸麒 (Wu Chen-Chi) — Full-Stack Engineer · Security Researcher',
+    address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
+    knowsAbout: ['Full-Stack Development', 'Security Research', 'Next.js', 'TypeScript', 'Python'],
+  },
+}
+
 export default function ResumePage() {
   const post = getPostBySlug('resume')
   if (!post) notFound()
 
   return (
     <div className="max-w-[900px] mx-auto px-6 py-[72px]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}
+      />
       <div className="mb-[48px] flex items-start justify-between gap-[24px] flex-wrap">
         <div>
           <h1 className="font-display font-semibold text-[clamp(1.7rem,3.6vw,2.4rem)] tracking-[-0.02em] leading-[1.1]">

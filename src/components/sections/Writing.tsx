@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Eyebrow } from '@/components/common/Eyebrow'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { getAllPosts } from '@/lib/mdx'
@@ -32,12 +33,12 @@ export function Writing() {
                   </time>
                 </a>
               ))}
-              <a
+              <Link
                 href="/blog"
                 className="font-mono text-[0.78rem] text-dim hover:text-amber transition-colors duration-[180ms] mt-[4px] inline-flex items-center gap-[6px]"
               >
                 All posts →
-              </a>
+              </Link>
             </div>
           ) : (
             <p className="font-mono text-[0.82rem] text-faint">Posts coming soon.</p>
