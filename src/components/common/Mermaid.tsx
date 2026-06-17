@@ -50,7 +50,7 @@ export function Mermaid({ chart }: { chart: string }) {
   return (
     <div
       ref={containerRef}
-      className="my-6 overflow-x-auto flex justify-center rounded-[10px] border border-line-soft bg-panel p-4 min-h-20"
+      className="border-line-soft bg-panel my-6 flex min-h-20 justify-center overflow-x-auto rounded-[10px] border p-4"
     />
   )
 }

@@ -4,19 +4,19 @@ import { NOW_LIST } from '@/constants'
 
 export function Now() {
   return (
-    <section id="now" className="py-[72px] border-t border-line-soft">
-      <div className="max-w-[1080px] mx-auto px-6">
+    <section id="now" className="border-line-soft border-t py-[72px]">
+      <div className="mx-auto max-w-[1080px] px-6">
         <RevealWrapper>
           <div className="mb-[38px]">
             <Eyebrow>Now</Eyebrow>
-            <h2 className="font-display font-semibold text-[clamp(1.7rem,3.6vw,2.5rem)] tracking-[-0.015em] mt-[12px]">
+            <h2 className="font-display mt-[12px] text-[clamp(1.7rem,3.6vw,2.5rem)] font-semibold tracking-[-0.015em]">
               Current focus
             </h2>
           </div>
-          <ul className="list-none grid gap-[14px] max-w-[60ch]">
+          <ul className="grid max-w-[60ch] list-none gap-[14px]">
             {NOW_LIST.map((item, i) => (
-              <li key={i} className="flex gap-[14px] items-start text-dim text-[1.02rem]">
-                <span className="text-amber font-mono mt-[1px] shrink-0">▸</span>
+              <li key={i} className="text-dim flex items-start gap-[14px] text-[1.02rem]">
+                <span className="text-amber mt-[1px] shrink-0 font-mono">▸</span>
                 {item.text}
               </li>
             ))}

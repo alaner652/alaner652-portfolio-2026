@@ -3,16 +3,16 @@ import { RevealWrapper } from '@/components/common/RevealWrapper'
 
 export function About() {
   return (
-    <section id="about" className="py-[72px] border-t border-line-soft">
-      <div className="max-w-[1080px] mx-auto px-6">
+    <section id="about" className="border-line-soft border-t py-[72px]">
+      <div className="mx-auto max-w-[1080px] px-6">
         <RevealWrapper>
           <div className="mb-[38px]">
             <Eyebrow>About</Eyebrow>
-            <h2 className="font-display font-semibold text-[clamp(1.7rem,3.6vw,2.5rem)] tracking-[-0.015em] mt-[12px]">
+            <h2 className="font-display mt-[12px] text-[clamp(1.7rem,3.6vw,2.5rem)] font-semibold tracking-[-0.015em]">
               It started with a bug I probably shouldn&rsquo;t have found.
             </h2>
           </div>
-          <div className="max-w-[62ch] space-y-[1.1em] text-dim text-[1.06rem]">
+          <div className="text-dim max-w-[62ch] space-y-[1.1em] text-[1.06rem]">
             <p>
               2019 年自學 Roblox 遊戲開發起步，後加入國際工作室任 Lead Scripter。進入五專後技術重心轉向全端開發與資安研究。
             </p>

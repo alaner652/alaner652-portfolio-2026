@@ -8,7 +8,7 @@ type Props = {
 export function TaskList({ title, tasks }: Props) {
   const items: Task[] = JSON.parse(tasks)
   return (
-    <div className="mdx-card bg-panel border border-line-soft rounded-[10px] px-6 py-5 mb-5">
+    <div className="mdx-card bg-panel border-line-soft mb-5 rounded-[10px] border px-6 py-5">
       {title && <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>{title}</h3>}
       <ul style={{ listStyle: 'none', paddingLeft: 0, margin: 0 }}>
         {items.map((task, i) => (

@@ -1,19 +1,19 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import remarkGfm from 'remark-gfm'
-import { getAllPosts, getPostBySlug } from '@/lib/mdx'
-import { Eyebrow } from '@/components/common/Eyebrow'
-import { TaskList } from '@/components/common/TaskList'
-import { Mermaid } from '@/components/common/Mermaid'
-import { SITE_CONFIG } from '@/constants'
-
 import { isValidElement, type ReactNode } from 'react'
+import remarkGfm from 'remark-gfm'
+
 import { Card } from '@/components/common/Card'
 import { Columns } from '@/components/common/Columns'
-import { Stack } from '@/components/common/Stack'
+import { Eyebrow } from '@/components/common/Eyebrow'
+import { Mermaid } from '@/components/common/Mermaid'
 import { MetricChip } from '@/components/common/MetricChip'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
+import { Stack } from '@/components/common/Stack'
+import { TaskList } from '@/components/common/TaskList'
+import { SITE_CONFIG } from '@/constants'
+import { getAllPosts, getPostBySlug } from '@/lib/mdx'
 
 function Pre({ children }: { children: ReactNode }) {
   if (isValidElement(children)) {
@@ -93,20 +93,20 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <div className="mb-[48px]">
         <Link
           href="/blog"
-          className="font-mono text-[0.78rem] text-faint hover:text-dim transition-colors duration-[180ms] flex w-fit items-center gap-[6px] mb-[32px]"
+          className="text-faint hover:text-dim mb-[32px] flex w-fit items-center gap-[6px] font-mono text-[0.78rem] transition-colors duration-[180ms]"
         >
           ← All posts
         </Link>
         <Eyebrow>Writing</Eyebrow>
-        <h1 className="font-display font-semibold text-[clamp(1.7rem,3.6vw,2.4rem)] tracking-[-0.02em] mt-[12px] leading-[1.1]">
+        <h1 className="font-display mt-[12px] text-[clamp(1.7rem,3.6vw,2.4rem)] leading-[1.1] font-semibold tracking-[-0.02em]">
           {post.frontmatter.title}
         </h1>
-        <div className="flex items-center gap-[16px] mt-[16px] flex-wrap">
-          <time className="font-mono text-[0.72rem] text-faint">{post.frontmatter.date}</time>
+        <div className="mt-[16px] flex flex-wrap items-center gap-[16px]">
+          <time className="text-faint font-mono text-[0.72rem]">{post.frontmatter.date}</time>
           {post.frontmatter.tags?.map((tag) => (
             <span
               key={tag}
-              className="font-mono text-[0.66rem] text-faint border border-line-soft px-[8px] py-[3px] rounded-[5px]"
+              className="text-faint border-line-soft rounded-[5px] border px-[8px] py-[3px] font-mono text-[0.66rem]"
             >
               {tag}
             </span>

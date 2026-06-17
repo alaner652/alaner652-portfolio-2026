@@ -22,7 +22,7 @@ export function LiveClock() {
   }, [])
 
   return (
-    <span className="font-mono text-[0.72rem] text-dim" aria-hidden="true">
+    <span className="text-dim font-mono text-[0.72rem]" aria-hidden="true">
       {time}
     </span>
   )

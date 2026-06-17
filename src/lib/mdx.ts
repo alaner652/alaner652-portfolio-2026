@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
+
 import matter from 'gray-matter'
+
 import type { BlogPost, BlogPostFrontmatter } from '@/types'
 
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blog')

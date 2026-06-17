@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import { Space_Grotesk, JetBrains_Mono, Inter } from 'next/font/google'
+
 import './globals.css'
-import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
+import { Nav } from '@/components/layout/Nav'
 import { SITE_CONFIG } from '@/constants'
 
 const spaceGrotesk = Space_Grotesk({
@@ -76,7 +77,7 @@ export default function RootLayout({
       lang="zh-Hant"
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} dark`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full flex-col">
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />

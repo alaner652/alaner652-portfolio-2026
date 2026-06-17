@@ -1,11 +1,12 @@
-import { notFound } from 'next/navigation'
-import { MDXRemote } from 'next-mdx-remote/rsc'
-import remarkGfm from 'remark-gfm'
-import { getPostBySlug } from '@/lib/mdx'
-import { SITE_CONFIG } from '@/constants'
 import { Globe, GitFork, MapPin, GraduationCap, Briefcase, FolderOpen, Cpu } from 'lucide-react'
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { ReactNode } from 'react'
+import remarkGfm from 'remark-gfm'
+
+import { SITE_CONFIG } from '@/constants'
+import { getPostBySlug } from '@/lib/mdx'
 
 export const metadata: Metadata = {
   title: 'Resume',
@@ -38,7 +39,7 @@ function CVHeading({ children }: { children?: ReactNode }) {
   const text = typeof children === 'string' ? children : ''
   const icon = SECTION_ICONS[text]
   return (
-    <h2 className="font-display font-semibold text-[clamp(1.1rem,2vw,1.3rem)] tracking-[-0.015em] text-txt mt-[2.2em] mb-[0.7em] flex items-center gap-[8px]">
+    <h2 className="font-display text-txt mt-[2.2em] mb-[0.7em] flex items-center gap-[8px] text-[clamp(1.1rem,2vw,1.3rem)] font-semibold tracking-[-0.015em]">
       {icon}
       {children}
     </h2>
@@ -69,27 +70,27 @@ export default function ResumePage() {
   if (!post) notFound()
 
   return (
-    <div className="max-w-[900px] mx-auto px-6 py-[72px]">
+    <div className="mx-auto max-w-[900px] px-6 py-[72px]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}
       />
-      <div className="mb-[48px] flex items-start justify-between gap-[24px] flex-wrap">
+      <div className="mb-[48px] flex flex-wrap items-start justify-between gap-[24px]">
         <div>
-          <h1 className="font-display font-semibold text-[clamp(1.7rem,3.6vw,2.4rem)] tracking-[-0.02em] leading-[1.1]">
+          <h1 className="font-display text-[clamp(1.7rem,3.6vw,2.4rem)] leading-[1.1] font-semibold tracking-[-0.02em]">
             Wu Chen-Chi{' '}
-            <span className="font-mono text-[0.6em] text-dim font-normal tracking-normal align-middle">
+            <span className="text-dim align-middle font-mono text-[0.6em] font-normal tracking-normal">
               吳宸麒
             </span>
           </h1>
-          <p className="font-mono text-[0.82rem] text-dim mt-[8px] tracking-[0.02em]">
+          <p className="text-dim mt-[8px] font-mono text-[0.82rem] tracking-[0.02em]">
             Full-Stack Engineer · Security Researcher
           </p>
         </div>
-        <div className="flex items-center gap-[20px] font-mono text-[0.78rem] text-dim pt-[4px] flex-wrap">
+        <div className="text-dim flex flex-wrap items-center gap-[20px] pt-[4px] font-mono text-[0.78rem]">
           <a
             href={SITE_CONFIG.url}
-            className="flex items-center gap-[6px] hover:text-amber transition-colors duration-[180ms]"
+            className="hover:text-amber flex items-center gap-[6px] transition-colors duration-[180ms]"
           >
             <Globe size={13} />
             portfolio
@@ -98,12 +99,12 @@ export default function ResumePage() {
             href={SITE_CONFIG.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-[6px] hover:text-amber transition-colors duration-[180ms]"
+            className="hover:text-amber flex items-center gap-[6px] transition-colors duration-[180ms]"
           >
             <GitFork size={13} />
             github
           </a>
-          <span className="flex items-center gap-[6px] text-faint">
+          <span className="text-faint flex items-center gap-[6px]">
             <MapPin size={13} />
             Taipei, Taiwan
           </span>

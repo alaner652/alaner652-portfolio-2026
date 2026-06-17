@@ -1,10 +1,10 @@
-import { Hero } from '@/components/sections/Hero'
 import { About } from '@/components/sections/About'
-import { Work } from '@/components/sections/Work'
 import { Experience } from '@/components/sections/Experience'
-import { Writing } from '@/components/sections/Writing'
+import { Hero } from '@/components/sections/Hero'
 import { Now } from '@/components/sections/Now'
 import { Philosophy } from '@/components/sections/Philosophy'
+import { Work } from '@/components/sections/Work'
+import { Writing } from '@/components/sections/Writing'
 import { SITE_CONFIG } from '@/constants'
 
 const personJsonLd = {
