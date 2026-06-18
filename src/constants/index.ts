@@ -108,10 +108,10 @@ export const EXPERIENCE: ExperienceItem[] = [
   },
   {
     period: '2026 — now',
-    role: 'Security & Tooling',
+    role: 'Work-Study · Pro Bono Security',
     org: 'TPCU Computer Center',
     description:
-      '負責任揭露高風險漏洞後獲聘，在授權範圍內執行安全評估、修補與內部工具開發。',
+      '正式身分為工讀生（庶務）。因透過 HITCON ZeroDay 負責任揭露多項高風險漏洞（IDOR、XSS、憑證外洩），獲電算中心信任後無償在授權範圍內執行資安評估、漏洞修補，並提出 WAF / reverse-proxy 強化方案由校方採用。',
   },
   {
     period: '2022 — 2024',
