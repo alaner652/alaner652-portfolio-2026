@@ -261,9 +261,9 @@ flowchart TD
         RES --> FFMPEG{ffmpeg}
         FFMPEG -->|"/image"| PNG["PNG bytes\nss={seconds}"]
         FFMPEG -->|"/gif"| GIF["GIF bytes\nss={s} t={duration}"]
-        PNG --> LRU["LRU cache"]
+        PNG --> LRU["LRU cache\nmedia 500項/1h · search 200項/5m"]
         GIF --> LRU
-        LRU --> DISC["Discord embed"]
+        LRU --> WEB["Next.js 搜尋頁面\n(shadcn/ui + Tailwind)"]
     end
 
     DB --> Q
@@ -291,13 +291,36 @@ ffmpeg 生成一張截圖需要 <MetricChip>50ms</MetricChip>。
 
 ---
 
-## 還沒做完的事
+## 做完了
 
 <TaskList tasks='[
-  {"title":"API 層（SQLite → HTTP endpoints + ffmpeg on-demand）","completed":false},
-  {"title":"Discord Bot 重寫（移除 Vue/Pinia）","completed":false},
-  {"title":"Supabase 遷移","completed":false},
-  {"title":"GIF LRU cache","completed":false}
+  {"title":"API 層（SQLite → HTTP endpoints + ffmpeg on-demand）","completed":true},
+  {"title":"Web UI 取代 Discord Bot（Next.js + shadcn/ui）","completed":true},
+  {"title":"GIF / 搜尋結果 LRU cache","completed":true},
+  {"title":"Supabase 遷移","completed":false}
 ]' />
 
-架構想清楚了。剩下的是寫 code。
+架構想清楚了，code 也寫完了。
+
+---
+
+## 現在的樣子
+
+Discord Bot 最後沒有重寫——整個換掉了。
+
+與其繼續維護一個 Bot，不如做一個網頁。搜尋、截圖、GIF，瀏覽器就能跑，不需要 Discord 帳號，不需要把 Bot 請進伺服器。
+
+最後長出來的是 **雞狗查圖**——一個用 Next.js 寫的字幕截圖搜尋網站。
+
+技術棧最後定在這裡：
+
+- **Extractor**：Python、EasyOCR、yt-dlp、SQLite
+- **Web**：Next.js、better-sqlite3、ffmpeg、LRU cache、shadcn/ui
+
+另一個意外決定：DB 直接進版本控管。Clone 完就能搜尋，不需要先跑 OCR。影片準備好才有截圖和 GIF——邊界很清楚。
+
+還有一個原本沒有計畫的功能：多系列支援。Ave Mujica 之外，現在也可以加 MyGO!!!!!。Schema 設計的時候沒特別為這個設計，但因為資料夾結構和 DB 都是按系列隔離的，加新系列只是加一個資料夾。
+
+Supabase 遷移最後沒做。SQLite 放在 repo 裡的方案，目前夠用。
+
+還沒上線。但架構清楚了，code 也跑起來了。
