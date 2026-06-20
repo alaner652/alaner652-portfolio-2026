@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 export function MacWindow({ children, title }: { children: ReactNode; title?: string }) {
   return (
-    <div className="mac-window border-line my-[1.5em] overflow-hidden rounded-[10px] border">
+    <div className="mac-window border-line bg-panel my-[1.5em] overflow-hidden rounded-[10px] border">
       <div
         className="border-line-soft flex items-center gap-3 border-b bg-black/18 px-3.5 py-2.5"
         aria-hidden="true"

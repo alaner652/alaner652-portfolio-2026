@@ -63,7 +63,7 @@ export function Mermaid({ chart }: { chart: string }) {
   }, [chart])
 
   return (
-    <div className="border-line my-[1.5em] overflow-hidden rounded-[10px] border">
+    <div className="border-line bg-panel my-[1.5em] overflow-hidden rounded-[10px] border">
       <div
         className="border-line-soft flex items-center gap-3 border-b bg-black/18 px-3.5 py-2.5"
         aria-hidden="true"
