@@ -50,6 +50,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: post.frontmatter.title,
     description: post.frontmatter.description,
+    keywords: post.frontmatter.tags,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: post.frontmatter.title,
@@ -57,6 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       url: canonicalUrl,
       type: 'article',
       publishedTime: post.frontmatter.date,
+      modifiedTime: post.frontmatter.date,
       tags: post.frontmatter.tags,
       siteName: SITE_CONFIG.name,
       locale: 'zh_TW',

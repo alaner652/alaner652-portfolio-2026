@@ -9,6 +9,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const { slug } = await params
   const post = getPostBySlug(slug)
   const title = post?.frontmatter.title ?? 'Writing'
+  const description = post?.frontmatter.description ?? ''
   const date = post?.frontmatter.date ?? ''
   const tags = post?.frontmatter.tags ?? []
 
@@ -64,18 +65,33 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           )}
         </div>
 
-        <div
-          style={{
-            color: '#f0f0f0',
-            fontSize: title.length > 30 ? '48px' : '60px',
-            fontFamily: 'sans-serif',
-            fontWeight: '700',
-            lineHeight: 1.15,
-            letterSpacing: '-0.02em',
-            maxWidth: '980px',
-          }}
-        >
-          {title}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div
+            style={{
+              color: '#f0f0f0',
+              fontSize: title.length > 30 ? '48px' : '60px',
+              fontFamily: 'sans-serif',
+              fontWeight: '700',
+              lineHeight: 1.15,
+              letterSpacing: '-0.02em',
+              maxWidth: '980px',
+            }}
+          >
+            {title}
+          </div>
+          {description && (
+            <div
+              style={{
+                color: '#888888',
+                fontSize: '20px',
+                fontFamily: 'sans-serif',
+                lineHeight: 1.5,
+                maxWidth: '860px',
+              }}
+            >
+              {description.length > 80 ? description.slice(0, 80) + '…' : description}
+            </div>
+          )}
         </div>
 
         <div
