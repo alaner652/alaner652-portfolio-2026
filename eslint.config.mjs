@@ -16,11 +16,10 @@ export default defineConfig([
   ...tailwindPlugin.configs['flat/recommended'],
   {
     settings: {
-      // v4 has no tailwind.config.js — pass empty object to suppress "cannot resolve" warning
-      tailwindcss: { config: {} },
-    },
-    rules: {
-      'tailwindcss/no-custom-classname': 'off',
+      tailwindcss: {
+        config: {},
+        cssFiles: ['./src/app/globals.css'],
+      },
     },
   },
 
@@ -31,8 +30,14 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-non-null-assertion': 'warn',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
       '@typescript-eslint/no-import-type-side-effects': 'error',
       'no-undef': 'off', // TypeScript handles undefined checks
     },
