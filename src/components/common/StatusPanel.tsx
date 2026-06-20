@@ -31,9 +31,9 @@ export function StatusPanel() {
       {/* title bar */}
       <div className="border-line-soft flex items-center gap-[14px] border-b bg-black/[.18] px-[18px] py-[13px]">
         <div className="flex gap-[7px]" aria-hidden="true">
-          <i className="bg-amber block h-[11px] w-[11px] rounded-full opacity-90" style={{ listStyle: 'none' }} />
-          <i className="block h-[11px] w-[11px] rounded-full bg-[#2C313B]" style={{ listStyle: 'none' }} />
-          <i className="block h-[11px] w-[11px] rounded-full bg-[#2C313B]" style={{ listStyle: 'none' }} />
+          <i className="block h-[11px] w-[11px] rounded-full bg-[#FF5F56]" style={{ listStyle: 'none' }} />
+          <i className="block h-[11px] w-[11px] rounded-full bg-[#FFBD2E]" style={{ listStyle: 'none' }} />
+          <i className="block h-[11px] w-[11px] rounded-full bg-[#27C93F]" style={{ listStyle: 'none' }} />
         </div>
         <span className="text-dim font-mono text-[0.78rem] tracking-[0.02em]">
           <b className="text-txt font-medium max-sm:hidden">alaner.status</b>

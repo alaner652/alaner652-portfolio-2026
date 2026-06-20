@@ -241,6 +241,13 @@
 }
 .prose-portfolio tr:last-child td { border-bottom: none; }
 
+/* mac-window pre reset — border/radius/margin provided by the wrapper */
+.prose-portfolio .mac-window pre {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+
 /* card h3 reset — applied inside Card component and TaskList */
 .prose-portfolio .mdx-card h3 {
   margin-top: 0;

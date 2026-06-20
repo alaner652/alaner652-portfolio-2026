@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm'
 import { Card } from '@/components/common/Card'
 import { Columns } from '@/components/common/Columns'
 import { Eyebrow } from '@/components/common/Eyebrow'
+import { MacWindow } from '@/components/common/MacWindow'
 import { Mermaid } from '@/components/common/Mermaid'
 import { MetricChip } from '@/components/common/MetricChip'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
@@ -21,11 +22,19 @@ function Pre({ children }: { children: ReactNode }) {
     if (className === 'language-mermaid' && typeof code === 'string') {
       return <Mermaid chart={code} />
     }
+    const lang = typeof className === 'string' && className.startsWith('language-')
+      ? className.slice(9)
+      : undefined
+    return (
+      <MacWindow title={lang}>
+        <pre>{children}</pre>
+      </MacWindow>
+    )
   }
   return <pre>{children}</pre>
 }
 
-const mdxComponents = { TaskList, Mermaid, pre: Pre, Card, Columns, Stack, Eyebrow, MetricChip, RevealWrapper }
+const mdxComponents = { TaskList, Mermaid, MacWindow, pre: Pre, Card, Columns, Stack, Eyebrow, MetricChip, RevealWrapper }
 const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } }
 
 export async function generateStaticParams() {
