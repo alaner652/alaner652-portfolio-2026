@@ -77,6 +77,15 @@ export const WORK_ITEMS: WorkItem[] = [
   },
   {
     id: 'W·04',
+    status: 'Built · not deployed',
+    title: '雞狗查圖 — 字幕截圖搜尋',
+    description:
+      '輸入台詞，找到那個畫面。<b>Ave Mujica Bot 的完整重寫</b>——從三個獨立專案（Python + Node.js + Discord.js）收斂成一個乾淨架構：Next.js 網頁 + Python OCR extractor。截圖與 GIF 由 ffmpeg 即時生成，砍掉 4 GB 預存圖片。支援多系列（Ave Mujica、MyGO!!!!!）。',
+    metrics: ['Next.js', 'Python EasyOCR', 'ffmpeg on-demand', 'LRU cache', '多系列支援'],
+    link: 'https://github.com/alaner652/GirlsBandShot',
+  },
+  {
+    id: 'W·05',
     status: 'Archived',
     title: 'Ave Mujica Bot — 影像檢索自動化',
     description:
@@ -85,7 +94,7 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://www.youtube.com/watch?v=2rXTrJ6X4a8',
   },
   {
-    id: 'W·05',
+    id: 'W·06',
     status: 'Offline · archived',
     title: 'Foodie AI — 語意餐廳推薦',
     description:
@@ -94,7 +103,7 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://github.com/alaner652/FoodieAI',
   },
   {
-    id: 'W·06',
+    id: 'W·07',
     status: 'Shipped · v1.0.0',
     title: 'osu! Map Manager — 譜面管理工具',
     description:
