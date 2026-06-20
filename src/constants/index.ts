@@ -17,7 +17,8 @@ export const SITE_CONFIG: SiteConfig = {
     '吳宸麒 (alaner652) — 全端工程師、資安研究者、臺北城市科技大學資工系學生。從負責任揭露校務系統漏洞開始，現在在電算中心做授權資安工作，同時獨立開發 Agora-AI。',
   location: 'Taipei · GMT+8',
   timezone: 'GMT+8',
-  copyright: '© 2026 吳宸麒 (alaner652) · Full-Stack Engineer · Security Researcher · Taipei, Taiwan',
+  copyright:
+    '© 2026 吳宸麒 (alaner652) · Full-Stack Engineer · Security Researcher · Taipei, Taiwan',
 }
 
 export const NAV_LINKS: NavLink[] = [
@@ -29,7 +30,12 @@ export const NAV_LINKS: NavLink[] = [
 
 export const STATUS_ROWS: StatusRow[] = [
   { glyph: '◉', key: 'Building', value: 'Agora-AI', subValue: 'campus AI assistant · deploying' },
-  { glyph: '▣', key: 'Working', value: 'TPCU Computer Center', subValue: 'authorized security & tooling' },
+  {
+    glyph: '▣',
+    key: 'Working',
+    value: 'TPCU Computer Center',
+    subValue: 'authorized security & tooling',
+  },
   { glyph: '◐', key: 'Assessing', value: 'App & infra security', subValue: 'authorized · ongoing' },
   { glyph: '↳', key: 'Latest case', value: 'Reverse-engineering the school API' },
   { glyph: '✎', key: 'Latest writing', value: '從 Roblox 到電算中心', subValue: 'my story' },
@@ -103,26 +109,22 @@ export const EXPERIENCE: ExperienceItem[] = [
     period: '2026 — now',
     role: 'Independent Builder',
     org: 'Personal Projects',
-    description:
-      '獨立開發與維護個人專案，負責從問題定義到部署上線的完整產品週期。',
+    description: '獨立開發與維護個人專案，負責從問題定義到部署上線的完整產品週期。',
   },
   {
     period: '2026 — now',
     role: 'Work-Study · Pro Bono Security',
     org: 'TPCU Computer Center',
     description:
-      '正式身分為工讀生（庶務）。因透過 HITCON ZeroDay 負責任揭露多項高風險漏洞（IDOR、XSS、憑證外洩），獲電算中心信任後無償在授權範圍內執行資安評估、漏洞修補，並提出 WAF / reverse-proxy 強化方案由校方採用。',
+      '正式身分為工讀生。透過 HITCON ZeroDay 負責任揭露高風險漏洞（IDOR、XSS、憑證外洩）後，獲電算中心信任，在授權範圍內無償執行資安評估與修補，清除校務系統殘存的 XSS 與後門程式；並提出 WAF / reverse-proxy 強化方案由校方採用，將外部攻擊面縮減約 70%。',
   },
   {
     period: '2022 — 2024',
     role: 'Lead Scripter',
     org: 'Game Studio (Roblox)',
-    description:
-      '主導遊戲系統開發與國際協作。從交付中理解市場驗證先於技術實現。',
+    description: '主導遊戲系統開發與國際協作。從交付中理解市場驗證先於技術實現。',
   },
 ]
-
-
 
 export const NOW_LIST: NowItem[] = [
   { text: '持續深化資安能力——授權評估、攻防實務與系統安全研究' },
