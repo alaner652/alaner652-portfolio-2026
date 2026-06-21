@@ -69,6 +69,15 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'W·03',
     status: 'Shipped · open source',
+    title: '早餐店點餐系統',
+    description:
+      'LINE Login 整合的點餐系統。顧客掃碼登入點餐，下單即推 LINE Flex Message 給店主；<b>狀態機驅動訂單流程</b>（PENDING → READY），SSE 即時同步進度。Drizzle ORM 管理 9 張關聯表，含快照欄位保留歷史訂單正確性。',
+    metrics: ['Next.js 16', 'SQLite + Drizzle', 'LINE Bot', 'SSE · 壓力測試'],
+    link: 'https://github.com/alaner652/order',
+  },
+  {
+    id: 'W·04',
+    status: 'Shipped · open source',
     title: 'Easy TPCU — 校務系統查詢自動化',
     description:
       '把「每天手動查出缺勤」這件事全自動化——統計圖表 Discord 推送，零手動操作。Agora-AI 逆向工程的早期概念驗證。',
@@ -76,7 +85,7 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://github.com/alaner652/tpcu-absence-notifier',
   },
   {
-    id: 'W·04',
+    id: 'W·05',
     status: 'Live',
     title: '雞狗查圖 — 字幕截圖搜尋',
     description:
@@ -85,7 +94,7 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://girls-band-shot.alaner652.com',
   },
   {
-    id: 'W·05',
+    id: 'W·06',
     status: 'Archived',
     title: 'Ave Mujica Bot — 影像檢索自動化',
     description:
@@ -94,7 +103,7 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://www.youtube.com/watch?v=2rXTrJ6X4a8',
   },
   {
-    id: 'W·06',
+    id: 'W·07',
     status: 'Offline · archived',
     title: 'Foodie AI — 語意餐廳推薦',
     description:
@@ -103,7 +112,7 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://github.com/alaner652/FoodieAI',
   },
   {
-    id: 'W·07',
+    id: 'W·08',
     status: 'Shipped · v1.0.0',
     title: 'osu! Map Manager — 譜面管理工具',
     description:
