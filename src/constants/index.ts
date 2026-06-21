@@ -51,6 +51,14 @@ export const HERO_STATS: Stat[] = [
 export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'W·01',
+    status: 'Ongoing · authorized',
+    title: 'Application & Infrastructure Security',
+    description:
+      '向 <b>HITCON ZeroDay</b> 通報多項高風險漏洞（IDOR、XSS、clickjacking、憑證外洩）——隨後獲聘入電算中心主導修補，並提出 WAF / reverse-proxy 強化方案由校方採用。',
+    metrics: ['HITCON ZeroDay', 'authorized assessments', 'WAF 提案落地', 'Python 內部工具'],
+  },
+  {
+    id: 'W·02',
     status: 'Deploying',
     title: 'Agora-AI — Campus Assistant',
     description:
@@ -59,15 +67,16 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://github.com/alaner652/Agora-AI',
   },
   {
-    id: 'W·02',
-    status: 'Ongoing · authorized',
-    title: 'Application & Infrastructure Security',
+    id: 'W·03',
+    status: 'Live',
+    title: '雞狗查圖 — 字幕截圖搜尋',
     description:
-      '向 <b>HITCON ZeroDay</b> 通報多項高風險漏洞（IDOR、XSS、clickjacking、憑證外洩）——隨後獲聘入電算中心主導修補，並提出 WAF / reverse-proxy 強化方案由校方採用。',
-    metrics: ['HITCON ZeroDay', 'authorized assessments', 'WAF 提案落地', 'Python 內部工具'],
+      '輸入台詞，找到那個畫面。<b>Ave Mujica Bot 的完整重寫</b>——從三個獨立專案（Python + Node.js + Discord.js）收斂成一個乾淨架構：Next.js 網頁 + Python OCR extractor。截圖與 GIF 由 ffmpeg 即時生成，砍掉 4 GB 預存圖片。支援多系列（Ave Mujica、MyGO!!!!!）。',
+    metrics: ['Next.js', 'Python EasyOCR', 'ffmpeg on-demand', 'LRU cache', '多系列支援'],
+    link: 'https://girls-band-shot.alaner652.com',
   },
   {
-    id: 'W·03',
+    id: 'W·04',
     status: 'Shipped · open source',
     title: '早餐店點餐系統',
     description:
@@ -76,22 +85,13 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://github.com/alaner652/order',
   },
   {
-    id: 'W·04',
+    id: 'W·05',
     status: 'Shipped · open source',
     title: 'Easy TPCU — 校務系統查詢自動化',
     description:
       '把「每天手動查出缺勤」這件事全自動化——統計圖表 Discord 推送，零手動操作。Agora-AI 逆向工程的早期概念驗證。',
     metrics: ['Python', 'Burp Suite', 'Matplotlib', 'Discord Webhook'],
     link: 'https://github.com/alaner652/tpcu-absence-notifier',
-  },
-  {
-    id: 'W·05',
-    status: 'Live',
-    title: '雞狗查圖 — 字幕截圖搜尋',
-    description:
-      '輸入台詞，找到那個畫面。<b>Ave Mujica Bot 的完整重寫</b>——從三個獨立專案（Python + Node.js + Discord.js）收斂成一個乾淨架構：Next.js 網頁 + Python OCR extractor。截圖與 GIF 由 ffmpeg 即時生成，砍掉 4 GB 預存圖片。支援多系列（Ave Mujica、MyGO!!!!!）。',
-    metrics: ['Next.js', 'Python EasyOCR', 'ffmpeg on-demand', 'LRU cache', '多系列支援'],
-    link: 'https://girls-band-shot.alaner652.com',
   },
   {
     id: 'W·06',
