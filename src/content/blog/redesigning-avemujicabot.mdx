@@ -291,19 +291,6 @@ ffmpeg 生成一張截圖需要 <MetricChip>50ms</MetricChip>。
 
 ---
 
-## 做完了
-
-<TaskList tasks='[
-  {"title":"API 層（SQLite → HTTP endpoints + ffmpeg on-demand）","completed":true},
-  {"title":"Web UI 取代 Discord Bot（Next.js + shadcn/ui）","completed":true},
-  {"title":"GIF / 搜尋結果 LRU cache","completed":true},
-  {"title":"Supabase 遷移","completed":false}
-]' />
-
-架構想清楚了，code 也寫完了。
-
----
-
 ## 現在的樣子
 
 Discord Bot 最後沒有重寫——整個換掉了。
@@ -317,10 +304,80 @@ Discord Bot 最後沒有重寫——整個換掉了。
 - **Extractor**：Python、EasyOCR、yt-dlp、SQLite
 - **Web**：Next.js、better-sqlite3、ffmpeg、LRU cache、shadcn/ui
 
-另一個意外決定：DB 直接進版本控管。Clone 完就能搜尋，不需要先跑 OCR。影片準備好才有截圖和 GIF——邊界很清楚。
+兩個意外決定：
 
-還有一個原本沒有計畫的功能：多系列支援。Ave Mujica 之外，現在也可以加 MyGO!!!!!。Schema 設計的時候沒特別為這個設計，但因為資料夾結構和 DB 都是按系列隔離的，加新系列只是加一個資料夾。
+**DB 直接進版本控管。** Clone 完就能搜尋，不需要先跑 OCR。影片準備好才有截圖和 GIF——邊界很清楚。
+
+**多系列不是設計出來的。** Schema 設計的時候沒特別為這個設計，但因為資料夾結構和 DB 都是按系列隔離的，加 MyGO!!!!! 只是加一個資料夾。
 
 Supabase 遷移最後沒做。SQLite 放在 repo 裡的方案，目前夠用。
 
-還沒上線。但架構清楚了，code 也跑起來了。
+<TaskList tasks='[
+  {"title":"API 層（SQLite → HTTP endpoints + ffmpeg on-demand）","completed":true},
+  {"title":"Web UI 取代 Discord Bot（Next.js + shadcn/ui）","completed":true},
+  {"title":"GIF / 搜尋結果 LRU cache","completed":true},
+  {"title":"部署上線","completed":true},
+  {"title":"Supabase 遷移","completed":false}
+]' />
+
+---
+
+## 部署：原本以為是最輕鬆的一步
+
+### 計畫
+
+計畫是：家裡的機器跑 Docker，前面掛 nginx 反向代理，再用 Cloudflare Tunnel 把流量引進來。先寫好了 `setup-nginx.sh`、`setup-gateway.sh`、`update.sh` 三個腳本，把步驟都包好。
+
+### nginx 根本不需要
+
+開始做之後才發現，nginx 那一層完全是多餘的。
+
+nginx 的價值在於：你有多個 service 要統一入口、要做 SSL termination、要 rate limiting、要 load balance——一套完整的 lab 架構才需要它。單一服務搭 CF Tunnel，`cloudflared` 本身就是 reverse proxy，從 Cloudflare 的 edge 把流量引進來，直接打到你指定的 service。中間不需要任何東西。
+
+三個腳本和 `nginx-gateway.conf` 全部刪掉。
+
+```yaml
+tunnel:
+  image: cloudflare/cloudflared:latest
+  command: tunnel --no-autoupdate run
+  environment:
+    - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+  depends_on:
+    - web
+```
+
+### 踩的坑
+
+**CF dashboard 設錯 service URL。**
+
+CF dashboard 裡把 service 填成 `https://localhost:3000`。錯的。那個 `localhost` 是 `tunnel` container 自己的本機，不是隔壁的 `web` container。應該填 `http://web:3000`——Docker Compose 同一個 network 裡的 service 用名字直接連。
+
+**Token 在終端機裡被截斷。**
+
+CF Tunnel token 是 base64 JSON，格式是 `eyJ...`。貼進終端機的時候，指令被截斷，開頭的 `e` 不見了，變成 `yJ...`。cloudflared 一直回 `Provided Tunnel token is not valid`，反覆除錯才發現差一個字元。
+
+**`.env` key 名稱也壞掉了。**
+
+同樣的截斷問題，`CLOUDFLARE_TUNNEL_TOKEN` 變成 `UDFLARE_TUNNEL_TOKEN`，少了 `CLO`。Docker Compose 讀不到，tunnel 拿不到 token，繼續報錯。
+
+**不想直接暴露 SSH。**
+
+家裡的網路技術上可以從外部 SSH 進來，但我不想這樣做——打開 inbound port 讓 SSH 暴露在外面，麻煩的事情太多。CF Tunnel 的方向（container 主動連出去找 Cloudflare，不需要 inbound）更乾淨，沒有 public SSH port，也不需要管防火牆規則。
+
+### 結果
+
+三個腳本、一個 nginx config、無數次 `docker compose down` 之後，上線了。
+
+[girls-band-shot.alaner652.com](https://girls-band-shot.alaner652.com)
+
+---
+
+## 做完這些之後才懂 Vercel 為什麼偉大
+
+部署完之後，我才真正理解 Vercel 在做什麼。
+
+今天手動做的事：tar 打包、scp 傳檔、SSH 進去、寫 `.env`、`docker compose up`、設 CF Tunnel、改 dashboard、除錯 token 截斷——這些事情在 Vercel 上不存在。push to main，等兩分鐘，上線。
+
+代價是：只能跑 serverless。沒有 ffmpeg，沒有 persistent storage，沒有 SQLite。所以這個專案沒辦法用 Vercel，得自己跑。
+
+「跑起來」和「好維護」是兩件不同的事。現在是跑起來了，但每次更新還是要手動 SSH 進去。下一步想探索的是 CI/CD——push 觸發自動部署，不用再摸伺服器。但那是下一個專案的事了。
