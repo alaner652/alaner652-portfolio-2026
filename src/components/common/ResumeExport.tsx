@@ -29,22 +29,24 @@ export function ResumeExport({ name, nameZh, title, url, github, location }: Res
     const stripProtocol = (u: string) => u.replace(/^https?:\/\//, '')
 
     const html = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${name} — Resume</title><style>
-@page { margin: 1in; }
-body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #111; line-height: 1.45; }
-h1 { font-size: 22pt; font-weight: 700; margin: 0 0 2pt; }
-.zh { font-size: 12pt; font-weight: 400; color: #666; margin-left: 6pt; }
-.subtitle { font-size: 11pt; color: #444; margin: 0 0 3pt; }
-.contact { font-size: 9.5pt; color: #555; margin: 0 0 6pt; }
-h2 { font-size: 13pt; font-weight: 700; margin: 18pt 0 6pt; padding-bottom: 3pt; border-bottom: 1px solid #ccc; }
-p { margin: 4pt 0; }
-ul { margin: 4pt 0; padding-left: 18pt; }
-li { margin: 2pt 0; }
+/* Tuned to fit a single A4 page; links use Google Docs blue. */
+@page { size: A4; margin: 0.5in; }
+body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 10pt; color: #1a1a1a; line-height: 1.3; margin: 0; }
+a { color: #1155cc; text-decoration: underline; }
+h1 { font-size: 18pt; font-weight: 700; margin: 0; }
+.zh { font-size: 11pt; font-weight: 400; color: #666; margin-left: 5pt; }
+.subtitle { font-size: 10pt; color: #444; margin: 1pt 0; }
+.contact { font-size: 8.5pt; color: #555; margin: 1pt 0 4pt; }
+h2 { font-size: 11.5pt; font-weight: 700; color: #111; margin: 9pt 0 3pt; padding-bottom: 2pt; border-bottom: 1px solid #ccc; }
+p { margin: 2pt 0; }
+ul { margin: 2pt 0; padding-left: 16pt; }
+li { margin: 1pt 0; }
 strong { font-weight: 700; }
 hr { display: none; }
 </style></head><body>
 <h1>${name}<span class="zh">${nameZh}</span></h1>
 <p class="subtitle">${title}</p>
-<p class="contact">${stripProtocol(url)} · ${stripProtocol(github)} · ${location}</p>
+<p class="contact"><a href="${url}">${stripProtocol(url)}</a> · <a href="${github}">${stripProtocol(github)}</a> · ${location}</p>
 ${body}
 </body></html>`
 
