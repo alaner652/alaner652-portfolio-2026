@@ -1,48 +1,60 @@
 ---
 title: "Resume"
-date: "2026-06-17"
+date: "2026-06-24"
 description: "吳宸麒 — Full-Stack Engineer · Security Researcher"
 tags: ["resume"]
 wide: true
 hidden: true
 ---
 
+## Summary
+
+Full-stack engineer and security researcher, shipping since 2019. I reverse-engineer undocumented institutional APIs into LLM agents and harden the infrastructure they run on. A responsible-disclosure finding in my university's student information system grew into an ongoing authorized security role. Currently deploying **Agora-AI**, a campus LLM assistant.
+
+---
+
 ## Experience
 
-**Security Consultant & Technical Advisor · TPCU Computer Center** · 2026 – Present
+**Security Work-Study · Pro Bono Security · TPCU Computer Center** · 2026 – Present
 Python · Burp Suite · WAF / Nginx · Responsible Disclosure
 
-- Discovered and disclosed multiple high-severity vulnerabilities (IDOR, XSS, credential exposure) via HITCON ZeroDay — converting responsible disclosure into a formal consulting engagement
-- Architected WAF/reverse-proxy hardening adopted by institutional stakeholders; built Python automation to eliminate manual operational workflows
+- Across 2 HITCON ZeroDay disclosures, reported high-severity flaws (IDOR, XSS, clickjacking, credential exposure) — earning authorized assessment and remediation access
+- Cleared residual XSS and backdoor code; WAF / reverse-proxy hardening, adopted institutionally, cut the external attack surface ~70%
+- Automated manual operational workflows in Python
 
 **Lead Scripter · Independent Game Studio (Roblox)** · 2022 – 2024
 Luau · Async Remote Collaboration
 
-Built combat, FPS, and skill systems; shipped multiple game modules with an international async team.
+Shipped combat, FPS, and skill systems with an international async team.
 
 ---
 
 ## Projects
 
-**Agora-AI** — Campus LLM Administrative Assistant (Deploying) · github.com/alaner652/Agora-AI
-FastAPI · Next.js 16 · SQLite · Docker Compose · Caddy · Loki / Grafana
+**[Agora-AI](https://github.com/alaner652/Agora-AI)** — Campus LLM Assistant (Deploying)
+FastAPI · Next.js 16 · Docker · Caddy · Loki / Grafana
 
-Reverse-engineered undocumented institutional APIs into a 10-tool LLM agent — students query schedules, grades, and leave in natural language instead of navigating the portal. 69 tests, SSE streaming, BYOK LLM, deployed on institutional VM.
+Reverse-engineered undocumented APIs into a 10-tool LLM agent — natural-language queries for schedules, grades, and leave. 69 tests · SSE streaming · BYOK LLM · deployed on an institutional VM.
 
 **HITCON ZeroDay · Responsible Disclosure**
-Web Security · IDOR · XSS · Burp Suite
+IDOR · XSS · Burp Suite
 
-Identified a critical IDOR in the university student information system. Authored a full PoC report with remediation; patch deployed immediately — directly resulting in the TPCU consulting role.
+Found a critical IDOR in the university student information system; full PoC + remediation, patched immediately — the origin of my TPCU role.
 
-**MINDSCAPE** — LLM-Powered Fitness Tracker (In Development)
-Go · Flutter · Next.js · LLM Pipeline
+**[雞狗查圖 (GirlsBandShot)](https://girls-band-shot.alaner652.com)** — Subtitle Screenshot Search (Live)
+Next.js · Python EasyOCR · ffmpeg
 
-Full-stack fitness tracker with LLM pipeline that parses natural-language workout entries into structured JSON — eliminating form-based input across mobile, web, and backend.
+Type a line, find the frame. Rewrote Ave Mujica Bot — 3 projects collapsed into 1 (Next.js + Python OCR), with on-demand ffmpeg rendering that cut 4 GB of pre-stored images.
 
-**Easy TPCU** — Academic Portal Automation · github.com/alaner652/tpcu-absence-notifier
-Python · BeautifulSoup · Burp Suite · Discord Webhook
+**[早餐店點餐系統 (Breakfast Ordering)](https://github.com/alaner652/order)** — Open Source
+Next.js 16 · Drizzle ORM · LINE Bot · SSE
 
-Reverse-engineered portal session flow; automated attendance extraction with chart generation and Discord push — early proof-of-concept for Agora-AI.
+LINE Login ordering; a state machine drives PENDING → READY with SSE sync. Drizzle manages 9 relational tables with snapshot columns for historical accuracy. Load-tested.
+
+**[Easy TPCU](https://github.com/alaner652/tpcu-absence-notifier)** — Portal Automation
+Python · BeautifulSoup · Burp Suite
+
+Reverse-engineered the portal session flow; automated attendance extraction with Discord push. The proof-of-concept that grew into Agora-AI.
 
 ---
 
@@ -63,8 +75,6 @@ Reverse-engineered portal session flow; automated attendance extraction with cha
 
 ## Side Projects & Hobbies
 
-**Ave Mujica Bot** — OCR subtitle indexer with Discord query interface · Python · PaddleOCR
-
-**osu! Map Manager** — Beatmap scanner with batch download and CSV export · Python · PyInstaller
+**[osu! Map Manager](https://github.com/alaner652/osu_map_manager)** — Beatmap scanner with batch download and CSV export · Python · PyInstaller
 
 Guitar · HomeLab (Proxmox + OpenWrt + Tailscale) · CTF · osu!

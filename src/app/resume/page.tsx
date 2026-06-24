@@ -1,12 +1,15 @@
-import { Globe, GitFork, MapPin, GraduationCap, Briefcase, FolderOpen, Cpu } from 'lucide-react'
+import { Globe, GitFork, MapPin, GraduationCap, Briefcase, FolderOpen, Cpu, UserRound } from 'lucide-react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { ReactNode } from 'react'
 import remarkGfm from 'remark-gfm'
 
+import { ResumeExport } from '@/components/common/ResumeExport'
 import { SITE_CONFIG } from '@/constants'
 import { getPostBySlug } from '@/lib/mdx'
+
+const RESUME_TITLE = 'Full-Stack Engineer · Security Researcher'
 
 export const metadata: Metadata = {
   title: 'Resume',
@@ -29,6 +32,7 @@ export const metadata: Metadata = {
 }
 
 const SECTION_ICONS: Record<string, ReactNode> = {
+  Summary: <UserRound size={17} className="text-amber" />,
   Education: <GraduationCap size={17} className="text-amber" />,
   Experience: <Briefcase size={17} className="text-amber" />,
   Projects: <FolderOpen size={17} className="text-amber" />,
@@ -46,7 +50,16 @@ function CVHeading({ children }: { children?: ReactNode }) {
   )
 }
 
-const mdxComponents = { h2: CVHeading }
+function CVLink({ href, children }: { href?: string; children?: ReactNode }) {
+  const external = href?.startsWith('http')
+  return (
+    <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+      {children}
+    </a>
+  )
+}
+
+const mdxComponents = { h2: CVHeading, a: CVLink }
 const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } }
 
 const resumeJsonLd = {
@@ -84,10 +97,18 @@ export default function ResumePage() {
             </span>
           </h1>
           <p className="text-dim mt-[8px] font-mono text-[0.82rem] tracking-[0.02em]">
-            Full-Stack Engineer · Security Researcher
+            {RESUME_TITLE}
           </p>
         </div>
         <div className="text-dim flex flex-wrap items-center gap-[20px] pt-[4px] font-mono text-[0.78rem]">
+          <ResumeExport
+            name="Wu Chen-Chi"
+            nameZh="吳宸麒"
+            title={RESUME_TITLE}
+            url={SITE_CONFIG.url}
+            github={SITE_CONFIG.github}
+            location="Taipei, Taiwan"
+          />
           <a
             href={SITE_CONFIG.url}
             className="hover:text-amber flex items-center gap-[6px] transition-colors duration-[180ms]"
