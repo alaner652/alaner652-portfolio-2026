@@ -1,80 +1,84 @@
 ---
-title: "Resume"
-date: "2026-06-24"
-description: "吳宸麒 — Full-Stack Engineer · Security Researcher"
-tags: ["resume"]
+title: 'Resume'
+date: '2026-06-24'
+description: '吳宸麒 — Full-Stack Engineer · Security Researcher'
+tags: ['resume']
 wide: true
 hidden: true
 ---
 
+# Wu Chen-Chi
+
+Full-Stack Engineer · Security Researcher
+
+Email: [hhgg12661@gmail.com](mailto:hhgg12661@gmail.com)
+Website: https://alaner652.com
+GitHub: https://github.com/alaner652
+
+**Taipei City University of Science and Technology** — _5-Year Junior College Program in Computer Science and Information Engineering (2022 – 2027, Expected)_
+
+---
+
 ## Summary
 
-Full-stack engineer and security researcher, shipping since 2019. I reverse-engineer undocumented institutional APIs into LLM agents and harden the infrastructure they run on. A responsible-disclosure finding in my university's student information system grew into an ongoing authorized security role. Currently deploying **Agora-AI**, a campus LLM assistant.
+Full-Stack Engineer focused on security, automation, and reverse-engineering. Experienced in responsible disclosure, infrastructure hardening, and transforming undocumented systems into developer tools and AI agents.
 
 ---
 
 ## Experience
 
-**Security Work-Study · Pro Bono Security · TPCU Computer Center** · 2026 – Present
-Python · Burp Suite · WAF / Nginx · Responsible Disclosure
+### Security Consultant & Work-Study · TPCU Computer Center
 
-- Across 2 HITCON ZeroDay disclosures, reported high-severity flaws (IDOR, XSS, clickjacking, credential exposure) — earning authorized assessment and remediation access
-- Cleared residual XSS and backdoor code; WAF / reverse-proxy hardening, adopted institutionally, cut the external attack surface ~70%
-- Automated manual operational workflows in Python
+2026 – Present
 
-**Lead Scripter · Independent Game Studio (Roblox)** · 2022 – 2024
-Luau · Async Remote Collaboration
+- Discovered and responsibly disclosed multiple high-severity vulnerabilities through HITCON ZeroDay.
+- Assisted with security remediation, log analysis, and infrastructure hardening.
+- Developed internal automation tools for operational workflows.
 
-Shipped combat, FPS, and skill systems with an international async team.
+### Freelance Roblox Developer · Remote
+
+2019 – 2024
+
+- Delivered gameplay systems for international clients.
+- Built combat, FPS, progression, and inventory systems using Luau.
 
 ---
 
 ## Projects
 
-**[Agora-AI](https://github.com/alaner652/Agora-AI)** — Campus LLM Assistant (Deploying)
-FastAPI · Next.js 16 · Docker · Caddy · Loki / Grafana
+### Agora-AI — Campus LLM Assistant
 
-Reverse-engineered undocumented APIs into a 10-tool LLM agent — natural-language queries for schedules, grades, and leave. 69 tests · SSE streaming · BYOK LLM · deployed on an institutional VM.
+_FastAPI · Next.js · Docker · PostgreSQL · Gemini API_
 
-**HITCON ZeroDay · Responsible Disclosure**
-IDOR · XSS · Burp Suite
+- Reverse-engineered undocumented campus systems and exposed them through developer-friendly APIs.
+- Built an AI agent that answers schedules, grades, attendance, and leave requests through natural language.
+- Deployed the platform using Docker-based infrastructure.
 
-Found a critical IDOR in the university student information system; full PoC + remediation, patched immediately — the origin of my TPCU role.
+### HITCON ZeroDay — Responsible Disclosure
 
-**[雞狗查圖 (GirlsBandShot)](https://girls-band-shot.alaner652.com)** — Subtitle Screenshot Search (Live)
-Next.js · Python EasyOCR · ffmpeg
+_IDOR · XSS · CSRF · Burp Suite_
 
-Type a line, find the frame. Rewrote Ave Mujica Bot — 3 projects collapsed into 1 (Next.js + Python OCR), with on-demand ffmpeg rendering that cut 4 GB of pre-stored images.
+- Discovered and responsibly disclosed a critical IDOR vulnerability exposing student records.
 
-**[早餐店點餐系統 (Breakfast Ordering)](https://github.com/alaner652/order)** — Open Source
-Next.js 16 · Drizzle ORM · LINE Bot · SSE
+### Breakfast Ordering System
 
-LINE Login ordering; a state machine drives PENDING → READY with SSE sync. Drizzle manages 9 relational tables with snapshot columns for historical accuracy. Load-tested.
+_Next.js · Drizzle ORM · SQLite · LINE Messaging API_
 
-**[Easy TPCU](https://github.com/alaner652/tpcu-absence-notifier)** — Portal Automation
-Python · BeautifulSoup · Burp Suite
+- Built a QR-code ordering platform with real-time status updates through LINE.
+- Designed an order-state workflow from placement to fulfillment.
 
-Reverse-engineered the portal session flow; automated attendance extraction with Discord push. The proof-of-concept that grew into Agora-AI.
+### GirlsBandShot — Subtitle Screenshot Search Engine
 
----
+_Next.js · Python · EasyOCR · ffmpeg_
 
-## Education
-
-**Taipei City University of Science and Technology** · B.Eng. Information Engineering · Year 3 · 2022 – 2027 (Expected)
+- Built a subtitle-to-screenshot search engine using OCR-based indexing.
+- Replaced pre-generated frames with on-demand rendering, reducing storage usage by over 90%.
 
 ---
 
-## Skills
+## Interests
 
-**Languages:** Go, Python, TypeScript / JavaScript, Luau, C/C++
-**Stack:** Next.js, React, Flutter, FastAPI, SQLite, Docker, Caddy, Nginx
-**Security:** XSS, IDOR, CSRF · Burp Suite · Responsible Disclosure
-**AI / LLM:** Agent tool-chain design, BYOK LLM architecture, Gemini API
-
----
-
-## Side Projects & Hobbies
-
-**[osu! Map Manager](https://github.com/alaner652/osu_map_manager)** — Beatmap scanner with batch download and CSV export · Python · PyInstaller
-
-Guitar · HomeLab (Proxmox + OpenWrt + Tailscale) · CTF · osu!
+- HomeLab (Proxmox, Immich, Docker)
+- E-Guitar
+- osu!
+- Gym
