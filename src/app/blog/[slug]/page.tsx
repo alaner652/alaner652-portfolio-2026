@@ -104,12 +104,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <div className="mb-[48px]">
         <Link
           href="/blog"
-          className="text-faint hover:text-dim mb-[32px] flex w-fit items-center gap-[6px] font-mono text-[0.78rem] transition-colors duration-[180ms]"
+          className="text-faint hover:text-amber mb-[32px] flex w-fit items-center gap-[6px] font-mono text-[0.78rem] transition-colors duration-[180ms]"
         >
           ← All posts
         </Link>
         <Eyebrow>Writing</Eyebrow>
-        <h1 className="font-display mt-[12px] text-[clamp(1.7rem,3.6vw,2.4rem)] leading-[1.1] font-semibold tracking-[-0.02em]">
+        <h1 className="font-display mt-[12px] text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.15] font-medium tracking-[-0.02em]">
           {post.frontmatter.title}
         </h1>
         <div className="mt-[16px] flex flex-wrap items-center gap-[16px]">
@@ -117,7 +117,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           {post.frontmatter.tags?.map((tag) => (
             <span
               key={tag}
-              className="text-faint border-line-soft rounded-[5px] border px-[8px] py-[3px] font-mono text-[0.66rem]"
+              className="text-dim bg-panel-hi border-line-soft rounded-[5px] border px-[9px] py-[3px] font-mono text-[0.68rem]"
             >
               {tag}
             </span>

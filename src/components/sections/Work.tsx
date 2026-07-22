@@ -1,48 +1,45 @@
-import { Eyebrow } from '@/components/common/Eyebrow'
 import { MetricChip } from '@/components/common/MetricChip'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { WORK_ITEMS } from '@/constants'
 
 export function Work() {
   return (
-    <section id="work" className="border-line-soft border-t py-[72px]">
+    <section id="work" className="border-line-soft border-t py-[80px]">
       <div className="mx-auto max-w-[1080px] px-6">
-        <RevealWrapper className="mb-[38px]">
-          <Eyebrow>Featured Work</Eyebrow>
-          <h2 className="font-display mt-[12px] text-[clamp(1.7rem,3.6vw,2.5rem)] font-semibold tracking-[-0.015em]">
-            Not just the result — the way of solving the problem.
+        <RevealWrapper className="mb-[16px]">
+          <h2 className="font-display text-[clamp(1.4rem,2.6vw,1.8rem)] font-medium tracking-[-0.015em]">
+            Selected work
           </h2>
         </RevealWrapper>
 
-        <div className="grid gap-[18px]">
+        <div>
           {WORK_ITEMS.map((item) => (
             <RevealWrapper key={item.id}>
-              <article className="border-line bg-panel hover:border-amber hover:bg-panel-hi relative rounded-[12px] border px-[26px] pt-[26px] pb-[24px] transition-[border-color,transform,background] duration-[200ms] hover:translate-y-[-3px]">
-                <div className="mb-[14px] flex items-center gap-[14px]">
-                  <span className="text-amber font-mono text-[0.72rem] tracking-[0.08em]">{item.id}</span>
-                  <span className="text-dim border-line ml-auto rounded-[20px] border px-[10px] py-[4px] font-mono text-[0.68rem] tracking-[0.06em]">
+              <article className="border-line-soft border-t py-[28px]">
+                <div className="mb-[10px] flex items-baseline justify-between gap-[16px]">
+                  <h3 className="font-display text-[1.2rem] font-medium tracking-[-0.01em]">
+                    {item.link ? (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-amber transition-colors duration-[180ms]"
+                      >
+                        {item.title} ↗
+                      </a>
+                    ) : (
+                      item.title
+                    )}
+                  </h3>
+                  <span className="text-faint shrink-0 font-mono text-[0.68rem] tracking-[0.04em]">
                     {item.status}
                   </span>
                 </div>
-                <h3 className="font-display mb-[10px] text-[1.4rem] font-semibold tracking-[-0.01em]">
-                  {item.link ? (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-amber transition-colors duration-[180ms]"
-                    >
-                      {item.title} ↗
-                    </a>
-                  ) : (
-                    item.title
-                  )}
-                </h3>
                 <p
-                  className="text-dim max-w-[54ch] text-[0.98rem]"
+                  className="text-dim max-w-[64ch] text-[0.96rem] leading-[1.65]"
                   dangerouslySetInnerHTML={{ __html: item.description }}
                 />
-                <div className="mt-[18px] flex flex-wrap gap-[8px]">
+                <div className="mt-[16px] flex flex-wrap gap-[8px]">
                   {item.metrics.map((m) => (
                     <MetricChip key={m}>{m}</MetricChip>
                   ))}

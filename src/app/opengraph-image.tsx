@@ -9,7 +9,7 @@ export default function Image() {
     (
       <div
         style={{
-          background: '#111111',
+          background: '#FAF6EC',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -18,31 +18,21 @@ export default function Image() {
           padding: '72px 80px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: '#f59e0b',
-            }}
-          />
-          <span
-            style={{
-              color: '#f59e0b',
-              fontSize: '15px',
-              fontFamily: 'monospace',
-              letterSpacing: '0.12em',
-            }}
-          >
-            alaner652.com
-          </span>
-        </div>
+        <span
+          style={{
+            color: '#635B4C',
+            fontSize: '17px',
+            fontFamily: 'sans-serif',
+            letterSpacing: '0.04em',
+          }}
+        >
+          alaner652.com
+        </span>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div
             style={{
-              color: '#f0f0f0',
+              color: '#241F18',
               fontSize: '72px',
               fontFamily: 'sans-serif',
               fontWeight: '700',
@@ -50,14 +40,13 @@ export default function Image() {
               letterSpacing: '-0.02em',
             }}
           >
-            Wu Chen-Chi
+            alaner652
           </div>
           <div
             style={{
-              color: '#888888',
-              fontSize: '22px',
-              fontFamily: 'monospace',
-              letterSpacing: '0.04em',
+              color: '#635B4C',
+              fontSize: '24px',
+              fontFamily: 'sans-serif',
             }}
           >
             Full-Stack Engineer · Security Researcher · Taipei
@@ -73,23 +62,22 @@ export default function Image() {
         >
           <div
             style={{
-              color: '#444444',
-              fontSize: '14px',
-              fontFamily: 'monospace',
-              letterSpacing: '0.08em',
+              color: '#9A907C',
+              fontSize: '15px',
+              fontFamily: 'sans-serif',
+              letterSpacing: '0.04em',
             }}
           >
             Agora-AI · HITCON ZeroDay · TPCU
           </div>
           <div
             style={{
-              color: '#333333',
-              fontSize: '14px',
-              fontFamily: 'monospace',
+              width: '10px',
+              height: '10px',
+              borderRadius: '50%',
+              background: '#DE5A16',
             }}
-          >
-            吳宸麒
-          </div>
+          />
         </div>
       </div>
     ),

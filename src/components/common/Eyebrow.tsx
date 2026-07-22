@@ -9,9 +9,7 @@ export function Eyebrow({ children, className }: EyebrowProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-[0.6em]',
-        'font-mono text-[0.72rem] font-medium tracking-[0.18em] uppercase text-amber',
-        "before:content-[''] before:w-[14px] before:h-px before:bg-amber before:inline-block",
+        'inline-block text-faint text-[0.75rem] font-medium tracking-[0.14em] uppercase',
         className
       )}
     >

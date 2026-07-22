@@ -4,18 +4,6 @@ export interface NavLink {
   hideSm?: boolean
 }
 
-export interface StatusRow {
-  glyph: string
-  key: string
-  value: string
-  subValue?: string
-}
-
-export interface Stat {
-  value: string
-  label: string
-}
-
 export interface WorkItem {
   id: string
   status: string

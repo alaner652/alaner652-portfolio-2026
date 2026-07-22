@@ -2,7 +2,6 @@ import { About } from '@/components/sections/About'
 import { Experience } from '@/components/sections/Experience'
 import { Hero } from '@/components/sections/Hero'
 import { Now } from '@/components/sections/Now'
-import { Philosophy } from '@/components/sections/Philosophy'
 import { Work } from '@/components/sections/Work'
 import { Writing } from '@/components/sections/Writing'
 import { SITE_CONFIG } from '@/constants'
@@ -31,7 +30,6 @@ export default function Home() {
       <Experience />
       <Writing />
       <Now />
-      <Philosophy />
     </>
   )
 }

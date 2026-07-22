@@ -28,25 +28,25 @@ export default function BlogPage() {
 
   return (
     <div className="mx-auto max-w-[1080px] px-6 py-[72px]">
-      <div className="mb-[48px]">
+      <div className="mb-[40px]">
         <Eyebrow>Writing</Eyebrow>
-        <h1 className="font-display mt-[12px] text-[clamp(1.7rem,3.6vw,2.5rem)] font-semibold tracking-[-0.015em]">
-          記錄研究與思考。
+        <h1 className="font-display mt-[12px] text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-[-0.015em]">
+          記錄研究與思考
         </h1>
       </div>
 
       {posts.length === 0 ? (
         <p className="text-dim font-mono text-[0.9rem]">No posts yet.</p>
       ) : (
-        <div className="grid gap-[18px]">
+        <div>
           {posts.map((post) => (
             <a
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="border-line bg-panel hover:border-amber hover:bg-panel-hi block rounded-[12px] border px-[26px] py-[24px] transition-[border-color,transform,background] duration-[200ms] hover:translate-y-[-3px]"
+              className="group border-line-soft block border-t py-[26px]"
             >
               <div className="flex flex-wrap items-start justify-between gap-[16px]">
-                <h2 className="font-display text-[1.2rem] font-semibold tracking-[-0.01em]">
+                <h2 className="font-display group-hover:text-amber text-[1.15rem] font-medium tracking-[-0.01em] transition-colors duration-[180ms]">
                   {post.frontmatter.title}
                 </h2>
                 <time className="text-faint shrink-0 pt-[3px] font-mono text-[0.72rem]">
@@ -54,7 +54,7 @@ export default function BlogPage() {
                 </time>
               </div>
               {post.frontmatter.description && (
-                <p className="text-dim mt-[8px] max-w-[56ch] text-[0.95rem]">
+                <p className="text-dim mt-[8px] max-w-[60ch] text-[0.95rem] leading-[1.6]">
                   {post.frontmatter.description}
                 </p>
               )}
@@ -63,7 +63,7 @@ export default function BlogPage() {
                   {post.frontmatter.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-faint border-line-soft rounded-[5px] border px-[8px] py-[3px] font-mono text-[0.66rem]"
+                      className="text-dim bg-panel-hi border-line-soft rounded-[5px] border px-[9px] py-[3px] font-mono text-[0.68rem]"
                     >
                       {tag}
                     </span>

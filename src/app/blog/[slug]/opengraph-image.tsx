@@ -25,7 +25,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     (
       <div
         style={{
-          background: '#111111',
+          background: '#FAF6EC',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -37,7 +37,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
       >
         {/* top row: date + tags */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ color: '#888888', fontSize: '14px', letterSpacing: '0.1em' }}>
+          <div style={{ color: '#9A907C', fontSize: '15px', letterSpacing: '0.04em' }}>
             {'Writing / ' + date}
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -45,9 +45,9 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               <div
                 key={tag}
                 style={{
-                  color: '#555555',
-                  fontSize: '12px',
-                  border: '1px solid #333333',
+                  color: '#9A907C',
+                  fontSize: '13px',
+                  border: '1px solid #E7DEC9',
                   padding: '3px 8px',
                   borderRadius: '4px',
                 }}
@@ -68,7 +68,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         >
           <div
             style={{
-              color: '#f0f0f0',
+              color: '#241F18',
               fontSize: titleFontSize,
               fontWeight: '700',
               lineHeight: 1.15,
@@ -79,7 +79,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           </div>
           <div
             style={{
-              color: '#888888',
+              color: '#635B4C',
               fontSize: '18px',
               fontWeight: '400',
               lineHeight: 1.5,
@@ -95,13 +95,13 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
-              style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b' }}
+              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#DE5A16' }}
             />
-            <span style={{ color: '#f59e0b', fontSize: '14px', letterSpacing: '0.1em' }}>
+            <span style={{ color: '#635B4C', fontSize: '15px', letterSpacing: '0.04em' }}>
               alaner652.com
             </span>
           </div>
-          <div style={{ color: '#444444', fontSize: '14px' }}>alaner652</div>
+          <div style={{ color: '#9A907C', fontSize: '14px' }}>alaner652</div>
         </div>
       </div>
     ),

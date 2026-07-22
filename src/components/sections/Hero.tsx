@@ -1,64 +1,42 @@
-import { Eyebrow } from '@/components/common/Eyebrow'
-import { StatusPanel } from '@/components/common/StatusPanel'
-import { HERO_STATS } from '@/constants'
+import { SITE_CONFIG } from '@/constants'
 
 export function Hero() {
   return (
-    <header className="pt-[64px] pb-[86px]">
+    <header className="pt-[104px] pb-[84px]">
       <div className="mx-auto max-w-[1080px] px-6">
         <a id="top" />
-        <Eyebrow>Full-Stack Engineer · Security Researcher · Builder</Eyebrow>
 
-        <h1 className="font-display mt-[22px] mb-[22px] max-w-[18ch] text-[clamp(2.3rem,6.4vw,4.4rem)] leading-[1.04] font-semibold tracking-[-0.02em]">
-          I build systems — then find what&rsquo;s <em className="text-amber not-italic">broken</em> in them.
-        </h1>
-
-        <p className="text-dim max-w-[46ch] text-[clamp(1rem,1.6vw,1.12rem)]">
-          全端工程師 · 資安研究者，臺北城市科技大學資工系。
+        <p className="text-faint mb-[22px] font-mono text-[0.8rem] tracking-[0.14em]">
+          alaner652
         </p>
 
-        <StatusPanel />
+        <h1 className="font-display max-w-[16ch] text-[clamp(2.3rem,6vw,3.8rem)] leading-[1.06] font-medium tracking-[-0.02em]">
+          我做產品，也<span className="text-amber">拆系統找漏洞</span>。
+        </h1>
 
-        <div className="mt-[34px] flex flex-wrap gap-[14px]">
-          <a
-            href="#work"
-            className="border-amber bg-amber text-bg inline-flex items-center gap-[8px] rounded-[8px] border px-[20px] py-[12px] font-mono text-[0.8rem] font-bold tracking-[0.04em] transition-[background,border-color] duration-[180ms] hover:border-[#ffbf55] hover:bg-[#ffbf55]"
-          >
-            View work →
-          </a>
-          <a
-            href="#writing"
-            className="border-line text-txt hover:border-faint inline-flex items-center gap-[8px] rounded-[8px] border px-[20px] py-[12px] font-mono text-[0.8rem] tracking-[0.04em] transition-[border-color,transform] duration-[180ms] hover:translate-y-[-1px]"
-          >
-            Read writing
-          </a>
-          <a
-            href="/resume"
-            className="border-line text-txt hover:border-faint inline-flex items-center gap-[8px] rounded-[8px] border px-[20px] py-[12px] font-mono text-[0.8rem] tracking-[0.04em] transition-[border-color,transform] duration-[180ms] hover:translate-y-[-1px]"
-          >
-            View CV
-          </a>
-        </div>
+        <p className="text-dim mt-[24px] max-w-[46ch] text-[clamp(1.05rem,1.7vw,1.25rem)] leading-[1.6]">
+          通報過 HITCON ZeroDay 高風險漏洞，也把一套無文件的校務 API 逆向成能對話的 AI 助理。
+          <span className="text-faint"> 全端開發 · 應用安全。</span>
+        </p>
 
-        <div
-          className="border-line bg-panel mt-[30px] flex flex-wrap overflow-hidden rounded-[10px] border"
-          role="list"
-          aria-label="At a glance"
-        >
-          {HERO_STATS.map((stat, i) => (
-            <div
-              key={i}
-              className="border-line-soft max-[560px]:border-line-soft min-w-[140px] flex-1 border-r px-[20px] py-[16px] last:border-r-0 max-[560px]:min-w-[50%] max-[560px]:border-b max-[560px]:[&:nth-child(even)]:border-r-0 max-[560px]:[&:nth-child(odd)]:border-r"
-              role="listitem"
-            >
-              <b className="text-txt mb-[3px] block font-mono text-[1.1rem] font-bold tracking-[0.01em]">
-                {stat.value}
-              </b>
-              <span className="text-faint font-mono text-[0.66rem] tracking-[0.1em] uppercase">
-                {stat.label}
-              </span>
-            </div>
-          ))}
+        <div className="mt-[38px] flex flex-wrap items-center gap-x-[26px] gap-y-[12px] text-[0.95rem]">
+          <a href="#work" className="text-txt hover:text-amber underline-offset-[6px] transition-colors duration-150 hover:underline">
+            看我做過什麼 →
+          </a>
+          <a href="#writing" className="text-txt hover:text-amber underline-offset-[6px] transition-colors duration-150 hover:underline">
+            Writing
+          </a>
+          <a href="/resume" className="text-txt hover:text-amber underline-offset-[6px] transition-colors duration-150 hover:underline">
+            Resume
+          </a>
+          <a
+            href={SITE_CONFIG.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-dim hover:text-amber underline-offset-[6px] transition-colors duration-150 hover:underline"
+          >
+            GitHub ↗
+          </a>
         </div>
       </div>
     </header>

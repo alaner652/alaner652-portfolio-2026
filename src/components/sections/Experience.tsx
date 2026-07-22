@@ -1,18 +1,14 @@
-import { Eyebrow } from '@/components/common/Eyebrow'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { EXPERIENCE } from '@/constants'
 
 export function Experience() {
   return (
-    <section id="experience" className="border-line-soft border-t py-[72px]">
+    <section id="experience" className="border-line-soft border-t py-[80px]">
       <div className="mx-auto max-w-[1080px] px-6">
         <RevealWrapper>
-          <div className="mb-[38px]">
-            <Eyebrow>Experience</Eyebrow>
-            <h2 className="font-display mt-[12px] text-[clamp(1.7rem,3.6vw,2.5rem)] font-semibold tracking-[-0.015em]">
-              Roles
-            </h2>
-          </div>
+          <h2 className="font-display mb-[16px] text-[clamp(1.4rem,2.6vw,1.8rem)] font-medium tracking-[-0.015em]">
+            Experience
+          </h2>
 
           <div>
             {EXPERIENCE.map((item, i) => (

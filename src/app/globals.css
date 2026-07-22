@@ -5,23 +5,24 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* ── Portfolio design tokens ── */
-  --color-bg:        #0C0E13;
-  --color-panel:     #14171E;
-  --color-panel-hi:  #1A1E27;
-  --color-line:      #262B35;
-  --color-line-soft: #1D212A;
-  --color-txt:       #E9EAED;
-  --color-dim:       #9AA0AD;
-  --color-faint:     #7A8090;
-  --color-amber:     #F2A93B;
-  --color-amber-soft: rgba(242,169,59,0.12);
-  --color-live:      #5BC9B6;
-  --color-live-soft: rgba(91,201,182,0.13);
+  /* ── Portfolio design tokens (light cream / orange) ── */
+  --color-bg:        #FCFAF4;
+  --color-panel:     #FFFFFF;
+  --color-panel-hi:  #F6F1E8;
+  --color-line:      #ECE5D7;
+  --color-line-soft: #F3EDE1;
+  --color-txt:       #332D24;
+  --color-dim:       #736A5A;
+  --color-faint:     #A79C88;
+  /* orange primary (var name kept for compatibility) */
+  --color-amber:     #E06122;
+  --color-amber-soft: rgba(224,97,34,0.10);
+  --color-live:      #1F8A5B;
+  --color-live-soft: rgba(31,138,91,0.10);
 
-  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), 'LXGW WenKai TC', var(--font-noto-tc), 'PingFang TC', system-ui, sans-serif;
   --font-mono:    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-body:    var(--font-inter), 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  --font-body:    var(--font-inter), var(--font-noto-tc), 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
 
   /* ── shadcn tokens ── */
   --color-background: var(--background);
@@ -136,15 +137,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-@keyframes pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(91,201,182,.5); }
-  70%  { box-shadow: 0 0 0 7px rgba(91,201,182,0); }
-  100% { box-shadow: 0 0 0 0 rgba(91,201,182,0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  [style*="animation: pulse"] { animation: none !important; }
-}
-
 /* MDX blog prose styles */
 .prose-portfolio h1,
 .prose-portfolio h2,
@@ -175,14 +167,14 @@
 .prose-portfolio code {
   font-family: var(--font-mono);
   font-size: 0.875em;
-  background: var(--color-panel);
-  border: 1px solid var(--color-line-soft);
+  background: var(--color-panel-hi);
+  border: 1px solid var(--color-line);
   padding: 2px 6px;
   border-radius: 4px;
   color: var(--color-txt);
 }
 .prose-portfolio pre {
-  background: var(--color-panel);
+  background: var(--color-panel-hi);
   border: 1px solid var(--color-line);
   border-radius: 8px;
   padding: 20px 24px;
@@ -246,6 +238,19 @@
   border: none;
   border-radius: 0;
   margin: 0;
+  background: transparent;
+}
+
+/* mermaid flowchart — use loaded fonts (incl. CJK) and readable labels */
+.mermaid,
+.mermaid text,
+.mermaid .nodeLabel,
+.mermaid .edgeLabel,
+.mermaid span {
+  font-family: var(--font-body) !important;
+}
+.mermaid .edgeLabel {
+  font-size: 0.82em;
 }
 
 /* card h3 reset — applied inside Card component and TaskList */
@@ -277,15 +282,10 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    background-image:
-      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-    background-size: 64px 64px;
-    background-position: center top;
   }
   ::selection {
-    background: var(--color-amber);
-    color: #0C0E13;
+    background: var(--color-amber-soft);
+    color: var(--color-txt);
   }
   a {
     color: inherit;

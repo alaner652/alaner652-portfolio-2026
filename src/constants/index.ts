@@ -1,8 +1,6 @@
 import type {
   SiteConfig,
   NavLink,
-  StatusRow,
-  Stat,
   WorkItem,
   ExperienceItem,
   NowItem,
@@ -14,11 +12,10 @@ export const SITE_CONFIG: SiteConfig = {
   url: 'https://alaner652.com',
   github: 'https://github.com/alaner652',
   description:
-    '吳宸麒 (alaner652) — 全端工程師、資安研究者、臺北城市科技大學資工系學生。從負責任揭露校務系統漏洞開始，現在在電算中心做授權資安工作，同時獨立開發 Agora-AI。',
+    '吳宸麒 (alaner652) — 全端工程師與資安研究者。專注系統設計、應用安全與工具開發，獨立開發 Agora-AI。',
   location: 'Taipei · GMT+8',
   timezone: 'GMT+8',
-  copyright:
-    '© 2026 吳宸麒 (alaner652) · Full-Stack Engineer · Security Researcher · Taipei, Taiwan',
+  copyright: '© 2026 alaner652 · Taipei, Taiwan',
 }
 
 export const NAV_LINKS: NavLink[] = [
@@ -28,33 +25,13 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Resume', href: '/resume', hideSm: true },
 ]
 
-export const STATUS_ROWS: StatusRow[] = [
-  { glyph: '◉', key: 'Building', value: 'Agora-AI', subValue: 'campus AI assistant · deploying' },
-  {
-    glyph: '▣',
-    key: 'Working',
-    value: 'TPCU Computer Center',
-    subValue: 'authorized security & tooling',
-  },
-  { glyph: '◐', key: 'Assessing', value: 'App & infra security', subValue: 'authorized · ongoing' },
-  { glyph: '↳', key: 'Latest case', value: 'Reverse-engineering the school API' },
-  { glyph: '✎', key: 'Latest writing', value: '從 Roblox 到電算中心', subValue: 'my story' },
-]
-
-export const HERO_STATS: Stat[] = [
-  { value: 'Since 2019', label: 'Building / shipping' },
-  { value: '10 tools · 69 tests', label: 'Agora-AI agent' },
-  { value: 'HITCON ZeroDay', label: 'responsible disclosures · ×2' },
-  { value: 'B.Eng · Y3', label: '5-year program · TPCU' },
-]
-
 export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'W·01',
     status: 'Ongoing · authorized',
     title: 'Application & Infrastructure Security',
     description:
-      '向 <b>HITCON ZeroDay</b> 通報多項高風險漏洞（IDOR、XSS、clickjacking、憑證外洩）——隨後獲聘入電算中心主導修補，並提出 WAF / reverse-proxy 強化方案由校方採用。',
+      '向 <b>HITCON ZeroDay</b> 通報多項高風險漏洞（IDOR、XSS、憑證外洩），並主導後續修補。提出的 WAF / reverse-proxy 強化方案獲採用。',
     metrics: ['HITCON ZeroDay', 'authorized assessments', 'WAF 提案落地', 'Python 內部工具'],
   },
   {
@@ -69,10 +46,10 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     id: 'W·03',
     status: 'Live',
-    title: '雞狗查圖 — 字幕截圖搜尋',
+    title: '一句一幀 — 字幕截圖搜尋',
     description:
-      '輸入台詞，找到那個畫面。<b>Ave Mujica Bot 的完整重寫</b>——從三個獨立專案（Python + Node.js + Discord.js）收斂成一個乾淨架構：Next.js 網頁 + Python OCR extractor。截圖與 GIF 由 ffmpeg 即時生成，砍掉 4 GB 預存圖片。支援多系列（Ave Mujica、MyGO!!!!!）。',
-    metrics: ['Next.js', 'Python EasyOCR', 'ffmpeg on-demand', 'LRU cache', '多系列支援'],
+      '輸入台詞，找到那個畫面。<b>Ave Mujica Bot 的完整重寫</b>，把三個獨立專案收斂成一套乾淨架構：Next.js 前端 + Python OCR，跨 Ave Mujica、MyGO!!!!!、YUME∞MITA 三部作品搜尋字幕。截圖與 GIF 由 ffmpeg 從原片即時生成、LRU cache 加速，砍掉 4 GB 預存圖片。',
+    metrics: ['Next.js 16', 'Python EasyOCR', 'ffmpeg 即時生成', 'LRU cache', '跨作品搜尋'],
     link: 'https://girls-band-shot.alaner652.com',
   },
   {
@@ -132,9 +109,9 @@ export const EXPERIENCE: ExperienceItem[] = [
   {
     period: '2026 — now',
     role: 'Work-Study · Pro Bono Security',
-    org: 'TPCU Computer Center',
+    org: 'University Computer Center',
     description:
-      '正式身分為工讀生。透過 HITCON ZeroDay 負責任揭露高風險漏洞（IDOR、XSS、憑證外洩）後，獲電算中心信任，在授權範圍內無償執行資安評估與修補，清除校務系統殘存的 XSS 與後門程式；並提出 WAF / reverse-proxy 強化方案由校方採用，將外部攻擊面縮減約 70%。',
+      '透過 HITCON ZeroDay 揭露高風險漏洞後，獲授權在校內執行資安評估與修補。提出的 WAF / reverse-proxy 強化方案獲採用，顯著縮減外部攻擊面。',
   },
   {
     period: '2022 — 2024',

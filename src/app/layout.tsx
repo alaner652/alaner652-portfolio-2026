@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, JetBrains_Mono, Inter } from 'next/font/google'
+import { Space_Grotesk, JetBrains_Mono, Inter, Noto_Sans_TC } from 'next/font/google'
 
+// 霞鶩文楷 TC — handwriting/kai font for Chinese headings (TC subset only, lazy per unicode-range)
+import '@fontsource/lxgw-wenkai-tc/chinese-traditional-400.css'
+import '@fontsource/lxgw-wenkai-tc/chinese-traditional-700.css'
 import './globals.css'
 import { Footer } from '@/components/layout/Footer'
 import { Nav } from '@/components/layout/Nav'
@@ -22,6 +25,13 @@ const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
   weight: ['400', '500', '600'],
+})
+
+// CJK font — cannot preload a subset, so self-host all weights lazily
+const notoSansTC = Noto_Sans_TC({
+  variable: '--font-noto-tc',
+  weight: ['400', '500', '700'],
+  preload: false,
 })
 
 export const metadata: Metadata = {
@@ -75,7 +85,7 @@ export default function RootLayout({
   return (
     <html
       lang="zh-Hant"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} dark`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} ${notoSansTC.variable}`}
     >
       <body className="flex min-h-full flex-col">
         <Nav />

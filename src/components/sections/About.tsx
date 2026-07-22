@@ -1,28 +1,21 @@
-import { Eyebrow } from '@/components/common/Eyebrow'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 
 export function About() {
   return (
-    <section id="about" className="border-line-soft border-t py-[72px]">
+    <section id="about" className="border-line-soft border-t py-[80px]">
       <div className="mx-auto max-w-[1080px] px-6">
         <RevealWrapper>
-          <div className="mb-[38px]">
-            <Eyebrow>About</Eyebrow>
-            <h2 className="font-display mt-[12px] text-[clamp(1.7rem,3.6vw,2.5rem)] font-semibold tracking-[-0.015em]">
-              It started with a bug I probably shouldn&rsquo;t have found.
-            </h2>
-          </div>
-          <div className="text-dim max-w-[62ch] space-y-[1.1em] text-[1.06rem]">
+          <h2 className="font-display mb-[28px] text-[clamp(1.4rem,2.6vw,1.8rem)] font-medium tracking-[-0.015em]">
+            About
+          </h2>
+          <div className="text-dim max-w-[64ch] space-y-[1.1em] text-[1.02rem] leading-[1.75]">
             <p>
-              2019 年自學 Roblox 遊戲開發起步，後加入國際工作室任 Lead Scripter。進入五專後技術重心轉向全端開發與資安研究。
-            </p>
-            <p>
-              對校務系統做安全研究期間發現多項高風險漏洞，向{' '}
+              2019 年從自學遊戲開發起步，後來把重心轉向全端開發與資安研究。做安全研究時發現多項高風險漏洞，向{' '}
               <b className="text-txt font-medium">HITCON ZeroDay 負責任揭露</b>
-              ，隨後獲聘入電算中心主導修補。
+              。
             </p>
             <p>
-              目前在電算中心執行授權範圍內的安全評估與修補。
+              現在專注在授權範圍內的資安評估，以及獨立開發 Agora-AI。
             </p>
           </div>
         </RevealWrapper>
