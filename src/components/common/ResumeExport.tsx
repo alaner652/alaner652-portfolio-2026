@@ -6,6 +6,7 @@ interface ResumeExportProps {
   name: string
   nameZh: string
   title: string
+  email: string
   url: string
   github: string
   location: string
@@ -17,7 +18,7 @@ interface ResumeExportProps {
  * OAuth needed. Captures what's on screen: the prose body plus a header built
  * from props, with section icons stripped so they don't leak into the document.
  */
-export function ResumeExport({ name, nameZh, title, url, github, location }: ResumeExportProps) {
+export function ResumeExport({ name, nameZh, title, email, url, github, location }: ResumeExportProps) {
   function handleExport() {
     const prose = document.querySelector('.prose-portfolio')
     if (!prose) return
@@ -46,7 +47,7 @@ hr { display: none; }
 </style></head><body>
 <h1>${name}<span class="zh">${nameZh}</span></h1>
 <p class="subtitle">${title}</p>
-<p class="contact"><a href="${url}">${stripProtocol(url)}</a> · <a href="${github}">${stripProtocol(github)}</a> · ${location}</p>
+<p class="contact"><a href="mailto:${email}">${email}</a> · <a href="${url}">${stripProtocol(url)}</a> · <a href="${github}">${stripProtocol(github)}</a> · ${location}</p>
 ${body}
 </body></html>`
 

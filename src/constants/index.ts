@@ -122,7 +122,7 @@ export const EXPERIENCE: ExperienceItem[] = [
 ]
 
 export const NOW_LIST: NowItem[] = [
-  { text: '持續深化資安能力——授權評估、攻防實務與系統安全研究' },
-  { text: '備戰 116 特殊選才——目標：交大百川、交大資工' },
-  { text: '尋找第一份 R&D 相關工作，將工程能力轉化為有商業價值的產品' },
+  { text: '深化資安能力：授權評估、攻防與系統安全' },
+  { text: '備戰 116 特殊選才：交大百川、資工' },
+  { text: '尋找第一份 R&D 工作' },
 ]

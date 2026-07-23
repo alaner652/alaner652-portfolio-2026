@@ -142,7 +142,7 @@
 .prose-portfolio h2,
 .prose-portfolio h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.015em;
   color: var(--color-txt);
   margin-top: 2em;

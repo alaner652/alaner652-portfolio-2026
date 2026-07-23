@@ -1,4 +1,5 @@
 import { RevealWrapper } from '@/components/common/RevealWrapper'
+import { SectionLabel } from '@/components/common/SectionLabel'
 import { EXPERIENCE } from '@/constants'
 
 export function Experience() {
@@ -6,26 +7,23 @@ export function Experience() {
     <section id="experience" className="border-line-soft border-t py-[80px]">
       <div className="mx-auto max-w-[1080px] px-6">
         <RevealWrapper>
-          <h2 className="font-display mb-[16px] text-[clamp(1.4rem,2.6vw,1.8rem)] font-medium tracking-[-0.015em]">
-            Experience
-          </h2>
+          <SectionLabel index="03" title="Experience" className="mb-[36px]" />
 
-          <div>
+          <div className="border-line ml-[5px] border-l pl-[28px]">
             {EXPERIENCE.map((item, i) => (
-              <div
-                key={i}
-                className="border-line-soft grid grid-cols-[130px_1fr] gap-[24px] border-b py-[24px] last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-[6px]"
-              >
-                <div className="text-faint pt-[4px] font-mono text-[0.74rem] tracking-[0.04em] max-[560px]:pt-0">
+              <div key={i} className="relative pb-[36px] last:pb-0">
+                <span
+                  className="border-bg bg-amber absolute top-[7px] left-[-35px] h-[11px] w-[11px] rounded-full border-2"
+                  aria-hidden="true"
+                />
+                <div className="text-faint mb-[6px] font-mono text-[0.74rem] tracking-[0.04em]">
                   {item.period}
                 </div>
-                <div>
-                  <div className="font-display text-[1.18rem] font-semibold">{item.role}</div>
-                  <div className="text-amber mt-[5px] mb-[9px] font-mono text-[0.78rem] tracking-[0.02em]">
-                    {item.org}
-                  </div>
-                  <p className="text-dim max-w-[56ch] text-[0.97rem]">{item.description}</p>
+                <div className="font-display text-[1.18rem] font-medium">{item.role}</div>
+                <div className="text-amber mt-[4px] mb-[9px] font-mono text-[0.78rem] tracking-[0.02em]">
+                  {item.org}
                 </div>
+                <p className="text-dim max-w-[56ch] text-[0.97rem] leading-[1.65]">{item.description}</p>
               </div>
             ))}
           </div>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { RevealWrapper } from '@/components/common/RevealWrapper'
+import { SectionLabel } from '@/components/common/SectionLabel'
 import { getAllPosts } from '@/lib/mdx'
 
 export function Writing() {
@@ -10,9 +11,7 @@ export function Writing() {
     <section id="writing" className="border-line-soft border-t py-[80px]">
       <div className="mx-auto max-w-[1080px] px-6">
         <RevealWrapper>
-          <h2 className="font-display mb-[16px] text-[clamp(1.4rem,2.6vw,1.8rem)] font-medium tracking-[-0.015em]">
-            Writing
-          </h2>
+          <SectionLabel index="04" title="Writing" className="mb-[20px]" />
 
           {posts.length > 0 ? (
             <div>
