@@ -9,7 +9,7 @@ export function MetricChip({ children, className }: MetricChipProps) {
   return (
     <span
       className={cn(
-        'font-mono text-[0.72rem] text-dim bg-panel-hi border border-line-soft px-[10px] py-[4px] rounded-[5px]',
+        'font-mono text-2xs text-dim bg-panel-hi border border-line-soft px-2.5 py-1 rounded-[5px]',
         className
       )}
     >

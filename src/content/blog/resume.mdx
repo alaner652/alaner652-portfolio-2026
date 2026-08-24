@@ -9,7 +9,17 @@ hidden: true
 
 ## Summary
 
-Full-Stack Engineer focused on security, automation, and reverse-engineering. Experienced in responsible disclosure, infrastructure hardening, and transforming undocumented systems into developer tools and AI agents.
+Full-Stack Engineer focused on security, automation, and reverse-engineering. I find real problems in systems I actually use, disclose them responsibly, and turn undocumented internals into tools people can use. Currently looking for an internship in backend, security, or applied AI.
+
+---
+
+## Skills
+
+- **Languages** — Python, TypeScript, Lua/Luau, SQL
+- **Backend & Data** — FastAPI, Next.js API Routes, Drizzle ORM, SQLite
+- **Frontend** — Next.js, React, Tailwind CSS
+- **Infrastructure** — Docker, Linux, OpenWrt, Cloudflare Tunnel, Proxmox, Tailscale
+- **Security** — Burp Suite, IDOR/XSS/CSRF, responsible disclosure, WAF & reverse-proxy hardening
 
 ---
 
@@ -21,20 +31,22 @@ Full-Stack Engineer focused on security, automation, and reverse-engineering. Ex
 
 ## Experience
 
-### Security Consultant & Work-Study · TPCU Computer Center
+### Security Work-Study · TPCU Computer Center
 
 2026 – Present
 
-- Discovered and responsibly disclosed multiple high-severity vulnerabilities through HITCON ZeroDay.
-- Assisted with security remediation, log analysis, and infrastructure hardening.
-- Developed internal automation tools for operational workflows.
+- Discovered and responsibly disclosed vulnerabilities in the campus system through HITCON ZeroDay, including an IDOR that exposed other students' records.
+- Brought on by the Computer Center after the disclosure; performed assessment and remediation within an authorized scope — removed a backdoor and patched several XSS issues.
+- Built internal Python tooling to streamline operational workflows.
+- Proposed WAF and reverse-proxy hardening; the work was ultimately outsourced to a vendor, along broadly the same lines.
 
 ### Freelance Roblox Developer · Remote
 
-2019 – 2024
+2022 – 2024
 
-- Delivered gameplay systems for international clients.
+- Delivered gameplay systems for an international studio in an all-English team.
 - Built combat, FPS, progression, and inventory systems using Luau.
+- Self-taught in Roblox Studio from junior high; started taking paid work in 2022.
 
 ---
 
@@ -42,11 +54,12 @@ Full-Stack Engineer focused on security, automation, and reverse-engineering. Ex
 
 ### Agora-AI — Campus LLM Assistant
 
-_FastAPI · Next.js · Docker · PostgreSQL · Gemini API_
+_FastAPI · Next.js · Docker · SQLite · Gemini API_
 
 - Reverse-engineered undocumented campus systems and exposed them through developer-friendly APIs.
-- Built an AI agent that answers schedules, grades, attendance, and leave requests through natural language.
-- Deployed the platform using Docker-based infrastructure.
+- Built an AI agent covering schedules, grades, attendance, and leave requests over natural language — 10 agent tools, 69 passing tests.
+- Containerized with Docker and deployed to the school's VM over a Cloudflare Tunnel.
+- Paused; the deployment is idle while I rethink the scope.
 
 ### HITCON ZeroDay — Responsible Disclosure
 
@@ -58,15 +71,16 @@ _IDOR · XSS · CSRF · Burp Suite_
 
 _Next.js · Drizzle ORM · SQLite · LINE Messaging API_
 
-- Built a QR-code ordering platform with real-time status updates through LINE.
-- Designed an order-state workflow from placement to fulfillment.
+- Built a QR-code ordering platform with real-time status updates pushed through LINE.
+- Modeled the order lifecycle as a state machine, synced to clients over SSE.
+- Designed 9 tables in Drizzle ORM; orders store snapshot columns so later menu edits never mutate historical records.
 
 ### GirlsBandShot — Subtitle Screenshot Search Engine
 
 _Next.js · Python · EasyOCR · ffmpeg_
 
-- Built a subtitle-to-screenshot search engine using OCR-based indexing.
-- Replaced pre-generated frames with on-demand rendering, reducing storage usage by over 90%.
+- Built a subtitle-to-screenshot search engine using OCR-based indexing across three series.
+- Replaced pre-generated frames with on-demand ffmpeg rendering plus an LRU cache, cutting image storage from 4 GB to zero — pre-generating GIFs would have required roughly 156 GB.
 
 ---
 

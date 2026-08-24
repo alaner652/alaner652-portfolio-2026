@@ -8,36 +8,40 @@ export function Writing() {
   const posts = getAllPosts()
 
   return (
-    <section id="writing" className="border-line-soft border-t py-[80px]">
-      <div className="mx-auto max-w-[1080px] px-6">
+    <section id="writing" className="border-line-soft border-t py-14 md:py-20">
+      <div className="mx-auto max-w-270 px-6">
         <RevealWrapper>
-          <SectionLabel index="04" title="Writing" className="mb-[20px]" />
+          <SectionLabel
+            title="心得分享"
+            note="大多是記錄，不是教學。"
+            className="mb-7"
+          />
 
           {posts.length > 0 ? (
             <div>
               {posts.map((post) => (
-                <a
+                <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="group border-line-soft flex flex-wrap items-baseline gap-[16px] border-t py-[16px]"
+                  className="group border-line-soft hover:bg-panel-hi -mx-3 flex flex-wrap items-baseline gap-4 border-t px-3 py-4 transition-colors duration-180"
                 >
-                  <span className="font-display text-txt group-hover:text-amber min-w-[200px] flex-1 text-[1.02rem] transition-colors duration-[180ms]">
+                  <span className="font-display text-txt group-hover:text-amber min-w-50 flex-1 text-md transition-colors duration-180">
                     {post.frontmatter.title}
                   </span>
-                  <time className="text-faint shrink-0 font-mono text-[0.7rem]">
+                  <time className="text-faint shrink-0 font-mono text-2xs">
                     {post.frontmatter.date}
                   </time>
-                </a>
+                </Link>
               ))}
               <Link
                 href="/blog"
-                className="text-dim hover:text-amber mt-[18px] inline-flex items-center gap-[6px] text-[0.85rem] transition-colors duration-[180ms]"
+                className="text-dim hover:text-amber mt-4.5 inline-flex items-center gap-1.5 text-sm transition-colors duration-180"
               >
                 All posts →
               </Link>
             </div>
           ) : (
-            <p className="text-faint font-mono text-[0.82rem]">Posts coming soon.</p>
+            <p className="text-faint font-mono text-xs">Posts coming soon.</p>
           )}
         </RevealWrapper>
       </div>

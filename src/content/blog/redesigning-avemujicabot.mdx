@@ -1,8 +1,8 @@
 ---
 title: "重新設計 AveMujicaBot：從三個爛攤子到一個乾淨的架構"
 date: "2026-06-21"
-description: "將 Python OCR、Node.js API、Discord.js 三個獨立專案重寫為一個清楚的架構：用 SQLite 儲存字幕時間軸，以 ffmpeg on-demand 即時生成截圖與 GIF，砍掉 4 GB 的預存圖片——記錄從「盡量預存」到「只存最小原始資料」的設計思路轉變。"
-tags: ["python", "discord", "architecture", "ffmpeg", "sqlite", "refactoring"]
+description: "將 Python OCR、Node.js API、Discord.js 三個獨立專案重寫為一個清楚的架構：用二階段 coarse-to-fine 掃描建字幕索引、SQLite 存時間軸、ffmpeg on-demand 生成截圖與 GIF，把 4 GB 的預存圖片砍到 0——記錄從「盡量預存」到「只存最小原始資料」的時空權衡。"
+tags: ["python", "architecture", "algorithms", "caching", "ffmpeg", "sqlite", "refactoring"]
 ---
 
 ## 起點：我只是想讓 Discord Bot 回傳截圖
@@ -273,6 +273,40 @@ flowchart TD
 
 ---
 
+## 二階段掃描：為什麼不逐幀跑 OCR
+
+上面那張圖裡「二階段 OCR 掃描」那個框，是這次重寫裡我自己覺得最值得講的一段。
+
+### 逐幀的成本
+
+從舊版的 `subtitles.json` 可以反推出影片幀率——`frame: 7032` 對到 `seconds: 293.0`，7032 ÷ 293 = **24 fps**。
+
+一集 24 分鐘就是 `24 × 60 × 24 ≈ 34,560` 幀。EasyOCR 跑一幀不是免費的，而且這 34,560 次呼叫裡絕大多數是浪費的——**字幕不會每一幀都變**。一句台詞在畫面上通常停留一到數秒，也就是連續幾十幀的內容完全一樣。逐幀掃描等於對同一句話重複辨識了幾十次。
+
+### 粗掃：先用取樣把範圍縮小
+
+所以第一階段不是「找字幕」，是「找字幕**變了**的地方」。每 8 幀取樣一次，OCR 呼叫次數直接降到 `1/8`——一集約 4,320 次。
+
+代價是時間軸的精度。取樣間隔 8 幀，代表偵測到「這裡變了」的時候，真正的變化點落在前面最多 7 幀之內，也就是 `7 ÷ 24 ≈ 0.29` 秒的誤差。對「搜尋台詞、跳到那一幀」這個用途來說，0.29 秒的偏差是看得出來的——可能截到上一句話的最後一幀。
+
+所以才需要第二階段。
+
+### 細掃：在已知區間內收斂
+
+粗掃給的不是答案，是**一個包含答案的區間**。已知第 `n` 次取樣還是舊字幕、第 `n+1` 次已經是新字幕，那變化點必然在這 8 幀之內。第二階段只需要在這個很小的區間裡把精確起始幀找出來。
+
+這就是 **coarse-to-fine search**：先用便宜的方式把搜尋空間砍小，再用精確的方式處理剩下的部分。同樣的形狀在很多地方出現過——影像處理的 image pyramid、影片編碼的 motion estimation，都是「先在低解析度找大概位置，再到高解析度修正」。
+
+關鍵在於兩階段的成本結構不對稱：粗掃便宜但不準，細掃準但貴。把貴的那個限制在極小的區間內，總成本就被壓下來了。
+
+<Card>
+
+**這裡我還沒做完的功課**：`8` 這個取樣間隔當初是憑感覺定的，不是量出來的。合理的做法是先量字幕的最短持續時間，取樣間隔必須小於它，否則會整句漏掉。我還沒回頭驗證過這件事。
+
+</Card>
+
+---
+
 ## 心態轉變的核心
 
 舊版的邏輯：**盡量預先存好所有東西，之後才快。**
@@ -284,10 +318,30 @@ flowchart TD
 舊版把「運算成本」當作最貴的東西，所以盡量預算；
 新版發現「儲存成本」和「複雜度成本」其實更貴——你要一直維護它、備份它、遷移它、出錯了要除錯它。
 
-ffmpeg 生成一張截圖需要 <MetricChip>50ms</MetricChip>。
-但維護一個 <MetricChip>4 GB</MetricChip> 的圖片資料夾帶來的同步問題、版本問題、備份問題，代價遠不止 50ms。
+講白一點，這整件事就是一個 **space–time tradeoff**，只是我一開始沒有意識到自己在做取捨，以為「先存起來」是唯一解。
+
+有趣的是，這篇文章裡出現了兩次同樣的取捨，方向卻是相反的：
+
+| | 換什麼 | 得到什麼 |
+|---|---|---|
+| **二階段掃描** | 多花一點運算（跑兩趟） | 少跑 7/8 的 OCR |
+| **不預存媒體** | 多花一點運算（每次現算） | 省下 4 GB（含 GIF 是 156 GB） |
+
+所以「用空間換時間」不是一條可以背起來的準則。真正要問的是：**在我這個情境下，哪一種資源比較稀缺？**
+
+對這個專案來說，稀缺的是儲存和我自己維護的心力，不是 CPU——影片只有 1.3 GB 而且不會變，一台機器就跑得動。換一個情境，比如流量大到 CPU 先撐不住，答案就會反過來。
+
+ffmpeg 生成一張截圖大約是幾十毫秒的量級——這個數字我當初是憑手感抓的，沒有正式量過，所以下面的推論建立在「它遠小於一次網路往返」這個比較粗的前提上，而不是某個精確值。
+
+即使如此，方向是清楚的：維護一個 <MetricChip>4 GB</MetricChip> 的圖片資料夾所帶來的同步問題、版本問題、備份問題，代價遠不止一次即時生成。前者是持續的維護成本，後者是一次性的運算成本。
 
 還好我沒有把「搬雲端」那個版本做出來。
+
+<Card>
+
+**這裡欠一個量測**：要把上面這段講成真的，需要的是 ffmpeg seek + 編碼在固定解析度下的 p50 / p99、冷啟動與熱啟動的差別、以及跑在什麼機器上。這些我都還沒量。在補上之前，請把它當成一個方向判斷，不是一個效能結論。
+
+</Card>
 
 ---
 
@@ -311,6 +365,31 @@ Discord Bot 最後沒有重寫——整個換掉了。
 **多系列不是設計出來的。** Schema 設計的時候沒特別為這個設計，但因為資料夾結構和 DB 都是按系列隔離的，加 MyGO!!!!! 只是加一個資料夾。
 
 Supabase 遷移最後沒做。SQLite 放在 repo 裡的方案，目前夠用。
+
+### 為什麼快取用 LRU
+
+「不預存」的代價是每次請求都要現算，所以快取是這個架構的必要配套，不是加分項。
+
+選 [LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_lru)（淘汰最久沒被用到的）而不是 FIFO 或 LFU，理由跟這個站的存取形狀有關：
+
+- **FIFO** 只看進來的順序，不看有沒有在用。一張正被反覆瀏覽的熱門截圖，只因為進來得早就被踢掉，這在「大家都在搜同幾句名台詞」的情境下明顯不對。
+- **LFU** 看累積次數，長期而言更準，但它對「熱度會變」這件事反應很慢——新一集播出後的新台詞要累積很久才追得上舊的高分項目，而且要額外維護計數。
+- **LRU** 只需要一個存取順序，實作便宜，而且「最近被看過的東西，接下來還會被看」這個假設，剛好符合一句台詞爆紅時的存取模式。
+
+兩組快取的參數不同，是因為它們裝的東西成本不一樣：
+
+| 快取 | 容量 | TTL | 為什麼 |
+|---|---|---|---|
+| media（截圖 / GIF） | 500 項 | 1 小時 | 每一項都是一次 ffmpeg seek + 編碼，重算貴，值得留久一點 |
+| search（查詢結果） | 200 項 | 5 分鐘 | 一次 SQL `LIKE`，重算便宜，留太久反而佔記憶體 |
+
+快取鍵就是決定輸出的那組參數（系列 + 時間點 + 格式），所以同一個畫面不同格式不會互相污染。
+
+<Card>
+
+**這裡也欠一個量測**：容量和 TTL 都是拍腦袋定的，我沒有量過命中率。要調得有依據，該看的是 hit rate 隨容量變化的曲線，以及 miss 的時候使用者實際等多久。
+
+</Card>
 
 <TaskList tasks='[
   {"title":"API 層（SQLite → HTTP endpoints + ffmpeg on-demand）","completed":true},
@@ -406,14 +485,14 @@ if (!available.includes(series)) {
 
 - **16:9 card**：截圖本來就是 16:9，card 也改成純圖片，文字移到 hover overlay
 - **Skeleton + fade in**：圖片載入前顯示 skeleton，載好後 fade in，overlay 等圖片載好再渲染
-- **400ms debounce**：每打一個字就打 API 太暴力
+- **400ms debounce**：每打一個字就打 API 太暴力。400 是憑感覺挑的常見值，沒有針對實際輸入節奏調過
 - **手機單欄**：兩欄在手機上太擠，改單欄往下滑像 feed
 
 ### PNG 是無損的
 
-截幀一直輸出 PNG，一張 1080p 截幀 500KB 到 2MB。這時候才搞清楚 PNG 是無損壓縮。
+截幀一直輸出 PNG，一張 1080p 截幀 500KB 到 2MB。這時候才搞清楚 [PNG 是無損壓縮](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Formats/Image_types#png_portable_network_graphics)——它保留每一個像素，而動畫截幀這種照片類內容裡本來就有大量肉眼看不出來的細節。
 
-影片幀是照片類內容，改 JPEG 看不出差別但小了五到十倍：
+改成 JPEG（`-q:v 3`）之後檔案小了大約一個數量級，畫面差異我自己看不出來。這個「大約」是翻了幾張檔案大小得到的印象，沒有做過系統性的比較：
 
 ```ts
 "-vcodec", "mjpeg", "-q:v", "3"
@@ -440,3 +519,34 @@ lib/api-key.ts ← requireApiKey
 Route 變薄層，只負責 HTTP。改格式、改 cache TTL 只動 `lib/`，不用碰六個 route。
 
 「改一個地方要動六個檔案」不是正常狀態，但要上線之後才會真正感受到。
+
+---
+
+## 前後對照
+
+寫到這裡才發現，整篇都在講過程，卻沒有把「變成什麼樣」擺在一起看：
+
+| | 舊版 | 新版 |
+|---|---|---|
+| 專案數 | 3 個各自獨立的 repo | 1 套 |
+| 圖片儲存 | ~4 GB 預存 PNG | 0（ffmpeg 現場生成） |
+| 若連 GIF 也預存 | 推算需要 ~156 GB | 0 |
+| 字幕索引 | JSON 檔案，全檔讀入後模糊比對 | SQLite，SQL `LIKE` 查詢 |
+| 介面 | Discord Bot（需要帳號、需要邀請進伺服器） | 網頁，開瀏覽器就能用 |
+| 支援系列 | 1 | 3（Ave Mujica、MyGO!!!!!、YUME∞MITA） |
+| 部署 | 手動開三個 terminal，IP 寫死 | Docker + Cloudflare Tunnel |
+| 共用邏輯 | 六個 route 各自複製貼上 | 抽到 `lib/`，route 只做 HTTP |
+
+需要說清楚的是：這張表裡只有**儲存**那幾列是算出來的，其他都是結構描述。延遲、吞吐、快取命中率這些真正該量的東西，我一個都還沒量。
+
+---
+
+## 參考
+
+- [ffmpeg documentation](https://ffmpeg.org/ffmpeg.html) — `-ss` seek 與 `-vcodec mjpeg` 的行為
+- [EasyOCR](https://github.com/JaidedAI/EasyOCR) — 字幕文字辨識
+- [better-sqlite3](https://github.com/WiseLibs/better-sqlite3) — Node 端同步式 SQLite
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) — 影片下載
+- [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) — 不開 port 的對外連線
+- [OWASP：Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal) — 上線後我在自己 API 裡踩到的那個
+- 線上版：[一句一幀](https://girls-band-shot.alaner652.com)

@@ -2,7 +2,10 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { isValidElement, type ReactNode } from 'react'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
+import type { PluggableList } from 'unified'
 
 import { Card } from '@/components/common/Card'
 import { Columns } from '@/components/common/Columns'
@@ -11,7 +14,6 @@ import { MacWindow } from '@/components/common/MacWindow'
 import { Mermaid } from '@/components/common/Mermaid'
 import { MetricChip } from '@/components/common/MetricChip'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
-import { Stack } from '@/components/common/Stack'
 import { TaskList } from '@/components/common/TaskList'
 import { SITE_CONFIG } from '@/constants'
 import { getAllPosts, getPostBySlug } from '@/lib/mdx'
@@ -34,8 +36,17 @@ function Pre({ children }: { children: ReactNode }) {
   return <pre>{children}</pre>
 }
 
-const mdxComponents = { TaskList, Mermaid, MacWindow, pre: Pre, Card, Columns, Stack, Eyebrow, MetricChip, RevealWrapper }
-const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } }
+const mdxComponents = { TaskList, Mermaid, MacWindow, pre: Pre, Card, Columns, Eyebrow, MetricChip, RevealWrapper }
+const mdxOptions = {
+  mdxOptions: {
+    remarkPlugins: [remarkGfm],
+    // 標題自動產生 id 並掛上錨點，長文才能建目錄與深連結
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap', properties: { className: 'heading-anchor' } }],
+    ] as PluggableList,
+  },
+}
 
 export async function generateStaticParams() {
   const posts = getAllPosts()
@@ -45,7 +56,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = getPostBySlug(slug)
-  if (!post) return {}
+  if (!post || post.frontmatter.hidden) return {}
   const canonicalUrl = `/blog/${slug}`
   return {
     title: post.frontmatter.title,
@@ -76,9 +87,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = getPostBySlug(slug)
-  if (!post) notFound()
+  // hidden 文章有自己的路由（例如 resume.mdx → /resume），不從 /blog 再曝光一次
+  if (!post || post.frontmatter.hidden) notFound()
 
-  const maxWidth = post.frontmatter.wide ? 'max-w-[900px]' : 'max-w-[720px]'
+  const maxWidth = post.frontmatter.wide ? 'max-w-225' : 'max-w-180'
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -96,28 +108,28 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   }
 
   return (
-    <div className={`${maxWidth} mx-auto px-6 py-[72px]`}>
+    <div className={`${maxWidth} mx-auto px-6 py-12 md:py-18`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
-      <div className="mb-[48px]">
+      <div className="mb-12">
         <Link
           href="/blog"
-          className="text-faint hover:text-amber mb-[32px] flex w-fit items-center gap-[6px] font-mono text-[0.78rem] transition-colors duration-[180ms]"
+          className="text-faint hover:text-amber mb-8 flex w-fit items-center gap-1.5 font-mono text-xs transition-colors duration-180"
         >
           ← All posts
         </Link>
-        <Eyebrow>Writing</Eyebrow>
-        <h1 className="font-display mt-[12px] text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.15] font-medium tracking-[-0.02em]">
+        <Eyebrow>心得分享</Eyebrow>
+        <h1 className="font-display mt-3 text-h1 leading-[1.15] font-medium tracking-[-0.02em]">
           {post.frontmatter.title}
         </h1>
-        <div className="mt-[16px] flex flex-wrap items-center gap-[16px]">
-          <time className="text-faint font-mono text-[0.72rem]">{post.frontmatter.date}</time>
+        <div className="mt-4 flex flex-wrap items-center gap-4">
+          <time className="text-faint font-mono text-2xs">{post.frontmatter.date}</time>
           {post.frontmatter.tags?.map((tag) => (
             <span
               key={tag}
-              className="text-dim bg-panel-hi border-line-soft rounded-[5px] border px-[9px] py-[3px] font-mono text-[0.68rem]"
+              className="text-dim bg-panel-hi border-line-soft rounded-[5px] border px-2.25 py-0.75 font-mono text-2xs"
             >
               {tag}
             </span>

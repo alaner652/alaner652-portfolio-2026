@@ -97,8 +97,11 @@ tailscale up --advertise-exit-node --advertise-routes=10.0.0.0/24 --snat-subnet-
 
 ```bash
 # 宣告區域網路段與出口節點
-tailscale up --advertise-routes=192.168.1.0/24 --advertise-exit-node --snat-subnet-routes=false
+# 10.0.0.0/24 是我家的網段，照抄之前請先確認自己的
+tailscale up --advertise-routes=10.0.0.0/24 --advertise-exit-node --snat-subnet-routes=false
 ```
+
+`--advertise-routes` 要填的是**你自己 LAN 的網段**。很多教學寫 `192.168.1.0/24`，那只是最常見的預設值；我家在前一篇除錯時已經改成 `10.0.0.0/24`，填錯的話 subnet router 會宣告一段根本不存在的路由，連得上但什麼都到不了。用 `ip route` 或 LuCI 的介面頁確認。
 
 最後，務必前往 **Tailscale Admin Console** 手動批准 (Approve) 這些路由與節點。
 

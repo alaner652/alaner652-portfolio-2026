@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Space_Grotesk, JetBrains_Mono, Inter, Noto_Sans_TC } from 'next/font/google'
 
@@ -88,9 +89,22 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} ${notoSansTC.variable}`}
     >
       <body className="flex min-h-full flex-col">
+        {/* RevealWrapper 靠 IntersectionObserver 淡入；JS 失效時強制顯示，避免整頁空白 */}
+        <noscript>
+          <style>{'.reveal{opacity:1!important;transform:none!important}'}</style>
+        </noscript>
+        <a
+          href="#main"
+          className="focus:bg-panel focus:text-txt focus:border-line sr-only focus:not-sr-only focus:absolute focus:top-2.5 focus:left-2.5 focus:z-[60] focus:rounded-[6px] focus:border focus:px-3.5 focus:py-2"
+        >
+          跳到主要內容
+        </a>
         <Nav />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   )

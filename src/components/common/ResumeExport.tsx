@@ -66,7 +66,7 @@ ${body}
       type="button"
       onClick={handleExport}
       title="下載 .doc，上傳 Google Drive 即可用 Google Docs 開啟編輯"
-      className="hover:text-amber flex cursor-pointer items-center gap-[6px] font-mono text-[0.78rem] transition-colors duration-[180ms]"
+      className="hover:text-amber flex cursor-pointer items-center gap-1.5 font-mono text-xs transition-colors duration-180"
     >
       <FileDown size={13} />
       google docs

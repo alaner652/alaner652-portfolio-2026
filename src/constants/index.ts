@@ -2,8 +2,10 @@ import type {
   SiteConfig,
   NavLink,
   WorkItem,
+  PastItem,
   ExperienceItem,
-  NowItem,
+  EducationItem,
+  SkillGroup,
 } from '@/types'
 
 export const SITE_CONFIG: SiteConfig = {
@@ -11,118 +13,120 @@ export const SITE_CONFIG: SiteConfig = {
   handle: 'alaner652',
   url: 'https://alaner652.com',
   github: 'https://github.com/alaner652',
+  email: 'hhgg12661@gmail.com',
   description:
-    '吳宸麒 (alaner652) — 全端工程師與資安研究者。專注系統設計、應用安全與工具開發，獨立開發 Agora-AI。',
-  location: 'Taipei · GMT+8',
+    '吳宸麒 (alaner652)，五專資工四年級。在學校電算中心做授權範圍內的資安工作，其餘時間寫自己想用的東西。',
+  location: 'Taipei',
   timezone: 'GMT+8',
-  copyright: '© 2026 alaner652 · Taipei, Taiwan',
+  copyright: '© 2026 吳宸麒，台北',
 }
 
 export const NAV_LINKS: NavLink[] = [
-  { label: 'Work', href: '/#work', hideSm: true },
-  { label: 'Writing', href: '/#writing', hideSm: true },
-  { label: 'Now', href: '/#now', hideSm: true },
-  { label: 'Resume', href: '/resume', hideSm: true },
+  { label: '做過的東西', href: '/#work' },
+  { label: '心得分享', href: '/#writing' },
+  { label: '履歷', href: '/resume' },
 ]
 
 export const WORK_ITEMS: WorkItem[] = [
   {
-    id: 'W·01',
-    status: 'Ongoing · authorized',
-    title: 'Application & Infrastructure Security',
+    status: '進行中',
+    title: '校務系統的安全工作',
     description:
-      '向 <b>HITCON ZeroDay</b> 通報多項高風險漏洞（IDOR、XSS、憑證外洩），並主導後續修補。提出的 WAF / reverse-proxy 強化方案獲採用。',
-    metrics: ['HITCON ZeroDay', 'authorized assessments', 'WAF 提案落地', 'Python 內部工具'],
+      '在校務系統裡發現了幾個真實的問題，其中一個 IDOR 可以讀到其他學生的資料，透過 HITCON ZeroDay 做負責任揭露。之後電算中心找我進去，在授權範圍內做評估和修補：補掉一個後門，用自己的思路修了一些 XSS，也寫了幾支 Python 內部工具讓維運流程順一點。另外提過 WAF 和 reverse-proxy 的強化方案，後來因為行政因素外包給廠商執行，廠商做的方向跟我提的接近。規模都不大，但都是我實際動手修掉的。',
+    metrics: ['Burp Suite', 'Python', '授權範圍內'],
   },
   {
-    id: 'W·02',
-    status: 'Deploying',
-    title: 'Agora-AI — Campus Assistant',
+    status: '已暫停',
+    title: 'Agora-AI',
     description:
-      '學生不用再開 portal——<b>逆向工程無文件的校務 API</b>，包成 10-tool agent 鏈，自然語言查課表、成績、出缺勤、請假 CRUD 全包。SSE streaming · BYOK LLM · Loki / Grafana。',
-    metrics: ['10 agent tools', '69 tests', 'BYOK LLM', 'Docker + Caddy'],
+      '校務系統的 API 沒有任何公開文件，但我逆向的時候已經摸熟了。把它包成 10 個 agent 工具、69 個通過的測試，讓學生可以直接問「我這週有什麼課」、「上個月缺了幾節」，不用自己開 portal 一頁一頁翻。FastAPI 寫後端、SQLite 存資料、Gemini 做語意推理，Next.js 做前端，Docker 容器化後透過 Cloudflare Tunnel 部署到學校 VM。目前暫停，我想重新想清楚範圍再繼續。',
+    metrics: ['FastAPI', 'Next.js', 'Docker'],
     link: 'https://github.com/alaner652/Agora-AI',
   },
   {
-    id: 'W·03',
-    status: 'Live',
-    title: '一句一幀 — 字幕截圖搜尋',
+    status: '運作中',
+    title: '一句一幀',
     description:
-      '輸入台詞，找到那個畫面。<b>Ave Mujica Bot 的完整重寫</b>，把三個獨立專案收斂成一套乾淨架構：Next.js 前端 + Python OCR，跨 Ave Mujica、MyGO!!!!!、YUME∞MITA 三部作品搜尋字幕。截圖與 GIF 由 ffmpeg 從原片即時生成、LRU cache 加速，砍掉 4 GB 預存圖片。',
-    metrics: ['Next.js 16', 'Python EasyOCR', 'ffmpeg 即時生成', 'LRU cache', '跨作品搜尋'],
+      '輸入台詞，找到那個畫面。下面 Ave Mujica Bot 的重寫版，把原本各做各的三個專案併成一套，順便從 Discord 搬到網頁上，可以跨 Ave Mujica、MyGO!!!!!、YUME∞MITA 搜尋。截圖和 GIF 改成用 ffmpeg 從原片即時生成，加上 LRU cache，圖片儲存從 4 GB 降到 0——如果照原本的做法把 GIF 也預先產好，會膨脹到 156 GB。',
+    metrics: ['Next.js', 'EasyOCR', 'ffmpeg'],
     link: 'https://girls-band-shot.alaner652.com',
   },
   {
-    id: 'W·04',
-    status: 'Shipped · open source',
+    status: '開源',
     title: '早餐店點餐系統',
     description:
-      'LINE Login 整合的點餐系統。顧客掃碼登入點餐，下單即推 LINE Flex Message 給店主；<b>狀態機驅動訂單流程</b>（PENDING → READY），SSE 即時同步進度。Drizzle ORM 管理 9 張關聯表，含快照欄位保留歷史訂單正確性。',
-    metrics: ['Next.js 16', 'SQLite + Drizzle', 'LINE Bot', 'SSE · 壓力測試'],
+      '顧客掃碼用 LINE 登入點餐，下單後推 Flex Message 給店主。訂單流程用狀態機管（PENDING → READY），SSE 同步進度。Drizzle ORM 管 9 張表，訂單存快照欄位，之後改菜單才不會動到已經成立的歷史訂單。',
+    metrics: ['Next.js', 'SQLite + Drizzle', 'LINE Bot'],
     link: 'https://github.com/alaner652/order',
   },
+]
+
+/** 停掉、被取代、或本來就只是小工具的東西。放著是因為它們也算數。 */
+export const PAST_ITEMS: PastItem[] = [
   {
-    id: 'W·05',
-    status: 'Shipped · open source',
-    title: 'Easy TPCU — 校務系統查詢自動化',
-    description:
-      '把「每天手動查出缺勤」這件事全自動化——統計圖表 Discord 推送，零手動操作。Agora-AI 逆向工程的早期概念驗證。',
-    metrics: ['Python', 'Burp Suite', 'Matplotlib', 'Discord Webhook'],
+    title: 'Easy TPCU',
+    note: '自動登入校務系統抓出缺勤、畫成圖推到 Discord。分析校務系統時的副產品，後來變成 Agora-AI 的起點。',
     link: 'https://github.com/alaner652/tpcu-absence-notifier',
   },
   {
-    id: 'W·06',
-    status: 'Archived',
-    title: 'Ave Mujica Bot — 影像檢索自動化',
-    description:
-      '輸入台詞關鍵字，秒出對應動畫截圖。OCR 逐幀建字幕索引，Discord Bot 查詢——讓粉絲找截圖從翻影片變成一秒的事。',
-    metrics: ['PaddleOCR', 'Discord.py', 'Python', 'JSON pipeline'],
+    title: 'Ave Mujica Bot',
+    note: 'OCR 逐幀把字幕轉成 JSON 索引，串 Discord Bot 查截圖。我第一個從「我想做」走到「真的有人在用」的東西，現在由一句一幀接手。',
     link: 'https://www.youtube.com/watch?v=2rXTrJ6X4a8',
   },
   {
-    id: 'W·07',
-    status: 'Offline · archived',
-    title: 'Foodie AI — 語意餐廳推薦',
-    description:
-      '願景對，架構太簡單——後端現在壞了。第一次真正搞清楚「技術能跑起來」跟「產品能撐住」之間的落差。',
-    metrics: ['Gemini API', 'Google Places API', 'Next.js 15'],
+    title: 'Foodie AI',
+    note: '語意餐廳推薦。想法我現在還是覺得可以，但架構撐不住，後端早就掛了也沒修。第一次搞懂「跑得起來」和「撐得住」是兩件事。',
     link: 'https://github.com/alaner652/FoodieAI',
   },
   {
-    id: 'W·08',
-    status: 'Shipped · v1.0.0',
-    title: 'osu! Map Manager — 譜面管理工具',
-    description:
-      '解決自己的需求，順手發佈。掃描本機譜面、批次下載、斷點續傳，PyInstaller 打包成 Windows 獨立執行檔，不需要裝 Python。',
-    metrics: ['Python', 'PyInstaller', 'CSV export', '斷點續傳'],
+    title: 'osu! Map Manager',
+    note: '純粹自己要用才寫的譜面管理工具，打包成 exe，朋友不用裝 Python 也能跑。',
     link: 'https://github.com/alaner652/osu_map_manager',
   },
 ]
 
 export const EXPERIENCE: ExperienceItem[] = [
   {
-    period: '2026 — now',
-    role: 'Independent Builder',
-    org: 'Personal Projects',
-    description: '獨立開發與維護個人專案，負責從問題定義到部署上線的完整產品週期。',
-  },
-  {
-    period: '2026 — now',
-    role: 'Work-Study · Pro Bono Security',
-    org: 'University Computer Center',
+    period: '2026 — 現在',
+    role: '工讀生',
+    org: '學校電算中心',
     description:
-      '透過 HITCON ZeroDay 揭露高風險漏洞後，獲授權在校內執行資安評估與修補。提出的 WAF / reverse-proxy 強化方案獲採用，顯著縮減外部攻擊面。',
+      '通報漏洞之後進來的。身分上就是工讀生，單位的各種雜事我也會去幫忙；組長願意讓我試一些比較實驗性的東西，資安方面就在授權範圍內用自己會的去做。在這裡才真的體會到：你看得到問題，不代表你有權限去動它。',
   },
   {
     period: '2022 — 2024',
     role: 'Lead Scripter',
-    org: 'Game Studio (Roblox)',
-    description: '主導遊戲系統開發與國際協作。從交付中理解市場驗證先於技術實現。',
+    org: '國際遊戲工作室（Roblox）',
+    description:
+      '全英文環境，跟世界各地的開發者一起寫技能系統、打擊感機制和 FPS 框架。國中就開始自己摸 Roblox Studio，2022 年開始有人付錢請我寫。',
   },
 ]
 
-export const NOW_LIST: NowItem[] = [
-  { text: '深化資安能力：授權評估、攻防與系統安全' },
-  { text: '備戰 116 特殊選才：交大百川、資工' },
-  { text: '尋找第一份 R&D 工作' },
+export const EDUCATION: EducationItem[] = [
+  {
+    period: '2022 — 2027（預計）',
+    school: '台北城市科技大學',
+    program: '資訊工程科 五專部',
+    note: '目前四年級。同時在準備 116 特殊選才。',
+  },
+]
+
+export const SKILLS: SkillGroup[] = [
+  { label: '語言', items: ['Python', 'TypeScript', 'Lua / Luau', 'SQL'] },
+  {
+    label: '後端與資料',
+    items: ['FastAPI', 'Next.js API Routes', 'Drizzle ORM', 'SQLite'],
+  },
+  {
+    label: '前端',
+    items: ['Next.js', 'React', 'Tailwind CSS'],
+  },
+  {
+    label: '基礎設施',
+    items: ['Docker', 'Linux', 'OpenWrt', 'Cloudflare Tunnel', 'Proxmox', 'Tailscale'],
+  },
+  {
+    label: '資安',
+    items: ['Burp Suite', 'IDOR / XSS / CSRF', '負責任揭露', 'WAF / reverse proxy'],
+  },
 ]

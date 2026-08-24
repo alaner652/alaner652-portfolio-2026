@@ -25,7 +25,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     (
       <div
         style={{
-          background: '#FAF6EC',
+          background: '#FCFAF4',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -37,7 +37,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
       >
         {/* top row: date + tags */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ color: '#9A907C', fontSize: '15px', letterSpacing: '0.04em' }}>
+          <div style={{ color: '#7E725D', fontSize: '15px', letterSpacing: '0.04em' }}>
             {'Writing / ' + date}
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -45,7 +45,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               <div
                 key={tag}
                 style={{
-                  color: '#9A907C',
+                  color: '#7E725D',
                   fontSize: '13px',
                   border: '1px solid #E7DEC9',
                   padding: '3px 8px',
@@ -68,7 +68,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         >
           <div
             style={{
-              color: '#241F18',
+              color: '#332D24',
               fontSize: titleFontSize,
               fontWeight: '700',
               lineHeight: 1.15,
@@ -79,7 +79,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           </div>
           <div
             style={{
-              color: '#635B4C',
+              color: '#736A5A',
               fontSize: '18px',
               fontWeight: '400',
               lineHeight: 1.5,
@@ -95,13 +95,13 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
-              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#DE5A16' }}
+              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#E06122' }}
             />
-            <span style={{ color: '#635B4C', fontSize: '15px', letterSpacing: '0.04em' }}>
+            <span style={{ color: '#736A5A', fontSize: '15px', letterSpacing: '0.04em' }}>
               alaner652.com
             </span>
           </div>
-          <div style={{ color: '#9A907C', fontSize: '14px' }}>alaner652</div>
+          <div style={{ color: '#7E725D', fontSize: '14px' }}>alaner652</div>
         </div>
       </div>
     ),

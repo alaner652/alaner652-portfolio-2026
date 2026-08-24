@@ -1,39 +1,44 @@
+import Link from 'next/link'
+
 import { SITE_CONFIG } from '@/constants'
+
+const PRIMARY =
+  'bg-txt text-bg hover:bg-amber inline-flex min-h-11 items-center rounded-full px-5 transition-colors duration-180'
+const SECONDARY =
+  'border-line hover:border-amber hover:text-amber text-txt inline-flex min-h-11 items-center rounded-full border px-5 transition-colors duration-180'
+const TERTIARY =
+  'text-dim hover:text-amber inline-flex min-h-11 items-center underline-offset-[6px] transition-colors duration-180 hover:underline'
 
 export function Hero() {
   return (
-    <header className="pt-[104px] pb-[84px]">
-      <div className="mx-auto max-w-[1080px] px-6">
-        <a id="top" />
-
-        <p className="text-faint mb-[22px] font-mono text-[0.8rem] tracking-[0.14em]">
-          alaner652
+    <header id="top" className="pt-14 pb-14 md:pt-26 md:pb-21">
+      <div className="mx-auto max-w-270 px-6">
+        <p className="text-faint mb-5.5 font-mono text-xs tracking-[0.14em]">
+          small R / alaner652
         </p>
 
-        <h1 className="font-display max-w-[16ch] text-[clamp(2.3rem,6vw,3.8rem)] leading-[1.06] font-medium tracking-[-0.02em]">
-          我做產品，也<span className="text-amber">拆系統找漏洞</span>。
+        {/* em 而非 ch：ch 是 Space Grotesk 的「0」寬，但這行是中文，會由楷體渲染。
+            中文字寬約 1em，所以 12em ≈ 每行 12 個字。 */}
+        <h1 className="font-display max-w-[12em] text-hero leading-[1.16] font-medium tracking-[-0.02em]">
+          在學校電算中心做資安，其餘時間寫自己想用的東西。
         </h1>
 
-        <p className="text-dim mt-[24px] max-w-[46ch] text-[clamp(1.05rem,1.7vw,1.25rem)] leading-[1.6]">
-          通報過 HITCON ZeroDay 高風險漏洞，也把一套無文件的校務 API 逆向成能對話的 AI 助理。
-          <span className="text-faint"> 全端開發 · 應用安全。</span>
+        <p className="text-dim mt-6 max-w-[46ch] text-lead leading-[1.65]">
+          五專資工四年級。目前在找實習。
         </p>
 
-        <div className="mt-[38px] flex flex-wrap items-center gap-x-[26px] gap-y-[12px] text-[0.95rem]">
-          <a href="#work" className="text-txt hover:text-amber underline-offset-[6px] transition-colors duration-150 hover:underline">
-            看我做過什麼 →
-          </a>
-          <a href="#writing" className="text-txt hover:text-amber underline-offset-[6px] transition-colors duration-150 hover:underline">
-            Writing
-          </a>
-          <a href="/resume" className="text-txt hover:text-amber underline-offset-[6px] transition-colors duration-150 hover:underline">
-            Resume
+        <div className="mt-9.5 flex flex-wrap items-center gap-x-5 gap-y-3 text-base">
+          <Link href="/resume" className={PRIMARY}>
+            看我的履歷
+          </Link>
+          <a href={`mailto:${SITE_CONFIG.email}`} className={SECONDARY}>
+            寄信給我
           </a>
           <a
             href={SITE_CONFIG.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-dim hover:text-amber underline-offset-[6px] transition-colors duration-150 hover:underline"
+            className={TERTIARY}
           >
             GitHub ↗
           </a>
