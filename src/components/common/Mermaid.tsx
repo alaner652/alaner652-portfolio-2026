@@ -22,17 +22,17 @@ export function Mermaid({ chart }: { chart: string }) {
         themeVariables: {
           background: 'transparent',
           primaryColor: '#FFFFFF',
-          primaryBorderColor: '#D6C6A9',
+          primaryBorderColor: '#ECE5D7',
           primaryTextColor: '#332D24',
           secondaryColor: '#FFFFFF',
           tertiaryColor: '#FFFFFF',
-          lineColor: '#93835F',
-          textColor: '#5F5849',
+          lineColor: '#736A5A',
+          textColor: '#332D24',
           edgeLabelBackground: '#F6F1E8',
           clusterBkg: 'transparent',
-          clusterBorder: '#E7DEC9',
+          clusterBorder: '#ECE5D7',
           titleColor: '#332D24',
-          nodeBorder: '#D6C6A9',
+          nodeBorder: '#ECE5D7',
           mainBkg: '#FFFFFF',
         },
       })
@@ -73,7 +73,7 @@ export function Mermaid({ chart }: { chart: string }) {
 
   return (
     <div className="border-line bg-panel-hi my-[1.5em] overflow-hidden rounded-[10px] border">
-      <div ref={containerRef} className="flex min-h-20 justify-center overflow-x-auto p-[24px]" />
+      <div ref={containerRef} className="flex min-h-20 justify-center overflow-x-auto p-6" />
     </div>
   )
 }

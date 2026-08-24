@@ -1,7 +1,7 @@
 import { About } from '@/components/sections/About'
 import { Experience } from '@/components/sections/Experience'
 import { Hero } from '@/components/sections/Hero'
-import { Now } from '@/components/sections/Now'
+import { Skills } from '@/components/sections/Skills'
 import { Work } from '@/components/sections/Work'
 import { Writing } from '@/components/sections/Writing'
 import { SITE_CONFIG } from '@/constants'
@@ -11,7 +11,8 @@ const personJsonLd = {
   '@type': 'Person',
   name: SITE_CONFIG.name,
   url: SITE_CONFIG.url,
-  sameAs: [SITE_CONFIG.github],
+  email: `mailto:${SITE_CONFIG.email}`,
+  sameAs: [SITE_CONFIG.github, SITE_CONFIG.linkedin].filter(Boolean),
   jobTitle: 'Software Engineer',
   description: SITE_CONFIG.description,
   address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
@@ -25,11 +26,11 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
       <Hero />
-      <About />
       <Work />
+      <About />
       <Experience />
+      <Skills />
       <Writing />
-      <Now />
     </>
   )
 }

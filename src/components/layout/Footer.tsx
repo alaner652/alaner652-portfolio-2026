@@ -2,32 +2,40 @@ import { SITE_CONFIG } from '@/constants'
 
 export function Footer() {
   return (
-    <footer className="border-line-soft border-t pt-[54px] pb-[60px]">
-      <div className="mx-auto max-w-[1080px] px-6">
-        <div className="flex flex-wrap items-end justify-between gap-[30px]">
-          <div className="font-display text-[1.5rem] font-bold">
+    <footer className="border-line-soft border-t pt-13.5 pb-15">
+      <div className="mx-auto max-w-270 px-6">
+        <div className="flex flex-wrap items-end justify-between gap-7.5">
+          <div className="font-display text-xl font-bold">
             alaner<span className="text-amber">652</span>
           </div>
-          <div className="flex gap-[22px] font-mono text-[0.82rem]">
+          <div className="flex gap-5.5 font-mono text-xs">
             <a
-              href={SITE_CONFIG.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-dim hover:text-amber inline-flex items-center gap-[7px] transition-colors duration-[180ms]"
+              href={`mailto:${SITE_CONFIG.email}`}
+              className="text-dim hover:text-amber inline-flex min-h-11 items-center gap-1.75 transition-colors duration-180"
             >
-              {SITE_CONFIG.handle}.com ↗
+              {SITE_CONFIG.email}
             </a>
+            {SITE_CONFIG.linkedin && (
+              <a
+                href={SITE_CONFIG.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-dim hover:text-amber inline-flex min-h-11 items-center gap-1.75 transition-colors duration-180"
+              >
+                LinkedIn ↗
+              </a>
+            )}
             <a
               href={SITE_CONFIG.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-dim hover:text-amber inline-flex items-center gap-[7px] transition-colors duration-[180ms]"
+              className="text-dim hover:text-amber inline-flex min-h-11 items-center gap-1.75 transition-colors duration-180"
             >
               GitHub ↗
             </a>
           </div>
         </div>
-        <div className="text-faint mt-[26px] font-mono text-[0.72rem] tracking-[0.03em]">
+        <div className="text-faint mt-6.5 font-mono text-2xs tracking-[0.03em]">
           {SITE_CONFIG.copyright}
         </div>
       </div>

@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   /* ── Portfolio design tokens (light cream / orange) ── */
   --color-bg:        #FCFAF4;
@@ -11,14 +9,38 @@
   --color-panel-hi:  #F6F1E8;
   --color-line:      #ECE5D7;
   --color-line-soft: #F3EDE1;
-  --color-txt:       #332D24;
-  --color-dim:       #736A5A;
-  --color-faint:     #A79C88;
+  --color-txt:       #332D24;  /* 13.05:1 */
+  --color-dim:       #736A5A;  /*  5.11:1 — 承載資訊的次要文字用這層 */
+  --color-faint:     #7E725D;  /*  4.52:1 — 純裝飾用。舊值 #A79C88 只有 2.59:1，連大字級都不合格 */
   /* orange primary (var name kept for compatibility) */
-  --color-amber:     #E06122;
+  --color-amber:     #E06122;  /* 3.41:1 — 只能用在圖示、大字、hover 等非承載文字 */
+  --color-amber-text: #C0521B; /* 4.51:1 — 內文連結等小字要用這個 */
   --color-amber-soft: rgba(224,97,34,0.10);
-  --color-live:      #1F8A5B;
-  --color-live-soft: rgba(31,138,91,0.10);
+  --color-live:      #1D8357;  /*  4.54:1 — 舊值 #1F8A5B 是 4.15:1 */
+
+  /* ── 字級級數 ──
+     原本有 31 個各自為政的字級（0.96rem 與 0.97rem 差 0.16px 卻做同一件事）。
+     收斂成 7 個內文級 + 4 個標題級，每個對應一個語意角色。 */
+  --text-2xs:  0.72rem;   /* metadata：日期、chip、copyright */
+  --text-xs:   0.8rem;    /* eyebrow、狀態、分類標籤 */
+  --text-sm:   0.875rem;  /* 次要說明、導覽 */
+  --text-base: 0.95rem;   /* 列表內文、UI 文字 */
+  --text-md:   1.02rem;   /* 段落內文 */
+  --text-lg:   1.18rem;   /* 項目標題 */
+  --text-xl:   1.5rem;    /* 字標 */
+  /* xs/sm/base/lg/xl 撞到 Tailwind 內建名稱，會連帶套用內建的行高。
+     設成 inherit 讓所有級距行為一致：只管字級，行高交給 leading-* 或 body。 */
+  --text-xs--line-height:   inherit;
+  --text-sm--line-height:   inherit;
+  --text-base--line-height: inherit;
+  --text-lg--line-height:   inherit;
+  --text-xl--line-height:   inherit;
+
+  --text-lead: clamp(1.05rem, 1.7vw, 1.2rem);  /* Hero 副標 */
+  --text-h3:   clamp(1.1rem, 2vw, 1.3rem);     /* 履歷區塊標題 */
+  --text-h2:   clamp(1.4rem, 2.6vw, 1.8rem);   /* 首頁區塊標題 */
+  --text-h1:   clamp(1.6rem, 3.2vw, 2.2rem);   /* 頁面標題 */
+  --text-hero: clamp(2rem, 5vw, 3.1rem);       /* Hero 主標 */
 
   --font-display: var(--font-space-grotesk), 'LXGW WenKai TC', var(--font-noto-tc), 'PingFang TC', system-ui, sans-serif;
   --font-mono:    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -27,9 +49,6 @@
   /* ── shadcn tokens ── */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-jetbrains-mono);
-  --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -103,64 +122,46 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
 /* MDX blog prose styles */
 .prose-portfolio h1,
 .prose-portfolio h2,
-.prose-portfolio h3 {
+.prose-portfolio h3,
+.prose-portfolio h4 {
   font-family: var(--font-display);
   font-weight: 500;
   letter-spacing: -0.015em;
   color: var(--color-txt);
-  margin-top: 2em;
   margin-bottom: 0.6em;
   line-height: 1.15;
+  /* sticky nav 是 62px，錨點跳轉時標題不能被蓋住 */
+  scroll-margin-top: 78px;
 }
-.prose-portfolio h1 { font-size: clamp(1.5rem, 3vw, 2rem); }
-.prose-portfolio h2 { font-size: clamp(1.2rem, 2.4vw, 1.5rem); }
-.prose-portfolio h3 { font-size: 1.1rem; }
+/* margin-top 用 rem 而非 em，否則 h1 會拿到 2×2rem 而 h3 只有 2×1.1rem */
+.prose-portfolio h1 { font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 2.5rem; }
+.prose-portfolio h2 { font-size: clamp(1.2rem, 2.4vw, 1.5rem); margin-top: 2.5rem; }
+.prose-portfolio h3 { font-size: 1.1rem; margin-top: 2rem; }
+.prose-portfolio h4 { font-size: 1rem; margin-top: 1.75rem; }
+.prose-portfolio > *:first-child { margin-top: 0; }
+
+/* 標題錨點：rehype-autolink-headings 用 wrap，連結不該長得像內文連結 */
+.prose-portfolio .heading-anchor {
+  color: inherit;
+  text-decoration: none;
+}
+.prose-portfolio .heading-anchor:hover {
+  color: var(--color-amber);
+}
+
+/* 量測欄寬交給外層容器（文章 720px、履歷 900px）決定。
+   以前 p 自己設 max-width:62ch，但 pre/table/ul 沒有，右緣會參差 80–260px。 */
 .prose-portfolio p {
   color: var(--color-dim);
   font-size: 1.05rem;
   line-height: 1.75;
   margin-bottom: 1.2em;
-  max-width: 62ch;
 }
 .prose-portfolio a {
-  color: var(--color-amber);
+  color: var(--color-amber-text);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -258,7 +259,6 @@
   margin-top: 0;
   font-size: 1rem;
 }
-.prose-portfolio .mdx-card p { max-width: none; }
 .prose-portfolio .mdx-card ul { margin-bottom: 0; }
 
 @layer base {

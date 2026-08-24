@@ -1,15 +1,20 @@
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
+
 import { ImageResponse } from 'next/og'
 
-export const alt = 'alaner652 — Full-Stack Engineer · Security Researcher'
+export const alt = 'alaner652 — 吳宸麒的個人網站'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function Image() {
+export default async function Image() {
+  const fontData = await readFile(join(process.cwd(), 'public/fonts/NotoSansTC-Regular.ttf'))
+
   return new ImageResponse(
     (
       <div
         style={{
-          background: '#FAF6EC',
+          background: '#FCFAF4',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -20,7 +25,7 @@ export default function Image() {
       >
         <span
           style={{
-            color: '#635B4C',
+            color: '#736A5A',
             fontSize: '17px',
             fontFamily: 'sans-serif',
             letterSpacing: '0.04em',
@@ -32,7 +37,7 @@ export default function Image() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div
             style={{
-              color: '#241F18',
+              color: '#332D24',
               fontSize: '72px',
               fontFamily: 'sans-serif',
               fontWeight: '700',
@@ -44,12 +49,12 @@ export default function Image() {
           </div>
           <div
             style={{
-              color: '#635B4C',
+              color: '#736A5A',
               fontSize: '24px',
-              fontFamily: 'sans-serif',
+              fontFamily: 'NotoSansTC, sans-serif',
             }}
           >
-            Full-Stack Engineer · Security Researcher · Taipei
+            吳宸麒，五專資工四年級。台北。
           </div>
         </div>
 
@@ -62,25 +67,28 @@ export default function Image() {
         >
           <div
             style={{
-              color: '#9A907C',
+              color: '#7E725D',
               fontSize: '15px',
-              fontFamily: 'sans-serif',
+              fontFamily: 'NotoSansTC, sans-serif',
               letterSpacing: '0.04em',
             }}
           >
-            Agora-AI · HITCON ZeroDay · TPCU
+            做過的東西、經歷、還有一些寫下來的記錄
           </div>
           <div
             style={{
               width: '10px',
               height: '10px',
               borderRadius: '50%',
-              background: '#DE5A16',
+              background: '#E06122',
             }}
           />
         </div>
       </div>
     ),
-    size,
+    {
+      ...size,
+      fonts: [{ name: 'NotoSansTC', data: fontData, style: 'normal', weight: 400 }],
+    },
   )
 }
