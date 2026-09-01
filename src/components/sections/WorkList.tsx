@@ -93,7 +93,7 @@ export function WorkList() {
   return (
     <>
       <RevealWrapper className="mb-2">
-        {/* 只有八則，篩選是給「我只想看資安」的人用的捷徑，預設一定是全部展開 */}
+        {/* 預設全部展開：篩選是捷徑，不是看內容前要先過的一道關 */}
         <div className="flex flex-wrap gap-2" role="group" aria-label="依分類篩選專案">
           {([ALL, ...PROJECT_CATEGORIES] as Filter[]).map((option) => {
             const active = filter === option
@@ -127,17 +127,14 @@ export function WorkList() {
               }`}
             >
               <div className="min-w-0">
-                {/* 分類和狀態放標題上方。跟標題並排時，中文標題和這行小字對不到
-                    同一條基線，怎麼調都歪；拆成兩行就沒有這個問題。 */}
-                <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                  <MetricChip tone={CATEGORY_TONE[item.category]}>{item.category}</MetricChip>
-                  <span className="flex items-center gap-1.5">
-                    <span
-                      className={`size-1.5 rounded-full ${STATUS[item.tone].dot}`}
-                      aria-hidden="true"
-                    />
-                    <Eyebrow className={STATUS[item.tone].text}>{item.status}</Eyebrow>
-                  </span>
+                {/* 狀態放標題上方而不是並排：中文標題和這行小字對不到同一條基線。
+                    分類不在這裡重複標，上面的篩選列已經有了。 */}
+                <div className="mb-2 flex items-center gap-1.5">
+                  <span
+                    className={`size-1.5 rounded-full ${STATUS[item.tone].dot}`}
+                    aria-hidden="true"
+                  />
+                  <Eyebrow className={STATUS[item.tone].text}>{item.status}</Eyebrow>
                 </div>
                 <h3 className="font-display mb-2 text-lg font-medium tracking-[-0.01em]">
                   <ItemTitle title={item.title} link={item.link} />

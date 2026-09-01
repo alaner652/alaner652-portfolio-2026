@@ -10,11 +10,16 @@ import { fileURLToPath } from 'node:url'
 
 const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'shots')
 
-/** github：用官方的 repo 預覽卡。site：沒有 og:image 的站，只能真的去截圖。 */
+/** github：用官方的 repo 預覽卡。youtube：影片縮圖。
+    site：沒有 og:image 的站，只能真的去截圖。沒有公開頁面的項目就不列在這裡。 */
 const TARGETS = [
   { slug: 'agora-ai', kind: 'github', repo: 'alaner652/Agora-AI' },
   { slug: 'order', kind: 'github', repo: 'alaner652/order' },
   { slug: 'girls-band-shot', kind: 'site', url: 'https://girls-band-shot.alaner652.com' },
+  { slug: 'easy-tpcu', kind: 'github', repo: 'alaner652/tpcu-absence-notifier' },
+  { slug: 'ave-mujica-bot', kind: 'youtube', videoId: '2rXTrJ6X4a8' },
+  { slug: 'foodie-ai', kind: 'github', repo: 'alaner652/FoodieAI' },
+  { slug: 'osu-map-manager', kind: 'github', repo: 'alaner652/osu_map_manager' },
 ]
 
 /** 一個 target 可以有多個來源，前面的失敗就換下一個。 */
@@ -22,6 +27,13 @@ function sourcesFor(target) {
   if (target.kind === 'github') {
     // 路徑裡的 1 是 GitHub 自己的 cache buster，內容只跟 owner/repo 有關
     return [`https://opengraph.githubassets.com/1/${target.repo}`]
+  }
+  if (target.kind === 'youtube') {
+    // maxres 不一定存在（舊片或低畫質上傳），沒有就退到一定會有的 hq
+    return [
+      `https://img.youtube.com/vi/${target.videoId}/maxresdefault.jpg`,
+      `https://img.youtube.com/vi/${target.videoId}/hqdefault.jpg`,
+    ]
   }
   const encoded = encodeURIComponent(target.url)
   return [
@@ -46,18 +58,20 @@ async function fetchImage(url) {
   if (!type.startsWith('image/')) throw new Error(`不是圖片（${type || 'no content-type'}）`)
 
   const buf = Buffer.from(await res.arrayBuffer())
-  // thum.io 還在排隊時會先回一張很小的佔位圖，寧可換下一個來源也不要寫壞檔
+  // thum.io 還在排隊時會先回一張很小的佔位圖，YouTube 沒有 maxres 時也會回一張灰底小圖，
+  // 寧可換下一個來源也不要寫壞檔
   if (buf.byteLength < 10_000) throw new Error(`太小，可能是佔位圖（${buf.byteLength} B）`)
-  return buf
+  // 副檔名跟著真正的格式走（YouTube 給的是 JPEG），不要一律寫成 .png
+  return { buf, ext: type.includes('jpeg') ? 'jpg' : 'png' }
 }
 
 async function capture(target) {
   for (const source of sourcesFor(target)) {
     try {
-      const buf = await fetchImage(source)
-      const file = join(OUT_DIR, `${target.slug}.png`)
-      await writeFile(file, buf)
-      console.log(`  ✓ ${target.slug}.png  ${(buf.byteLength / 1024).toFixed(0)} KB`)
+      const { buf, ext } = await fetchImage(source)
+      const name = `${target.slug}.${ext}`
+      await writeFile(join(OUT_DIR, name), buf)
+      console.log(`  ✓ ${name}  ${(buf.byteLength / 1024).toFixed(0)} KB`)
       return true
     } catch (err) {
       console.warn(`  … ${new URL(source).host} 失敗：${err.message}`)

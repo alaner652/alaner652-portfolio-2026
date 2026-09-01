@@ -21,7 +21,7 @@ export interface WorkItem {
   category: ProjectCategory
   title: string
   description: string
-  /** 以前做的那幾個沒有技術標籤——份量本來就比較輕，不硬補 */
+  /** 份量輕的項目可以不列技術標籤 */
   metrics?: string[]
   link?: string
   /** public/ 底下的預覽圖路徑，由 `npm run shots` 產生。沒有連結的項目就沒有圖。 */

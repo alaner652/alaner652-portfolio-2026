@@ -52,8 +52,8 @@ export const OFFERS: Offer[] = [
   },
 ]
 
-/** 一份清單，不分「現在」和「以前」——以前做的那幾個用狀態和份量自己說明就夠了。
-    category 對應清單上方的篩選 chip；每一則的 preview 由 `npm run shots` 產生。 */
+/** 所有專案一份清單，停掉的也留著，用狀態標示。
+    category 對應清單上方的篩選 chip；preview 由 `npm run shots` 產生。 */
 export const WORK_ITEMS: WorkItem[] = [
   {
     status: '進行中',
@@ -100,6 +100,7 @@ export const WORK_ITEMS: WorkItem[] = [
     title: 'Easy TPCU',
     description: '自動登入校務系統抓缺勤、畫成圖推到 Discord。分析校務系統的副產品，後來變成 Agora-AI 的起點。',
     link: 'https://github.com/alaner652/tpcu-absence-notifier',
+    preview: '/shots/easy-tpcu.png',
   },
   {
     status: '已停用',
@@ -108,6 +109,7 @@ export const WORK_ITEMS: WorkItem[] = [
     title: 'Ave Mujica Bot',
     description: 'OCR 逐幀把字幕轉成 JSON 索引，串 Discord Bot 查截圖。第一個真的有人在用的東西，現在由一句一幀接手。',
     link: 'https://www.youtube.com/watch?v=2rXTrJ6X4a8',
+    preview: '/shots/ave-mujica-bot.jpg',
   },
   {
     status: '已下線',
@@ -116,6 +118,7 @@ export const WORK_ITEMS: WorkItem[] = [
     title: 'Foodie AI',
     description: '語意餐廳推薦。想法我現在還是覺得可以，但架構撐不住，後端早就掛了。第一次搞懂「跑得起來」和「撐得住」是兩件事。',
     link: 'https://github.com/alaner652/FoodieAI',
+    preview: '/shots/foodie-ai.png',
   },
   {
     status: '開源',
@@ -124,6 +127,7 @@ export const WORK_ITEMS: WorkItem[] = [
     title: 'osu! Map Manager',
     description: '純粹自己要用才寫的譜面管理工具，打包成 exe，朋友不用裝 Python 也能跑。',
     link: 'https://github.com/alaner652/osu_map_manager',
+    preview: '/shots/osu-map-manager.png',
   },
 ]
 

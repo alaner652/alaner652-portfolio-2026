@@ -15,17 +15,17 @@ export function Hero() {
       <div className="mx-auto flex w-full max-w-270 flex-1 flex-col items-center justify-center px-6 py-14 text-center">
         {/* 名字放最前面，第一眼要先知道這是誰 */}
         <p className="text-dim mb-5 font-mono text-sm tracking-[0.06em]">
-          吳宸麒 Wu Chen-Chi <span className="text-faint">· alaner652</span>
+          small R <span className="text-faint">· alaner652</span>
         </p>
 
         {/* em 而非 ch：ch 是 Space Grotesk 的「0」寬，但這行是中文，會由楷體渲染。
-            中文字寬約 1em，所以 9em ≈ 每行 9 個字（這句 12 字，剛好斷成兩行）。 */}
-        <h1 className="font-display max-w-[9em] text-hero leading-[1.16] font-medium tracking-[-0.02em]">
-          找得到漏洞，也做得出東西。
+            中文字寬約 1em，所以 9em ≈ 每行 9 個字。 */}
+        <h1 className="font-display text-hero max-w-[9em] leading-[1.16] font-medium tracking-[-0.02em]">
+          我是<span className="text-amber">small R</span>，喜歡資安的全端工程師。
         </h1>
 
-        {/* 職稱從標題移到這裡——標題要短，置中才站得住 */}
-        <p className="text-dim mt-6 max-w-[46ch] text-lead leading-[1.65]">
+        {/* 標題底下補上正式的身分和現在在做的事 */}
+        <p className="text-dim text-lead mt-6 max-w-[46ch] leading-[1.65]">
           全端工程師 · 五專資工四年級。在學校電算中心做授權範圍內的資安工作，其餘時間自己做產品。
         </p>
 
@@ -39,11 +39,11 @@ export function Hero() {
         </div>
       </div>
 
-      {/* 釘在第一屏底部，不是接在按鈕後面 */}
+      {/* 下滑引導釘在第一屏底部 */}
       <a
         href="#about"
         aria-label="往下看關於我"
-        className="text-faint hover:text-amber mx-auto mb-10 flex w-fit flex-col items-center gap-2 font-mono text-2xs tracking-[0.06em] transition-colors"
+        className="text-faint hover:text-amber text-2xs mx-auto mb-10 flex w-fit flex-col items-center gap-2 font-mono tracking-[0.06em] transition-colors"
       >
         往下看
         <ChevronDown size={16} className="animate-bounce motion-reduce:animate-none" />
