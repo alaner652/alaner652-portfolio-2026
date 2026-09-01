@@ -4,7 +4,7 @@ import { FileDown } from 'lucide-react'
 
 interface ResumeExportProps {
   name: string
-  nameZh: string
+  nameEn: string
   title: string
   email: string
   url: string
@@ -18,7 +18,7 @@ interface ResumeExportProps {
  * OAuth needed. Captures what's on screen: the prose body plus a header built
  * from props, with section icons stripped so they don't leak into the document.
  */
-export function ResumeExport({ name, nameZh, title, email, url, github, location }: ResumeExportProps) {
+export function ResumeExport({ name, nameEn, title, email, url, github, location }: ResumeExportProps) {
   function handleExport() {
     const prose = document.querySelector('.prose-portfolio')
     if (!prose) return
@@ -32,10 +32,10 @@ export function ResumeExport({ name, nameZh, title, email, url, github, location
     const html = `<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${name} — Resume</title><style>
 /* Tuned to fit a single A4 page; links use Google Docs blue. */
 @page { size: A4; margin: 0.5in; }
-body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 10pt; color: #1a1a1a; line-height: 1.3; margin: 0; }
+body { font-family: 'Microsoft JhengHei', 'PingFang TC', Calibri, 'Segoe UI', Arial, sans-serif; font-size: 10pt; color: #1a1a1a; line-height: 1.3; margin: 0; }
 a { color: #1155cc; text-decoration: underline; }
 h1 { font-size: 18pt; font-weight: 700; margin: 0; }
-.zh { font-size: 11pt; font-weight: 400; color: #666; margin-left: 5pt; }
+.en { font-size: 11pt; font-weight: 400; color: #666; margin-left: 5pt; }
 .subtitle { font-size: 10pt; color: #444; margin: 1pt 0; }
 .contact { font-size: 8.5pt; color: #555; margin: 1pt 0 4pt; }
 h2 { font-size: 11.5pt; font-weight: 700; color: #111; margin: 9pt 0 3pt; padding-bottom: 2pt; border-bottom: 1px solid #ccc; }
@@ -45,7 +45,7 @@ li { margin: 1pt 0; }
 strong { font-weight: 700; }
 hr { display: none; }
 </style></head><body>
-<h1>${name}<span class="zh">${nameZh}</span></h1>
+<h1>${name}<span class="en">${nameEn}</span></h1>
 <p class="subtitle">${title}</p>
 <p class="contact"><a href="mailto:${email}">${email}</a> · <a href="${url}">${stripProtocol(url)}</a> · <a href="${github}">${stripProtocol(github)}</a> · ${location}</p>
 ${body}
@@ -66,10 +66,10 @@ ${body}
       type="button"
       onClick={handleExport}
       title="下載 .doc，上傳 Google Drive 即可用 Google Docs 開啟編輯"
-      className="hover:text-amber flex cursor-pointer items-center gap-1.5 font-mono text-xs transition-colors duration-180"
+      className="hover:text-amber flex cursor-pointer items-center gap-1.5 font-mono text-xs transition-colors"
     >
       <FileDown size={13} />
-      google docs
+      下載 .doc
     </button>
   )
 }

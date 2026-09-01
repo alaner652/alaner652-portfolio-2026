@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { Eyebrow } from '@/components/common/Eyebrow'
+import { MetricChip } from '@/components/common/MetricChip'
 import { getAllPosts } from '@/lib/mdx'
+import { toneForTag } from '@/lib/tone'
 
 export const metadata: Metadata = {
   title: '心得分享',
@@ -28,7 +30,7 @@ export default function BlogPage() {
   const posts = getAllPosts()
 
   return (
-    <div className="mx-auto max-w-270 px-6 py-12 md:py-18">
+    <div className="mx-auto max-w-270 px-6 py-14 md:py-20">
       <div className="mb-10">
         <Eyebrow>心得分享</Eyebrow>
         <h1 className="font-display mt-3 text-h1 font-medium tracking-[-0.015em]">
@@ -39,18 +41,18 @@ export default function BlogPage() {
       {posts.length === 0 ? (
         <p className="text-dim font-mono text-sm">No posts yet.</p>
       ) : (
-        <div>
+        <div className="divide-line-soft -mx-4 divide-y">
           {posts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group border-line-soft hover:bg-panel-hi -mx-4 block border-t px-4 py-6.5 transition-colors duration-180"
+              className="group hover:bg-panel-hi block px-4 py-6 transition-colors"
             >
               <div className="flex flex-wrap items-start justify-between gap-4">
-                <h2 className="font-display group-hover:text-amber text-lg font-medium tracking-[-0.01em] transition-colors duration-180">
+                <h2 className="font-display group-hover:text-amber text-lg font-medium tracking-[-0.01em] transition-colors">
                   {post.frontmatter.title}
                 </h2>
-                <time className="text-faint shrink-0 pt-0.75 font-mono text-2xs">
+                <time className="text-faint shrink-0 pt-1 font-mono text-2xs">
                   {post.frontmatter.date}
                 </time>
               </div>
@@ -60,14 +62,11 @@ export default function BlogPage() {
                 </p>
               )}
               {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
-                <div className="mt-3.5 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-2">
                   {post.frontmatter.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-dim bg-panel-hi border-line-soft rounded-[5px] border px-2.25 py-0.75 font-mono text-2xs"
-                    >
-                      {tag}
-                    </span>
+                    <MetricChip key={tag} tone={toneForTag(tag)}>
+              {tag}
+            </MetricChip>
                   ))}
                 </div>
               )}

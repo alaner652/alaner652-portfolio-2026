@@ -1,93 +1,83 @@
 ---
-title: 'Resume'
+title: '履歷'
 date: '2026-07-23'
-description: '吳宸麒 — Full-Stack Engineer · Security Researcher'
+description: '吳宸麒 — 全端工程師 · 資安'
 tags: ['resume']
 wide: true
 hidden: true
 ---
 
-## Summary
+## 摘要
 
-Full-Stack Engineer focused on security, automation, and reverse-engineering. I find real problems in systems I actually use, disclose them responsibly, and turn undocumented internals into tools people can use. Currently looking for an internship in backend, security, or applied AI.
-
----
-
-## Skills
-
-- **Languages** — Python, TypeScript, Lua/Luau, SQL
-- **Backend & Data** — FastAPI, Next.js API Routes, Drizzle ORM, SQLite
-- **Frontend** — Next.js, React, Tailwind CSS
-- **Infrastructure** — Docker, Linux, OpenWrt, Cloudflare Tunnel, Proxmox, Tailscale
-- **Security** — Burp Suite, IDOR/XSS/CSRF, responsible disclosure, WAF & reverse-proxy hardening
+全端工程師，專注在資安、自動化與逆向。在自己每天用的系統裡找出真實的問題、負責任地揭露，再把沒有文件的內部介面變成能用的工具。目前在找後端、資安或 AI 應用的實習。
 
 ---
 
-## Education
+## 技能
 
-**Taipei City University of Science and Technology** — _5-Year Junior College Program in Computer Science and Information Engineering (2022 – 2027, Expected)_
+- **語言** — Python、TypeScript、Lua/Luau、SQL
+- **後端與資料** — FastAPI、Next.js API Routes、Drizzle ORM、SQLite
+- **前端** — Next.js、React、Tailwind CSS
+- **基礎設施** — Docker、Linux、OpenWrt、Cloudflare Tunnel、Proxmox、Tailscale
+- **資安** — Burp Suite、IDOR / XSS / CSRF、負責任揭露、WAF 與 reverse proxy 強化
 
 ---
 
-## Experience
+## 學歷
 
-### Security Work-Study · TPCU Computer Center
+**台北城市科技大學** — _資訊工程科 五專部（2022 – 2027 預計）_
 
-2026 – Present
+---
 
-- Discovered and responsibly disclosed vulnerabilities in the campus system through HITCON ZeroDay, including an IDOR that exposed other students' records.
-- Brought on by the Computer Center after the disclosure; performed assessment and remediation within an authorized scope — removed a backdoor and patched several XSS issues.
-- Built internal Python tooling to streamline operational workflows.
-- Proposed WAF and reverse-proxy hardening; the work was ultimately outsourced to a vendor, along broadly the same lines.
+## 經歷
 
-### Freelance Roblox Developer · Remote
+### 資安工讀生 · 校電算中心
+
+2026 – 現在
+
+- 透過 HITCON ZeroDay 揭露校務系統的漏洞，其中一個 IDOR 可以讀到其他學生的資料。
+- 揭露後被電算中心找進去，在授權範圍內做評估與修補：補掉一個後門、修了幾個 XSS。
+- 寫了幾支 Python 內部工具，讓維運流程順一點。
+- 提出 WAF 與 reverse proxy 強化方案，後來外包給廠商執行，方向大致相同。
+
+### 接案 Roblox 開發者 · 遠端
 
 2022 – 2024
 
-- Delivered gameplay systems for an international studio in an all-English team.
-- Built combat, FPS, progression, and inventory systems using Luau.
-- Self-taught in Roblox Studio from junior high; started taking paid work in 2022.
+- 在全英文團隊裡，為一個國際工作室開發遊戲系統。
+- 用 Luau 寫戰鬥、FPS、養成與背包系統。
+- 國中自學 Roblox Studio，2022 年開始接付費案子。
 
 ---
 
-## Projects
+## 專案
 
-### Agora-AI — Campus LLM Assistant
+### Agora-AI — 校務 AI 助理
 
 _FastAPI · Next.js · Docker · SQLite · Gemini API_
 
-- Reverse-engineered undocumented campus systems and exposed them through developer-friendly APIs.
-- Built an AI agent covering schedules, grades, attendance, and leave requests over natural language — 10 agent tools, 69 passing tests.
-- Containerized with Docker and deployed to the school's VM over a Cloudflare Tunnel.
-- Paused; the deployment is idle while I rethink the scope.
+- 逆向沒有公開文件的校務系統，包成好用的 API。
+- 做成能用自然語言問課表、成績、缺勤與請假的 AI agent——10 個工具、69 個通過的測試。
+- Docker 容器化後，透過 Cloudflare Tunnel 部署到學校 VM。
+- 目前暫停，想重新想清楚範圍再繼續。
 
-### HITCON ZeroDay — Responsible Disclosure
-
-_IDOR · XSS · CSRF · Burp Suite_
-
-- Discovered and responsibly disclosed a critical IDOR vulnerability exposing student records.
-
-### Breakfast Ordering System
+### 早餐店點餐系統
 
 _Next.js · Drizzle ORM · SQLite · LINE Messaging API_
 
-- Built a QR-code ordering platform with real-time status updates pushed through LINE.
-- Modeled the order lifecycle as a state machine, synced to clients over SSE.
-- Designed 9 tables in Drizzle ORM; orders store snapshot columns so later menu edits never mutate historical records.
+- 掃 QR code 點餐，訂單狀態即時透過 LINE 推給店主。
+- 訂單生命週期用狀態機建模，透過 SSE 同步給前端。
+- 用 Drizzle ORM 設計 9 張表；訂單存快照欄位，之後改菜單不會動到歷史紀錄。
 
-### GirlsBandShot — Subtitle Screenshot Search Engine
+### 一句一幀 — 台詞截圖搜尋
 
 _Next.js · Python · EasyOCR · ffmpeg_
 
-- Built a subtitle-to-screenshot search engine using OCR-based indexing across three series.
-- Replaced pre-generated frames with on-demand ffmpeg rendering plus an LRU cache, cutting image storage from 4 GB to zero — pre-generating GIFs would have required roughly 156 GB.
+- 用 OCR 建立字幕索引，跨三部作品搜尋台詞對應的畫面。
+- 把預先產好的畫面改成 ffmpeg 即時生成加 LRU cache，圖片儲存從 4 GB 降到 0。
 
 ---
 
-## Interests
+## 興趣
 
-- Motorcycling
-- HomeLab (Proxmox, Immich, Docker)
-- E-Guitar
-- osu!
-- Gym
+重機、HomeLab（Proxmox、Immich、Docker）、電吉他、osu!、健身

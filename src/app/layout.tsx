@@ -95,7 +95,7 @@ export default function RootLayout({
         </noscript>
         <a
           href="#main"
-          className="focus:bg-panel focus:text-txt focus:border-line sr-only focus:not-sr-only focus:absolute focus:top-2.5 focus:left-2.5 focus:z-[60] focus:rounded-[6px] focus:border focus:px-3.5 focus:py-2"
+          className="focus:bg-panel focus:text-txt focus:border-line sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-chip focus:border focus:px-4 focus:py-2"
         >
           跳到主要內容
         </a>

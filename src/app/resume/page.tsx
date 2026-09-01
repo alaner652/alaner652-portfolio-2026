@@ -1,4 +1,4 @@
-import { Globe, GitFork, MapPin, Mail, GraduationCap, Briefcase, FolderOpen, Cpu, UserRound } from 'lucide-react'
+import { Globe, GitFork, MapPin, Mail, GraduationCap, Briefcase, FolderOpen, Cpu, UserRound, Heart } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -10,16 +10,16 @@ import { ResumeExport } from '@/components/common/ResumeExport'
 import { SITE_CONFIG } from '@/constants'
 import { getPostBySlug } from '@/lib/mdx'
 
-const RESUME_TITLE = 'Full-Stack Engineer · Security Researcher'
+const RESUME_TITLE = '全端工程師 · 資安'
 const RESUME_EMAIL = SITE_CONFIG.email
 
 export const metadata: Metadata = {
-  title: 'Resume',
-  description: '吳宸麒 (Wu Chen-Chi) — Full-Stack Engineer · Security Researcher',
+  title: '履歷',
+  description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。目前在找實習。',
   alternates: { canonical: '/resume' },
   openGraph: {
-    title: `Resume | ${SITE_CONFIG.name}`,
-    description: '吳宸麒 (Wu Chen-Chi) — Full-Stack Engineer · Security Researcher',
+    title: `履歷 | ${SITE_CONFIG.name}`,
+    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。目前在找實習。',
     url: '/resume',
     type: 'profile',
     locale: 'zh_TW',
@@ -27,25 +27,26 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `Resume | ${SITE_CONFIG.name}`,
-    description: '吳宸麒 (Wu Chen-Chi) — Full-Stack Engineer · Security Researcher',
+    title: `履歷 | ${SITE_CONFIG.name}`,
+    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。目前在找實習。',
     creator: `@${SITE_CONFIG.handle}`,
   },
 }
 
 const SECTION_ICONS: Record<string, ReactNode> = {
-  Summary: <UserRound size={17} className="text-amber" />,
-  Education: <GraduationCap size={17} className="text-amber" />,
-  Experience: <Briefcase size={17} className="text-amber" />,
-  Projects: <FolderOpen size={17} className="text-amber" />,
-  Skills: <Cpu size={17} className="text-amber" />,
+  摘要: <UserRound size={17} className="text-amber" />,
+  技能: <Cpu size={17} className="text-amber" />,
+  學歷: <GraduationCap size={17} className="text-amber" />,
+  經歷: <Briefcase size={17} className="text-amber" />,
+  專案: <FolderOpen size={17} className="text-amber" />,
+  興趣: <Heart size={17} className="text-amber" />,
 }
 
 function CVHeading({ children }: { children?: ReactNode }) {
   const text = typeof children === 'string' ? children : ''
   const icon = SECTION_ICONS[text]
   return (
-    <h2 className="font-display text-txt mt-[2.2em] mb-[0.7em] flex items-center gap-2.25 text-h3 font-medium tracking-[-0.015em]">
+    <h2 className="font-display text-txt mt-[2.2em] mb-[0.7em] flex items-center gap-2 text-h3 font-medium tracking-[-0.015em]">
       {icon}
       {children}
     </h2>
@@ -69,13 +70,13 @@ const resumeJsonLd = {
   '@type': 'ProfilePage',
   mainEntity: {
     '@type': 'Person',
-    name: 'Wu Chen-Chi',
-    alternateName: ['吳宸麒', 'alaner652'],
+    name: '吳宸麒',
+    alternateName: ['Wu Chen-Chi', 'alaner652'],
     url: SITE_CONFIG.url,
     email: `mailto:${SITE_CONFIG.email}`,
     sameAs: [SITE_CONFIG.github, SITE_CONFIG.linkedin].filter(Boolean),
-    jobTitle: 'Full-Stack Engineer',
-    description: '吳宸麒 (Wu Chen-Chi) — Full-Stack Engineer · Security Researcher',
+    jobTitle: '全端工程師',
+    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。目前在找實習。',
     address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
     knowsAbout: ['Full-Stack Development', 'Security Research', 'Next.js', 'TypeScript', 'Python'],
   },
@@ -86,7 +87,7 @@ export default function ResumePage() {
   if (!post) notFound()
 
   return (
-    <div className="mx-auto max-w-225 px-6 py-12 md:py-18">
+    <div className="mx-auto max-w-225 px-6 py-14 md:py-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}
@@ -94,51 +95,51 @@ export default function ResumePage() {
       <div className="mb-12 flex flex-wrap items-start justify-between gap-6">
         <div>
           <h1 className="font-display text-h1 leading-[1.1] font-medium tracking-[-0.02em]">
-            Wu Chen-Chi{' '}
+            吳宸麒{' '}
             <span className="text-dim align-middle text-[0.62em] font-normal tracking-normal">
-              吳宸麒
+              Wu Chen-Chi
             </span>
           </h1>
-          <p className="text-dim mt-2.5 text-base tracking-[0.01em]">
+          <p className="text-dim mt-2 text-base tracking-[0.01em]">
             {RESUME_TITLE}
           </p>
         </div>
-        <div className="text-dim flex flex-wrap items-center gap-4.5 pt-1.5 text-sm">
+        <div className="text-dim flex flex-wrap items-center gap-4 pt-1 text-sm">
           <ResumeExport
-            name="Wu Chen-Chi"
-            nameZh="吳宸麒"
+            name="吳宸麒"
+            nameEn="Wu Chen-Chi"
             title={RESUME_TITLE}
             email={RESUME_EMAIL}
             url={SITE_CONFIG.url}
             github={SITE_CONFIG.github}
-            location="Taipei, Taiwan"
+            location="台北"
           />
           <a
             href={`mailto:${RESUME_EMAIL}`}
-            className="hover:text-amber flex items-center gap-1.5 transition-colors duration-180"
+            className="hover:text-amber flex items-center gap-1.5 transition-colors"
           >
             <Mail size={13} />
-            email
+            信箱
           </a>
           <Link
             href="/"
-            className="hover:text-amber flex items-center gap-1.5 transition-colors duration-180"
+            className="hover:text-amber flex items-center gap-1.5 transition-colors"
           >
             <Globe size={13} />
-            portfolio
+            作品集
           </Link>
           <a
             href={SITE_CONFIG.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-amber flex items-center gap-1.5 transition-colors duration-180"
+            className="hover:text-amber flex items-center gap-1.5 transition-colors"
           >
             <GitFork size={13} />
-            github
+            GitHub
           </a>
           <span className="text-faint flex items-center gap-1.5">
             <MapPin size={13} />
-            Taipei, Taiwan
+            台北
           </span>
         </div>
       </div>

@@ -1,3 +1,9 @@
+/** 分類色盤的五個色相。對應 globals.css 的 --color-{tone}-ink / -tint。 */
+export type Tone = 'orange' | 'gold' | 'green' | 'blue' | 'plum'
+
+/** 專案目前的狀態，決定右上角那顆點的顏色。 */
+export type WorkStatus = 'live' | 'open' | 'idle'
+
 export interface NavLink {
   label: string
   href: string
@@ -5,6 +11,7 @@ export interface NavLink {
 
 export interface WorkItem {
   status: string
+  tone: WorkStatus
   title: string
   description: string
   metrics: string[]
@@ -31,9 +38,17 @@ export interface EducationItem {
   note?: string
 }
 
+/** Hero 的「我可以提供什麼」：一個能力主張配一句證據。 */
+export interface Offer {
+  label: string
+  description: string
+  tone: Tone
+}
+
 export interface SkillGroup {
   label: string
   items: string[]
+  tone: Tone
 }
 
 export interface BlogPostFrontmatter {
