@@ -26,6 +26,9 @@
      所以要嘛整組一起用（chip），要嘛只用 ink（標籤、狀態點）。
      每組的 ink 在自己的 tint 上都 ≥4.5:1，小字也合格；對頁面底色則都 ≥5.1:1。 */
   --color-orange-ink:  #B04B19;  /* 4.51:1 on tint · 5.20:1 on bg */
+  /* 主要按鈕的底色。比 orange-ink 淺一階，但仍讓 --color-bg 的字保持 4.60:1；
+     再往 --color-amber(#E06122) 靠就只剩 3.5:1，按鈕上的小字會不合格。 */
+  --color-orange-cta:  #BA5420;
   --color-orange-tint: #F4E8DE;
   --color-gold-ink:    #826511;  /* 4.62:1 · 5.27:1 */
   --color-gold-tint:   #F0EBDD;

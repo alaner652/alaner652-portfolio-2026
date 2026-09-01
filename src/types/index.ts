@@ -1,8 +1,14 @@
+import type { LucideIcon } from 'lucide-react'
+
 /** 分類色盤的五個色相。對應 globals.css 的 --color-{tone}-ink / -tint。 */
 export type Tone = 'orange' | 'gold' | 'green' | 'blue' | 'plum'
 
-/** 專案目前的狀態，決定右上角那顆點的顏色。 */
+/** 專案目前的狀態，決定狀態點的顏色。 */
 export type WorkStatus = 'live' | 'open' | 'idle'
+
+/** 專案分類。同時是清單上方那排篩選 chip 的選項，順序就是顯示順序。 */
+export const PROJECT_CATEGORIES = ['資安', 'Web', 'AI', '工具'] as const
+export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number]
 
 export interface NavLink {
   label: string
@@ -12,16 +18,14 @@ export interface NavLink {
 export interface WorkItem {
   status: string
   tone: WorkStatus
+  category: ProjectCategory
   title: string
   description: string
-  metrics: string[]
+  /** 份量輕的項目可以不列技術標籤 */
+  metrics?: string[]
   link?: string
-}
-
-export interface PastItem {
-  title: string
-  note: string
-  link?: string
+  /** public/ 底下的預覽圖路徑，由 `npm run shots` 產生。沒有連結的項目就沒有圖。 */
+  preview?: string
 }
 
 export interface ExperienceItem {
@@ -38,11 +42,12 @@ export interface EducationItem {
   note?: string
 }
 
-/** Hero 的「我可以提供什麼」：一個能力主張配一句證據。 */
+/** 「關於」的「我可以提供什麼」：一個圖示 + 一個能力主張 + 一句證據。 */
 export interface Offer {
   label: string
   description: string
   tone: Tone
+  icon: LucideIcon
 }
 
 export interface SkillGroup {
