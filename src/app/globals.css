@@ -1,6 +1,9 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+
+@theme {
+  /* 站上所有 hover 轉場都是 180ms，設成預設值就不用每個 class 再寫一次 */
+  --default-transition-duration: 180ms;
+}
 
 @theme inline {
   /* ── Portfolio design tokens (light cream / orange) ── */
@@ -16,7 +19,22 @@
   --color-amber:     #E06122;  /* 3.41:1 — 只能用在圖示、大字、hover 等非承載文字 */
   --color-amber-text: #C0521B; /* 4.51:1 — 內文連結等小字要用這個 */
   --color-amber-soft: rgba(224,97,34,0.10);
-  --color-live:      #1D8357;  /*  4.54:1 — 舊值 #1F8A5B 是 4.15:1 */
+
+  /* ── 分類色盤 ──
+     五個色相，各配一組「文字色 ink + 10% 底色 tint」。
+     色彩在這個站上只用來編碼「類別」或「狀態」，不做裝飾——
+     所以要嘛整組一起用（chip），要嘛只用 ink（標籤、狀態點）。
+     每組的 ink 在自己的 tint 上都 ≥4.5:1，小字也合格；對頁面底色則都 ≥5.1:1。 */
+  --color-orange-ink:  #B04B19;  /* 4.51:1 on tint · 5.20:1 on bg */
+  --color-orange-tint: #F4E8DE;
+  --color-gold-ink:    #826511;  /* 4.62:1 · 5.27:1 */
+  --color-gold-tint:   #F0EBDD;
+  --color-green-ink:   #1B7950;  /* 4.52:1 · 5.16:1 */
+  --color-green-tint:  #E6EDE4;
+  --color-blue-ink:    #2A6C9B;  /* 4.73:1 · 5.41:1 */
+  --color-blue-tint:   #E7ECEB;
+  --color-plum-ink:    #97386B;  /* 5.61:1 · 6.50:1 */
+  --color-plum-tint:   #F2E7E6;
 
   /* ── 字級級數 ──
      原本有 31 個各自為政的字級（0.96rem 與 0.97rem 差 0.16px 卻做同一件事）。
@@ -46,81 +64,12 @@
   --font-mono:    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-body:    var(--font-inter), var(--font-noto-tc), 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
 
-  /* ── shadcn tokens ── */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* ── 圓角：兩級就夠 ──
+     原本散在各處的 rounded-[4px]/[5px]/[6px]/[8px]/[10px] 做的是同兩件事。 */
+  --radius-chip: 6px;   /* chip、按鈕、行內程式碼 */
+  --radius-card: 10px;  /* 卡片、程式碼區塊、mac window */
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
 
 /* MDX blog prose styles */
 .prose-portfolio h1,
@@ -133,8 +82,8 @@
   color: var(--color-txt);
   margin-bottom: 0.6em;
   line-height: 1.15;
-  /* sticky nav 是 62px，錨點跳轉時標題不能被蓋住 */
-  scroll-margin-top: 78px;
+  /* sticky nav 是 64px，錨點跳轉時標題不能被蓋住 */
+  scroll-margin-top: 80px;
 }
 /* margin-top 用 rem 而非 em，否則 h1 會拿到 2×2rem 而 h3 只有 2×1.1rem */
 .prose-portfolio h1 { font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 2.5rem; }
@@ -171,13 +120,13 @@
   background: var(--color-panel-hi);
   border: 1px solid var(--color-line);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-chip);
   color: var(--color-txt);
 }
 .prose-portfolio pre {
   background: var(--color-panel-hi);
   border: 1px solid var(--color-line);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   padding: 20px 24px;
   overflow-x: auto;
   margin: 1.5em 0;
@@ -263,8 +212,9 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
     box-sizing: border-box;
+    /* Tailwind v4 的預設邊框色是 currentColor，這裡改成線條色當保底 */
+    border-color: var(--color-line);
     margin: 0;
     padding: 0;
   }

@@ -47,7 +47,7 @@ export function Nav() {
         if (visible.length > 0) setActiveId(visible[0].target.id)
       },
       // 只有捲到導覽列正下方那一帶的區塊才算 active
-      { rootMargin: '-62px 0px -60% 0px', threshold: 0 }
+      { rootMargin: '-64px 0px -60% 0px', threshold: 0 }
     )
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
@@ -67,7 +67,7 @@ export function Nav() {
     return id ? pathname === '/' && activeId === id : pathname === href
   }
 
-  const linkClass = 'text-dim transition-colors duration-180 hover:text-txt aria-[current=page]:text-txt'
+  const linkClass = 'text-dim transition-colors hover:text-txt aria-[current=page]:text-amber-text'
 
   return (
     <nav
@@ -77,12 +77,12 @@ export function Nav() {
         (scrolled || menuOpen) && 'bg-bg/82 border-line-soft backdrop-blur-[10px]'
       )}
     >
-      <div className="mx-auto flex h-15.5 max-w-270 items-center justify-between px-6">
+      <div className="mx-auto flex h-16 max-w-270 items-center justify-between px-6">
         {pathname === '/' ? (
           <a
             href="#top"
             aria-label="回到頁首"
-            className="text-txt hover:text-amber -ml-2 flex h-11 w-11 items-center justify-center transition-colors duration-180"
+            className="text-txt hover:text-amber -ml-2 flex h-11 w-11 items-center justify-center transition-colors"
           >
             <House size={20} />
           </a>
@@ -90,7 +90,7 @@ export function Nav() {
           <Link
             href="/"
             aria-label="回到首頁"
-            className="text-txt hover:text-amber -ml-2 flex h-11 w-11 items-center justify-center transition-colors duration-180"
+            className="text-txt hover:text-amber -ml-2 flex h-11 w-11 items-center justify-center transition-colors"
           >
             <House size={20} />
           </Link>
@@ -125,7 +125,7 @@ export function Nav() {
           aria-expanded={menuOpen}
           aria-controls="nav-menu"
           aria-label={menuOpen ? '關閉選單' : '開啟選單'}
-          className="text-dim hover:text-txt -mr-2 hidden h-11 w-11 items-center justify-center transition-colors duration-180 max-[680px]:flex"
+          className="text-dim hover:text-txt -mr-2 hidden h-11 w-11 items-center justify-center transition-colors max-[680px]:flex"
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>

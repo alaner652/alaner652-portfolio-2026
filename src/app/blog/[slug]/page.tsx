@@ -17,6 +17,7 @@ import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { TaskList } from '@/components/common/TaskList'
 import { SITE_CONFIG } from '@/constants'
 import { getAllPosts, getPostBySlug } from '@/lib/mdx'
+import { toneForTag } from '@/lib/tone'
 
 function Pre({ children }: { children: ReactNode }) {
   if (isValidElement(children)) {
@@ -108,7 +109,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   }
 
   return (
-    <div className={`${maxWidth} mx-auto px-6 py-12 md:py-18`}>
+    <div className={`${maxWidth} mx-auto px-6 py-14 md:py-20`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -116,7 +117,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <div className="mb-12">
         <Link
           href="/blog"
-          className="text-faint hover:text-amber mb-8 flex w-fit items-center gap-1.5 font-mono text-xs transition-colors duration-180"
+          className="text-faint hover:text-amber mb-8 flex w-fit items-center gap-1.5 font-mono text-xs transition-colors"
         >
           ← All posts
         </Link>
@@ -127,12 +128,9 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         <div className="mt-4 flex flex-wrap items-center gap-4">
           <time className="text-faint font-mono text-2xs">{post.frontmatter.date}</time>
           {post.frontmatter.tags?.map((tag) => (
-            <span
-              key={tag}
-              className="text-dim bg-panel-hi border-line-soft rounded-[5px] border px-2.25 py-0.75 font-mono text-2xs"
-            >
+            <MetricChip key={tag} tone={toneForTag(tag)}>
               {tag}
-            </span>
+            </MetricChip>
           ))}
         </div>
       </div>
