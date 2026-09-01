@@ -1,12 +1,12 @@
+import { Layers, ShieldHalf, Wrench } from 'lucide-react'
+
 import type {
   SiteConfig,
   NavLink,
   WorkItem,
-  PastItem,
   ExperienceItem,
   EducationItem,
   Offer,
-  Tone,
   SkillGroup,
 } from '@/types'
 
@@ -16,13 +16,14 @@ export const SITE_CONFIG: SiteConfig = {
   url: 'https://alaner652.com',
   github: 'https://github.com/alaner652',
   email: 'hhgg12661@gmail.com',
-  description: '吳宸麒 (alaner652)，五專資工四年級的全端工程師。用攻擊者的視角把產品做到上線；在學校電算中心做授權範圍內的資安工作。目前在找實習。',
+  description: '吳宸麒 (alaner652)，五專資工四年級的全端工程師。用攻擊者的視角把產品做到上線；在學校電算中心做授權範圍內的資安工作。',
   location: 'Taipei',
   timezone: 'GMT+8',
   copyright: '© 2026 吳宸麒，台北',
 }
 
 export const NAV_LINKS: NavLink[] = [
+  { label: '關於', href: '/#about' },
   { label: '做過的東西', href: '/#work' },
   { label: '心得分享', href: '/#writing' },
   { label: '履歷', href: '/resume' },
@@ -34,24 +35,30 @@ export const OFFERS: Offer[] = [
   {
     label: '端到端交付',
     tone: 'orange',
+    icon: Layers,
     description: '前端、後端、部署維運一個人做完。一句一幀、早餐店點餐系統都是這樣上線的。',
   },
   {
     label: '攻防視角',
     tone: 'green',
+    icon: ShieldHalf,
     description: '在校務系統找到能讀別人資料的 IDOR，透過 HITCON ZeroDay 揭露後進電算中心修補。',
   },
   {
     label: '逆向與自動化',
     tone: 'blue',
+    icon: Wrench,
     description: '把沒有文件的系統摸清楚，變成能用的 API 和工具。Agora-AI 就是這樣來的。',
   },
 ]
 
+/** 一份清單，不分「現在」和「以前」——以前做的那幾個用狀態和份量自己說明就夠了。
+    category 對應清單上方的篩選 chip；每一則的 preview 由 `npm run shots` 產生。 */
 export const WORK_ITEMS: WorkItem[] = [
   {
     status: '進行中',
     tone: 'live',
+    category: '資安',
     title: '校務系統的安全工作',
     description: '發現一個能讀到其他學生資料的 IDOR，透過 HITCON ZeroDay 揭露後被電算中心找進去。在授權範圍內補掉一個後門、修了幾個 XSS，也寫了幾支 Python 內部工具。',
     metrics: ['Burp Suite', 'Python', '授權範圍內'],
@@ -59,49 +66,63 @@ export const WORK_ITEMS: WorkItem[] = [
   {
     status: '已暫停',
     tone: 'idle',
+    category: 'AI',
     title: 'Agora-AI',
     description: '把沒有文件的校務 API 逆向出來，包成 10 個 agent 工具、69 個通過的測試，學生可以直接問「我這週有什麼課」。部署在學校 VM 上。目前暫停，想重新想清楚範圍。',
     metrics: ['FastAPI', 'Next.js', 'Docker'],
     link: 'https://github.com/alaner652/Agora-AI',
+    preview: '/shots/agora-ai.png',
   },
   {
     status: '運作中',
     tone: 'live',
+    category: 'Web',
     title: '一句一幀',
     description: '輸入台詞，找到那個畫面。把三個各做各的舊專案併成一套並搬到網頁上。截圖和 GIF 改成用 ffmpeg 即時生成加 LRU cache，圖片儲存從 4 GB 降到 0。',
     metrics: ['Next.js', 'EasyOCR', 'ffmpeg'],
     link: 'https://girls-band-shot.alaner652.com',
+    preview: '/shots/girls-band-shot.png',
   },
   {
     status: '開源',
     tone: 'open',
+    category: 'Web',
     title: '早餐店點餐系統',
     description: '掃碼用 LINE 登入點餐，下單推 Flex Message 給店主。訂單用狀態機管、SSE 同步進度，並存菜單快照，之後改菜單不會動到歷史訂單。',
     metrics: ['Next.js', 'SQLite + Drizzle', 'LINE Bot'],
     link: 'https://github.com/alaner652/order',
+    preview: '/shots/order.png',
   },
-]
-
-/** 停掉、被取代、或本來就只是小工具的東西。放著是因為它們也算數。 */
-export const PAST_ITEMS: PastItem[] = [
   {
+    status: '已停用',
+    tone: 'idle',
+    category: '工具',
     title: 'Easy TPCU',
-    note: '自動登入校務系統抓缺勤、畫成圖推到 Discord。分析校務系統的副產品，後來變成 Agora-AI 的起點。',
+    description: '自動登入校務系統抓缺勤、畫成圖推到 Discord。分析校務系統的副產品，後來變成 Agora-AI 的起點。',
     link: 'https://github.com/alaner652/tpcu-absence-notifier',
   },
   {
+    status: '已停用',
+    tone: 'idle',
+    category: '工具',
     title: 'Ave Mujica Bot',
-    note: 'OCR 逐幀把字幕轉成 JSON 索引，串 Discord Bot 查截圖。第一個真的有人在用的東西，現在由一句一幀接手。',
+    description: 'OCR 逐幀把字幕轉成 JSON 索引，串 Discord Bot 查截圖。第一個真的有人在用的東西，現在由一句一幀接手。',
     link: 'https://www.youtube.com/watch?v=2rXTrJ6X4a8',
   },
   {
+    status: '已下線',
+    tone: 'idle',
+    category: 'AI',
     title: 'Foodie AI',
-    note: '語意餐廳推薦。想法我現在還是覺得可以，但架構撐不住，後端早就掛了。第一次搞懂「跑得起來」和「撐得住」是兩件事。',
+    description: '語意餐廳推薦。想法我現在還是覺得可以，但架構撐不住，後端早就掛了。第一次搞懂「跑得起來」和「撐得住」是兩件事。',
     link: 'https://github.com/alaner652/FoodieAI',
   },
   {
+    status: '開源',
+    tone: 'open',
+    category: '工具',
     title: 'osu! Map Manager',
-    note: '純粹自己要用才寫的譜面管理工具，打包成 exe，朋友不用裝 Python 也能跑。',
+    description: '純粹自己要用才寫的譜面管理工具，打包成 exe，朋友不用裝 Python 也能跑。',
     link: 'https://github.com/alaner652/osu_map_manager',
   },
 ]

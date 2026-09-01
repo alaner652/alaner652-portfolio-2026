@@ -15,11 +15,11 @@ const RESUME_EMAIL = SITE_CONFIG.email
 
 export const metadata: Metadata = {
   title: '履歷',
-  description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。目前在找實習。',
+  description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。',
   alternates: { canonical: '/resume' },
   openGraph: {
     title: `履歷 | ${SITE_CONFIG.name}`,
-    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。目前在找實習。',
+    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。',
     url: '/resume',
     type: 'profile',
     locale: 'zh_TW',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: `履歷 | ${SITE_CONFIG.name}`,
-    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。目前在找實習。',
+    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。',
     creator: `@${SITE_CONFIG.handle}`,
   },
 }
@@ -76,7 +76,7 @@ const resumeJsonLd = {
     email: `mailto:${SITE_CONFIG.email}`,
     sameAs: [SITE_CONFIG.github, SITE_CONFIG.linkedin].filter(Boolean),
     jobTitle: '全端工程師',
-    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。目前在找實習。',
+    description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。',
     address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
     knowsAbout: ['Full-Stack Development', 'Security Research', 'Next.js', 'TypeScript', 'Python'],
   },

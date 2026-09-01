@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { NAV_LINKS, SITE_CONFIG } from '@/constants'
+import { NAV_LINKS } from '@/constants'
 import { cn } from '@/lib/utils'
 
 /** '/#work' → 'work'；非錨點連結回傳 null */
@@ -108,17 +108,9 @@ export function Nav() {
               {link.label}
             </Link>
           ))}
-          <a
-            href={SITE_CONFIG.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(linkClass, 'flex h-11 items-center')}
-          >
-            GitHub ↗
-          </a>
         </div>
 
-        {/* 手機：開合選單，五個目的地都留著 */}
+        {/* 手機：開合選單，桌機那四個連結原樣搬下來 */}
         <button
           type="button"
           onClick={() => setMenuOpen((v) => !v)}
@@ -147,15 +139,6 @@ export function Nav() {
               {link.label}
             </Link>
           ))}
-          <a
-            href={SITE_CONFIG.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setMenuOpen(false)}
-            className={cn(linkClass, 'flex h-11 items-center text-base')}
-          >
-            GitHub ↗
-          </a>
         </div>
       )}
     </nav>
