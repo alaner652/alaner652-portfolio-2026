@@ -15,16 +15,17 @@ export function Hero() {
       <div className="mx-auto flex w-full max-w-270 flex-1 flex-col items-center justify-center px-6 py-14 text-center">
         {/* em 而非 ch：ch 是 Space Grotesk 的「0」寬，但這行是中文，會由楷體渲染。
             中文字寬約 1em，所以 9em ≈ 每行 9 個字。 */}
-        <h1 className="font-display text-hero max-w-[9em] leading-[1.16] font-medium tracking-[-0.02em]">
+        {/* 進場：標題 → 副標 → 按鈕依序淡入。motion-safe 才動，reduce 時直接顯示。 */}
+        <h1 className="font-display text-hero motion-safe:animate-fade-up max-w-[9em] leading-[1.16] font-medium tracking-[-0.02em]">
           我是<span className="text-amber">small R</span>，喜歡資安的全端工程師。
         </h1>
 
         {/* 標題底下補上正式的身分和現在在做的事 */}
-        <p className="text-dim text-lead mt-6 max-w-[46ch] leading-[1.65]">
+        <p className="text-dim text-lead motion-safe:animate-fade-up mt-6 max-w-[46ch] leading-[1.65] [animation-delay:120ms]">
           全端工程師 · 五專資工四年級。在學校電算中心做授權範圍內的資安工作，其餘時間自己做產品。
         </p>
 
-        <div className="mt-11 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-base">
+        <div className="motion-safe:animate-fade-up mt-11 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-base [animation-delay:240ms]">
           <Link href="/resume" className={PRIMARY}>
             看我的履歷
           </Link>

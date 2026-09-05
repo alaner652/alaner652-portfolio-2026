@@ -126,7 +126,7 @@ export function Nav() {
       {menuOpen && (
         <div
           id="nav-menu"
-          className="border-line-soft border-t px-6 pt-2 pb-4 min-[681px]:hidden"
+          className="border-line-soft motion-safe:animate-drop border-t px-6 pt-2 pb-4 min-[681px]:hidden"
         >
           {NAV_LINKS.map((link) => (
             <Link

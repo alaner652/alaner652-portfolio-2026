@@ -124,6 +124,8 @@ function CardBody({ item }: { item: WorkItem }) {
 function ProjectCard({ item }: { item: WorkItem }) {
   const shell =
     'group bg-panel border-line-soft rounded-card flex h-full flex-col overflow-hidden border transition-colors'
+  // 可點的卡片 hover 只換邊框顏色，不做浮起/陰影
+  const hoverFx = 'hover:border-amber'
 
   const inner = (
     <>
@@ -139,14 +141,14 @@ function ProjectCard({ item }: { item: WorkItem }) {
         href={item.link}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${shell} hover:border-amber`}
+        className={`${shell} ${hoverFx}`}
       >
         {inner}
       </a>
     )
   }
 
-  return <div className={`${shell} ${item.demo ? 'hover:border-amber' : ''}`}>{inner}</div>
+  return <div className={`${shell} ${item.demo ? hoverFx : ''}`}>{inner}</div>
 }
 
 export function WorkList() {
@@ -183,8 +185,9 @@ export function WorkList() {
       </RevealWrapper>
 
       {/* grid 預設 align-items:stretch，所以同一列的卡片自動等高；配合 CardBody 的
-          mt-auto，讓每張卡的技術標籤底線對齊。 */}
-      <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
+          mt-auto，讓每張卡的技術標籤底線對齊。
+          key={filter}：切換分類時整塊重繪，讓 RevealWrapper 重新淡入，而不是硬切。 */}
+      <div key={filter} className="grid gap-4 sm:gap-5 md:grid-cols-2">
         {items.map((item) => (
           <RevealWrapper key={item.title} className="h-full">
             <ProjectCard item={item} />
