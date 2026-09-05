@@ -36,7 +36,7 @@ export const OFFERS: Offer[] = [
     label: '端到端交付',
     tone: 'orange',
     icon: Layers,
-    description: '前端、後端、部署維運一個人做完。一句一幀、早餐店點餐系統都是這樣上線的。',
+    description: '前端、後端、部署維運一個人做完。一句一幀、早餐店點餐系統都是這樣一個人做完的。',
   },
   {
     label: '攻防視角',
@@ -60,7 +60,7 @@ export const WORK_ITEMS: WorkItem[] = [
     tone: 'live',
     category: '資安',
     title: '校務系統的安全工作',
-    description: '發現一個能讀到其他學生資料的 IDOR，透過 HITCON ZeroDay 揭露後被電算中心找進去。在授權範圍內補掉一個後門、修了幾個 XSS，也寫了幾支 Python 內部工具。',
+    description: '發現一個能讀到其他學生資料的 IDOR，透過 HITCON ZeroDay 揭露後被電算中心找進去。在授權範圍內補掉幾個後門、修了幾個 XSS，也寫了幾支 Python 內部自動化工具減少單位的人工流程。',
     metrics: ['Burp Suite', 'Python', '授權範圍內'],
   },
   {
@@ -68,7 +68,7 @@ export const WORK_ITEMS: WorkItem[] = [
     tone: 'idle',
     category: 'AI',
     title: 'Agora-AI',
-    description: '把沒有文件的校務 API 逆向出來，包成 10 個 agent 工具、69 個通過的測試，學生可以直接問「我這週有什麼課」。部署在學校 VM 上。目前暫停，想重新想清楚範圍。',
+    description: '把沒有文件的校務 API 逆向出來，包成 10 個 agent 工具，學生可以直接問「我這週有什麼課」。部署在學校 VM 上。目前暫停，想重新想清楚範圍。',
     metrics: ['FastAPI', 'Next.js', 'Docker'],
     link: 'https://github.com/alaner652/Agora-AI',
     preview: '/shots/agora-ai.png',
@@ -134,15 +134,15 @@ export const WORK_ITEMS: WorkItem[] = [
 export const EXPERIENCE: ExperienceItem[] = [
   {
     period: '2026 — 現在',
-    role: '工讀生',
-    org: '學校電算中心',
-    description: '通報漏洞之後進來的。單位的雜事也做，資安則在授權範圍內動手。在這裡才體會到：看得到問題，不代表有權限去動它。',
+    role: '資安與自動化',
+    org: '校電算中心',
+    description: '通報漏洞之後被找進去的，沒有正式職稱，學校以記功、獎狀與獎學金支持。資安在授權範圍內動手，也寫內部自動化工具減少單位的人工流程。在這裡才體會到：看得到問題，不代表有權限去動它。',
   },
   {
     period: '2022 — 2024',
-    role: 'Lead Scripter',
-    org: '國際遊戲工作室（Roblox）',
-    description: '全英文環境，跟各地開發者一起寫技能系統、打擊感和 FPS 框架。國中自己摸 Roblox Studio，2022 年開始有人付錢請我寫。',
+    role: '接案開發者',
+    org: 'Roblox · 遠端',
+    description: '本質是自由接案，2022 年開始有人付錢請我寫。後來和幾個各地的開發者固定合作做遊戲，全英文溝通，我負責技能系統、打擊感和 FPS 框架。國中自己摸 Roblox Studio 起家。',
   },
 ]
 
