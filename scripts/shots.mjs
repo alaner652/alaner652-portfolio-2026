@@ -20,6 +20,9 @@ const TARGETS = [
   { slug: 'ave-mujica-bot', kind: 'youtube', videoId: '2rXTrJ6X4a8' },
   { slug: 'foodie-ai', kind: 'github', repo: 'alaner652/FoodieAI' },
   { slug: 'osu-map-manager', kind: 'github', repo: 'alaner652/osu_map_manager' },
+  { slug: 'cooking-game', kind: 'youtube', videoId: 'gYcwkoDgL_g' },
+  // 註：ZeroDay 公告頁在 Cloudflare 後面，伺服器端抓 og:image 會被 403 擋掉，
+  // 所以 campus-security 的縮圖得手動放進 public/shots/。og kind 對其他站仍可用。
 ]
 
 /** 一個 target 可以有多個來源，前面的失敗就換下一個。 */
@@ -44,6 +47,27 @@ function sourcesFor(target) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
+/** 抓頁面 HTML，解析出 og:image（或 twitter:image）的絕對網址。 */
+async function resolveOgImage(pageUrl) {
+  const res = await fetch(pageUrl, {
+    redirect: 'follow',
+    signal: AbortSignal.timeout(45_000),
+    // 有些站（Cloudflare 後面）對沒有瀏覽器 UA 的請求回 403
+    headers: {
+      'user-agent':
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
+      accept: 'text/html,application/xhtml+xml',
+    },
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const html = await res.text()
+  const match =
+    html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+    html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i)
+  if (!match) throw new Error('頁面沒有 og:image')
+  return new URL(match[1], pageUrl).href
+}
+
 async function fetchImage(url) {
   let res
   // opengraph.githubassets.com 對連續請求會回 429，等一下再試就過了
@@ -66,7 +90,19 @@ async function fetchImage(url) {
 }
 
 async function capture(target) {
-  for (const source of sourcesFor(target)) {
+  let sources
+  if (target.kind === 'og') {
+    try {
+      sources = [await resolveOgImage(target.url)]
+    } catch (err) {
+      console.error(`  ✗ ${target.slug} 解析 og:image 失敗：${err.message}`)
+      return false
+    }
+  } else {
+    sources = sourcesFor(target)
+  }
+
+  for (const source of sources) {
     try {
       const { buf, ext } = await fetchImage(source)
       const name = `${target.slug}.${ext}`

@@ -7,7 +7,7 @@ export type Tone = 'orange' | 'gold' | 'green' | 'blue' | 'plum'
 export type WorkStatus = 'live' | 'open' | 'idle'
 
 /** 專案分類。同時是清單上方那排篩選 chip 的選項，順序就是顯示順序。 */
-export const PROJECT_CATEGORIES = ['資安', 'Web', 'AI', '工具'] as const
+export const PROJECT_CATEGORIES = ['資安', 'Web', 'AI', '工具', '遊戲'] as const
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number]
 
 export interface NavLink {
@@ -24,6 +24,9 @@ export interface WorkItem {
   /** 份量輕的項目可以不列技術標籤 */
   metrics?: string[]
   link?: string
+  /** 次要連結（如 demo 影片）。帶了 demo 的卡片改在底部列出 GitHub / Demo 兩個連結，
+      而不是整張可點——避免 <a> 巢狀。 */
+  demo?: string
   /** public/ 底下的預覽圖路徑，由 `npm run shots` 產生。沒有連結的項目就沒有圖。 */
   preview?: string
 }

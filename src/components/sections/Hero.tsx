@@ -13,11 +13,6 @@ export function Hero() {
     // 滿版第一屏。nav 是 sticky h-16，所以扣掉 4rem；用 svh 才不會被手機的網址列吃掉一截
     <header id="top" className="flex min-h-[calc(100svh-4rem)] flex-col">
       <div className="mx-auto flex w-full max-w-270 flex-1 flex-col items-center justify-center px-6 py-14 text-center">
-        {/* 名字放最前面，第一眼要先知道這是誰 */}
-        <p className="text-dim mb-5 font-mono text-sm tracking-[0.06em]">
-          small R <span className="text-faint">· alaner652</span>
-        </p>
-
         {/* em 而非 ch：ch 是 Space Grotesk 的「0」寬，但這行是中文，會由楷體渲染。
             中文字寬約 1em，所以 9em ≈ 每行 9 個字。 */}
         <h1 className="font-display text-hero max-w-[9em] leading-[1.16] font-medium tracking-[-0.02em]">

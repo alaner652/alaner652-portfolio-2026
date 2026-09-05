@@ -62,6 +62,7 @@ export const WORK_ITEMS: WorkItem[] = [
     title: '校務系統的安全工作',
     description: '發現一個能讀到其他學生資料的 IDOR，透過 HITCON ZeroDay 揭露後被電算中心找進去。在授權範圍內補掉幾個後門、修了幾個 XSS，也寫了幾支 Python 內部自動化工具減少單位的人工流程。',
     metrics: ['Burp Suite', 'Python', '授權範圍內'],
+    link: 'https://zeroday.hitcon.org/vulnerability/ZD-2026-00351',
   },
   {
     status: '已暫停',
@@ -118,6 +119,7 @@ export const WORK_ITEMS: WorkItem[] = [
     title: 'Foodie AI',
     description: '語意餐廳推薦。想法我現在還是覺得可以，但架構撐不住，後端早就掛了。第一次搞懂「跑得起來」和「撐得住」是兩件事。',
     link: 'https://github.com/alaner652/FoodieAI',
+    demo: 'https://www.youtube.com/watch?v=780-adKzw94',
     preview: '/shots/foodie-ai.png',
   },
   {
@@ -128,6 +130,16 @@ export const WORK_ITEMS: WorkItem[] = [
     description: '純粹自己要用才寫的譜面管理工具，打包成 exe，朋友不用裝 Python 也能跑。',
     link: 'https://github.com/alaner652/osu_map_manager',
     preview: '/shots/osu-map-manager.png',
+  },
+  {
+    status: '接案作品',
+    tone: 'idle',
+    category: '遊戲',
+    title: 'Cooking Game',
+    description: '接案期間在 Roblox 上開發的料理主題遊戲，用 Luau 實作遊戲系統與互動邏輯。影片是當時的展示。',
+    metrics: ['Luau', 'Roblox'],
+    link: 'https://youtu.be/gYcwkoDgL_g',
+    preview: '/shots/cooking-game.jpg',
   },
 ]
 
@@ -148,7 +160,7 @@ export const EXPERIENCE: ExperienceItem[] = [
 
 export const EDUCATION: EducationItem[] = [
   {
-    period: '2022 — 2027（預計）',
+    period: '2023 — 2028（預計）',
     school: '台北城市科技大學',
     program: '資訊工程科 五專部',
     note: '目前四年級。同時在準備 116 特殊選才。',

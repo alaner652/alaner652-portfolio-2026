@@ -6,7 +6,6 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { ReactNode } from 'react'
 import remarkGfm from 'remark-gfm'
 
-import { ResumeExport } from '@/components/common/ResumeExport'
 import { SITE_CONFIG } from '@/constants'
 import { getPostBySlug } from '@/lib/mdx'
 
@@ -105,15 +104,6 @@ export default function ResumePage() {
           </p>
         </div>
         <div className="text-dim flex flex-wrap items-center gap-4 pt-1 text-sm">
-          <ResumeExport
-            name="吳宸麒"
-            nameEn="Wu Chen-Chi"
-            title={RESUME_TITLE}
-            email={RESUME_EMAIL}
-            url={SITE_CONFIG.url}
-            github={SITE_CONFIG.github}
-            location="台北"
-          />
           <a
             href={`mailto:${RESUME_EMAIL}`}
             className="hover:text-amber flex items-center gap-1.5 transition-colors"
