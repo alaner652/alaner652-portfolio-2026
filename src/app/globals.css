@@ -61,11 +61,12 @@
   --text-h3:   clamp(1.1rem, 2vw, 1.3rem);     /* 履歷區塊標題 */
   --text-h2:   clamp(1.4rem, 2.6vw, 1.8rem);   /* 首頁區塊標題 */
   --text-h1:   clamp(1.6rem, 3.2vw, 2.2rem);   /* 頁面標題 */
-  --text-hero: clamp(2rem, 5vw, 3.1rem);       /* Hero 主標 */
+  --text-hero: clamp(1.55rem, 3.6vw, 2.7rem);  /* Hero 主標；下限要讓 390px 手機塞得下「喜歡資安的全端工程師。」一整行 */
 
   --font-display: var(--font-space-grotesk), 'LXGW WenKai TC', var(--font-noto-tc), 'PingFang TC', system-ui, sans-serif;
   --font-mono:    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-body:    var(--font-inter), var(--font-noto-tc), 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  --font-hand:    var(--font-caveat), 'Segoe Script', 'Bradley Hand', cursive;  /* 只給 nav 字標 */
 
   /* ── 圓角：兩級就夠 ──
      原本散在各處的 rounded-[4px]/[5px]/[6px]/[8px]/[10px] 做的是同兩件事。 */
@@ -74,18 +75,27 @@
 
   /* ── 動畫 ──
      都很輕，且只在 motion-safe 下套用（reduce 時不套，元素以最終狀態顯示）。
-     fade-up：Hero 進場的分層淡入；drop：手機導覽選單的下拉。 */
+     fade-up：Hero 進場的分層淡入；drop：手機導覽選單的下拉；blink：打字機游標；
+     marquee：首頁技能格的跑馬燈（內容複製兩份，跑到 -50% 剛好接回起點）。 */
   --animate-fade-up: fade-up 0.6s ease-out both;
   --animate-drop: drop 0.22s ease-out both;
+  --animate-blink: blink 1s steps(1) infinite;
+  --animate-marquee: marquee 36s linear infinite;
 }
 
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(0.5rem); }
   to   { opacity: 1; transform: none; }
 }
+@keyframes blink {
+  50% { opacity: 0; }
+}
 @keyframes drop {
   from { opacity: 0; transform: translateY(-0.375rem); }
   to   { opacity: 1; transform: none; }
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
 }
 
 

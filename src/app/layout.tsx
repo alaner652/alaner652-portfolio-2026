@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import { Space_Grotesk, JetBrains_Mono, Inter, Noto_Sans_TC } from 'next/font/google'
+import { Space_Grotesk, JetBrains_Mono, Inter, Noto_Sans_TC, Caveat } from 'next/font/google'
 
 // 霞鶩文楷 TC — handwriting/kai font for Chinese headings (TC subset only, lazy per unicode-range)
 import '@fontsource/lxgw-wenkai-tc/chinese-traditional-400.css'
@@ -26,6 +26,13 @@ const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
   weight: ['400', '500', '600'],
+})
+
+// 手寫體，只用在 nav 的「small R」字標；variable font 一支檔案就夠
+const caveat = Caveat({
+  variable: '--font-caveat',
+  subsets: ['latin'],
+  weight: 'variable',
 })
 
 // CJK font — cannot preload a subset, so self-host all weights lazily
@@ -80,18 +87,18 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="zh-Hant"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} ${notoSansTC.variable}`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} ${notoSansTC.variable} ${caveat.variable}`}
     >
       <body className="flex min-h-full flex-col">
         {/* RevealWrapper 靠 IntersectionObserver 淡入；JS 失效時強制顯示，避免整頁空白 */}
         <noscript>
-          <style>{'.reveal{opacity:1!important;transform:none!important}'}</style>
+          <style>
+            {'.reveal,.reveal .reveal-item{opacity:1!important;transform:none!important}'}
+          </style>
         </noscript>
         <a
           href="#main"

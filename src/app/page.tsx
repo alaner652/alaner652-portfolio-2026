@@ -1,9 +1,8 @@
-import { About } from '@/components/sections/About'
-import { Experience } from '@/components/sections/Experience'
-import { Hero } from '@/components/sections/Hero'
-import { Skills } from '@/components/sections/Skills'
-import { Work } from '@/components/sections/Work'
-import { Writing } from '@/components/sections/Writing'
+import { Bento } from '@/components/home/Bento'
+import { FeaturedWork } from '@/components/home/FeaturedWork'
+import { Hero } from '@/components/home/Hero'
+import { Offers } from '@/components/home/Offers'
+import { Writing } from '@/components/home/Writing'
 import { SITE_CONFIG } from '@/constants'
 
 const personJsonLd = {
@@ -18,6 +17,8 @@ const personJsonLd = {
   address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
 }
 
+/** 首頁：Hero（文案 + NOW 卡）→ 我能做什麼（三步流程）→ 關於／經歷／技能的 Bento
+    → 精選專案 → 最新文章。Bento 每格連到 /about 的對應區塊，完整專案在 /projects。 */
 export default function Home() {
   return (
     <>
@@ -26,11 +27,10 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
       <Hero />
-      <About />
-      <Experience />
-      <Skills />
-      <Work />
-      <Writing />
+      <Offers />
+      <Bento />
+      <FeaturedWork />
+      <Writing limit={3} />
     </>
   )
 }

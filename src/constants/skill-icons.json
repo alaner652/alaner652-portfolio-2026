@@ -1,0 +1,19 @@
+{
+  "Python": "python",
+  "TypeScript": "typescript",
+  "Lua / Luau": "lua",
+  "FastAPI": "fastapi",
+  "Next.js API Routes": "nextdotjs",
+  "Drizzle ORM": "drizzle",
+  "SQLite": "sqlite",
+  "Next.js": "nextdotjs",
+  "React": "react",
+  "Tailwind CSS": "tailwindcss",
+  "Docker": "docker",
+  "Linux": "linux",
+  "OpenWrt": "openwrt",
+  "Cloudflare Tunnel": "cloudflare",
+  "Proxmox": "proxmox",
+  "Tailscale": "tailscale",
+  "Burp Suite": "burpsuite"
+}

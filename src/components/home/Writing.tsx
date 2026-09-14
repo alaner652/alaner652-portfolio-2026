@@ -5,8 +5,9 @@ import { SectionLabel } from '@/components/common/SectionLabel'
 import { Section } from '@/components/layout/Section'
 import { getAllPosts } from '@/lib/mdx'
 
-export function Writing() {
-  const posts = getAllPosts()
+/** 首頁的文章區。limit 只取最新幾篇，完整清單在 /blog。 */
+export function Writing({ limit }: { limit?: number }) {
+  const posts = limit ? getAllPosts().slice(0, limit) : getAllPosts()
 
   return (
     <Section id="writing">
@@ -35,7 +36,7 @@ export function Writing() {
               href="/blog"
               className="text-dim hover:text-amber mt-4 inline-flex items-center gap-1.5 text-sm transition-colors"
             >
-              All posts →
+              全部文章 →
             </Link>
           </div>
         ) : (

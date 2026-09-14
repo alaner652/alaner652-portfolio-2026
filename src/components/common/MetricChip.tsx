@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils'
 import { TONE_CHIP } from '@/lib/tone'
+import { cn } from '@/lib/utils'
 import type { Tone } from '@/types'
 
 interface MetricChipProps {
