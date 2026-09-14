@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   /* 站上所有 hover 轉場都是 180ms，設成預設值就不用每個 class 再寫一次 */
@@ -7,97 +7,131 @@
 
 @theme inline {
   /* ── Portfolio design tokens (light cream / orange) ── */
-  --color-bg:        #FCFAF4;
-  --color-panel:     #FFFFFF;
-  --color-panel-hi:  #F6F1E8;
-  --color-line:      #ECE5D7;
-  --color-line-soft: #F3EDE1;
-  --color-txt:       #332D24;  /* 13.05:1 */
-  --color-dim:       #736A5A;  /*  5.11:1 — 承載資訊的次要文字用這層 */
-  --color-faint:     #7E725D;  /*  4.52:1 — 純裝飾用。舊值 #A79C88 只有 2.59:1，連大字級都不合格 */
+  --color-bg: #fcfaf4;
+  --color-panel: #ffffff;
+  --color-panel-hi: #f6f1e8;
+  --color-line: #ece5d7;
+  --color-line-soft: #f3ede1;
+  --color-txt: #332d24; /* 13.05:1 */
+  --color-dim: #736a5a; /*  5.11:1 — 承載資訊的次要文字用這層 */
+  --color-faint: #7e725d; /*  4.52:1 — 純裝飾用。舊值 #A79C88 只有 2.59:1，連大字級都不合格 */
   /* orange primary (var name kept for compatibility) */
-  --color-amber:     #E06122;  /* 3.41:1 — 只能用在圖示、大字、hover 等非承載文字 */
-  --color-amber-text: #C0521B; /* 4.51:1 — 內文連結等小字要用這個 */
-  --color-amber-soft: rgba(224,97,34,0.10);
+  --color-amber: #e06122; /* 3.41:1 — 只能用在圖示、大字、hover 等非承載文字 */
+  --color-amber-text: #c0521b; /* 4.51:1 — 內文連結等小字要用這個 */
+  --color-amber-soft: rgba(224, 97, 34, 0.1);
 
   /* ── 分類色盤 ──
      五個色相，各配一組「文字色 ink + 10% 底色 tint」。
      色彩在這個站上只用來編碼「類別」或「狀態」，不做裝飾——
      所以要嘛整組一起用（chip），要嘛只用 ink（標籤、狀態點）。
      每組的 ink 在自己的 tint 上都 ≥4.5:1，小字也合格；對頁面底色則都 ≥5.1:1。 */
-  --color-orange-ink:  #B04B19;  /* 4.51:1 on tint · 5.20:1 on bg */
+  --color-orange-ink: #b04b19; /* 4.51:1 on tint · 5.20:1 on bg */
   /* 主要按鈕的底色。比 orange-ink 淺一階，但仍讓 --color-bg 的字保持 4.60:1；
      再往 --color-amber(#E06122) 靠就只剩 3.5:1，按鈕上的小字會不合格。 */
-  --color-orange-cta:  #BA5420;
-  --color-orange-tint: #F4E8DE;
-  --color-gold-ink:    #826511;  /* 4.62:1 · 5.27:1 */
-  --color-gold-tint:   #F0EBDD;
-  --color-green-ink:   #1B7950;  /* 4.52:1 · 5.16:1 */
-  --color-green-tint:  #E6EDE4;
-  --color-blue-ink:    #2A6C9B;  /* 4.73:1 · 5.41:1 */
-  --color-blue-tint:   #E7ECEB;
-  --color-plum-ink:    #97386B;  /* 5.61:1 · 6.50:1 */
-  --color-plum-tint:   #F2E7E6;
+  --color-orange-cta: #ba5420;
+  --color-orange-tint: #f4e8de;
+  --color-gold-ink: #826511; /* 4.62:1 · 5.27:1 */
+  --color-gold-tint: #f0ebdd;
+  --color-green-ink: #1b7950; /* 4.52:1 · 5.16:1 */
+  --color-green-tint: #e6ede4;
+  --color-blue-ink: #2a6c9b; /* 4.73:1 · 5.41:1 */
+  --color-blue-tint: #e7eceb;
+  --color-plum-ink: #97386b; /* 5.61:1 · 6.50:1 */
+  --color-plum-tint: #f2e7e6;
 
   /* ── 字級級數 ──
      原本有 31 個各自為政的字級（0.96rem 與 0.97rem 差 0.16px 卻做同一件事）。
      收斂成 7 個內文級 + 4 個標題級，每個對應一個語意角色。 */
-  --text-2xs:  0.72rem;   /* metadata：日期、chip、copyright */
-  --text-xs:   0.8rem;    /* eyebrow、狀態、分類標籤 */
-  --text-sm:   0.875rem;  /* 次要說明、導覽 */
-  --text-base: 0.95rem;   /* 列表內文、UI 文字 */
-  --text-md:   1.02rem;   /* 段落內文 */
-  --text-lg:   1.18rem;   /* 項目標題 */
-  --text-xl:   1.5rem;    /* 字標 */
+  --text-2xs: 0.72rem; /* metadata：日期、chip、copyright */
+  --text-xs: 0.8rem; /* eyebrow、狀態、分類標籤 */
+  --text-sm: 0.875rem; /* 次要說明、導覽 */
+  --text-base: 0.95rem; /* 列表內文、UI 文字 */
+  --text-md: 1.02rem; /* 段落內文 */
+  --text-lg: 1.18rem; /* 項目標題 */
+  --text-xl: 1.5rem; /* 字標 */
   /* xs/sm/base/lg/xl 撞到 Tailwind 內建名稱，會連帶套用內建的行高。
      設成 inherit 讓所有級距行為一致：只管字級，行高交給 leading-* 或 body。 */
-  --text-xs--line-height:   inherit;
-  --text-sm--line-height:   inherit;
+  --text-xs--line-height: inherit;
+  --text-sm--line-height: inherit;
   --text-base--line-height: inherit;
-  --text-lg--line-height:   inherit;
-  --text-xl--line-height:   inherit;
+  --text-lg--line-height: inherit;
+  --text-xl--line-height: inherit;
 
-  --text-lead: clamp(1.05rem, 1.7vw, 1.2rem);  /* Hero 副標 */
-  --text-h3:   clamp(1.1rem, 2vw, 1.3rem);     /* 履歷區塊標題 */
-  --text-h2:   clamp(1.4rem, 2.6vw, 1.8rem);   /* 首頁區塊標題 */
-  --text-h1:   clamp(1.6rem, 3.2vw, 2.2rem);   /* 頁面標題 */
-  --text-hero: clamp(1.55rem, 3.6vw, 2.7rem);  /* Hero 主標；下限要讓 390px 手機塞得下「喜歡資安的全端工程師。」一整行 */
+  --text-lead: clamp(1.05rem, 1.7vw, 1.2rem); /* Hero 副標 */
+  --text-h3: clamp(1.1rem, 2vw, 1.3rem); /* 履歷區塊標題 */
+  --text-h2: clamp(1.4rem, 2.6vw, 1.8rem); /* 首頁區塊標題 */
+  --text-h1: clamp(1.6rem, 3.2vw, 2.2rem); /* 頁面標題 */
+  --text-hero: clamp(
+    1.55rem,
+    3.6vw,
+    2.7rem
+  ); /* Hero 主標；下限要讓 390px 手機塞得下「喜歡資安的全端工程師。」一整行 */
 
-  --font-display: var(--font-space-grotesk), 'LXGW WenKai TC', var(--font-noto-tc), 'PingFang TC', system-ui, sans-serif;
-  --font-mono:    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-body:    var(--font-inter), var(--font-noto-tc), 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
-  --font-hand:    var(--font-caveat), 'Segoe Script', 'Bradley Hand', cursive;  /* 只給 nav 字標 */
+  --font-display:
+    var(--font-space-grotesk), 'LXGW WenKai TC', var(--font-noto-tc), 'PingFang TC', system-ui,
+    sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-body:
+    var(--font-inter), var(--font-noto-tc), 'PingFang TC', 'Microsoft JhengHei', system-ui,
+    sans-serif;
+  --font-hand: var(--font-caveat), 'Segoe Script', 'Bradley Hand', cursive; /* 只給 nav 字標 */
 
   /* ── 圓角：兩級就夠 ──
      原本散在各處的 rounded-[4px]/[5px]/[6px]/[8px]/[10px] 做的是同兩件事。 */
-  --radius-chip: 6px;   /* chip、按鈕、行內程式碼 */
-  --radius-card: 10px;  /* 卡片、程式碼區塊、mac window */
+  --radius-chip: 6px; /* chip、按鈕、行內程式碼 */
+  --radius-card: 10px; /* 卡片、程式碼區塊、mac window */
 
   /* ── 動畫 ──
      都很輕，且只在 motion-safe 下套用（reduce 時不套，元素以最終狀態顯示）。
      fade-up：Hero 進場的分層淡入；drop：手機導覽選單的下拉；blink：打字機游標；
-     marquee：首頁技能格的跑馬燈（內容複製兩份，跑到 -50% 剛好接回起點）。 */
+     marquee：首頁技能格的跑馬燈（內容複製兩份，跑到 -50% 剛好接回起點）；
+     nudge：Hero 底下「往下捲」的箭頭，輕輕點頭。 */
   --animate-fade-up: fade-up 0.6s ease-out both;
   --animate-drop: drop 0.22s ease-out both;
   --animate-blink: blink 1s steps(1) infinite;
   --animate-marquee: marquee 36s linear infinite;
+  --animate-nudge: nudge 2s ease-in-out infinite;
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(0.5rem); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 @keyframes drop {
-  from { opacity: 0; transform: translateY(-0.375rem); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(-0.375rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 @keyframes marquee {
-  to { transform: translateX(-50%); }
+  to {
+    transform: translateX(-50%);
+  }
 }
-
+@keyframes nudge {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: translateY(0.25rem);
+  }
+}
 
 /* MDX blog prose styles */
 .prose-portfolio h1,
@@ -114,11 +148,25 @@
   scroll-margin-top: 80px;
 }
 /* margin-top 用 rem 而非 em，否則 h1 會拿到 2×2rem 而 h3 只有 2×1.1rem */
-.prose-portfolio h1 { font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 2.5rem; }
-.prose-portfolio h2 { font-size: clamp(1.2rem, 2.4vw, 1.5rem); margin-top: 2.5rem; }
-.prose-portfolio h3 { font-size: 1.1rem; margin-top: 2rem; }
-.prose-portfolio h4 { font-size: 1rem; margin-top: 1.75rem; }
-.prose-portfolio > *:first-child { margin-top: 0; }
+.prose-portfolio h1 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-top: 2.5rem;
+}
+.prose-portfolio h2 {
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  margin-top: 2.5rem;
+}
+.prose-portfolio h3 {
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+.prose-portfolio h4 {
+  font-size: 1rem;
+  margin-top: 1.75rem;
+}
+.prose-portfolio > *:first-child {
+  margin-top: 0;
+}
 
 /* 標題錨點：rehype-autolink-headings 用 wrap，連結不該長得像內文連結 */
 .prose-portfolio .heading-anchor {
@@ -165,13 +213,20 @@
   padding: 0;
   font-size: 0.875rem;
 }
-.prose-portfolio ul, .prose-portfolio ol {
+.prose-portfolio ul,
+.prose-portfolio ol {
   color: var(--color-dim);
   padding-left: 1.5em;
   margin-bottom: 1.2em;
 }
-.prose-portfolio li { margin-bottom: 0.4em; line-height: 1.65; }
-.prose-portfolio strong { color: var(--color-txt); font-weight: 600; }
+.prose-portfolio li {
+  margin-bottom: 0.4em;
+  line-height: 1.65;
+}
+.prose-portfolio strong {
+  color: var(--color-txt);
+  font-weight: 600;
+}
 .prose-portfolio hr {
   border: none;
   border-top: 1px solid var(--color-line-soft);
@@ -209,7 +264,9 @@
   border-bottom: 1px solid var(--color-line-soft);
   vertical-align: top;
 }
-.prose-portfolio tr:last-child td { border-bottom: none; }
+.prose-portfolio tr:last-child td {
+  border-bottom: none;
+}
 
 /* mac-window pre reset — border/radius/margin provided by the wrapper */
 .prose-portfolio .mac-window pre {
@@ -236,7 +293,9 @@
   margin-top: 0;
   font-size: 1rem;
 }
-.prose-portfolio .mdx-card ul { margin-bottom: 0; }
+.prose-portfolio .mdx-card ul {
+  margin-bottom: 0;
+}
 
 @layer base {
   * {
@@ -251,7 +310,9 @@
     @apply font-body;
   }
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
+    html {
+      scroll-behavior: auto;
+    }
   }
   body {
     background-color: var(--color-bg);

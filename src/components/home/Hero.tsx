@@ -1,3 +1,4 @@
+import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 
 import { SocialIcons } from '@/components/common/SocialIcons'
@@ -12,7 +13,7 @@ const SECONDARY =
 export function Hero() {
   return (
     // 滿版：扣掉 4.25rem 的 sticky Nav（pt-3 + h-14） 後撐滿第一屏，文字垂直置中，往下捲才看到 Bento
-    <header className="mx-auto flex min-h-[calc(100svh-4.25rem)] w-full max-w-270 flex-col justify-center px-6 py-14">
+    <header className="relative mx-auto flex min-h-[calc(100svh-4.25rem)] w-full max-w-270 flex-col justify-center px-6 py-14">
       {/* 標題 → 副標 → 按鈕＋社群依序淡入。motion-safe 才動，reduce 時直接顯示。
           在讀／在做在 /about，第一屏只留一句話、兩個按鈕跟社群連結。 */}
       <div>
@@ -38,6 +39,16 @@ export function Hero() {
           <SocialIcons className="-ml-1 gap-1" />
         </div>
       </div>
+
+      {/* 往下捲提示：第一屏正下方置中，只有一顆 amber 圓框箭頭，一直輕輕點頭；點了跳到下一段 */}
+      <a
+        href="#offers"
+        aria-label="往下捲到「我能做什麼」"
+        title="往下看"
+        className="border-amber text-amber hover:bg-amber hover:text-bg motion-safe:animate-fade-up absolute bottom-6 left-1/2 flex size-12 -translate-x-1/2 items-center justify-center rounded-full border-[1.5px] transition-colors [animation-delay:600ms]"
+      >
+        <ChevronDown size={24} strokeWidth={2} className="motion-safe:animate-nudge" aria-hidden />
+      </a>
     </header>
   )
 }
