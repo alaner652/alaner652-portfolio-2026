@@ -1,4 +1,15 @@
-import { Globe, GitFork, MapPin, Mail, GraduationCap, Briefcase, FolderOpen, Cpu, UserRound, Heart } from 'lucide-react'
+import {
+  Globe,
+  GitFork,
+  MapPin,
+  Mail,
+  GraduationCap,
+  Briefcase,
+  FolderOpen,
+  Cpu,
+  UserRound,
+  Heart,
+} from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -73,7 +84,12 @@ const resumeJsonLd = {
     alternateName: ['Wu Chen-Chi', 'alaner652'],
     url: SITE_CONFIG.url,
     email: `mailto:${SITE_CONFIG.email}`,
-    sameAs: [SITE_CONFIG.github, SITE_CONFIG.linkedin].filter(Boolean),
+    sameAs: [
+      SITE_CONFIG.github,
+      SITE_CONFIG.instagram,
+      SITE_CONFIG.threads,
+      SITE_CONFIG.linkedin,
+    ].filter(Boolean),
     jobTitle: '全端工程師',
     description: '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。',
     address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
@@ -99,9 +115,7 @@ export default function ResumePage() {
               Wu Chen-Chi
             </span>
           </h1>
-          <p className="text-dim mt-2 text-base tracking-[0.01em]">
-            {RESUME_TITLE}
-          </p>
+          <p className="text-dim mt-2 text-base tracking-[0.01em]">{RESUME_TITLE}</p>
         </div>
         <div className="text-dim flex flex-wrap items-center gap-4 pt-1 text-sm">
           <a
@@ -111,10 +125,7 @@ export default function ResumePage() {
             <Mail size={13} />
             信箱
           </a>
-          <Link
-            href="/"
-            className="hover:text-amber flex items-center gap-1.5 transition-colors"
-          >
+          <Link href="/" className="hover:text-amber flex items-center gap-1.5 transition-colors">
             <Globe size={13} />
             作品集
           </Link>

@@ -17,6 +17,8 @@ export const SITE_CONFIG: SiteConfig = {
   handle: 'alaner652',
   url: 'https://alaner652.com',
   github: 'https://github.com/alaner652',
+  instagram: 'https://www.instagram.com/alaner652/',
+  threads: 'https://www.threads.com/@alaner652',
   email: 'hhgg12661@gmail.com',
   avatar: '/avatar.jpg',
   description:

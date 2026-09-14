@@ -1,5 +1,13 @@
 import { SITE_CONFIG } from '@/constants'
 
+/** 有填才顯示；順序照重要性，GitHub 最前。 */
+const SOCIALS: [string, string | undefined][] = [
+  ['GitHub', SITE_CONFIG.github],
+  ['Instagram', SITE_CONFIG.instagram],
+  ['Threads', SITE_CONFIG.threads],
+  ['LinkedIn', SITE_CONFIG.linkedin],
+]
+
 const LINK = 'text-dim hover:text-amber inline-flex min-h-11 items-center transition-colors'
 
 export function Footer() {
@@ -10,28 +18,23 @@ export function Footer() {
           <div className="font-display text-xl font-bold">
             alaner<span className="text-amber">652</span>
           </div>
-          <div className="flex gap-6 font-mono text-xs">
+          <div className="flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs">
             <a href={`mailto:${SITE_CONFIG.email}`} className={LINK}>
               {SITE_CONFIG.email}
             </a>
-            {SITE_CONFIG.linkedin && (
-              <a
-                href={SITE_CONFIG.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={LINK}
-              >
-                LinkedIn ↗
-              </a>
+            {SOCIALS.map(([label, href]) =>
+              href ? (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={LINK}
+                >
+                  {label} ↗
+                </a>
+              ) : null
             )}
-            <a
-              href={SITE_CONFIG.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={LINK}
-            >
-              GitHub ↗
-            </a>
           </div>
         </div>
         <div className="text-faint mt-6 font-mono text-2xs tracking-[0.03em]">

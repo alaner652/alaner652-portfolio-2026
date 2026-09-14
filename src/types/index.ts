@@ -108,6 +108,9 @@ export interface SiteConfig {
   email: string
   /** 建好帳號後填入，Footer、Hero 與 Person JSON-LD 的 sameAs 會自動帶上。 */
   linkedin?: string
+  /** 社群帳號，Footer 跟 Person JSON-LD 的 sameAs 用。 */
+  instagram?: string
+  threads?: string
   /** public/ 底下的頭像路徑（例如 '/avatar.jpg'）。沒填的話 Hero 用 monogram 佔位。 */
   avatar?: string
   description: string

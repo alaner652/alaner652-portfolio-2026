@@ -1,140 +1,143 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { MetricChip } from '@/components/common/MetricChip'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { SkillIcon } from '@/components/common/SkillIcon'
-import { JOURNEY, SITE_CONFIG, SKILLS } from '@/constants'
+import { ContributionSnake } from '@/components/home/ContributionSnake'
+import { RIDING_PHOTOS, SITE_CONFIG, SKILLS } from '@/constants'
+import SKILL_ICONS from '@/constants/skill-icons.json'
+import { type Contributions, getContributions } from '@/lib/github'
 
-/** 格子的外殼：整格是一個連結，標題在上、右上角一個 ↗，hover 邊框轉琥珀。 */
-function Cell({
-  href,
-  title,
-  className = '',
-  children,
-}: {
-  href: string
-  title: string
-  className?: string
-  children: React.ReactNode
-}) {
+const TILE =
+  'group/tile bg-panel border-line-soft rounded-card hover:border-amber relative flex flex-col overflow-hidden border p-6 transition-colors'
+
+/** 工作之外：整格一張追焦照，字疊在上面。 */
+function PhotoTile() {
+  const photo = RIDING_PHOTOS[4]
   return (
-    <Link
-      href={href}
-      className={`group/cell bg-panel border-line-soft rounded-card hover:border-amber flex flex-col overflow-hidden border p-5 transition-colors ${className}`}
-    >
-      <div className="mb-5 flex items-center">
-        <h2 className="font-display group-hover/cell:text-amber text-lg font-medium tracking-[-0.01em] transition-colors">
-          {title}
-        </h2>
-        <ArrowUpRight
-          size={14}
-          className="text-faint group-hover/cell:text-amber ml-auto transition-colors"
-          aria-hidden
-        />
+    <Link href="/about#offduty" className={`${TILE} min-h-64 bg-transparent md:col-span-7`}>
+      <Image
+        src={photo.src}
+        alt={photo.alt}
+        fill
+        sizes="(min-width: 768px) 620px, 100vw"
+        className="object-cover object-[50%_18%] transition-transform duration-700 ease-out group-hover/tile:scale-[1.03] motion-reduce:transition-none"
+      />
+      <span
+        className="absolute inset-0 bg-linear-to-t from-black/70 via-black/25 to-black/10"
+        aria-hidden="true"
+      />
+      <div className="relative mt-auto text-white">
+        <div className="text-2xs font-mono tracking-[0.18em] uppercase opacity-80">Off duty</div>
+        <h2 className="font-display text-h2 mt-3 font-medium tracking-[-0.015em]">工作之外</h2>
       </div>
-      {children}
+      <ArrowUpRight
+        size={20}
+        strokeWidth={1.5}
+        className="absolute right-6 bottom-6 flex size-11 items-center justify-center rounded-full border border-white/60 p-2.5 text-white transition-colors group-hover/tile:border-white group-hover/tile:bg-white/15"
+        aria-hidden
+      />
     </Link>
   )
 }
 
-/** 關於：頭像 + 名字。自介和在讀／在做 Hero 跟 /about 都有了，這裡不重複。 */
-function AboutCell() {
+/** 有 logo 的技能，照 SKILLS 的順序，同一個 logo（Next.js 跟它的 API Routes）只留一次。 */
+const ICON_MAP: Record<string, string> = SKILL_ICONS
+const LOGO_SKILLS = SKILLS.flatMap((g) => g.items).filter(
+  (name, i, all) => ICON_MAP[name] && all.findIndex((n) => ICON_MAP[n] === ICON_MAP[name]) === i
+)
+
+/** 一排 logo 往左流，內容複製兩份，跑到 -50% 剛好接回起點。hover 暫停，reduce-motion 不動。 */
+function LogoRow({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
   return (
-    <Cell href="/about" title="關於我" className="md:col-span-2">
-      <div className="mt-auto flex items-center gap-3.5">
-        {SITE_CONFIG.avatar ? (
-          <Image
-            src={SITE_CONFIG.avatar}
-            alt=""
-            width={48}
-            height={48}
-            className="border-line-soft size-12 shrink-0 rounded-full border object-cover"
-          />
-        ) : (
-          <span className="bg-orange-tint text-orange-ink font-display flex size-12 shrink-0 items-center justify-center rounded-full text-lg font-medium">
-            R
+    <div
+      className={`animate-marquee flex w-max gap-3 group-hover/tile:[animation-play-state:paused] motion-reduce:animate-none ${reverse ? '[animation-direction:reverse]' : ''}`}
+    >
+      {[...items, ...items].map((name, i) => (
+        <SkillIcon key={`${name}-${i}`} name={name} size={40} />
+      ))}
+    </div>
+  )
+}
+
+/** 技能：兩排彩色 logo 一左一右流過去，兩邊漸淡。清單直接來自 SKILLS，跟 /about 一致。 */
+function SkillsTile() {
+  const half = Math.ceil(LOGO_SKILLS.length / 2)
+  return (
+    <Link href="/about#skills" className={`${TILE} md:col-span-5`}>
+      <div className="text-faint text-2xs font-mono tracking-[0.18em] uppercase">Skills</div>
+      <h2 className="font-display group-hover/tile:text-amber text-h2 mt-3 font-medium tracking-[-0.015em] transition-colors">
+        會的東西
+      </h2>
+      <div
+        className="-mx-6 mt-6 mb-10 space-y-3 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
+        aria-hidden="true"
+      >
+        <LogoRow items={LOGO_SKILLS.slice(0, half)} />
+        <LogoRow items={LOGO_SKILLS.slice(half)} reverse />
+      </div>
+      <ArrowRight
+        size={22}
+        strokeWidth={1.5}
+        className="text-dim group-hover/tile:text-amber absolute right-6 bottom-6 transition-colors"
+        aria-hidden
+      />
+    </Link>
+  )
+}
+
+/** GitHub：整格就是貢獻圖，蛇在上面爬。次數只當小字，不當標題。抓不到就只剩連結。 */
+function GithubTile({ data }: { data: Contributions | null }) {
+  // 第一天不是週日的話前面補空格，讓每一直欄都是週日到週六
+  const pad = data ? new Date(data.days[0].date).getUTCDay() : 0
+
+  return (
+    <Link
+      href={SITE_CONFIG.github}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${TILE} md:col-span-12`}
+    >
+      {data ? (
+        <div className="flex flex-1 items-center">
+          <ContributionSnake days={data.days} pad={pad} />
+        </div>
+      ) : (
+        <h2 className="font-display group-hover/tile:text-amber text-h2 font-medium tracking-[-0.015em] transition-colors">
+          GitHub
+        </h2>
+      )}
+      <div className="text-faint text-2xs mt-5 flex items-center font-mono tracking-[0.18em] uppercase">
+        GitHub
+        {data && (
+          <span className="ml-3 tracking-[0.04em] normal-case">
+            最近一年 {data.total.toLocaleString('en-US')} 次貢獻
           </span>
         )}
-        <div className="min-w-0">
-          <div className="text-txt truncate text-base font-medium">吳宸麒</div>
-          <div className="text-dim truncate font-mono text-2xs tracking-[0.04em]">
-            {SITE_CONFIG.handle} · small R
-          </div>
-        </div>
+        <ArrowUpRight
+          size={22}
+          strokeWidth={1.5}
+          className="text-dim group-hover/tile:text-amber ml-auto transition-colors"
+          aria-hidden
+        />
       </div>
-    </Cell>
+    </Link>
   )
 }
 
-/** 經歷：最新那段的預覽，長得跟 /about 時間軸的一格一樣，只是縮小。 */
-function JourneyCell() {
-  const now = JOURNEY[JOURNEY.length - 1]
+/** Hero 底下的 Bento：一張追焦照 + 技能跑馬燈，底下一整條 GitHub 貢獻圖。
+    專案跟文章不在這裡，往下捲就是。 */
+export async function Bento() {
+  const contributions = await getContributions()
 
   return (
-    <Cell href="/about#experience" title="經歷" className="md:col-span-4">
-      <div className="mt-auto grid gap-x-5 gap-y-1 sm:grid-cols-[auto_1fr]">
-        <div className="sm:text-right">
-          <div className="font-display text-xl font-medium whitespace-nowrap tabular-nums">
-            {now.period}
-          </div>
-          <div className="text-faint font-mono text-2xs tracking-[0.04em]">{now.stage}</div>
-        </div>
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-display text-base font-medium">{now.title}</h3>
-            <MetricChip tone={now.tone}>{now.track}</MetricChip>
-          </div>
-          <p className="text-dim mt-1.5 line-clamp-2 text-sm leading-[1.65]">{now.detail}</p>
-        </div>
-      </div>
-    </Cell>
-  )
-}
-
-/** 技能：所有技能排成一條跑馬燈。內容複製兩份、位移 -50% 接回起點，hover 停下來。
-    reduce motion 時不跑，改成正常換行排開。 */
-function SkillsCell() {
-  const all = SKILLS.flatMap((g) => g.items)
-
-  return (
-    <Cell href="/about#skills" title="會的東西" className="md:col-span-6">
-      <div
-        className="group/marquee -mx-5 overflow-hidden motion-reduce:mx-0 motion-reduce:overflow-visible"
-        aria-hidden="true"
-        style={{
-          maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
-        }}
-      >
-        <ul className="motion-safe:animate-marquee flex w-max gap-2 px-5 group-hover/marquee:[animation-play-state:paused] motion-reduce:w-auto motion-reduce:flex-wrap motion-reduce:px-0">
-          {[...all, ...all].map((item, i) => (
-            <li
-              key={`${item}-${i}`}
-              className={`rounded-chip bg-panel-hi text-txt inline-flex shrink-0 items-center gap-2 py-1.5 pr-3 pl-1.5 font-mono text-xs ${
-                i >= all.length ? 'motion-reduce:hidden' : ''
-              }`}
-            >
-              <SkillIcon name={item} />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Cell>
-  )
-}
-
-/** Hero / 我能做什麼 底下的 Bento：上排關於 + 經歷，下排技能跑滿。
-    每格都是 /about 對應區塊的入口，只放一眼看得懂的東西，字留給 /about。 */
-export function Bento() {
-  return (
-    <nav aria-label="關於、經歷、技能" className="mx-auto max-w-270 px-6 pb-14 md:pb-20">
+    <nav aria-label="工作之外、技能、GitHub" className="mx-auto max-w-270 px-6 pb-14 md:pb-20">
       <RevealWrapper>
-        <div className="grid gap-4 sm:gap-5 md:grid-cols-6">
-          <AboutCell />
-          <JourneyCell />
-          <SkillsCell />
+        <div className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12">
+          <PhotoTile />
+          <SkillsTile />
+          <GithubTile data={contributions} />
         </div>
       </RevealWrapper>
     </nav>
