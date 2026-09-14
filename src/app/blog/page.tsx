@@ -41,10 +41,10 @@ export default function BlogPage() {
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="group hover:bg-panel-hi block px-4 py-6 transition-colors"
+                className="group/row hover:bg-panel-hi block px-4 py-6 transition-colors"
               >
                 <div className="flex flex-wrap items-start justify-between gap-4">
-                  <h2 className="font-display group-hover:text-amber text-lg font-medium tracking-[-0.01em] transition-colors">
+                  <h2 className="font-display group-hover/row:text-amber text-lg font-medium tracking-[-0.01em] transition-colors">
                     {post.frontmatter.title}
                   </h2>
                   <time className="text-faint shrink-0 pt-1 font-mono text-2xs">

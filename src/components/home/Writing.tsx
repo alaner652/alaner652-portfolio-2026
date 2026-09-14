@@ -21,9 +21,9 @@ export function Writing({ limit }: { limit?: number }) {
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="group hover:bg-panel-hi flex flex-wrap items-baseline gap-4 px-3 py-4 transition-colors"
+                  className="group/row hover:bg-panel-hi flex flex-wrap items-baseline gap-4 px-3 py-4 transition-colors"
                 >
-                  <span className="font-display text-txt group-hover:text-amber min-w-50 flex-1 text-md transition-colors">
+                  <span className="font-display text-txt group-hover/row:text-amber min-w-50 flex-1 text-md transition-colors">
                     {post.frontmatter.title}
                   </span>
                   <time className="text-faint shrink-0 font-mono text-2xs">

@@ -51,7 +51,7 @@ function CardBody({ item }: { item: WorkItem }) {
       <div className="mb-2 flex items-center gap-1.5">
         <span className={`size-1.5 rounded-full ${STATUS[item.tone].dot}`} aria-hidden="true" />
         <Eyebrow className={STATUS[item.tone].text}>{item.status}</Eyebrow>
-        <span className="text-faint group-hover:text-amber ml-auto font-mono text-2xs tracking-[0.04em] transition-colors">
+        <span className="text-faint group-hover/card:text-amber ml-auto font-mono text-2xs tracking-[0.04em] transition-colors">
           點開看
         </span>
       </div>
@@ -81,7 +81,7 @@ export function ProjectCard({
     <button
       type="button"
       onClick={() => onOpen(item)}
-      className="group bg-panel border-line-soft rounded-card hover:border-amber flex h-full w-full cursor-pointer flex-col overflow-hidden border transition-colors"
+      className="group/card bg-panel border-line-soft rounded-card hover:border-amber flex h-full w-full cursor-pointer flex-col overflow-hidden border transition-colors"
     >
       <ProjectCover item={item} className="border-line-soft w-full border-b" />
       <CardBody item={item} />
