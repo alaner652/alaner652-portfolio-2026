@@ -83,11 +83,10 @@
 
   /* ── 動畫 ──
      都很輕，且只在 motion-safe 下套用（reduce 時不套，元素以最終狀態顯示）。
-     fade-up：Hero 進場的分層淡入；drop：手機導覽選單的下拉；blink：打字機游標；
+     fade-up：Hero 進場的分層淡入；blink：打字機游標；
      marquee：首頁技能格的跑馬燈（內容複製兩份，跑到 -50% 剛好接回起點）；
      nudge：Hero 底下「往下捲」的箭頭，輕輕點頭。 */
   --animate-fade-up: fade-up 0.6s ease-out both;
-  --animate-drop: drop 0.22s ease-out both;
   --animate-blink: blink 1s steps(1) infinite;
   --animate-marquee: marquee 36s linear infinite;
   --animate-nudge: nudge 2s ease-in-out infinite;
@@ -106,16 +105,6 @@
 @keyframes blink {
   50% {
     opacity: 0;
-  }
-}
-@keyframes drop {
-  from {
-    opacity: 0;
-    transform: translateY(-0.375rem);
-  }
-  to {
-    opacity: 1;
-    transform: none;
   }
 }
 @keyframes marquee {

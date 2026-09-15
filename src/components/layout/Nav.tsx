@@ -52,8 +52,8 @@ export function Nav() {
     <nav aria-label="主要導覽" className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
       <div
         className={cn(
-          'mx-auto max-w-270 border border-transparent transition-[background-color,border-color,box-shadow,border-radius,backdrop-filter] duration-300',
-          menuOpen ? 'rounded-[1.5rem]' : 'rounded-full',
+          // 圓角固定 1.75rem（= 收合時 3.5rem 高的一半，看起來就是膠囊），開選單時形狀不變、只往下長
+          'mx-auto max-w-270 rounded-[1.75rem] border border-transparent transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300',
           floating &&
             'bg-bg/80 border-line-soft shadow-[0_12px_32px_-18px_rgba(51,45,36,0.28)] backdrop-blur-[12px]'
         )}
@@ -106,32 +106,44 @@ export function Nav() {
           </button>
         </div>
 
-        {menuOpen && (
-          <div
-            id="nav-menu"
-            className="border-line-soft motion-safe:animate-drop border-t px-5 pt-2 pb-4 min-[681px]:hidden"
-          >
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-                className={MOBILE_LINK}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <a
-              href={SITE_CONFIG.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-dim hover:text-amber border-line-soft mt-2 flex h-11 items-center gap-2 border-t pt-2 font-mono text-sm transition-colors"
+        {/* 手機選單常駐在 DOM，用 grid-template-rows 0fr → 1fr 讓外層盒子平滑往下長；收合時 inert 擋掉 focus */}
+        <div
+          id="nav-menu"
+          inert={!menuOpen}
+          className={cn(
+            'grid transition-[grid-template-rows] duration-300 ease-out min-[681px]:hidden motion-reduce:transition-none',
+            menuOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+          )}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div
+              className={cn(
+                'border-line-soft border-t px-5 pt-2 pb-4 transition-opacity duration-200 motion-reduce:transition-none',
+                menuOpen ? 'opacity-100 delay-100' : 'opacity-0'
+              )}
             >
-              <BrandIcon name="GitHub" size={16} /> GitHub
-            </a>
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={isActive(link.href) ? 'page' : undefined}
+                  className={MOBILE_LINK}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <a
+                href={SITE_CONFIG.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-dim hover:text-amber border-line-soft mt-2 flex h-11 items-center gap-2 border-t pt-2 font-mono text-sm transition-colors"
+              >
+                <BrandIcon name="GitHub" size={16} /> GitHub
+              </a>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   )
