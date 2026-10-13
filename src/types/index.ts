@@ -80,6 +80,22 @@ export interface Offer {
   icon: LucideIcon
 }
 
+/** /hire「接什麼」的一項：一種案型 + 一句範圍 + 幾個站上做過的例子（對到 WORK_ITEMS 的 title）。 */
+export interface HireService {
+  label: string
+  description: string
+  tone: Tone
+  icon: LucideIcon
+  /** WORK_ITEMS 裡的 title，頁面上會列成小字。沒做過的案型就不要放 */
+  examples?: string[]
+}
+
+/** /hire「怎麼合作」的一步。 */
+export interface HireStep {
+  label: string
+  description: string
+}
+
 export interface SkillGroup {
   label: string
   items: string[]

@@ -1,4 +1,4 @@
-import { Layers, ShieldHalf, Wrench } from 'lucide-react'
+import { Bot, Globe, Layers, Plug, ShieldCheck, ShieldHalf, Wrench } from 'lucide-react'
 
 import type {
   Photo,
@@ -9,6 +9,8 @@ import type {
   EducationItem,
   JourneyEntry,
   Offer,
+  HireService,
+  HireStep,
   SkillGroup,
 } from '@/types'
 
@@ -22,7 +24,7 @@ export const SITE_CONFIG: SiteConfig = {
   email: 'hhgg12661@gmail.com',
   avatar: '/avatar.jpg',
   description:
-    '吳宸麒 (alaner652)，五專資工四年級的全端工程師。用攻擊者的視角把產品做到上線；在學校電算中心做授權範圍內的資安工作。',
+    '吳宸麒 (alaner652)，台北的全端工程師，專注資安。用攻擊者的視角把產品做到上線；在大學電算中心做授權範圍內的資安與內部自動化。',
   location: 'Taipei',
   timezone: 'GMT+8',
   copyright: '© 2026 吳宸麒，台北',
@@ -33,6 +35,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: '做過的東西', href: '/projects' },
   { label: '心得分享', href: '/blog' },
   { label: '履歷', href: '/resume' },
+  { label: '接案', href: '/hire' },
 ]
 
 /** /about「我是誰」那張卡的自介，首頁 Bento 也拿同一段。裡面的每個事實都來自下面的
@@ -65,7 +68,8 @@ export const OFFERS: Offer[] = [
     label: '攻防視角',
     tone: 'green',
     icon: ShieldHalf,
-    description: '用攻擊者的方式看自己做的東西。在校務系統找到 IDOR，負責任揭露後進電算中心修補。',
+    description:
+      '用攻擊者的方式看自己做的東西。在一套校務系統找到 IDOR，負責任揭露後受邀進電算中心修補。',
   },
   {
     label: '逆向與自動化',
@@ -75,6 +79,89 @@ export const OFFERS: Offer[] = [
   },
 ]
 
+/** /hire 的內容。這頁的讀者是要付錢的人，不是審查委員：只講接什麼、怎麼合作、做過哪些，
+    不講學歷。examples 對到 WORK_ITEMS 的 title，改專案名記得回來對一次。 */
+export const HIRE = {
+  lead: '接網頁產品、LINE Bot、內部自動化，和授權範圍內的資安檢測。從需求到上線一個人做完，不用在三個人之間傳話。',
+  services: [
+    {
+      label: '網頁產品',
+      tone: 'orange',
+      icon: Globe,
+      description:
+        '點餐、預約、後台、活動頁這類要真的上線給人用的東西。前端、後端、資料庫、部署、網域一起包，交付的是能跑的網址，不是一份程式碼。',
+      examples: ['早餐店點餐系統', '一句一幀'],
+    },
+    {
+      label: 'LINE Bot 與自動化',
+      tone: 'green',
+      icon: Bot,
+      description:
+        'LINE 官方帳號、Flex Message 推播、Discord Bot、定時通知。把每天要人手做一次的事變成一支腳本，或是接進你現有的流程。',
+      examples: ['早餐店點餐系統', 'Easy TPCU'],
+    },
+    {
+      label: '逆向與系統整合',
+      tone: 'blue',
+      icon: Plug,
+      description:
+        '沒有文件的舊系統、只有網頁介面沒有 API 的服務，摸清楚之後包成能用的 API，再接進新的東西。',
+      examples: ['Agora-AI'],
+    },
+    {
+      label: '資安檢測',
+      tone: 'plum',
+      icon: ShieldCheck,
+      description:
+        '在書面授權範圍內對 Web 應用做弱點檢測（IDOR、XSS、CSRF、權限設計這類），交一份看得懂的報告，需要的話一起修。只做有授權的。',
+      examples: ['大學校務系統的資安工作'],
+    },
+  ] satisfies HireService[],
+  steps: [
+    {
+      label: '聊需求',
+      description:
+        '寄信說你要做什麼、給誰用、大概什麼時候要。不用寫規格書，一兩天內回你，先確認我做不做得到。',
+    },
+    {
+      label: '報價',
+      description:
+        '按案報價，不算時薪。範圍和交付物白紙黑字寫清楚，之後加東西另外算，不會做到一半改價。',
+    },
+    {
+      label: '開發',
+      description:
+        '先上一個能用的版本讓你摸，再往上加。過程中有進度就給你看，不會消失兩個禮拜然後交一包東西。',
+    },
+    {
+      label: '交付與維運',
+      description:
+        '原始碼歸你。部署、網域、怎麼改文字和圖片會教到你能自己來。上線後約定期限內的問題我處理。',
+    },
+  ] satisfies HireStep[],
+  /** 先講清楚省大家時間。 */
+  notes: [
+    {
+      q: '不接什麼？',
+      a: '純視覺設計、原生 iOS / Android App、需要 24 小時待命的維運。這些我做不好，會介紹你找別人。',
+    },
+    {
+      q: '多久能做完？',
+      a: '看範圍。一個 LINE Bot 或單頁活動網站通常一到兩週；點餐系統這種規模一到兩個月。報價時會一起給時程。',
+    },
+    {
+      q: '做完之後東西是誰的？',
+      a: '你的。原始碼、網域、帳號都在你名下，我只留作品集展示的權利，而且會先問過你。',
+    },
+    {
+      q: '資安檢測要什麼前提？',
+      a: '系統擁有者的書面授權，寫清楚範圍和時間。沒有這份東西我不會動手，這是底線。',
+    },
+  ],
+  /** /hire「做過的案子」要列的專案，照 WORK_ITEMS 的 title。挑真的像交付物的。 */
+  cases: ['早餐店點餐系統', '一句一幀', 'Cooking Game'],
+}
+
 /** 所有專案一份清單，停掉的也留著，用狀態標示。
     category 對應清單上方的篩選 chip；preview 由 `npm run shots` 產生。 */
 export const WORK_ITEMS: WorkItem[] = [
@@ -82,10 +169,10 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '進行中',
     tone: 'live',
     category: '資安',
-    title: '校務系統的安全工作',
+    title: '大學校務系統的資安工作',
     featured: true,
     description:
-      '發現一個能讀到其他學生資料的 IDOR，透過 HITCON ZeroDay 揭露後被電算中心找進去。在授權範圍內補掉幾個後門、修了幾個 XSS，也寫了幾支 Python 內部自動化工具減少單位的人工流程。',
+      '發現一個能越權讀取他人個資的 IDOR，透過 HITCON ZeroDay 負責任揭露，之後受邀進電算中心。在授權範圍內補掉幾個後門、修了幾個 XSS，也寫了幾支 Python 內部自動化工具減少單位的人工流程。',
     metrics: ['Burp Suite', 'Python', '授權範圍內'],
     link: 'https://zeroday.hitcon.org/vulnerability/ZD-2026-00351',
   },
@@ -95,7 +182,7 @@ export const WORK_ITEMS: WorkItem[] = [
     category: 'AI',
     title: 'Agora-AI',
     description:
-      '把沒有文件的校務 API 逆向出來，包成 10 個 agent 工具，學生可以直接問「我這週有什麼課」。部署在學校 VM 上。目前暫停，想重新想清楚範圍。',
+      '把沒有文件的校務 API 逆向出來，包成 10 個 agent 工具，使用者可以直接問「我這週有什麼課」。部署在校方提供的 VM 上。目前暫停，想重新想清楚範圍。',
     metrics: ['FastAPI', 'Next.js', 'Docker'],
     link: 'https://github.com/alaner652/Agora-AI',
     preview: '/shots/agora-ai.png',

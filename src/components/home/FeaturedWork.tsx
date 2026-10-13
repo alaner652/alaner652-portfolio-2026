@@ -25,8 +25,8 @@ function ExtLink({ href, children }: { href: string; children: React.ReactNode }
 
 /** 一列精選：左邊縮圖、右邊文字，列與列之間只用一條細線。
     跟 /projects 的卡片格是同一份資料、不同版式——首頁三個要讀得像文章，不是像商品櫃。
-    標題是連結（GitHub 或 demo）；有兩個連結的項目再在底下列出來。 */
-function FeaturedRow({ item }: { item: WorkItem }) {
+    標題是連結（GitHub 或 demo）；有兩個連結的項目再在底下列出來。/hire 的案例也用這個。 */
+export function FeaturedRow({ item }: { item: WorkItem }) {
   const primary = item.link ?? item.demo
   const { dot, text } = STATUS[item.tone]
 

@@ -8,7 +8,7 @@ import { Skills } from '@/components/sections/Skills'
 import { SITE_CONFIG } from '@/constants'
 
 const DESCRIPTION =
-  '吳宸麒 (alaner652) 的經歷、學歷與會的東西。全端工程師，在學校電算中心做授權範圍內的資安工作。'
+  '吳宸麒 (alaner652) 的經歷、學歷與會的東西。全端工程師，在大學電算中心做授權範圍內的資安工作。'
 
 export const metadata: Metadata = {
   title: '關於',

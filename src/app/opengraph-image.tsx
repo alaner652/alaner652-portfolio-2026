@@ -54,7 +54,7 @@ export default async function Image() {
               fontFamily: 'NotoSansTC, sans-serif',
             }}
           >
-            吳宸麒，五專資工四年級。台北。
+            吳宸麒，全端工程師 · 資安。台北。
           </div>
         </div>
 

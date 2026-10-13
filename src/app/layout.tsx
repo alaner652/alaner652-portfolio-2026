@@ -45,7 +45,7 @@ const notoSansTC = Noto_Sans_TC({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
   title: {
-    default: `${SITE_CONFIG.name} — Software Engineer, Student, Builder`,
+    default: `${SITE_CONFIG.name} — Software Engineer, Security, Builder`,
     template: `%s | ${SITE_CONFIG.name}`,
   },
   description: SITE_CONFIG.description,
@@ -59,7 +59,6 @@ export const metadata: Metadata = {
     'Next.js',
     'TypeScript',
     'Taipei',
-    'TPCU',
   ],
   authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
   creator: SITE_CONFIG.name,
@@ -72,7 +71,7 @@ export const metadata: Metadata = {
     canonical: SITE_CONFIG.url,
   },
   openGraph: {
-    title: `${SITE_CONFIG.name} — Software Engineer, Student, Builder`,
+    title: `${SITE_CONFIG.name} — Software Engineer, Security, Builder`,
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     siteName: SITE_CONFIG.name,
@@ -81,7 +80,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${SITE_CONFIG.name} — Software Engineer, Student, Builder`,
+    title: `${SITE_CONFIG.name} — Software Engineer, Security, Builder`,
     description: SITE_CONFIG.description,
     creator: `@${SITE_CONFIG.handle}`,
   },
