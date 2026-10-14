@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { PageHeader } from '@/components/common/PageHeader'
-import { HireCases, HireContact, HireProcess, HireServices } from '@/components/sections/Hire'
+import { HireCases, HireProcess, HireServices } from '@/components/sections/Hire'
 import { HIRE, SITE_CONFIG } from '@/constants'
 
 const DESCRIPTION =
@@ -55,7 +55,6 @@ export default function HirePage() {
       <HireServices />
       <HireProcess />
       <HireCases />
-      <HireContact />
     </>
   )
 }

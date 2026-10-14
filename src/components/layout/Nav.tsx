@@ -46,10 +46,12 @@ export function Nav() {
   }
 
   const floating = scrolled || menuOpen
+  // 首頁頂端整個第一屏就是一個大字標，導覽列那個先藏起來，膠囊浮起來時才淡入；其他頁一直在
+  const hideMark = pathname === '/' && !floating
 
   return (
     // 在頁首時是透明的一列；捲下去後外層套成一顆浮起來的膠囊（毛玻璃 + 細邊 + 淡影），裡面的連結不變
-    <nav aria-label="主要導覽" className="sticky top-0 z-50 px-3 pt-3 sm:px-6">
+    <nav aria-label="主要導覽" className="sticky top-0 z-50 px-3 pt-3 sm:px-6 print:hidden">
       <div
         className={cn(
           // 圓角固定 1.75rem（= 收合時 3.5rem 高的一半，看起來就是膠囊），開選單時形狀不變、只往下長
@@ -59,11 +61,15 @@ export function Nav() {
         )}
       >
         <div className="flex h-14 items-center justify-between px-5">
-          {/* 字標：手寫體，跟 Hero 的「small R」同一套。它只是回首頁，不做 hover */}
+          {/* 字標：手寫體，跟 Hero 的「small R」同一套。它只是回首頁，不做 hover。
+              invisible 連同 tab 順序一起藏，不會有看不見卻能 focus 的連結 */}
           <Link
             href="/"
             aria-label="回到首頁"
-            className="font-hand text-txt -ml-1 flex h-11 items-center pr-1 text-[1.75rem] leading-none font-semibold tracking-[0.01em]"
+            className={cn(
+              'font-hand text-txt -ml-1 flex h-11 items-center pr-1 text-[1.75rem] leading-none font-semibold tracking-[0.01em] transition-[opacity,visibility] duration-300 motion-reduce:transition-none',
+              hideMark && 'invisible opacity-0'
+            )}
           >
             small&nbsp;<span className="text-amber">R</span>
           </Link>

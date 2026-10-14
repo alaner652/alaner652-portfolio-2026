@@ -7,6 +7,19 @@ import type { BlogPost, BlogPostFrontmatter } from '@/types'
 
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blog')
 
+/** 估閱讀時間：中文每分鐘約 400 字、英文約 200 詞，兩種混著算。
+    先把程式碼區塊和 MDX 標籤拿掉，不然一篇貼了很多 log 的文章會被算成半小時。 */
+export function estimateReadingMinutes(content: string): number {
+  const text = content
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/^(import|export)\s.*$/gm, ' ')
+  const cjk = (text.match(/[\u2e80-\u9fff\uf900-\ufaff]/g) ?? []).length
+  const words = (text.replace(/[\u2e80-\u9fff\uf900-\ufaff]/g, ' ').match(/[A-Za-z0-9]+/g) ?? [])
+    .length
+  return Math.max(1, Math.round(cjk / 400 + words / 200))
+}
+
 export function getAllPosts(): BlogPost[] {
   if (!fs.existsSync(BLOG_DIR)) return []
 
@@ -16,18 +29,28 @@ export function getAllPosts(): BlogPost[] {
     .map((filename) => {
       const slug = filename.replace(/\.mdx$/, '')
       const raw = fs.readFileSync(path.join(BLOG_DIR, filename), 'utf8')
-      const { data } = matter(raw)
-      return { slug, frontmatter: data as BlogPostFrontmatter }
+      const { data, content } = matter(raw)
+      return {
+        slug,
+        frontmatter: data as BlogPostFrontmatter,
+        readingMinutes: estimateReadingMinutes(content),
+      }
     })
     .filter((post) => !post.frontmatter.hidden)
     .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())
 }
 
-export function getPostBySlug(slug: string): { frontmatter: BlogPostFrontmatter; content: string } | null {
+export function getPostBySlug(
+  slug: string
+): { frontmatter: BlogPostFrontmatter; content: string; readingMinutes: number } | null {
   const filePath = path.join(BLOG_DIR, `${slug}.mdx`)
   if (!fs.existsSync(filePath)) return null
 
   const raw = fs.readFileSync(filePath, 'utf8')
   const { data, content } = matter(raw)
-  return { frontmatter: data as BlogPostFrontmatter, content }
+  return {
+    frontmatter: data as BlogPostFrontmatter,
+    content,
+    readingMinutes: estimateReadingMinutes(content),
+  }
 }

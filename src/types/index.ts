@@ -21,14 +21,23 @@ export interface WorkItem {
   category: ProjectCategory
   title: string
   description: string
+  /** 可以放很大的一個短結果（「10 個 agent 工具」這種），只有精選才需要。沒有就不填。 */
+  stat?: string
+  /** 一句結果：做完之後世界哪裡不一樣了。卡片和精選列把它放在描述前面，
+      因為訪客先看結果再決定要不要讀細節。沒有可說的結果就不填，不要硬湊。 */
+  result?: string
   /** 份量輕的項目可以不列技術標籤 */
   metrics?: string[]
   link?: string
   /** 次要連結（如 demo 影片）。帶了 demo 的卡片改在底部列出 GitHub / Demo 兩個連結，
       而不是整張可點——避免 <a> 巢狀。 */
   demo?: string
-  /** public/ 底下的預覽圖路徑，由 `npm run shots` 產生。沒有連結的項目就沒有圖。 */
+  /** public/ 底下的預覽圖路徑，由 `npm run shots` 產生。
+      只放真的看得到產品的圖（網站截圖、影片畫面）；GitHub 自動產生的 repo 卡不算，
+      那種圖每張都長一樣，沒圖的項目改用排版式封面（ProjectCover 自己處理）。 */
   preview?: string
+  /** preview 是 GitHub 的 repo 卡，不是產品畫面。列表照放，但不拿來當 /projects 的主視覺。 */
+  card?: boolean
   /** 首頁精選。挑三個能替 OFFERS 那三條主張作證的，順序照 WORK_ITEMS。 */
   featured?: boolean
 }
@@ -59,8 +68,10 @@ export interface JourneyEntry {
   tone: Tone
   title: string
   detail: string
-  /** 正在進行的那一段，chip 換成「現在」並用綠點 */
+  /** 正在進行的那一段，chip 換成「現在」 */
   current?: boolean
+  /** 首頁那排大年份只挑幾個里程碑 */
+  milestone?: boolean
 }
 
 /** 相片：src 指向 public/，width/height 是原檔像素。 */
@@ -74,6 +85,8 @@ export interface Photo {
 /** 首頁「我能做什麼」的一步：一個圖示 + 一個能力主張 + 一句說明。
     三步照交付流程排（做出來 → 守得住 → 摸清楚），順序就是顯示順序。 */
 export interface Offer {
+  /** 三個字的動詞，首頁用超大字放：做出來／守得住／摸清楚 */
+  verb: string
   label: string
   description: string
   tone: Tone
@@ -86,7 +99,8 @@ export interface HireService {
   description: string
   tone: Tone
   icon: LucideIcon
-  /** WORK_ITEMS 裡的 title，頁面上會列成小字。沒做過的案型就不要放 */
+  /** 做過的例子，頁面上列成小字：通常是 WORK_ITEMS 的 title，也可以是經歷（像電算中心的資安工作）。
+      沒做過的案型就不要放 */
   examples?: string[]
 }
 
@@ -114,6 +128,8 @@ export interface BlogPostFrontmatter {
 export interface BlogPost {
   slug: string
   frontmatter: BlogPostFrontmatter
+  /** 估的閱讀分鐘數，從內文字數算，不是手填的 */
+  readingMinutes: number
 }
 
 export interface SiteConfig {

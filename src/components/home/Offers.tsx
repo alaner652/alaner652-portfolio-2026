@@ -1,64 +1,46 @@
 import { RevealWrapper } from '@/components/common/RevealWrapper'
-import { SectionLabel } from '@/components/common/SectionLabel'
 import { Section } from '@/components/layout/Section'
 import { OFFERS } from '@/constants'
-import { TONE_CHIP, TONE_INK } from '@/lib/tone'
 
-/** 一步：編號 → 圖示 → 標題 → 說明。進場照順序一步一步亮，像流程在往下走。
-    延遲掛在 style 上，數量改了不用動 class；reveal-item 讓 noscript 時也看得到。 */
-function Step({ offer, index }: { offer: (typeof OFFERS)[number]; index: number }) {
-  const { label, description, tone, icon: Icon } = offer
-
-  return (
-    <li
-      className="reveal-item group-data-visible:translate-y-0 group-data-visible:opacity-100 relative translate-y-3 opacity-0 transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none"
-      style={{ transitionDelay: `${180 + index * 220}ms` }}
-    >
-      <div className="flex items-center gap-3">
-        <span
-          className={`rounded-card flex size-10 shrink-0 items-center justify-center ${TONE_CHIP[tone]}`}
-          aria-hidden="true"
-        >
-          <Icon className="size-5" strokeWidth={1.6} />
-        </span>
-        <span className="text-faint bg-bg relative px-1.5 font-mono text-2xs tracking-[0.08em]">
-          {String(index + 1).padStart(2, '0')}
-        </span>
-      </div>
-      <h3 className={`mt-4 font-mono text-sm tracking-[0.04em] ${TONE_INK[tone]}`}>{label}</h3>
-      <p className="text-txt mt-2 max-w-[36ch] text-base leading-[1.75]">{description}</p>
-    </li>
-  )
-}
-
-/** 首頁「我能做什麼」：三步排成一條交付流程——做出來 → 守得住 → 摸清楚。
-    RevealWrapper 進到視窗後，先畫連接線（scale-x 0 → 1），再讓三步依序亮起。
-    不放證據連結，證據在下面「做過的東西」和 /projects。 */
+/** 首頁「我能做什麼」：三個動詞——做出來、守得住、摸清楚——疊成一塊海報放左邊，
+    右邊三段各對齊一行。動詞是空心線稿，捲到視窗中下段就從左往右填成橘色，滑過去也填；
+    它們純裝飾（aria-hidden），讀屏讀的是右邊那欄的標題。 */
 export function Offers() {
   return (
-    <Section id="offers">
-      <RevealWrapper>
-        <SectionLabel
-          title="我能做什麼"
-          note="一個人接得起整條線：從做出來、守得住，到把黑盒子摸清楚。"
-          className="mb-10"
-        />
-        <div className="relative">
-          {/* 連接線：桌機橫的（穿過三個圖示的中線），手機直的（貼在圖示左緣） */}
-          <span
-            className="bg-line group-data-visible:scale-x-100 absolute top-5 right-0 left-0 hidden h-px origin-left scale-x-0 transition-transform duration-1000 ease-out motion-reduce:transition-none md:block"
-            aria-hidden="true"
-          />
-          <span
-            className="bg-line group-data-visible:scale-y-100 absolute top-5 bottom-5 left-5 w-px origin-top scale-y-0 transition-transform duration-1000 ease-out motion-reduce:transition-none md:hidden"
-            aria-hidden="true"
-          />
-          <ol className="relative grid gap-10 md:grid-cols-3 md:gap-8">
-            {OFFERS.map((offer, i) => (
-              <Step key={offer.label} offer={offer} index={i} />
-            ))}
-          </ol>
+    <Section id="offers" label="我能做什麼">
+      <RevealWrapper className="grid gap-x-6 gap-y-8 md:grid-cols-12">
+        <div className="flex flex-col gap-1 md:col-span-7" aria-hidden="true">
+          {OFFERS.map((offer) => (
+            <span
+              key={offer.verb}
+              className="verb font-display text-[clamp(3.5rem,9vw,8rem)] leading-[1.02] font-bold tracking-[-0.03em] whitespace-nowrap"
+            >
+              <span className="verb-ghost">{offer.verb}</span>
+              <span className="verb-fill">{offer.verb}</span>
+            </span>
+          ))}
         </div>
+        <ol className="grid gap-7 md:col-span-5 md:grid-rows-3 md:gap-1">
+          {OFFERS.map((offer, i) => (
+            <li key={offer.label} className="flex flex-col justify-center">
+              <h3 className="flex items-baseline gap-3">
+                <span
+                  className="font-hand text-amber text-[1.6rem] leading-none"
+                  aria-hidden="true"
+                >
+                  {i + 1}.
+                </span>
+                <span className="text-amber-text font-mono text-xs tracking-[0.08em]">
+                  <span className="sr-only">{offer.verb} · </span>
+                  {offer.label}
+                </span>
+              </h3>
+              <p className="font-display text-txt mt-2.5 max-w-[22em] text-[1.15rem] leading-[1.5] font-medium tracking-[-0.01em]">
+                {offer.description}
+              </p>
+            </li>
+          ))}
+        </ol>
       </RevealWrapper>
     </Section>
   )

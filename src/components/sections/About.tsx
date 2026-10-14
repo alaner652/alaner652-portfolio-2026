@@ -1,72 +1,50 @@
+import { Marker } from '@/components/common/Marker'
+import { Photo } from '@/components/common/Photo'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
-import { SectionLabel } from '@/components/common/SectionLabel'
 import { Section } from '@/components/layout/Section'
-import { ABOUT_WHO, ABOUT_WORDS, EDUCATION, EXPERIENCE, SITE_CONFIG } from '@/constants'
+import { ABOUT_WHO, ABOUT_WORDS, SITE_CONFIG } from '@/constants'
 
-/** 兩張卡共用的外殼：mono 小標當卡片標題，內容自己排。 */
-function Card({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <article className="bg-panel border-line-soft rounded-card flex flex-col border p-6 md:p-8">
-      <h3 className="text-faint mb-5 font-mono text-xs tracking-[0.08em]">{title}</h3>
-      {children}
-    </article>
-  )
-}
-
-/** 幾行可核對的事實。全部從 constants 讀，這裡不另外維護一份。 */
-function Facts() {
-  const job = EXPERIENCE[0]
-  const school = EDUCATION[0]
-  const rows = [
-    { label: '名字', value: '吳宸麒' },
-    { label: '網路上', value: `${SITE_CONFIG.handle} · small R` },
-    { label: '所在', value: `${SITE_CONFIG.location} · ${SITE_CONFIG.timezone}` },
-    { label: '在讀', value: `${school.school} ${school.program}` },
-    { label: '在做', value: `${job.org} · ${job.role}` },
-  ]
-
-  return (
-    <dl className="divide-line-soft border-line-soft mt-auto divide-y border-t pt-2">
-      {rows.map(({ label, value }) => (
-        <div key={label} className="flex gap-4 py-2.5">
-          <dt className="text-faint w-14 shrink-0 font-mono text-2xs tracking-[0.06em]">{label}</dt>
-          <dd className="text-txt min-w-0 text-sm leading-[1.6]">{value}</dd>
-        </div>
-      ))}
-    </dl>
-  )
-}
-
-/** 關於我：兩張卡並排——左邊「我是誰」（一段自介 + 幾行事實），右邊「我想說的」
-    （一段開場 + 幾句一路上學到的話，每句都標出處）。手機上下疊。 */
+/** 關於我：自介當開場大字，右邊一張頭像。名字、帳號、學校、在做什麼都在那段話裡，
+    不另外列一份事實表。再下面一段是一路上學到的四句話，放大、關鍵句畫底線、左右錯開，每句標出處。 */
 export function About() {
   return (
-    <Section id="about">
-      <RevealWrapper>
-        <SectionLabel title="關於我" className="mb-8" />
-        <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
-          <Card title="我是誰">
-            <p className="text-txt text-md leading-[1.85]">{ABOUT_WHO}</p>
-            <div className="pt-6">
-              <Facts />
+    <>
+      <Section id="about" label="關於我">
+        <RevealWrapper className="grid gap-10 md:grid-cols-12 md:gap-x-6">
+          <p className="font-display text-txt max-w-[24em] text-[clamp(1.3rem,2vw,1.7rem)] leading-[1.6] font-medium tracking-[-0.01em] md:col-span-8">
+            {ABOUT_WHO}
+          </p>
+          {SITE_CONFIG.avatar && (
+            <div className="md:col-span-4 md:pt-4">
+              <Photo
+                src={SITE_CONFIG.avatar}
+                alt="吳宸麒的頭像"
+                sizes="(min-width: 768px) 340px, 100vw"
+                frameClassName="aspect-square"
+                className="mx-auto max-w-[20rem]"
+              />
             </div>
-          </Card>
+          )}
+        </RevealWrapper>
+      </Section>
 
-          <Card title="我想說的">
-            <p className="text-txt text-md leading-[1.85]">{ABOUT_WORDS.lead}</p>
-            <ul className="divide-line-soft border-line-soft mt-auto divide-y border-t pt-2">
-              {ABOUT_WORDS.lines.map(({ text, from }) => (
-                <li key={text} className="py-3">
-                  <p className="font-display text-txt text-base font-medium tracking-[-0.01em]">
-                    {text}
-                  </p>
-                  <p className="text-faint mt-1 font-mono text-2xs tracking-[0.04em]">— {from}</p>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </div>
-      </RevealWrapper>
-    </Section>
+      <Section id="words" label="一路上學到的">
+        <RevealWrapper>
+          <ul className="grid gap-x-10 gap-y-10 md:grid-cols-2 md:gap-y-14">
+            {ABOUT_WORDS.lines.map(({ text, from }, i) => (
+              <li key={text} className="md:even:mt-24">
+                <div className="font-hand text-amber text-[1.6rem] leading-none" aria-hidden="true">
+                  {i + 1}.
+                </div>
+                <blockquote className="font-display text-txt mt-2 text-[clamp(1.4rem,2.2vw,1.85rem)] leading-[1.35] font-medium tracking-[-0.02em]">
+                  <Marker draw="view">{text}</Marker>
+                </blockquote>
+                <p className="font-hand text-faint mt-3 text-[1.2rem] leading-none">— {from}</p>
+              </li>
+            ))}
+          </ul>
+        </RevealWrapper>
+      </Section>
+    </>
   )
 }

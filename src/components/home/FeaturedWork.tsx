@@ -1,13 +1,13 @@
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
-import { Eyebrow } from '@/components/common/Eyebrow'
 import { MetricChip } from '@/components/common/MetricChip'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { SectionLabel } from '@/components/common/SectionLabel'
 import { Section } from '@/components/layout/Section'
-import { ProjectCover, STATUS } from '@/components/sections/ProjectCard'
+import { ProjectCover } from '@/components/sections/ProjectCard'
 import { WORK_ITEMS } from '@/constants'
+import { cn } from '@/lib/utils'
 import type { WorkItem } from '@/types'
 
 function ExtLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -23,25 +23,23 @@ function ExtLink({ href, children }: { href: string; children: React.ReactNode }
   )
 }
 
-/** 一列精選：左邊縮圖、右邊文字，列與列之間只用一條細線。
-    跟 /projects 的卡片格是同一份資料、不同版式——首頁三個要讀得像文章，不是像商品櫃。
+/** 一列精選：左邊縮圖（有真的畫面才放）、右邊文字，列與列之間只用一條細線。
+    跟 /projects 是同一份資料、不同版式——首頁三個要讀得像文章，不是像商品櫃。
     標題是連結（GitHub 或 demo）；有兩個連結的項目再在底下列出來。/hire 的案例也用這個。 */
 export function FeaturedRow({ item }: { item: WorkItem }) {
   const primary = item.link ?? item.demo
-  const { dot, text } = STATUS[item.tone]
 
   return (
-    <article className="grid gap-5 md:grid-cols-[17rem_1fr] md:gap-10">
+    <article
+      className={cn('group/card grid gap-5', item.preview && 'md:grid-cols-[20rem_1fr] md:gap-10')}
+    >
       <ProjectCover
         item={item}
-        className="border-line-soft rounded-card overflow-hidden border md:self-start"
+        className="border-line-soft rounded-card border md:self-start"
+        sizes="(min-width: 768px) 320px, 100vw"
       />
       <div className="min-w-0">
-        <div className="flex items-center gap-1.5">
-          <span className={`size-1.5 rounded-full ${dot}`} aria-hidden="true" />
-          <Eyebrow className={text}>{item.status}</Eyebrow>
-        </div>
-        <h3 className="font-display mt-2 text-h3 font-medium tracking-[-0.01em]">
+        <h3 className="font-display text-h3 font-medium tracking-[-0.01em]">
           {primary ? (
             <a
               href={primary}
@@ -56,7 +54,7 @@ export function FeaturedRow({ item }: { item: WorkItem }) {
             item.title
           )}
         </h3>
-        <p className="text-dim mt-2.5 max-w-[56ch] text-md leading-[1.75]">{item.description}</p>
+        <p className="text-txt mt-2.5 text-md font-medium">{item.result ?? item.description}</p>
         {(item.metrics || item.demo) && (
           <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
             {item.metrics && (
@@ -79,7 +77,8 @@ export function FeaturedRow({ item }: { item: WorkItem }) {
   )
 }
 
-/** 首頁精選：只放 WORK_ITEMS 裡標 featured 的那幾個，完整清單和篩選在 /projects。 */
+/** 首頁精選：回到最一開始的版式——一列一件、細線分隔，只放 WORK_ITEMS 裡標 featured 的那幾個；
+    完整清單和篩選在 /projects。 */
 export function FeaturedWork() {
   const items = WORK_ITEMS.filter((i) => i.featured)
 

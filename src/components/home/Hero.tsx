@@ -1,53 +1,70 @@
-import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
+import type { CSSProperties } from 'react'
 
-import { SocialIcons } from '@/components/common/SocialIcons'
+import { Marker } from '@/components/common/Marker'
+import { Typed } from '@/components/common/Typed'
+import { IntroOnce } from '@/components/home/IntroOnce'
 import { NameTyper } from '@/components/home/NameTyper'
+import { SITE_CONFIG } from '@/constants'
 
 const PRIMARY =
   'bg-orange-cta text-bg hover:bg-txt inline-flex min-h-11 items-center rounded-full px-5 transition-colors'
 const SECONDARY =
   'border-line hover:border-amber hover:text-amber text-txt inline-flex min-h-11 items-center rounded-full border px-5 transition-colors'
 
+/** 第一屏是一句話，自己把自己寫出來：「small R」一個字一個字跳出來（0.15s 起、每字 70ms），
+    接著主張接著打（0.8s 起、每字 80ms），打完游標在句尾眨幾下、麥克筆畫過關鍵字，
+    然後底排（細線 + 身分／補充句／按鈕三欄）一起淡入。不放圖，字標本身就是圖。全部是 CSS 延遲，reduce motion 直接全部顯示。
+    滑到名字上還是會換成本名或帳號（NameTyper）。
+    高度只撐 90svh，不是整屏：底下 Bento 的相片會露出一截，代替「往下捲」的提示。
+    開頁動畫一個分頁只演一次（IntroOnce + globals.css 的 html[data-intro='done']）。 */
 export function Hero() {
   return (
-    // 滿版：扣掉 4.25rem 的 sticky Nav（pt-3 + h-14） 後撐滿第一屏，文字垂直置中，往下捲才看到 Bento
-    <header className="relative mx-auto flex min-h-[calc(100svh-4.25rem)] w-full max-w-270 flex-col justify-center px-6 py-14">
-      {/* 標題 → 副標 → 按鈕＋社群依序淡入。motion-safe 才動，reduce 時直接顯示。
-          學歷和經歷在 /about，第一屏只講在做什麼，不講在讀什麼；留一句話、兩個按鈕跟社群連結。 */}
-      <div>
-        <h1 className="font-display text-hero motion-safe:animate-fade-up leading-[1.16] font-medium tracking-[-0.02em]">
-          {/* 手動斷行：中文沒有詞邊界，靠寬度斷會切在「資／安」之間 */}
-          我是
-          <NameTyper />
-          <br />
-          喜歡資安的全端工程師。
+    <header className="hero-intro mx-auto flex min-h-[calc(90svh-4.25rem)] w-full max-w-270 flex-col px-6 pt-8 pb-12 md:pt-12">
+      <IntroOnce />
+      <div className="flex flex-1 flex-col justify-center py-8 [@media(max-height:760px)]:py-4">
+        {/* h1 = 名字 + 主張。讀屏會念「small R，不只寫程式，也打造自己的產品。」 */}
+        <h1>
+          <span className="font-hand text-wordmark text-txt -ml-[0.03em] block h-[1em] leading-[0.95] font-semibold tracking-[0.01em] whitespace-nowrap">
+            <NameTyper />
+          </span>
+          <span className="sr-only">，</span>
+          <span className="font-display text-display text-txt mt-6 block max-w-[18em] leading-[1.18] font-medium tracking-[-0.02em] md:mt-8">
+            <Typed text="不只寫程式，也" base={800} />
+            <Marker draw="load" delay={2150}>
+              <Typed text="打造自己的產品" base={1360} />
+            </Marker>
+            <Typed text="。" base={1920} />
+            <span
+              className="tcursor"
+              style={{ '--base': '2000ms' } as CSSProperties}
+              aria-hidden="true"
+            />
+          </span>
         </h1>
-        <p className="text-dim text-lead motion-safe:animate-fade-up mt-6 leading-[1.65] [animation-delay:80ms]">
-          在大學電算中心做授權範圍內的資安與內部自動化，其餘時間自己做產品，前端到部署一個人包。
-        </p>
-        <div className="motion-safe:animate-fade-up mt-9 flex flex-wrap items-center gap-x-4 gap-y-3 text-base [animation-delay:160ms]">
-          <Link href="/resume" className={PRIMARY}>
-            看我的履歷
-          </Link>
-          <Link href="/hire" className={SECONDARY}>
-            找我接案
-          </Link>
-          {/* 社群跟按鈕同一排，中間一條細線隔開；手機換行時線藏起來 */}
-          <span className="bg-line hidden h-6 w-px sm:block" aria-hidden="true" />
-          <SocialIcons className="-ml-1 gap-1" />
+        {/* 底排照草稿 Hero A / v3 首頁：一條細線，底下三欄——左邊身分（mono 小字）、中間補充句、右邊兩顆按鈕。
+            手機疊成一欄。身分是純文字不是連結：第一屏只留兩顆按鈕。 */}
+        <div className="intro motion-safe:animate-fade-up border-line-soft mt-10 grid gap-x-6 gap-y-5 border-t pt-7 [--fade-delay:2250ms] md:mt-12 md:grid-cols-12 md:items-start">
+          <p className="text-faint flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-[0.1em] md:col-span-3 md:flex-col md:gap-y-1.5">
+            <span className="text-txt">吳宸麒</span>
+            <span>{SITE_CONFIG.handle}</span>
+            <span>
+              {SITE_CONFIG.location} · {SITE_CONFIG.timezone}
+            </span>
+          </p>
+          <p className="text-dim text-lead max-w-[28em] leading-[1.7] md:col-span-5">
+            寫網站、做資安、也做遊戲。最近第一次把自己的 Roblox 遊戲推上線。
+          </p>
+          <div className="flex flex-wrap gap-3 text-base md:col-span-4 md:justify-end">
+            <Link href="/projects" className={PRIMARY}>
+              探索我的作品
+            </Link>
+            <Link href="/about" className={SECONDARY}>
+              認識我
+            </Link>
+          </div>
         </div>
       </div>
-
-      {/* 往下捲提示：第一屏正下方置中，只有一顆 amber 圓框箭頭，一直輕輕點頭；點了跳到下一段 */}
-      <a
-        href="#offers"
-        aria-label="往下捲到「我能做什麼」"
-        title="往下看"
-        className="border-amber text-amber hover:bg-amber hover:text-bg motion-safe:animate-fade-up absolute bottom-6 left-1/2 flex size-12 -translate-x-1/2 items-center justify-center rounded-full border-[1.5px] transition-colors [animation-delay:600ms]"
-      >
-        <ChevronDown size={24} strokeWidth={2} className="motion-safe:animate-nudge" aria-hidden />
-      </a>
     </header>
   )
 }

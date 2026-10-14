@@ -2,7 +2,6 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { SkillIcon } from '@/components/common/SkillIcon'
 import { ContributionSnake } from '@/components/home/ContributionSnake'
 import { RIDING_PHOTOS, SITE_CONFIG, SKILLS } from '@/constants'
@@ -21,6 +20,8 @@ function PhotoTile() {
         src={photo.src}
         alt={photo.alt}
         fill
+        // Bento 緊貼在 90svh 的 Hero 底下，這張照片的上緣就在第一屏裡，是 LCP：先載，不然 dev 會一直警告
+        priority
         sizes="(min-width: 768px) 620px, 100vw"
         className="object-cover object-[50%_18%] transition-transform duration-700 ease-out group-hover/tile:scale-[1.03] motion-reduce:transition-none"
       />
@@ -127,19 +128,21 @@ function GithubTile({ data }: { data: Contributions | null }) {
 }
 
 /** Hero 底下的 Bento：一張追焦照 + 技能跑馬燈，底下一整條 GitHub 貢獻圖。
-    專案跟文章不在這裡，往下捲就是。 */
+    緊貼著 Hero，相片的上緣會露在第一屏底下，所以不用捲到才出現的 RevealWrapper，
+    而是接在 Hero 的按鈕後面淡入（.intro：第二次進首頁就不等了）。專案跟文章不在這裡，往下捲就是。 */
 export async function Bento() {
   const contributions = await getContributions()
 
   return (
-    <nav aria-label="工作之外、技能、GitHub" className="mx-auto max-w-270 px-6 pb-14 md:pb-20">
-      <RevealWrapper>
-        <div className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12">
-          <PhotoTile />
-          <SkillsTile />
-          <GithubTile data={contributions} />
-        </div>
-      </RevealWrapper>
+    <nav
+      aria-label="工作之外、技能、GitHub"
+      className="intro motion-safe:animate-fade-up mx-auto max-w-270 px-6 pb-14 [--fade-delay:2500ms] md:pb-20"
+    >
+      <div className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12">
+        <PhotoTile />
+        <SkillsTile />
+        <GithubTile data={contributions} />
+      </div>
     </nav>
   )
 }

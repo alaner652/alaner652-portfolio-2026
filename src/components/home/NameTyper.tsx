@@ -1,84 +1,109 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 
-/** 三個名字輪流打出來。順序照「最正式 → 最常用」。 */
-const NAMES = ['吳宸麒', 'small R', 'alaner652'] as const
+/** 三個名字。small R 是品牌，排第一個：SSR、reduce motion 和沒人碰它的時候都停在它。 */
+const NAMES = ['small R', '吳宸麒', 'alaner652'] as const
 
-const HOLD_MS = 2200 // 打完停多久
-const DELETE_MS = 55 // 刪一個字
-const TYPE_CJK_MS = 150 // 打一個中文字
-const TYPE_LATIN_MS = 85 // 打一個拉丁字元
+const DELETE_MS = 45 // 刪一個字
+const TYPE_CJK_MS = 140 // 打一個中文字
+const TYPE_LATIN_MS = 70 // 打一個拉丁字元
 
 function isCjk(ch: string) {
   return (ch.codePointAt(0) ?? 0) > 0x2e80
 }
 
-/** Hero 主標裡會替換的名字，打字機效果。
+/** Hero 字標。平常就是靜態的「small R」，滑鼠移上去或點一下才把它刪掉、打出下一個名字，
+    打完就停，不會自己一直換——第一屏不該有循環動畫。
     SSR 直接輸出完整的第一個名字，所以不會閃、也沒有 hydration 差異；
-    使用者開了 reduce motion 就停在第一個名字不動，游標也不顯示。 */
+    reduce motion 時直接換字、不打字。
+    Latin 名字用手寫字標（跟導覽列同一套，small R 的 R 用 amber）；手寫體沒有中文字，
+    中文名改用標題字體並縮一級。外層 Hero 固定了高度，換字體不會讓下面的內容跳。 */
 export function NameTyper() {
   const [text, setText] = useState<string>(NAMES[0])
-  const [animate, setAnimate] = useState(false)
+  const [typing, setTyping] = useState(false)
+  const index = useRef(0)
+  const busy = useRef(false)
+  const reduce = useRef(false)
+  const timer = useRef(0)
+  const lastAt = useRef(0)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    // 游標下一幀才出現：effect 裡同步 setState 會被 lint 擋，也沒必要搶那一幀
-    const raf = requestAnimationFrame(() => setAnimate(true))
+    reduce.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    return () => window.clearTimeout(timer.current)
+  }, [])
 
-    let timer = 0
-    let index = 0
+  function next() {
+    // 觸控一下會同時送 pointerenter 和 click；reduce motion 時沒有 busy 擋，靠時間差擋第二次
+    const now = Date.now()
+    if (busy.current || now - lastAt.current < 400) return
+    lastAt.current = now
     // Array.from 才會把中文字當一個單位，不會切到 surrogate pair
-    let chars = Array.from(NAMES[0])
-    let len = chars.length
-    // 第一個名字 SSR 就已經打完了，所以從「刪掉它」開始
-    let deleting = true
+    const from = Array.from(NAMES[index.current])
+    index.current = (index.current + 1) % NAMES.length
+    const to = Array.from(NAMES[index.current])
+
+    if (reduce.current) {
+      setText(to.join(''))
+      return
+    }
+
+    busy.current = true
+    setTyping(true)
+    let len = from.length
 
     const schedule = (fn: () => void, ms: number) => {
-      timer = window.setTimeout(fn, ms)
+      timer.current = window.setTimeout(fn, ms)
     }
-
-    const tick = () => {
-      if (deleting) {
-        len -= 1
-        setText(chars.slice(0, len).join(''))
-        if (len === 0) {
-          deleting = false
-          index = (index + 1) % NAMES.length
-          chars = Array.from(NAMES[index])
-          schedule(tick, TYPE_CJK_MS)
-        } else {
-          schedule(tick, DELETE_MS)
-        }
-        return
-      }
-
+    const type = () => {
       len += 1
-      setText(chars.slice(0, len).join(''))
-      if (len === chars.length) {
-        deleting = true
-        schedule(tick, HOLD_MS)
+      setText(to.slice(0, len).join(''))
+      if (len < to.length) {
+        schedule(type, isCjk(to[len]) ? TYPE_CJK_MS : TYPE_LATIN_MS)
       } else {
-        schedule(tick, isCjk(chars[len]) ? TYPE_CJK_MS : TYPE_LATIN_MS)
+        busy.current = false
+        setTyping(false)
       }
     }
-
-    schedule(tick, HOLD_MS)
-    return () => {
-      cancelAnimationFrame(raf)
-      window.clearTimeout(timer)
+    const erase = () => {
+      len -= 1
+      setText(from.slice(0, len).join(''))
+      schedule(len > 0 ? erase : type, len > 0 ? DELETE_MS : TYPE_CJK_MS)
     }
-  }, [])
+    schedule(erase, DELETE_MS)
+  }
+
+  const cjk = text !== '' && isCjk(text[0])
+  // 跟導覽列字標一樣，small R 打完整時 R 才換 amber；打到一半還是同一個顏色
+  const accent = text === NAMES[0]
 
   return (
     <>
-      {/* 螢幕閱讀器只念完整的第一個名字，不跟著動畫一個字一個字念 */}
+      {/* 螢幕閱讀器只念品牌名，不跟著動畫一個字一個字念 */}
       <span className="sr-only">{NAMES[0]}</span>
-      <span aria-hidden="true" className="text-amber">
-        {text}
-        {animate && (
+      <span
+        aria-hidden="true"
+        onPointerEnter={next}
+        onClick={next}
+        className={`cursor-default select-none ${
+          cjk ? 'font-display text-[0.72em] font-medium tracking-[0.02em]' : ''
+        }`}
+      >
+        {accent
+          ? // 開頁時一個字一個字跳出來（CSS 排延遲，見 globals.css 的 .tch）；R 用 amber
+            Array.from(NAMES[0]).map((ch, i) => (
+              <span
+                key={i}
+                className={ch === 'R' ? 'tch text-amber' : 'tch'}
+                style={{ '--i': i, '--base': '150ms', '--step': '70ms' } as CSSProperties}
+              >
+                {ch === ' ' ? '\u00A0' : ch}
+              </span>
+            ))
+          : text}
+        {typing && (
           <span
-            className="bg-amber animate-blink ml-0.5 inline-block h-[0.9em] w-[3px] translate-y-[0.08em] rounded-xs"
+            className="bg-amber ml-[0.06em] inline-block h-[0.8em] w-[0.05em] min-w-[3px] translate-y-[0.06em] rounded-xs"
             aria-hidden="true"
           />
         )}

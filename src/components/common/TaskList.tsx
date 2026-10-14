@@ -20,14 +20,24 @@ export function TaskList({ title, tasks }: Props) {
       {title && <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>{title}</h3>}
       <ul style={{ listStyle: 'none', paddingLeft: 0, margin: 0 }}>
         {items.map((task, i) => (
-          <li key={i} style={{ display: 'flex', gap: '0.6rem', marginBottom: '0.5rem', alignItems: 'flex-start' }}>
-            <span style={{
-              color: task.completed ? 'var(--color-green-ink)' : 'var(--color-faint)',
-              flexShrink: 0,
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.82em',
-              paddingTop: '0.2em',
-            }}>
+          <li
+            key={i}
+            style={{
+              display: 'flex',
+              gap: '0.6rem',
+              marginBottom: '0.5rem',
+              alignItems: 'flex-start',
+            }}
+          >
+            <span
+              style={{
+                color: task.completed ? 'var(--color-amber)' : 'var(--color-faint)',
+                flexShrink: 0,
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.82em',
+                paddingTop: '0.2em',
+              }}
+            >
               {task.completed ? '[✓]' : '[ ]'}
             </span>
             <span style={{ color: 'var(--color-dim)', lineHeight: 1.65 }}>{task.title}</span>

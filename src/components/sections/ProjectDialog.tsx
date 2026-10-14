@@ -57,7 +57,8 @@ export function ProjectDialog({ item, onClose }: { item: WorkItem | null; onClos
       {item && (
         <div className="max-h-[85dvh] overflow-y-auto">
           <ProjectCover item={item} className="border-line-soft border-b" />
-          <div className="p-6 md:p-8">
+          {/* 沒有畫面的，上面多留一點給關閉鈕 */}
+          <div className={item.preview ? 'p-6 md:p-8' : 'p-6 pt-14 md:p-8 md:pt-14'}>
             <div className="flex items-center gap-1.5">
               <span
                 className={`size-1.5 rounded-full ${STATUS[item.tone].dot}`}
@@ -71,7 +72,8 @@ export function ProjectDialog({ item, onClose }: { item: WorkItem | null; onClos
             <h2 className="font-display mt-2 text-h3 font-medium tracking-[-0.015em]">
               {item.title}
             </h2>
-            <p className="text-dim mt-3 text-md leading-[1.8]">{item.description}</p>
+            {item.result && <p className="text-txt mt-3 text-md font-medium">{item.result}</p>}
+            <p className="text-dim mt-2 text-md leading-[1.8]">{item.description}</p>
             {item.metrics && (
               <div className="mt-5 flex flex-wrap gap-2">
                 {item.metrics.map((m) => (

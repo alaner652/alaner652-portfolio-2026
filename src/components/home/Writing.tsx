@@ -1,44 +1,48 @@
+import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 import { RevealWrapper } from '@/components/common/RevealWrapper'
-import { SectionLabel } from '@/components/common/SectionLabel'
-import { Section } from '@/components/layout/Section'
+import { HAND_LINK, Section } from '@/components/layout/Section'
 import { getAllPosts } from '@/lib/mdx'
 
-/** 首頁的文章區。limit 只取最新幾篇，完整清單在 /blog。 */
-export function Writing({ limit }: { limit?: number }) {
-  const posts = limit ? getAllPosts().slice(0, limit) : getAllPosts()
+/** 首頁的文章區：一列一篇，左邊手寫日期，右邊大標題；滑過去標題底下刷出一條麥克筆。完整清單在 /blog。 */
+export function Writing({ limit = 3 }: { limit?: number }) {
+  const posts = getAllPosts().slice(0, limit)
 
   return (
-    <Section id="writing">
+    <Section
+      id="writing"
+      label="心得分享"
+      aside={
+        <Link href="/blog" className={HAND_LINK}>
+          全部文章 <ArrowRight size={18} aria-hidden />
+        </Link>
+      }
+    >
       <RevealWrapper>
-        <SectionLabel title="心得分享" note="大多是記錄，不是教學。" className="mb-8" />
-
         {posts.length > 0 ? (
-          <div>
-            <div className="divide-line-soft -mx-3 divide-y">
-              {posts.map((post) => (
+          <ol className="divide-line-soft border-line-soft divide-y border-y">
+            {posts.map((post) => (
+              <li key={post.slug}>
                 <Link
-                  key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="group/row hover:bg-panel-hi flex flex-wrap items-baseline gap-4 px-3 py-4 transition-colors"
+                  className="group/row grid items-baseline gap-x-6 gap-y-1 py-6 md:grid-cols-12 md:py-7"
                 >
-                  <span className="font-display text-txt group-hover/row:text-amber min-w-50 flex-1 text-md transition-colors">
+                  <span className="font-hand text-faint text-[1.2rem] leading-none md:col-span-2">
+                    {post.frontmatter.date} · {post.readingMinutes} 分
+                  </span>
+                  <span className="font-display text-txt group-hover/row:text-amber before:bg-amber/30 relative isolate text-[clamp(1.3rem,2vw,1.75rem)] leading-[1.3] font-medium tracking-[-0.015em] transition-colors before:absolute before:inset-x-[-0.1em] before:bottom-[0.1em] before:-z-10 before:h-[0.4em] before:origin-left before:scale-x-0 before:transition-transform before:duration-500 before:ease-out before:content-[''] group-hover/row:before:scale-x-100 motion-reduce:before:transition-none md:col-span-9">
                     {post.frontmatter.title}
                   </span>
-                  <time className="text-faint shrink-0 font-mono text-2xs">
-                    {post.frontmatter.date}
-                  </time>
+                  <ArrowRight
+                    size={22}
+                    className="text-faint group-hover/row:text-amber hidden justify-self-end transition-[color,transform] group-hover/row:translate-x-1 md:col-span-1 md:block"
+                    aria-hidden
+                  />
                 </Link>
-              ))}
-            </div>
-            <Link
-              href="/blog"
-              className="text-dim hover:text-amber mt-4 inline-flex items-center gap-1.5 text-sm transition-colors"
-            >
-              全部文章 →
-            </Link>
-          </div>
+              </li>
+            ))}
+          </ol>
         ) : (
           <p className="text-faint font-mono text-xs">Posts coming soon.</p>
         )}

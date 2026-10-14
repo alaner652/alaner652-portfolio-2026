@@ -1,44 +1,34 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Plus } from 'lucide-react'
 
 import { MetricChip } from '@/components/common/MetricChip'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
-import { SectionLabel } from '@/components/common/SectionLabel'
-import { FeaturedRow } from '@/components/home/FeaturedWork'
 import { Section } from '@/components/layout/Section'
+import { ProjectCover } from '@/components/sections/ProjectCard'
 import { HIRE, SITE_CONFIG, WORK_ITEMS } from '@/constants'
-import { TONE_CHIP, TONE_INK } from '@/lib/tone'
+import { cn } from '@/lib/utils'
 
-/** 接什麼：四種案型，一種一張卡。圖示和色調跟首頁「我能做什麼」同一套，
-    底下列站上做過的例子——沒做過的案型不放，這頁跟首頁一樣賣證據。 */
+/** 接什麼：四個筆記本框排成 2×2。手寫的編號和案型坐在框線上、旁邊一個圖示。
+    證據在底下「做過的案子」，這裡不再列一次。 */
 export function HireServices() {
   return (
-    <Section id="services" className="border-t-0 pt-0">
+    <Section id="services" label="接什麼">
       <RevealWrapper>
-        <SectionLabel title="接什麼" note="四種做過、也還想再做的案子。" className="mb-8" />
-        <ul className="grid gap-4 sm:gap-5 md:grid-cols-2">
-          {HIRE.services.map(({ label, description, tone, icon: Icon, examples }) => (
+        <ul className="grid gap-x-6 gap-y-11 pt-3 md:grid-cols-2">
+          {HIRE.services.map(({ label, description, icon: Icon }, i) => (
             <li
               key={label}
-              className="bg-panel border-line-soft rounded-card flex flex-col border p-6 md:p-8"
+              className="border-line rounded-card relative border border-dashed px-6 pt-8 pb-6"
             >
-              <div className="flex items-center gap-3">
+              <h3 className="font-hand bg-bg text-txt absolute -top-[0.8em] left-3.5 inline-flex items-center gap-2.5 px-2 text-[1.5rem] leading-none">
                 <span
-                  className={`rounded-card flex size-10 shrink-0 items-center justify-center ${TONE_CHIP[tone]}`}
+                  className="bg-panel-hi text-amber grid size-9 shrink-0 place-items-center rounded-lg"
                   aria-hidden="true"
                 >
-                  <Icon className="size-5" strokeWidth={1.6} />
+                  <Icon className="size-[18px]" strokeWidth={1.6} />
                 </span>
-                <h3 className={`font-mono text-sm tracking-[0.04em] ${TONE_INK[tone]}`}>{label}</h3>
-              </div>
-              <p className="text-txt mt-4 text-base leading-[1.75]">{description}</p>
-              {examples && (
-                <div className="mt-auto flex flex-wrap items-center gap-2 pt-6">
-                  <span className="text-faint text-2xs font-mono tracking-[0.06em]">做過</span>
-                  {examples.map((name) => (
-                    <MetricChip key={name}>{name}</MetricChip>
-                  ))}
-                </div>
-              )}
+                {String(i + 1).padStart(2, '0')} {label}
+              </h3>
+              <p className="text-txt text-base leading-[1.75]">{description}</p>
             </li>
           ))}
         </ul>
@@ -47,70 +37,127 @@ export function HireServices() {
   )
 }
 
-/** 怎麼合作：四步照時間排成一列，編號用 mono 小字。左邊是流程，右邊是先講清楚的幾件事，
-    手機上下疊。 */
+/** 怎麼合作：四步橫排，一條手畫的線從 1 穿到 4（捲到才畫）。
+    底下「先講清楚」左右分欄：問題點開才看答案，用原生 details，不用 JS。 */
 export function HireProcess() {
   return (
-    <Section id="process">
-      <RevealWrapper>
-        <SectionLabel title="怎麼合作" note="從第一封信到上線之後。" className="mb-8" />
-        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:gap-14">
-          <ol className="divide-line-soft border-line-soft divide-y border-t">
+    <>
+      <Section id="process" label="怎麼合作">
+        <RevealWrapper>
+          <ol className="relative grid gap-8 md:grid-cols-4 md:gap-x-8 md:pt-2">
+            <svg
+              viewBox="0 0 1032 28"
+              preserveAspectRatio="none"
+              className="draw-view absolute top-[1.15rem] left-0 hidden h-7 w-full overflow-visible md:block"
+              aria-hidden="true"
+            >
+              <path
+                className="sketch"
+                pathLength={1}
+                d="M0 14 C 120 4, 220 24, 344 14 S 560 4, 688 14 S 900 24, 1032 12"
+              />
+            </svg>
             {HIRE.steps.map(({ label, description }, i) => (
-              <li key={label} className="grid grid-cols-[3rem_1fr] gap-4 py-6">
-                <span className="text-faint text-2xs pt-1 font-mono tracking-[0.08em]">
-                  {String(i + 1).padStart(2, '0')}
+              <li key={label} className="relative">
+                <span
+                  className="font-hand text-amber bg-bg relative -ml-2 inline-block px-2 text-[1.6rem] leading-none"
+                  aria-hidden="true"
+                >
+                  {i + 1}.
                 </span>
-                <div>
-                  <h3 className="font-display text-txt text-lg font-medium tracking-[-0.01em]">
-                    {label}
-                  </h3>
-                  <p className="text-dim mt-2 max-w-[48ch] text-base leading-[1.75]">
-                    {description}
-                  </p>
-                </div>
+                <h3 className="font-display text-txt mt-4 text-lg font-medium tracking-[-0.01em]">
+                  {label}
+                </h3>
+                <p className="text-dim mt-2 text-base leading-[1.75]">{description}</p>
               </li>
             ))}
           </ol>
+        </RevealWrapper>
+      </Section>
 
-          <div className="bg-panel border-line-soft rounded-card border p-6 md:p-8">
-            <h3 className="text-faint mb-5 font-mono text-xs tracking-[0.08em]">先講清楚</h3>
-            <dl className="divide-line-soft divide-y">
-              {HIRE.notes.map(({ q, a }) => (
-                <div key={q} className="py-4 first:pt-0 last:pb-0">
-                  <dt className="font-display text-txt text-base font-medium tracking-[-0.01em]">
-                    {q}
-                  </dt>
-                  <dd className="text-dim mt-1.5 text-sm leading-[1.7]">{a}</dd>
-                </div>
-              ))}
-            </dl>
+      <Section id="notes">
+        <RevealWrapper className="grid gap-8 md:grid-cols-12 md:gap-x-6">
+          <div className="md:col-span-4">
+            <h2 className="font-hand text-dim text-[1.6rem] leading-none md:text-[1.85rem]">
+              先講清楚 —
+            </h2>
           </div>
-        </div>
-      </RevealWrapper>
-    </Section>
+          <div className="border-line-soft border-t md:col-span-8">
+            {HIRE.notes.map(({ q, a }) => (
+              <details key={q} className="group/faq border-line-soft border-b">
+                <summary className="font-display hover:text-amber flex min-h-15 cursor-pointer list-none items-center justify-between gap-6 py-3 text-[1.1rem] font-medium tracking-[-0.01em] transition-colors [&::-webkit-details-marker]:hidden">
+                  {q}
+                  <Plus
+                    size={20}
+                    className="text-faint shrink-0 transition-transform duration-300 group-open/faq:rotate-45 group-open/faq:text-amber motion-reduce:transition-none"
+                    aria-hidden
+                  />
+                </summary>
+                <p className="text-dim pr-11 pb-5 text-base leading-[1.75]">{a}</p>
+              </details>
+            ))}
+          </div>
+        </RevealWrapper>
+      </Section>
+    </>
   )
 }
 
-/** 做過的案子：從 WORK_ITEMS 挑 HIRE.cases 列的那幾個，版式跟首頁精選一樣。 */
+/** 做過的案子：三個並排。有真實畫面的放一張圓角細框的封面；沒有的就是一條粗線起頭的文字。 */
 export function HireCases() {
   const items = HIRE.cases.flatMap((title) => WORK_ITEMS.filter((w) => w.title === title))
 
   return (
-    <Section id="cases">
-      <RevealWrapper className="mb-10">
-        <SectionLabel
-          title="做過的案子"
-          note="挑真的交出去、有人在用的。其他的在「做過的東西」。"
-        />
+    <Section id="cases" label="做過的案子">
+      <RevealWrapper className="grid gap-10 md:grid-cols-3 md:items-start md:gap-x-8">
+        {items.map((item) => {
+          const href = item.link ?? item.demo
+          return (
+            <article
+              key={item.title}
+              className={item.preview ? 'group/card' : 'group/card border-txt border-t-2 pt-4'}
+            >
+              {item.preview && (
+                <ProjectCover
+                  item={item}
+                  className="border-line-soft rounded-card border"
+                  sizes="(min-width: 768px) 330px, 100vw"
+                />
+              )}
+              <h3
+                className={cn(
+                  'font-display text-h3 font-medium tracking-[-0.01em]',
+                  item.preview && 'mt-5'
+                )}
+              >
+                {href ? (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-amber inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    {item.title}
+                    <ArrowUpRight size={16} className="text-faint" aria-hidden />
+                  </a>
+                ) : (
+                  item.title
+                )}
+              </h3>
+              <p className="text-txt mt-2.5 text-md font-medium">
+                {item.result ?? item.description}
+              </p>
+              {item.metrics && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {item.metrics.map((m) => (
+                    <MetricChip key={m}>{m}</MetricChip>
+                  ))}
+                </div>
+              )}
+            </article>
+          )
+        })}
       </RevealWrapper>
-      <div className="divide-line-soft divide-y">
-        {items.map((item) => (
-          <RevealWrapper key={item.title} className="py-8 first:pt-0 last:pb-0 md:py-10">
-            <FeaturedRow item={item} />
-          </RevealWrapper>
-        ))}
-      </div>
     </Section>
   )
 }
@@ -120,15 +167,16 @@ const PRIMARY =
 const SECONDARY =
   'border-line hover:border-amber hover:text-amber text-txt inline-flex min-h-11 items-center gap-1.5 rounded-full border px-5 transition-colors'
 
-/** 頁尾再叫一次：一句話 + 寄信。Threads 當備用，有人不想寫信。 */
+/** 頁尾再叫一次：一句話 + 寄信。現在頁面沒掛它（頁首有按鈕、Footer 有信箱），留著以後要用。 */
 export function HireContact() {
   return (
-    <Section id="contact">
+    // 淡色帶而不是深底：底下緊接著就是深底的 Footer，兩塊深的疊在一起會糊成一片
+    <Section id="contact" label="聯絡" className="bg-panel-hi">
       <RevealWrapper>
-        <div className="bg-panel border-line-soft rounded-card border p-6 md:p-10">
-          <h2 className="font-display text-h2 font-medium tracking-[-0.015em]">有東西要做？</h2>
-          <p className="text-dim text-md mt-3 max-w-[52ch] leading-[1.75]">
-            寄信說你要做什麼、給誰用、什麼時候要。不用寫得很正式，一兩天內回。
+        <div className="max-w-[40em]">
+          <p className="font-display text-h2 font-medium tracking-[-0.02em]">有東西要做？</p>
+          <p className="font-hand text-dim mt-3 text-[1.35rem] leading-[1.25]">
+            不用寫得很正式，一兩天內回。
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 text-base">
             <a href={`mailto:${SITE_CONFIG.email}`} className={PRIMARY}>

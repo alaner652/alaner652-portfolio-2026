@@ -88,11 +88,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
+    // suppressHydrationWarning：底下那支開頁腳本會在 React 接手前給 <html> 加 data-intro，
+    // dev 的 hydration 比對會把它當成伺服器多出來的屬性而報錯；只壓這一層，裡面的不受影響
     <html
       lang="zh-Hant"
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} ${notoSansTC.variable} ${caveat.variable}`}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col print:bg-white print:text-black">
+        {/* 首頁開頁動畫一個分頁只演一次：看過就在 <html> 掛 data-intro="done"（見 home/IntroOnce.tsx）。
+            放在 body 最前面、用原生 <script>：HTML 照順序解析，它會在 Hero 被畫出來之前跑完，
+            硬重新整理也不會先閃一下動畫再切掉。next/script 的 beforeInteractive 在 dev 會被排到 body 最後，靠不住。 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem('intro'))document.documentElement.dataset.intro='done'}catch(e){}`,
+          }}
+        />
         {/* RevealWrapper 靠 IntersectionObserver 淡入；JS 失效時強制顯示，避免整頁空白 */}
         <noscript>
           <style>
@@ -101,7 +112,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </noscript>
         <a
           href="#main"
-          className="focus:bg-panel focus:text-txt focus:border-line sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-chip focus:border focus:px-4 focus:py-2"
+          className="focus:bg-panel focus:text-txt focus:border-line sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-chip focus:border focus:px-4 focus:py-2 print:hidden"
         >
           跳到主要內容
         </a>

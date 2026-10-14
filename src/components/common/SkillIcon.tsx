@@ -4,7 +4,15 @@ const ICON_MAP: Record<string, string> = SKILL_ICONS
 
 /** 技能 logo，帶品牌色的圓角小磚。svg 由 scripts/skill-icons.mjs 抓到 public/skill-icons/，
     沒對到 logo 的技能回 null，chip 就只顯示文字。size 是 px，chip 用預設 22，首頁跑馬燈放大。 */
-export function SkillIcon({ name, size = 22 }: { name: string; size?: number }) {
+export function SkillIcon({
+  name,
+  size = 22,
+  className = '',
+}: {
+  name: string
+  size?: number
+  className?: string
+}) {
   const slug = ICON_MAP[name]
   if (!slug) return null
 
@@ -17,7 +25,7 @@ export function SkillIcon({ name, size = 22 }: { name: string; size?: number }) 
       width={size}
       height={size}
       style={{ width: size, height: size, borderRadius: size * 0.22 }}
-      className="shrink-0"
+      className={`shrink-0 ${className}`}
     />
   )
 }

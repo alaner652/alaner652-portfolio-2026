@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 
+import { Marker } from '@/components/common/Marker'
 import { PageHeader } from '@/components/common/PageHeader'
 import { About } from '@/components/sections/About'
 import { Experience } from '@/components/sections/Experience'
@@ -34,7 +35,17 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <PageHeader eyebrow="關於" title="我是誰、做過什麼、會什麼" note="事實跟履歷同一份來源。" />
+      <PageHeader
+        eyebrow="關於"
+        title={
+          <>
+            我是誰、做過什麼、
+            <Marker draw="load" delay={900}>
+              會什麼
+            </Marker>
+          </>
+        }
+      />
       <About />
       <Experience />
       <Skills />

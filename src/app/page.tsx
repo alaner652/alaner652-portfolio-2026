@@ -22,8 +22,10 @@ const personJsonLd = {
   address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
 }
 
-/** 首頁：Hero → 工作之外／技能／GitHub 的 Bento → 我能做什麼（三步流程）
-    → 精選專案 → 最新文章。Bento 每格連到 /about 的對應區塊，完整專案在 /projects。 */
+/** 首頁：Hero → Bento（相片／技能／GitHub，最一開始的三格）→ 我能做什麼（三個大動詞）
+    → 做過的東西（一列一件，替上面三個動詞作證）→ 最新文章。
+    Bento 緊接在 Hero 底下：第一屏只有字，第一張圖要早一點出現，而且 Hero 故意留 10% 讓它露出來。
+    年份和經歷只在 /about，不在這裡再講一次。 */
 export default function Home() {
   return (
     <>
@@ -32,8 +34,8 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
       <Hero />
-      <Offers />
       <Bento />
+      <Offers />
       <FeaturedWork />
       <Writing limit={3} />
     </>

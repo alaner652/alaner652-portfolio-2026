@@ -20,6 +20,16 @@
   --color-amber-text: #c0521b; /* 4.51:1 — 內文連結等小字要用這個 */
   --color-amber-soft: rgba(224, 97, 34, 0.1);
 
+  /* ── 反白面 ──
+     全站只有兩個地方翻成深底：首頁精選作品、Footer。底色就是 txt、字就是 bg，
+     不另外調色，確保翻過來的對比跟正面一樣（13:1）。dim/line 用透明度，疊在深底上就對。 */
+  --color-ink: #332d24;
+  --color-ink-txt: #fcfaf4;
+  --color-ink-dim: rgba(252, 250, 244, 0.68); /* 7.6:1 */
+  --color-ink-faint: rgba(252, 250, 244, 0.5); /* 5.2:1 */
+  --color-ink-line: rgba(252, 250, 244, 0.14);
+  --color-ink-panel: rgba(252, 250, 244, 0.06);
+
   /* ── 分類色盤 ──
      五個色相，各配一組「文字色 ink + 10% 底色 tint」。
      色彩在這個站上只用來編碼「類別」或「狀態」，不做裝飾——
@@ -58,14 +68,17 @@
   --text-xl--line-height: inherit;
 
   --text-lead: clamp(1.05rem, 1.7vw, 1.2rem); /* Hero 副標 */
-  --text-h3: clamp(1.1rem, 2vw, 1.3rem); /* 履歷區塊標題 */
-  --text-h2: clamp(1.4rem, 2.6vw, 1.8rem); /* 首頁區塊標題 */
-  --text-h1: clamp(1.6rem, 3.2vw, 2.2rem); /* 頁面標題 */
-  --text-hero: clamp(
-    1.55rem,
-    3.6vw,
-    2.7rem
-  ); /* Hero 主標；下限要讓 390px 手機塞得下「喜歡資安的全端工程師。」一整行 */
+  --text-h3: clamp(1.15rem, 2vw, 1.4rem); /* 項目標題、履歷區塊標題 */
+  /* 標題級距拉開：h2 跟內文至少 1.9 倍、h1 跟 h2 再差一級，
+     捲動時才感覺得到「換了一段」。display 給 Hero 主張、頁首大標、精選作品名。 */
+  --text-h2: clamp(1.6rem, 2.8vw, 2.25rem); /* 區塊開場句 */
+  --text-h1: clamp(2rem, 4vw, 3.25rem); /* 頁面標題 */
+  --text-quote: clamp(1.35rem, 2.4vw, 1.8rem); /* /about 的 pull quote */
+  /* Hero 兩層：手寫字標是全站最大的字，主張句是 display 層。
+     字標上限 9rem 讓 1440 寬時「small R」佔到半個版面；下限 4.5rem 在 375 寬仍是一行。
+     display 下限要讓 390px 手機塞得下「也打造自己的產品。」一整行。 */
+  --text-wordmark: clamp(4rem, 10vw, 8.5rem);
+  --text-display: clamp(1.9rem, 4vw, 3.25rem);
 
   --font-display:
     var(--font-space-grotesk), 'LXGW WenKai TC', var(--font-noto-tc), 'PingFang TC', system-ui,
@@ -74,7 +87,9 @@
   --font-body:
     var(--font-inter), var(--font-noto-tc), 'PingFang TC', 'Microsoft JhengHei', system-ui,
     sans-serif;
-  --font-hand: var(--font-caveat), 'Segoe Script', 'Bradley Hand', cursive; /* 只給 nav 字標 */
+  /* 手寫體：拉丁字母和數字用 Caveat，中文接霞鶩文楷（Caveat 沒有中文字，不接的話會掉到系統粗黑體，
+     一行裡兩種字體打架）。字標、段名、編號、手寫註記都用這個。 */
+  --font-hand: var(--font-caveat), 'LXGW WenKai TC', var(--font-noto-tc), cursive;
 
   /* ── 圓角：兩級就夠 ──
      原本散在各處的 rounded-[4px]/[5px]/[6px]/[8px]/[10px] 做的是同兩件事。 */
@@ -83,13 +98,13 @@
 
   /* ── 動畫 ──
      都很輕，且只在 motion-safe 下套用（reduce 時不套，元素以最終狀態顯示）。
-     fade-up：Hero 進場的分層淡入；blink：打字機游標；
-     marquee：首頁技能格的跑馬燈（內容複製兩份，跑到 -50% 剛好接回起點）；
-     nudge：Hero 底下「往下捲」的箭頭，輕輕點頭。 */
-  --animate-fade-up: fade-up 0.6s ease-out both;
+     fade-up：Hero 進場的分層淡入。要錯開時間用 [--fade-delay:2250ms]，不要用 [animation-delay:…]：
+     animate-fade-up 是 shorthand，而且帶 motion-safe: 變體的 utility 會排在後面，會把前面的 animation-delay 蓋回 0。
+     blink：打字機游標；
+     marquee：首頁技能格的跑馬燈（內容複製兩份，跑到 -50% 剛好接回起點）。 */
+  --animate-fade-up: fade-up 0.6s ease-out var(--fade-delay, 0ms) both;
   --animate-blink: blink 1s steps(1) infinite;
   --animate-marquee: marquee 36s linear infinite;
-  --animate-nudge: nudge 2s ease-in-out infinite;
 }
 
 @keyframes fade-up {
@@ -110,15 +125,6 @@
 @keyframes marquee {
   to {
     transform: translateX(-50%);
-  }
-}
-@keyframes nudge {
-  0%,
-  100% {
-    transform: none;
-  }
-  50% {
-    transform: translateY(0.25rem);
   }
 }
 
@@ -284,6 +290,341 @@
 }
 .prose-portfolio .mdx-card ul {
   margin-bottom: 0;
+}
+
+/* ── 兩個小道具 ──
+   mark：橘色麥克筆底線，畫在關鍵字底下（只在大字上用，一段最多一處）。
+   ghost：空心線稿的大字，hover 到所在的 group 才填成橘色實心。 */
+.mark {
+  background-image: linear-gradient(
+    transparent 58%,
+    rgba(224, 97, 34, 0.32) 58%,
+    rgba(224, 97, 34, 0.32) 92%,
+    transparent 92%
+  );
+}
+.ghost {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-faint);
+  transition:
+    color 0.3s,
+    -webkit-text-stroke 0.3s;
+}
+.group\/claim:hover .ghost,
+.group\/claim:focus-within .ghost {
+  color: var(--color-amber);
+  -webkit-text-stroke: 0;
+}
+
+/* /about 的時間軸：橘色進度線跟著捲動往下長，每一顆點進到視窗下半才亮。
+   用 CSS 的 view timeline，不用 JS；不支援的瀏覽器就直接顯示最終狀態。 */
+.timeline-progress {
+  transform: translateX(-50%) scaleY(1);
+}
+.timeline-dot {
+  transition:
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .timeline-progress {
+      animation: timeline-grow linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 65%;
+    }
+    .timeline-dot {
+      animation: timeline-pop linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+@keyframes timeline-grow {
+  from {
+    transform: translateX(-50%) scaleY(0);
+  }
+  to {
+    transform: translateX(-50%) scaleY(1);
+  }
+}
+@keyframes timeline-pop {
+  from {
+    opacity: 0.2;
+    transform: translateX(-50%) scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* ── v3 的道具與動 ──
+   原則：畫線 draw（手畫的線捲到才畫）、填色 fill（空心字從左往右填橘）、跟手 follow（相片跟著游標傾斜）。
+   全部 CSS；捲動用 animation-timeline: view()，瀏覽器不支援就直接是完成狀態；reduce motion 一律不動。 */
+
+/* 麥克筆（新版）：一條手畫的 SVG 線墊在字底下，pathLength=1 所以能畫出來。
+   舊的 .mark 留給還沒改版的頁面，改完就可以刪。 */
+.marker {
+  position: relative;
+  white-space: nowrap;
+  isolation: isolate;
+}
+.marker-line {
+  position: absolute;
+  left: -0.04em;
+  bottom: -0.1em;
+  z-index: -1;
+  width: calc(100% + 0.08em);
+  height: 0.42em;
+  overflow: visible;
+  pointer-events: none;
+}
+.marker-line path {
+  fill: none;
+  stroke: var(--color-amber);
+  stroke-opacity: 0.4;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.bg-ink .marker-line path {
+  stroke-opacity: 0.55;
+}
+
+/* 手畫線：年份底下那條曲線這類。.draw-load 開頁畫、.draw-view 捲到才畫 */
+.sketch {
+  fill: none;
+  stroke: var(--color-amber);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.draw-load path,
+.draw-view path,
+.draw-view circle,
+.draw-view rect,
+.draw-view polyline {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* 空心大字：底層線稿、上層橘色用 clip-path 從左露出；滑過去也填 */
+.verb {
+  position: relative;
+  display: inline-block;
+}
+.verb-ghost {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-faint);
+  transition: -webkit-text-stroke-color 0.3s;
+}
+.verb-fill {
+  position: absolute;
+  inset: 0;
+  color: var(--color-amber);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.6s ease-out;
+}
+.verb:hover .verb-ghost {
+  -webkit-text-stroke-color: var(--color-amber);
+}
+.verb:hover .verb-fill {
+  clip-path: inset(0 0 0 0);
+}
+/* 深底上的空心數字：線改用 50% 的米；整個條目 hover 才填 */
+.bg-ink .ghost {
+  -webkit-text-stroke-color: var(--color-ink-faint);
+}
+.group\/entry:hover .ghost,
+.group\/entry:focus-within .ghost {
+  color: var(--color-amber);
+  -webkit-text-stroke: 0;
+}
+.group\/card:hover .ghost,
+.group\/card:focus-within .ghost,
+.group\/row:hover .ghost,
+.group\/row:focus-within .ghost {
+  color: var(--color-amber);
+  -webkit-text-stroke: 0;
+}
+
+/* 印章：mono 字 + 細框，轉一點角度 */
+.stamp {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  padding: 0.35em 0.6em;
+  white-space: nowrap;
+}
+
+/* 出血：從 1080 的欄位裡撐到整個視窗寬。body 已經 overflow-x: hidden，捲軸那幾 px 不會露餡 */
+.bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+@keyframes wipe-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-24px) rotate(-5deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 開頁：字標被寫出來、相片掉下來、主張底下的線畫出來（順序靠各自的 delay） */
+  .enter-wipe {
+    animation: wipe-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .enter-drop {
+    animation: drop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .draw-load path {
+    animation: draw 0.7s ease-out both;
+    animation-delay: var(--draw-delay, 0ms);
+  }
+  /* 捲到才動：線捲進視窗畫出來；動詞捲到視窗中下段填橘 */
+  @supports (animation-timeline: view()) {
+    .draw-view path,
+    .draw-view circle,
+    .draw-view rect,
+    .draw-view polyline {
+      animation: draw 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 15% entry 95%;
+    }
+    .verb-fill {
+      animation: wipe-in 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 60% cover 45%;
+    }
+    .verb:hover .verb-fill {
+      animation: none;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+}
+
+/* 打字：每個字一個 span（common/Typed.tsx、NameTyper），--i 排延遲，1ms 的動畫讓字「跳」出來不是淡入；
+   游標在句尾眨四下就消失。reduce motion 時沒有動畫：字直接全在，游標不出現。
+   easing 一定要 linear，不能用 steps(1, end)：延遲是 calc() 算的，有浮點誤差，動畫結束時的 progress
+   可能是 0.9999999999998 而不是 1，steps(1, end) 會把它當成 0，那個字就永遠不出現（哪個字中獎看運氣）。
+   linear 在 1ms 內從 0 到 1，視覺上一樣是「跳」出來，結束後 0.99999 跟 1 看不出差別。
+   游標的 keyframes 本身就是階梯（0–50% 亮、50–100% 暗），所以也用 linear，用 steps 反而整段都亮不會眨。 */
+.tcursor {
+  display: inline-block;
+  width: 0.06em;
+  min-width: 3px;
+  height: 0.85em;
+  margin-left: 0.08em;
+  vertical-align: -0.06em;
+  border-radius: 1px;
+  background: var(--color-amber);
+  opacity: 0;
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tch {
+    animation: appear 1ms linear both;
+    animation-delay: calc(var(--base, 0ms) + var(--i, 0) * var(--step, 80ms));
+  }
+  .tcursor {
+    animation: cursor-blink 0.9s linear 4;
+    animation-delay: var(--base, 0ms);
+  }
+}
+/* 開頁動畫一個分頁只演一次：home/IntroOnce.tsx（和 layout.tsx 的開頁腳本）看過就在 <html> 掛 data-intro="done"，
+   之後 Hero 裡的打字、游標、畫線，以及掛了 .intro 的淡入（補充句、按鈕、Bento）都直接是完成狀態。
+   這條沒有 layer，所以壓得過 motion-safe:animate-fade-up 這類 utilities。 */
+html[data-intro='done'] .hero-intro :is(.tch, .tcursor, .draw-load path),
+html[data-intro='done'] .intro {
+  animation: none;
+}
+
+/* 文章頁最上緣的閱讀進度線：跟著整頁捲動長，瀏覽器不支援 scroll timeline 就不顯示 */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  width: 100%;
+  height: 3px;
+  background: var(--color-amber);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+@keyframes grow-x {
+  to {
+    transform: scaleX(1);
+  }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .progress {
+      animation: grow-x 1s linear both;
+      animation-timeline: scroll();
+    }
+  }
+}
+
+/* 列印：標題跟它底下的內容不要被切到兩頁、連結不印底線。
+   導覽、頁尾、跳過連結用元素上的 print:hidden 藏，底色在 layout 的 body 上處理。 */
+@media print {
+  .prose-portfolio h2,
+  .prose-portfolio h3 {
+    break-after: avoid;
+  }
+  .prose-portfolio p,
+  .prose-portfolio li,
+  .prose-portfolio pre {
+    break-inside: avoid;
+  }
+  .prose-portfolio a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 @layer base {
