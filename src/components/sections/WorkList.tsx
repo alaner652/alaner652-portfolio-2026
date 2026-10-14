@@ -7,6 +7,8 @@ import { Section } from '@/components/layout/Section'
 import { ProjectRow } from '@/components/sections/ProjectCard'
 import { ProjectDialog } from '@/components/sections/ProjectDialog'
 import { WORK_ITEMS } from '@/constants'
+import { BUTTON_SM } from '@/lib/button'
+import { cn } from '@/lib/utils'
 import { PROJECT_CATEGORIES } from '@/types'
 import type { ProjectCategory, WorkItem } from '@/types'
 
@@ -30,22 +32,16 @@ export function WorkList() {
       ? [lead, ...WORK_ITEMS.filter((i) => i !== lead)]
       : WORK_ITEMS.filter((i) => i.category === filter)
 
-  const chipBase =
-    'rounded-chip min-h-9 shrink-0 px-3 font-mono text-xs tracking-[0.02em] transition-colors cursor-pointer'
-
   return (
     <>
       <Section id="all" className="border-t-0" wrapClassName="pt-0 md:pt-0">
         <RevealWrapper className="mb-5">
-          {/* 預設全部展開：篩選是捷徑，不是看內容前要先過的一道關。手機橫向捲，不折行 */}
+          {/* 預設全部展開：篩選是捷徑，不是看內容前要先過的一道關。不標「照分類」，一排分類名自己就說明了。手機橫向捲，不折行 */}
           <div
             className="-mx-6 flex [scrollbar-width:none] items-center gap-2 overflow-x-auto px-6 md:mx-0 md:flex-wrap md:px-0"
             role="group"
             aria-label="依分類篩選專案"
           >
-            <span className="font-hand text-faint mr-2 shrink-0 text-[1.3rem] leading-none">
-              照分類 —
-            </span>
             {([ALL, ...CATEGORIES] as Filter[]).map((option) => {
               const active = filter === option
               return (
@@ -54,9 +50,11 @@ export function WorkList() {
                   type="button"
                   aria-pressed={active}
                   onClick={() => setFilter(option)}
-                  className={`${chipBase} ${
-                    active ? 'bg-txt text-bg' : 'border-line text-dim hover:text-txt border'
-                  }`}
+                  className={cn(
+                    BUTTON_SM,
+                    'shrink-0 cursor-pointer',
+                    active && 'border-txt bg-txt text-bg hover:border-txt hover:text-bg'
+                  )}
                 >
                   {option}
                 </button>

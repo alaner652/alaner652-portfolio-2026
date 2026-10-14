@@ -10,7 +10,8 @@ import { fileURLToPath } from 'node:url'
 
 const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'shots')
 
-/** github：用官方的 repo 預覽卡。youtube：影片縮圖。
+/** github：用官方的 repo 預覽卡。youtube：影片縮圖。roblox：遊戲頁的第一張縮圖（universeId
+    用 apis.roblox.com/universes/v1/places/{placeId}/universe 查）。
     site：沒有 og:image 的站，只能真的去截圖。沒有公開頁面的項目就不列在這裡。 */
 const TARGETS = [
   { slug: 'agora-ai', kind: 'github', repo: 'alaner652/Agora-AI' },
@@ -21,6 +22,7 @@ const TARGETS = [
   { slug: 'foodie-ai', kind: 'github', repo: 'alaner652/FoodieAI' },
   { slug: 'osu-map-manager', kind: 'github', repo: 'alaner652/osu_map_manager' },
   { slug: 'cooking-game', kind: 'youtube', videoId: 'gYcwkoDgL_g' },
+  // 註：tpcu-mcp 是對話截圖、build-the-cat-gunner 是遊戲 icon 合成的 2:1 封面，都是手動放進 public/shots/ 的。
   // 註：ZeroDay 公告頁在 Cloudflare 後面，伺服器端抓 og:image 會被 403 擋掉，
   // 所以 campus-security 的縮圖得手動放進 public/shots/。og kind 對其他站仍可用。
 ]
@@ -30,6 +32,20 @@ function sourcesFor(target) {
   if (target.kind === 'github') {
     // 路徑裡的 1 是 GitHub 自己的 cache buster，內容只跟 owner/repo 有關
     return [`https://opengraph.githubassets.com/1/${target.repo}`]
+  }
+  if (target.kind === 'roblox') {
+    // 縮圖網址會換，每次都先問 thumbnails API 拿目前那張
+    return [async () => {
+      const res = await fetch(
+        `https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${target.universeId}&size=768x432&format=Png&countPerUniverse=1`,
+        { signal: AbortSignal.timeout(45_000) },
+      )
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const json = await res.json()
+      const url = json.data?.[0]?.thumbnails?.[0]?.imageUrl
+      if (!url) throw new Error('沒有縮圖')
+      return url
+    }]
   }
   if (target.kind === 'youtube') {
     // maxres 不一定存在（舊片或低畫質上傳），沒有就退到一定會有的 hq
@@ -102,15 +118,18 @@ async function capture(target) {
     sources = sourcesFor(target)
   }
 
-  for (const source of sources) {
+  for (let source of sources) {
     try {
+      // roblox 這種要先問 API 才知道網址的，source 是一個回傳網址的函式
+      if (typeof source === 'function') source = await source()
       const { buf, ext } = await fetchImage(source)
       const name = `${target.slug}.${ext}`
       await writeFile(join(OUT_DIR, name), buf)
       console.log(`  ✓ ${name}  ${(buf.byteLength / 1024).toFixed(0)} KB`)
       return true
     } catch (err) {
-      console.warn(`  … ${new URL(source).host} 失敗：${err.message}`)
+      const host = typeof source === 'string' ? new URL(source).host : 'roblox thumbnails API'
+      console.warn(`  … ${host} 失敗：${err.message}`)
     }
   }
   console.error(`  ✗ ${target.slug} 全部來源都失敗，保留舊檔`)

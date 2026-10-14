@@ -95,7 +95,7 @@ export function NameTyper() {
               <span
                 key={i}
                 className={ch === 'R' ? 'tch text-amber' : 'tch'}
-                style={{ '--i': i, '--base': '150ms', '--step': '70ms' } as CSSProperties}
+                style={{ '--i': i, '--base': '100ms', '--step': '60ms' } as CSSProperties}
               >
                 {ch === ' ' ? '\u00A0' : ch}
               </span>

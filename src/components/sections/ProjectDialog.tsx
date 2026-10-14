@@ -6,11 +6,13 @@ import { useEffect, useRef } from 'react'
 import { Eyebrow } from '@/components/common/Eyebrow'
 import { MetricChip } from '@/components/common/MetricChip'
 import { ProjectCover, STATUS } from '@/components/sections/ProjectCard'
+import { BUTTON_SM } from '@/lib/button'
 import type { WorkItem } from '@/types'
 
 function linkLabel(url: string) {
   if (url.includes('github')) return 'GitHub'
   if (url.includes('youtu')) return '影片'
+  if (url.includes('roblox')) return 'Roblox'
   return '打開'
 }
 
@@ -52,7 +54,7 @@ export function ProjectDialog({ item, onClose }: { item: WorkItem | null; onClos
         if (e.target === e.currentTarget) onClose()
       }}
       aria-label={item?.title}
-      className="bg-bg text-txt border-line rounded-card m-auto w-[calc(100%-2rem)] max-w-2xl border p-0 shadow-xl backdrop:bg-black/40 backdrop:backdrop-blur-[2px] open:motion-safe:animate-fade-up"
+      className="bg-bg text-txt border-line rounded-card open:motion-safe:animate-fade-up m-auto w-[calc(100%-2rem)] max-w-2xl border p-0 shadow-xl backdrop:bg-black/40 backdrop:backdrop-blur-[2px]"
     >
       {item && (
         <div className="max-h-[85dvh] overflow-y-auto">
@@ -65,15 +67,15 @@ export function ProjectDialog({ item, onClose }: { item: WorkItem | null; onClos
                 aria-hidden="true"
               />
               <Eyebrow className={STATUS[item.tone].text}>{item.status}</Eyebrow>
-              <span className="text-faint ml-3 font-mono text-2xs tracking-[0.06em]">
+              <span className="text-faint text-2xs ml-3 font-mono tracking-[0.06em]">
                 {item.category}
               </span>
             </div>
-            <h2 className="font-display mt-2 text-h3 font-medium tracking-[-0.015em]">
+            <h2 className="font-display text-h3 mt-2 font-medium tracking-[-0.015em]">
               {item.title}
             </h2>
-            {item.result && <p className="text-txt mt-3 text-md font-medium">{item.result}</p>}
-            <p className="text-dim mt-2 text-md leading-[1.8]">{item.description}</p>
+            {item.result && <p className="text-txt text-md mt-3 font-medium">{item.result}</p>}
+            <p className="text-dim text-md mt-2 leading-[1.8]">{item.description}</p>
             {item.metrics && (
               <div className="mt-5 flex flex-wrap gap-2">
                 {item.metrics.map((m) => (
@@ -89,7 +91,7 @@ export function ProjectDialog({ item, onClose }: { item: WorkItem | null; onClos
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-line hover:border-amber hover:text-amber text-txt inline-flex min-h-10 items-center gap-1.5 rounded-full border px-4 font-mono text-xs transition-colors"
+                    className={BUTTON_SM}
                   >
                     {label} <ArrowUpRight size={12} aria-hidden />
                   </a>

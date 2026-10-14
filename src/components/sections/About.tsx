@@ -4,12 +4,12 @@ import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { Section } from '@/components/layout/Section'
 import { ABOUT_WHO, ABOUT_WORDS, SITE_CONFIG } from '@/constants'
 
-/** 關於我：自介當開場大字，右邊一張頭像。名字、帳號、學校、在做什麼都在那段話裡，
+/** 自介當開場大字（不另標「關於我」，頁首已經說了），右邊一張頭像。名字、帳號、學校、在做什麼都在那段話裡，
     不另外列一份事實表。再下面一段是一路上學到的四句話，放大、關鍵句畫底線、左右錯開，每句標出處。 */
 export function About() {
   return (
     <>
-      <Section id="about" label="關於我">
+      <Section id="about">
         <RevealWrapper className="grid gap-10 md:grid-cols-12 md:gap-x-6">
           <p className="font-display text-txt max-w-[24em] text-[clamp(1.3rem,2vw,1.7rem)] leading-[1.6] font-medium tracking-[-0.01em] md:col-span-8">
             {ABOUT_WHO}

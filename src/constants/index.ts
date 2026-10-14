@@ -215,6 +215,30 @@ export const WORK_ITEMS: WorkItem[] = [
     card: true,
   },
   {
+    status: '開源',
+    tone: 'open',
+    category: 'AI',
+    title: 'TPCU MCP',
+    result: 'Agora-AI 的範圍重新想過一次：不做後端，做成 MCP server。',
+    description:
+      '把校務系統的課表、缺曠、成績、請假、工讀考勤包成 18 個 MCP 工具，Claude Code、Claude Desktop 這類支援 MCP 的 AI 應用可以直接在對話裡查和操作。stdio transport、零額外後端；帳密只在記憶體，不落地。有副作用的工具帶 destructiveHint，要先向使用者確認。頁面流程和解析規則延用 Agora-AI，用 TypeScript 重寫成獨立專案。',
+    metrics: ['TypeScript', 'MCP SDK', 'Vitest'],
+    link: 'https://github.com/alaner652/tpcu-mcp',
+    preview: '/shots/tpcu-mcp.jpg',
+  },
+  {
+    status: '運作中',
+    tone: 'live',
+    category: '遊戲',
+    title: 'Build The Cat Gunner',
+    result: '接案之後第一款自己發行的 Roblox 遊戲。',
+    description:
+      '帶著貓咪小隊一路打：擲骰合成槍枝從 D 升到 XX，每 10 關一隻 Boss，打到底就重生再來。接案之後第一款以 Alaner\'s Studio 名義自己發行的遊戲，2026 年 10 月上線，持續更新中。',
+    metrics: ['Luau', 'Roblox'],
+    link: 'https://www.roblox.com/games/104411764341408',
+    preview: '/shots/build-the-cat-gunner.jpg',
+  },
+  {
     status: '已停用',
     tone: 'idle',
     category: '工具',

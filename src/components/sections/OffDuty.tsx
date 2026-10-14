@@ -20,7 +20,7 @@ export function OffDuty() {
                   src={p.src}
                   alt={p.alt}
                   sizes="(min-width: 768px) 340px, 78vw"
-                  frameClassName={portrait ? 'h-full' : 'aspect-3/2'}
+                  frameClassName={portrait ? 'aspect-auto h-full' : 'aspect-3/2'}
                 />
               </li>
             )

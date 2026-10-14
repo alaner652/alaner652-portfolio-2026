@@ -1,5 +1,6 @@
 interface PageHeaderProps {
-  eyebrow: string
+  /** 手寫體的頁名。頁名就是標題時（/projects）不給，省得同一件事說兩次 */
+  eyebrow?: string
   title: React.ReactNode
   note?: string
   /** 標題底下的按鈕列（/hire 的寄信）。多數內頁不用。 */
@@ -12,13 +13,17 @@ interface PageHeaderProps {
 export function PageHeader({ eyebrow, title, note, actions, meta }: PageHeaderProps) {
   return (
     <div className="mx-auto max-w-270 px-6 pt-12 pb-12 md:pt-20 md:pb-16">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
-        <p className="font-hand text-dim text-[1.6rem] leading-none md:text-[1.85rem]">
-          {eyebrow} —
-        </p>
-        {meta && <p className="font-hand text-faint text-[1.25rem] leading-none">{meta}</p>}
-      </div>
-      <h1 className="font-display text-h1 mt-6 max-w-[16em] leading-[1.1] font-medium tracking-[-0.025em]">
+      {(eyebrow || meta) && (
+        <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+          {eyebrow && (
+            <p className="font-hand text-dim text-[1.6rem] leading-none md:text-[1.85rem]">
+              {eyebrow} —
+            </p>
+          )}
+          {meta && <p className="font-hand text-faint text-[1.25rem] leading-none">{meta}</p>}
+        </div>
+      )}
+      <h1 className="font-display text-h1 mt-6 max-w-[16em] first:mt-0 leading-[1.1] font-medium tracking-[-0.025em]">
         {title}
       </h1>
       {note && <p className="text-dim text-lead mt-5 max-w-[42ch] leading-[1.65]">{note}</p>}

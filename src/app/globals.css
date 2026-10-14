@@ -98,7 +98,7 @@
 
   /* ── 動畫 ──
      都很輕，且只在 motion-safe 下套用（reduce 時不套，元素以最終狀態顯示）。
-     fade-up：Hero 進場的分層淡入。要錯開時間用 [--fade-delay:2250ms]，不要用 [animation-delay:…]：
+     fade-up：Hero 進場的分層淡入。要錯開時間用 [--fade-delay:1750ms]，不要用 [animation-delay:…]：
      animate-fade-up 是 shorthand，而且帶 motion-safe: 變體的 utility 會排在後面，會把前面的 animation-delay 蓋回 0。
      blink：打字機游標；
      marquee：首頁技能格的跑馬燈（內容複製兩份，跑到 -50% 剛好接回起點）。 */

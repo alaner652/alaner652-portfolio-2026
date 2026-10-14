@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 
-import { Marker } from '@/components/common/Marker'
 import { PageHeader } from '@/components/common/PageHeader'
 import { WorkList } from '@/components/sections/WorkList'
 import { SITE_CONFIG } from '@/constants'
@@ -30,18 +29,8 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   return (
     <>
-      {/* 照草稿 v3：大標的後半句畫一條麥克筆（開頁畫，跟 /about 同一種） */}
-      <PageHeader
-        eyebrow="做過的東西"
-        title={
-          <>
-            還在跑的，以及一些
-            <Marker draw="load" delay={900}>
-              已經停了的
-            </Marker>
-          </>
-        }
-      />
+      {/* 只放頁名，不多寫一句：東西自己會說話 */}
+      <PageHeader title="做過的東西" />
       <WorkList />
     </>
   )

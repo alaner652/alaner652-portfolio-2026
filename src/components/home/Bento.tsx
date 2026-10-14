@@ -136,7 +136,7 @@ export async function Bento() {
   return (
     <nav
       aria-label="工作之外、技能、GitHub"
-      className="intro motion-safe:animate-fade-up mx-auto max-w-270 px-6 pb-14 [--fade-delay:2500ms] md:pb-20"
+      className="intro motion-safe:animate-fade-up mx-auto max-w-270 px-6 pb-14 [--fade-delay:1900ms] md:pb-20"
     >
       <div className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12">
         <PhotoTile />

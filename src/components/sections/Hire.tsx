@@ -5,6 +5,7 @@ import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { Section } from '@/components/layout/Section'
 import { ProjectCover } from '@/components/sections/ProjectCard'
 import { HIRE, SITE_CONFIG, WORK_ITEMS } from '@/constants'
+import { BUTTON_PRIMARY, BUTTON_SECONDARY } from '@/lib/button'
 import { cn } from '@/lib/utils'
 
 /** 接什麼：四個筆記本框排成 2×2。手寫的編號和案型坐在框線上、旁邊一個圖示。
@@ -89,7 +90,7 @@ export function HireProcess() {
                   {q}
                   <Plus
                     size={20}
-                    className="text-faint shrink-0 transition-transform duration-300 group-open/faq:rotate-45 group-open/faq:text-amber motion-reduce:transition-none"
+                    className="text-faint group-open/faq:text-amber shrink-0 transition-transform duration-300 group-open/faq:rotate-45 motion-reduce:transition-none"
                     aria-hidden
                   />
                 </summary>
@@ -144,7 +145,7 @@ export function HireCases() {
                   item.title
                 )}
               </h3>
-              <p className="text-txt mt-2.5 text-md font-medium">
+              <p className="text-txt text-md mt-2.5 font-medium">
                 {item.result ?? item.description}
               </p>
               {item.metrics && (
@@ -162,11 +163,6 @@ export function HireCases() {
   )
 }
 
-const PRIMARY =
-  'bg-orange-cta text-bg hover:bg-txt inline-flex min-h-11 items-center rounded-full px-5 transition-colors'
-const SECONDARY =
-  'border-line hover:border-amber hover:text-amber text-txt inline-flex min-h-11 items-center gap-1.5 rounded-full border px-5 transition-colors'
-
 /** 頁尾再叫一次：一句話 + 寄信。現在頁面沒掛它（頁首有按鈕、Footer 有信箱），留著以後要用。 */
 export function HireContact() {
   return (
@@ -179,7 +175,7 @@ export function HireContact() {
             不用寫得很正式，一兩天內回。
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 text-base">
-            <a href={`mailto:${SITE_CONFIG.email}`} className={PRIMARY}>
+            <a href={`mailto:${SITE_CONFIG.email}`} className={BUTTON_PRIMARY}>
               寄信給我
             </a>
             {SITE_CONFIG.threads && (
@@ -187,7 +183,7 @@ export function HireContact() {
                 href={SITE_CONFIG.threads}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={SECONDARY}
+                className={BUTTON_SECONDARY}
               >
                 Threads 私訊 <ArrowUpRight size={16} className="text-faint" aria-hidden />
               </a>
