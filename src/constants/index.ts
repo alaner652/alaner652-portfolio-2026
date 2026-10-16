@@ -44,7 +44,7 @@ export const NAV_LINKS: NavLink[] = [
 /** /about「我是誰」那張卡的自介，首頁 Bento 也拿同一段。裡面的每個事實都來自下面的
     JOURNEY / EDUCATION，這裡只是把它們串成話；改了那邊記得回來對一次。 */
 export const ABOUT_WHO =
-  'small R，網路上叫 alaner652。國中自己摸 Roblox Studio，2022 年開始有人付錢請我寫遊戲；後來自己做產品，前端後端部署一個人包。2026 年因為通報校務系統的漏洞被電算中心找進去，現在在授權範圍內做資安和內部自動化。'
+  'small R，網路上叫 alaner652。國中自己摸 Roblox Studio，2022 年開始接 Roblox 案子，先是收 Robux，2024 年起收現金；後來自己做產品，前端後端部署一個人包。2026 年因為通報校務系統的漏洞被電算中心找進去，現在在授權範圍內做資安和內部自動化。'
 
 /** /about「我想說的」那張卡：一段開場 + 幾句從專案和文章裡撿回來的話。
     lines 每一句後面的 from 是它出自哪裡，不要放沒有出處的金句。 */
@@ -94,9 +94,9 @@ export const HIRE = {
     {
       label: '遊戲開發',
       description:
-        'Roblox 遊戲，用 Luau 寫整套系統：技能、戰鬥、打擊感、FPS 框架、養成與背包。2022 年起接案做過，2026 年也自己發行了一款。可以接整個遊戲，也可以只做你缺的那一塊系統。',
+        'Roblox 遊戲，用 Luau 寫整套系統：技能、戰鬥、打擊感、FPS 框架、養成與背包。2022 年開始接案，2024 年起正式收費委託，同年開始和 CubexStudios 合作，現在是共同創辦人兼首席腳本師。2026 年也自己發行了一款，腳本之外的企劃、UI、數值平衡和上線後的數據分析都自己做。工作流是 Rojo + Git：在編輯器寫 strict Luau，用 Rojo 同步進 Studio，Wally 管套件，luau-lsp、Selene、StyLua 做型別與風格檢查，純邏輯用 Lune 在 Studio 外跑測試。可以接整個遊戲，也可以只做你缺的那一塊系統。',
       deliverable: '能玩的遊戲，或接得進你專案的系統模組',
-      examples: ['Build The Cat Gunner', 'Cooking Game'],
+      examples: ['Build The Cat Gunner', 'soullike', 'Cooking Game'],
     },
     {
       label: 'LINE Bot 與自動化',
@@ -307,6 +307,17 @@ export const WORK_ITEMS: WorkItem[] = [
     card: true,
   },
   {
+    status: '原型',
+    tone: 'idle',
+    category: '遊戲',
+    slug: 'soullike',
+    title: 'soullike',
+    result: '一場打得完的魂系頭目戰：連段、格擋、處決，還有會讀你動作的敵人。',
+    description:
+      'Roblox 上的魂系動作遊戲垂直切片。五段連段、重擊、格擋、翻滾無敵幀、背刺與處決；敵人有架勢條，打穿會破防。攻擊判定的時機從動畫的 keyframe marker 推出來，不手寫。敵人靠視野、聽覺、視線三件事發現你，還會延遲揮擊打亂節奏。玩家和敵人共用一套資料驅動的狀態機，傷害、無敵與超甲窗口全部由伺服器計算。一人開發、AI 輔助，部分動畫還是佔位。',
+    metrics: ['Luau', 'Roblox', 'Rojo'],
+  },
+  {
     status: '接案作品',
     tone: 'idle',
     category: '遊戲',
@@ -344,18 +355,25 @@ export const JOURNEY: JourneyEntry[] = [
       '從 Roblox Studio 和 Lua 開始，從改地圖到搞懂函數、事件、物件，第一次自己把遊戲做出來。',
   },
   {
-    period: '2022 — 2023',
+    period: '2022 — 2024',
     track: '接案',
-    title: '開始有人付錢請我寫',
+    title: '從 Robux 到正式接案',
     milestone: true,
     detail:
-      '2022 年接到第一個付費案子。後來和幾個各地的開發者固定合作做遊戲，全英文溝通，負責技能系統、打擊感和 FPS 框架。',
+      '2022 年開始接案，一開始收 Robux，也做過不收錢的合作。後來和幾個各地的開發者固定合作做遊戲，全英文溝通，負責技能系統、打擊感和 FPS 框架；2024 年起正式收費。',
   },
   {
     period: '2023',
     track: 'Web',
     title: '開始碰網頁',
     detail: '開始接觸前端、網頁這些遊戲以外的領域。',
+  },
+  {
+    period: '2024',
+    track: '遊戲',
+    title: '加入 CubexStudios',
+    detail:
+      '開始和 CubexStudios 合作寫遊戲腳本，後來成為共同創辦人兼首席腳本師。2026 年起一起打造工作室自己的遊戲。',
   },
   {
     period: '2024',
@@ -366,17 +384,18 @@ export const JOURNEY: JourneyEntry[] = [
   {
     period: '2025',
     track: '資安',
-    title: '沉澱，然後打出第一個洞',
+    title: '沉澱，資安長出來',
     milestone: true,
     detail:
-      '少跑外面，一個人專研更多東西，資安是這一年長出來的。在校務系統找到第一個漏洞，透過 HITCON ZeroDay 通報，之後被電算中心找進去。也開始投實習。',
+      '少跑外面，一個人專研更多東西，資安是這一年長出來的。也開始投實習。',
   },
   {
     period: '2026 —',
     track: '現在',
     title: '還沒開始的一年',
     milestone: true,
-    detail: '電算中心的工作還在做。遊戲、打工、創業、自學繼續並行。',
+    detail:
+      '4 到 6 月在校務系統找到漏洞，透過 HITCON ZeroDay 通報，之後被電算中心找進去，現在還在做。遊戲這邊不再只寫腳本：和 CubexStudios 做工作室自己的遊戲，也自己發行了 Build The Cat Gunner，企劃、UI、數值平衡、投廣告、上線後看數據都自己來。打工、創業、自學繼續並行。',
     current: true,
   },
 ]
@@ -403,6 +422,22 @@ export const RIDING_PHOTOS: Photo[] = [
 export const SKILLS: SkillGroup[] = [
   { label: '語言', items: ['Python', 'TypeScript', 'Lua / Luau', 'SQL'] },
   {
+    label: 'Roblox 開發',
+    items: [
+      'Roblox Studio',
+      'Rojo',
+      'Wally',
+      'Aftman / Rokit',
+      'Lune',
+      'luau-lsp',
+      'Selene',
+      'StyLua',
+      'react-lua',
+      'Charm',
+      'ProfileStore',
+    ],
+  },
+  {
     label: '後端與資料',
     items: ['FastAPI', 'Next.js API Routes', 'Drizzle ORM', 'SQLite'],
   },
@@ -417,5 +452,9 @@ export const SKILLS: SkillGroup[] = [
   {
     label: '資安',
     items: ['Burp Suite', 'IDOR / XSS / CSRF', '負責任揭露', 'WAF / reverse proxy'],
+  },
+  {
+    label: '工具與 AI',
+    items: ['Git', 'Claude Code', 'MCP', 'Gemini API', 'LINE Messaging API', 'Vitest', 'ffmpeg'],
   },
 ]

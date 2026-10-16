@@ -15,5 +15,12 @@
   "Cloudflare Tunnel": "cloudflare",
   "Proxmox": "proxmox",
   "Tailscale": "tailscale",
-  "Burp Suite": "burpsuite"
+  "Burp Suite": "burpsuite",
+  "Roblox Studio": "robloxstudio",
+  "Git": "git",
+  "Claude Code": "claude",
+  "Gemini API": "googlegemini",
+  "LINE Messaging API": "line",
+  "Vitest": "vitest",
+  "ffmpeg": "ffmpeg"
 }

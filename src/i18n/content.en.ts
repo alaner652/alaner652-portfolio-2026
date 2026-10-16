@@ -64,6 +64,12 @@ export const WORK_EN: Record<string, { status: string; result?: string; descript
     description:
       'A beatmap manager I wrote purely for myself, packaged as an exe so friends can run it without installing Python.',
   },
+  soullike: {
+    status: 'Prototype',
+    result: 'A soulslike boss fight you can play start to finish: combos, blocks, executions, and an enemy that reads your moves.',
+    description:
+      'A vertical slice of a soulslike action game on Roblox. Five-hit light combo, heavy attack, block, roll i-frames, backstabs and executions; the enemy has a posture bar and staggers when it breaks. Hit timing comes from keyframe markers on the animations, not hand-typed numbers. The enemy notices you by sight, hearing and line of sight, and delays its swings to break your rhythm. Player and enemy share one data-driven state machine, and damage, i-frame and hyper-armor windows are all computed on the server. Solo, AI-assisted; some animations are still placeholders.',
+  },
   'cooking-game': {
     status: 'Client work',
     result: 'A complete set of game systems and interaction logic in Luau.',
@@ -94,14 +100,20 @@ export const JOURNEY_EN: { track: string; title: string; detail: string }[] = [
   },
   {
     track: 'Freelance',
-    title: 'People started paying me to write',
+    title: 'From Robux to paid commissions',
     detail:
-      'First paid job in 2022. Later I worked regularly with developers around the world, all in English, on skill systems, combat feel and FPS frameworks.',
+      'Started taking commissions in 2022, paid in Robux at first, plus some unpaid collaborations. Later I worked regularly with developers around the world, all in English, on skill systems, combat feel and FPS frameworks; paid work started in 2024.',
   },
   {
     track: 'Web',
     title: 'Started on the web',
     detail: 'Began learning front end and the web, the first things outside games.',
+  },
+  {
+    track: 'Games',
+    title: 'Joined CubexStudios',
+    detail:
+      "Started writing game scripts with CubexStudios, and later became co-founder and lead scripter. Since 2026 we've been building the studio's own games.",
   },
   {
     track: 'Community',
@@ -111,15 +123,15 @@ export const JOURNEY_EN: { track: string; title: string; detail: string }[] = [
   },
   {
     track: 'Security',
-    title: 'Slowed down, then found my first hole',
+    title: 'Slowed down; security took root',
     detail:
-      'Fewer events, more time alone digging in; security grew out of this year. Found my first vulnerability in the school system, reported it through HITCON ZeroDay, and the computing center brought me in. Started applying for internships too.',
+      'Fewer events, more time alone digging in; security grew out of this year. Started applying for internships too.',
   },
   {
     track: 'Now',
     title: "A year that hasn't started yet",
     detail:
-      'The computing center work continues. Games, part-time work, startup ideas and self-study go on in parallel.',
+      "Between April and June I found vulnerabilities in the school system and reported them through HITCON ZeroDay; the computing center brought me in, and I'm still there. In games I'm no longer just the scripter: I'm building the studio's own games with CubexStudios, and I shipped Build The Cat Gunner myself, handling design, UI, balancing, ads and post-launch data. Part-time work, startup ideas and self-study go on in parallel.",
   },
 ]
 
@@ -146,7 +158,7 @@ export const OFFERS_EN: { verb: string; label: string; description: string }[] =
 ]
 
 export const ABOUT_WHO_EN =
-  "small R, alaner652 online. Taught myself Roblox Studio in middle school; in 2022 people started paying me to write games. Later I built my own products, front end, back end and deployment all by myself. In 2026 I reported a vulnerability in the school's administrative system, the computing center brought me in, and now I do authorized security work and internal automation there."
+  "small R, alaner652 online. Taught myself Roblox Studio in middle school; in 2022 I started taking Roblox commissions, paid in Robux at first and in cash from 2024. Later I built my own products, front end, back end and deployment all by myself. In 2026 I reported a vulnerability in the school's administrative system, the computing center brought me in, and now I do authorized security work and internal automation there."
 
 export const ABOUT_WORDS_EN = {
   lead: 'What I like keeps changing: games first, then the web, now security. No one at home works in tech and there was no cram school; every step was looked up and figured out alone. The lines below were actually learned along the way, not made up.',
@@ -179,7 +191,7 @@ export const HIRE_EN = {
     {
       label: 'Game development',
       description:
-        "Roblox games with full systems in Luau: skills, combat, hit feel, FPS frameworks, progression and inventory. Freelancing since 2022, and I shipped my own game in 2026. I can take the whole game or just the system you're missing.",
+        "Roblox games with full systems in Luau: skills, combat, hit feel, FPS frameworks, progression and inventory. Commissions since 2022, paid work since 2024, the same year I started with CubexStudios, where I'm now co-founder and lead scripter. In 2026 I also shipped my own game, doing the design, UI, balancing and post-launch analytics beyond the scripting. My workflow is Rojo + Git: strict Luau in a real editor, synced into Studio with Rojo, packages via Wally, type and style checks with luau-lsp, Selene and StyLua, and pure logic tested outside Studio with Lune. I can take the whole game or just the system you're missing.",
       deliverable: 'A playable game, or a system module that fits your project',
     },
     {
@@ -248,10 +260,12 @@ export const HIRE_EN = {
 /** 照 SKILLS 的順序 */
 export const SKILLS_EN_LABELS = [
   'Languages',
+  'Roblox development',
   'Backend and data',
   'Frontend',
   'Infrastructure',
   'Security',
+  'Tools and AI',
 ]
 export const SKILL_ITEMS_EN: Record<string, string> = { 負責任揭露: 'Responsible disclosure' }
 
