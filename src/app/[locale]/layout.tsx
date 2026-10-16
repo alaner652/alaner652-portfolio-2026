@@ -1,3 +1,4 @@
+/// <reference types="react/canary" />
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { JetBrains_Mono, Noto_Sans_TC, Caveat } from 'next/font/google'
@@ -8,11 +9,13 @@ import '@fontsource/lxgw-wenkai-tc/chinese-traditional-700.css'
 import '../globals.css'
 import { Footer } from '@/components/layout/Footer'
 import { Nav } from '@/components/layout/Nav'
+import { MotionProviders } from '@/components/motion/Providers'
 import { SITE_CONFIG } from '@/constants'
 import { HTML_LANG, LOCALES, hasLocale } from '@/i18n/config'
 import { getDict } from '@/i18n/dict'
 import { setLocale } from '@/i18n/server'
 import { notFound } from 'next/navigation'
+import { ViewTransition } from 'react'
 
 const jetbrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains-mono',
@@ -106,11 +109,18 @@ export default async function RootLayout({
           {d.nav.skip}
         </a>
         <div className="grain print:hidden" aria-hidden="true" />
-        <Nav />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        {/* motion 的 initial 在 SSR 會先寫 opacity:0；JS 失效時強制顯示，免得整頁空白 */}
+        <noscript>
+          <style>{'[style*="opacity"]{opacity:1!important;transform:none!important}'}</style>
+        </noscript>
+        <MotionProviders>
+          <Nav />
+          <main id="main" className="flex-1">
+            {/* 換頁：舊頁淡出微沉、新頁淡入微浮（globals.css 的 ::view-transition-*(.page)） */}
+            <ViewTransition default="page">{children}</ViewTransition>
+          </main>
+          <Footer />
+        </MotionProviders>
         <Analytics />
       </body>
     </html>

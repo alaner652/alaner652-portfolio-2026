@@ -2,9 +2,11 @@
 
 import Image from 'next/image'
 import { LLink as Link } from '@/i18n/client'
+import { AnimatePresence, motion } from 'motion/react'
 import { useMemo, useState } from 'react'
 
 import { useDict } from '@/i18n/client'
+import { tr } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 import { PROJECT_CATEGORIES } from '@/types'
 import type { ProjectCategory, WorkItem } from '@/types'
@@ -23,7 +25,7 @@ function linkLabel(url: string, L: P['link']) {
 function matches(item: WorkItem, q: string) {
   if (!q) return true
   const hay = [item.title, item.category, item.result, item.description, ...(item.metrics ?? [])]
-    .join(' ')
+    .join('')
     .toLowerCase()
   return hay.includes(q.toLowerCase())
 }
@@ -80,7 +82,7 @@ function Preview({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="border-border-strong text-text hover:border-text border-b pb-0.5"
+            className="border-border-strong text-text hover:border-text border-b pb-0.5 transition-colors"
           >
             {linkLabel(href, d.link)} ↗
           </a>
@@ -126,14 +128,19 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
               aria-pressed={filter === c}
               onClick={() => setFilter(c)}
               className={cn(
-                'min-h-11 shrink-0 cursor-pointer border-b-2 px-0.5 text-[15px] md:text-base',
-                filter === c
-                  ? 'border-accent text-text'
-                  : 'text-text-3 hover:text-text border-transparent'
+                'relative min-h-11 shrink-0 cursor-pointer px-0.5 text-[15px] transition-colors md:text-base',
+                filter === c ? 'text-text' : 'text-text-3 hover:text-text'
               )}
             >
               {c === ALL ? d.all : (d.categories[c] ?? c)}
               <sup className="ml-0.5 font-mono text-[11px]">{count(c)}</sup>
+              {filter === c && (
+                <motion.span
+                  layoutId="project-tab"
+                  className="bg-accent absolute inset-x-0 -bottom-px h-0.5"
+                  transition={tr.base}
+                />
+              )}
             </button>
           ))}
         </div>
@@ -152,71 +159,93 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
       <div className="wrap grid gap-8 pt-2 pb-20 md:grid-cols-12 md:gap-8 md:pb-24">
         <ol className="md:col-span-7" onPointerLeave={() => setHover(null)}>
           {items.length === 0 && <li className="text-text-3 py-10 text-sm">{d.empty(q)}</li>}
-          {items.map((item, i) => {
-            const on = i === activeIndex
-            return (
-              <li key={item.slug}>
-                <Link
-                  href={`/projects/${item.slug}`}
-                  onPointerEnter={() => setHover(item.slug)}
-                  onFocus={() => setHover(item.slug)}
-                  className={cn(
-                    'group/row border-line grid grid-cols-[3.5rem_minmax(0,1fr)_auto] items-center gap-x-4 border-b py-5 md:grid-cols-[5.5rem_minmax(0,1fr)_5rem_1.5rem] md:gap-x-5 md:py-6',
-                    on && 'is-active'
-                  )}
+          <AnimatePresence initial={false}>
+            {items.map((item, i) => {
+              const on = i === activeIndex
+              return (
+                <motion.li
+                  key={item.slug}
+                  layout
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={tr.base}
                 >
-                  <span
+                  <Link
+                    href={`/projects/${item.slug}`}
+                    onPointerEnter={() => setHover(item.slug)}
+                    onFocus={() => setHover(item.slug)}
                     className={cn(
-                      'ghost text-[2rem] leading-none font-black tracking-[-0.04em] tabular-nums md:text-[3rem]',
-                      on && 'ghost-on'
+                      'group/row border-line grid grid-cols-[3.5rem_minmax(0,1fr)_auto] items-center gap-x-4 border-b py-5 md:grid-cols-[5.5rem_minmax(0,1fr)_5rem_1.5rem] md:gap-x-5 md:py-6',
+                      on && 'is-active'
                     )}
-                    aria-hidden="true"
                   >
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span className="min-w-0">
                     <span
                       className={cn(
-                        'block text-[20px] font-bold md:text-[22px]',
-                        on ? 'text-accent' : 'text-text'
+                        'ghost text-[2rem] leading-none font-black tracking-[-0.04em] tabular-nums md:text-[3rem]',
+                        on && 'ghost-on'
                       )}
+                      aria-hidden="true"
                     >
-                      {item.title}
+                      {String(i + 1).padStart(2, '0')}
                     </span>
-                    {item.metrics && (
-                      <span className="text-text-3 mt-0.5 block text-[13px]">
-                        {item.metrics.join(' / ')}
+                    <span className="min-w-0">
+                      <span
+                        className={cn(
+                          'block text-[20px] font-bold transition-colors md:text-[22px]',
+                          on ? 'text-accent' : 'text-text'
+                        )}
+                      >
+                        {item.title}
                       </span>
-                    )}
-                  </span>
-                  <span className="text-text-2 text-sm">
-                    {d.categories[item.category] ?? item.category}
-                  </span>
-                  <span
-                    className={cn('hidden md:block', on ? 'text-accent' : 'text-text-3')}
-                    aria-hidden="true"
-                  >
-                    →
-                  </span>
-                </Link>
-                {/* 手機：預覽接在目前這一列底下 */}
-                {on && active && (
-                  <Preview
-                    item={active}
-                    index={i}
-                    title={false}
-                    d={d}
-                    className="border-line border-b py-5 md:hidden"
-                  />
-                )}
-              </li>
-            )
-          })}
+                      {item.metrics && (
+                        <span className="text-text-3 mt-0.5 block text-[13px]">
+                          {item.metrics.join(' /')}
+                        </span>
+                      )}
+                    </span>
+                    <span className="text-text-2 text-sm">
+                      {d.categories[item.category] ?? item.category}
+                    </span>
+                    <span
+                      className={cn(
+                        'hidden transition-colors md:block',
+                        on ? 'text-accent' : 'text-text-3'
+                      )}
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </Link>
+                  {/* 手機：預覽接在目前這一列底下 */}
+                  {on && active && (
+                    <Preview
+                      item={active}
+                      index={i}
+                      title={false}
+                      d={d}
+                      className="border-line border-b py-5 md:hidden"
+                    />
+                  )}
+                </motion.li>
+              )
+            })}
+          </AnimatePresence>
         </ol>
         {active && (
           <aside className="hidden md:col-span-5 md:block">
             <div className="sticky top-24">
-              <Preview item={active} index={activeIndex} d={d} />
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.div
+                  key={active.slug}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.25, ease: [0.2, 0.7, 0.1, 1] }}
+                >
+                  <Preview item={active} index={activeIndex} d={d} />
+                </motion.div>
+              </AnimatePresence>
             </div>
           </aside>
         )}

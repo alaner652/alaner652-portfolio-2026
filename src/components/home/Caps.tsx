@@ -1,3 +1,5 @@
+import { Pop } from '@/components/motion/Pop'
+import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { content } from '@/i18n/content'
 import { t } from '@/i18n/server'
 
@@ -6,19 +8,19 @@ export function Caps() {
   const { OFFERS } = content()
   return (
     <section className="wrap pt-22 md:pt-36" aria-label={t().home.caps}>
-      <ul className="grid gap-9 md:grid-cols-3 md:gap-10">
+      <Reveal as="ul" stagger={itemStagger} className="grid gap-9 md:grid-cols-3 md:gap-10">
         {OFFERS.map((offer) => (
-          <li key={offer.verb} className="flex flex-col gap-2.5 md:gap-3.5">
+          <RevealItem as="li" key={offer.verb} className="flex flex-col gap-2.5 md:gap-3.5">
             <h3 className="text-text text-[56px] leading-none font-black tracking-[-0.05em] md:text-[clamp(56px,5.5vw,80px)]">
               {offer.verb}
-              <span className="text-accent">.</span>
+              <Pop className="text-accent">.</Pop>
             </h3>
             <p className="text-text-body text-[15px] leading-[1.8] md:text-[17px]">
               {offer.description}
             </p>
-          </li>
+          </RevealItem>
         ))}
-      </ul>
+      </Reveal>
     </section>
   )
 }

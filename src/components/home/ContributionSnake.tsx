@@ -23,8 +23,7 @@ export function ContributionSnake({ days, pad }: { days: ContributionDay[]; pad:
     const ctx = canvas?.getContext('2d')
     if (!canvas || !ctx) return
 
-    // 全站沒有動畫：永遠只畫格子，蛇不出來
-    const reduce = true
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const css = getComputedStyle(canvas)
     const color = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback
     const amber = color('--color-accent', '#FF8648')
@@ -119,11 +118,20 @@ export function ContributionSnake({ days, pad }: { days: ContributionDay[]; pad:
     }
 
     layout()
-    if (reduce) {
-      head = -SNAKE - 1
-      draw()
-    } else {
-      raf = requestAnimationFrame(tick)
+    // 先畫靜態格子；蛇等整格進視窗才開始跑（docs/動畫設計.md 首頁 7）
+    head = -SNAKE - 1
+    draw()
+    let io: IntersectionObserver | null = null
+    if (!reduce) {
+      io = new IntersectionObserver(
+        ([e]) => {
+          if (!e.isIntersecting) return
+          io?.disconnect()
+          raf = requestAnimationFrame(tick)
+        },
+        { threshold: 0.3 }
+      )
+      io.observe(canvas)
     }
 
     const ro = new ResizeObserver(() => {
@@ -137,6 +145,7 @@ export function ContributionSnake({ days, pad }: { days: ContributionDay[]; pad:
 
     return () => {
       cancelAnimationFrame(raf)
+      io?.disconnect()
       ro.disconnect()
     }
   }, [days, pad])

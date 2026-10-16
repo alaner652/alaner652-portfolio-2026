@@ -14,6 +14,8 @@ import { Eyebrow } from '@/components/common/Eyebrow'
 import { MacWindow } from '@/components/common/MacWindow'
 import { Mermaid } from '@/components/common/Mermaid'
 import { MetricChip } from '@/components/common/MetricChip'
+import { Progress } from '@/components/motion/Progress'
+import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { TaskList } from '@/components/common/TaskList'
 import { Toc, type TocHeading } from '@/components/common/Toc'
@@ -182,7 +184,7 @@ export default async function PostPage({
     author: { '@type': 'Person', name: SITE_CONFIG.name, url: SITE_CONFIG.url },
     publisher: { '@type': 'Person', name: SITE_CONFIG.name, url: SITE_CONFIG.url },
     url: `${SITE_CONFIG.url}/blog/${slug}`,
-    keywords: post.frontmatter.tags?.join(', '),
+    keywords: post.frontmatter.tags?.join(','),
     inLanguage: 'zh-Hant-TW',
     image: `${SITE_CONFIG.url}/blog/${slug}/opengraph-image`,
   }
@@ -201,29 +203,40 @@ export default async function PostPage({
       />
 
       {/* 最上緣一條橘線，跟著整頁捲動長 */}
+      <Progress />
 
-      {/* 頁首：置中。麵包屑 / 第一個標籤、標題、日期 · 分鐘 · 標籤 */}
-      <header className="mx-auto max-w-[880px] px-5 pt-10 pb-8 text-center md:px-10 md:pt-20 md:pb-14">
-        <div className="text-text-3 font-mono text-xs md:text-[13px]">
-          <Link href="/blog" className="hover:text-text">
+      {/* 頁首：置中。麵包屑 / 第一個標籤、標題、日期 · 分鐘 · 標籤。三層錯開進場，正文不動 */}
+      <Reveal
+        load
+        stagger={itemStagger}
+        as="header"
+        className="mx-auto max-w-[880px] px-5 pt-10 pb-8 text-center md:px-10 md:pt-20 md:pb-14"
+      >
+        <RevealItem small className="text-text-3 font-mono text-xs md:text-[13px]">
+          <Link href="/blog" className="hover:text-text transition-colors">
             {d.title}
           </Link>
           {post.frontmatter.tags?.[0] && <> / #{post.frontmatter.tags[0]}</>}
-        </div>
-        <h1 className="text-text mt-3.5 text-[32px] leading-[1.35] font-black md:mt-6 md:text-[clamp(40px,4vw,56px)] md:leading-[1.3] md:tracking-[-0.02em]">
-          {post.frontmatter.title}
-        </h1>
-        <div className="text-text-3 mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 font-mono text-xs md:mt-7 md:text-[13px]">
+        </RevealItem>
+        <RevealItem small>
+          <h1 className="text-text mt-3.5 text-[32px] leading-[1.35] font-black md:mt-6 md:text-[clamp(40px,4vw,56px)] md:leading-[1.3] md:tracking-[-0.02em]">
+            {post.frontmatter.title}
+          </h1>
+        </RevealItem>
+        <RevealItem
+          small
+          className="text-text-3 mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 font-mono text-xs md:mt-7 md:text-[13px]"
+        >
           <time dateTime={post.frontmatter.date}>{dotDate}</time>
           <span>{d.minutes(post.readingMinutes)}</span>
           {post.frontmatter.tags && (
-            <span>{post.frontmatter.tags.map((t) => `#${t}`).join(' ')}</span>
+            <span>{post.frontmatter.tags.map((t) => `#${t}`).join('')}</span>
           )}
-        </div>
+        </RevealItem>
         {locale === 'en' && post.lang === 'zh' && (
           <p className="text-text-3 mt-4 text-[13px]">{d.zhOnly}</p>
         )}
-      </header>
+      </Reveal>
 
       {/* 內文：寬螢幕三欄（目錄 2 / 文章 7 / 相關 3），窄螢幕目錄收成 details */}
       <div className="wrap grid grid-cols-1 gap-x-12 pb-12 md:pb-20 xl:grid-cols-[220px_minmax(0,760px)_220px] xl:justify-center">
@@ -257,7 +270,7 @@ export default async function PostPage({
                 <Link
                   key={r.slug}
                   href={`/blog/${r.slug}`}
-                  className="text-text-2 hover:text-text block"
+                  className="text-text-2 hover:text-text block transition-colors"
                 >
                   → {r.frontmatter.title}
                 </Link>
@@ -274,7 +287,7 @@ export default async function PostPage({
               <div className="text-text-3 font-mono text-[11px] md:text-[13px]">
                 {nextLabel} / {next.frontmatter.date.replaceAll('-', '.')}
               </div>
-              <div className="text-text group-hover/next:text-accent mt-1.5 text-[22px] leading-[1.4] font-black md:mt-2.5 md:text-[clamp(28px,3.3vw,48px)] md:leading-[1.2]">
+              <div className="text-text group-hover/next:text-accent mt-1.5 text-[22px] leading-[1.4] font-black md:mt-2.5 md:text-[clamp(28px,3.3vw,48px)] md:leading-[1.2] transition-colors">
                 {next.frontmatter.title}
               </div>
             </div>

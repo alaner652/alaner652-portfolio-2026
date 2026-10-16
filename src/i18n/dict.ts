@@ -28,7 +28,7 @@ export const zh = {
     hireNote: '做什麼、給誰用、大概什麼時候要。不用寫規格書，Discord 回得比信快。',
     talk: '想聊這篇？',
     backToBlog: '← 回到心得分享',
-    clockPrefix: '台北 ',
+    clockPrefix: '台北',
     clockLabel: '台北現在時間',
   },
   home: {
@@ -183,7 +183,7 @@ export const en: Dict = {
       "What it is, who it's for, and roughly when you need it. No spec required. Discord gets a faster reply than email.",
     talk: 'Want to talk about this post?',
     backToBlog: '← Back to writing',
-    clockPrefix: 'Taipei ',
+    clockPrefix: 'Taipei',
     clockLabel: 'Current time in Taipei',
   },
   home: {
@@ -290,7 +290,7 @@ export const en: Dict = {
     title: 'Hire',
     eyebrow: 'Freelance / Fixed quotes / One person, start to finish',
     h1a: 'Build the thing,',
-    h1b: 'then make it ',
+    h1b: 'then make it',
     h1c: 'hold up',
     h1d: '.',
     cta: 'Message me on Discord →',

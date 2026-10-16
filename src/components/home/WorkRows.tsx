@@ -30,7 +30,7 @@ export function WorkRows({ items, start, rest, moreLabel }: WorkRowsProps) {
   }
 
   const row =
-    'grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-x-4 border-t border-line py-5 md:grid-cols-[80px_minmax(0,1fr)_40px] md:items-center md:gap-x-6 md:py-7'
+    'grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-x-4 border-t border-line py-5 transition-opacity duration-250 md:grid-cols-[80px_minmax(0,1fr)_40px] md:items-center md:gap-x-6 md:py-7'
 
   return (
     <div className="relative" onPointerMove={onMove} onPointerLeave={() => setHover(-1)}>
@@ -47,16 +47,21 @@ export function WorkRows({ items, start, rest, moreLabel }: WorkRowsProps) {
           >
             <span
               className={cn(
-                'font-mono text-[13px] md:text-base',
+                'font-mono text-[13px] transition-colors md:text-base',
                 on ? 'text-accent' : 'text-text-3'
               )}
             >
               {String(start + i).padStart(2, '0')}
             </span>
-            <span className={cn('flex flex-wrap items-baseline gap-x-5 gap-y-1 ')}>
+            <span
+              className={cn(
+                'flex flex-wrap items-baseline gap-x-5 gap-y-1 transition-transform duration-350 ease-[var(--ease-out-soft)]',
+                on && 'md:translate-x-4'
+              )}
+            >
               <span
                 className={cn(
-                  'text-[24px] font-black tracking-[-0.02em] md:text-[40px]',
+                  'text-[24px] font-black tracking-[-0.02em] transition-colors md:text-[40px]',
                   on ? 'text-accent' : 'text-text'
                 )}
               >
@@ -68,8 +73,8 @@ export function WorkRows({ items, start, rest, moreLabel }: WorkRowsProps) {
             </span>
             <span
               className={cn(
-                'text-accent text-[22px] md:text-[28px]',
-                on ? 'opacity-100' : 'opacity-0'
+                'text-accent text-[22px] transition-[opacity,transform] duration-300 md:text-[28px]',
+                on ? 'opacity-100' : '-translate-x-3 opacity-0'
               )}
               aria-hidden="true"
             >
@@ -96,7 +101,7 @@ export function WorkRows({ items, start, rest, moreLabel }: WorkRowsProps) {
       {current?.preview && (
         <div
           aria-hidden="true"
-          className="border-border-strong bg-raised pointer-events-none absolute top-0 left-0 hidden w-80 overflow-hidden rounded-md border md:block"
+          className="border-border-strong bg-raised pointer-events-none absolute top-0 left-0 hidden w-80 overflow-hidden rounded-md border transition-[transform,opacity] duration-200 ease-[var(--ease-out-soft)] md:block"
           style={{
             transform: `translate(${pos.x + 32}px, ${pos.y - 110}px) rotate(${hover % 2 ? 3 : -3}deg)`,
           }}

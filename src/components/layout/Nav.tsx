@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 
 import { NAV_LINKS } from '@/constants'
 import { LLink as Link, useDict } from '@/i18n/client'
-import { LOCALES, localePath, splitLocale, type Locale } from '@/i18n/config'
+import { localePath, splitLocale, type Locale } from '@/i18n/config'
 import { cn } from '@/lib/utils'
 
 const LABEL: Record<string, 'about' | 'projects' | 'blog' | 'resume' | 'hire'> = {
@@ -21,12 +21,12 @@ const NO = (i: number) => String(i + 1).padStart(2, '0')
 
 // 桌機連結：mono 編號 + 文字；目前頁面整個變橘（編號也是），hover 底下畫一條短線
 const DESKTOP_LINK =
-  'group/nl text-text-2 hover:text-text aria-[current=page]:text-accent relative flex h-11 items-center gap-1 px-1 after:bg-accent after:absolute after:inset-x-1 after:bottom-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full hover:after:scale-x-100 '
+  'group/nl text-text-2 hover:text-text aria-[current=page]:text-accent relative flex h-11 items-center gap-1 px-1 after:bg-accent after:absolute after:inset-x-1 after:bottom-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-250 after:ease-out hover:after:scale-x-100 transition-colors'
 const INDEX = 'text-text-3 group-aria-[current=page]/nl:text-accent font-mono text-[10px]'
 
 // 手機選單是整列可點：編號 + 文字，目前頁橘色 + 左側橘短槓
 const MOBILE_LINK =
-  'group/ml text-text-2 hover:text-text aria-[current=page]:text-accent aria-[current=page]:border-accent -mx-3 flex h-11 items-center gap-3 border-l-2 border-transparent px-3 text-base '
+  'group/ml text-text-2 hover:text-text aria-[current=page]:text-accent aria-[current=page]:border-accent -mx-3 flex h-11 items-center gap-3 border-l-2 border-transparent px-3 text-base transition-colors'
 
 /** 語言切換：一個 icon，點了換到另一個語系的同一頁。目標語系寫在 aria-label / title 裡。 */
 function LocaleSwitch({
@@ -50,7 +50,7 @@ function LocaleSwitch({
       title={d.switchLabel}
       onClick={onNavigate}
       className={cn(
-        'text-text-2 hover:text-text flex size-11 items-center justify-center ',
+        'text-text-2 hover:text-text flex size-11 items-center justify-center transition-colors',
         className
       )}
     >
@@ -63,17 +63,7 @@ export function Nav() {
   const fullPath = usePathname()
   const { locale, path: pathname } = splitLocale(fullPath)
   const d = useDict().nav
-  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    function onScroll() {
-      setScrolled(window.scrollY > 12)
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   useEffect(() => {
     if (!menuOpen) return
@@ -89,18 +79,12 @@ export function Nav() {
     return pathname === href || pathname.startsWith(`${href}/`)
   }
 
-  const floating = scrolled || menuOpen
-
   return (
-    // 在頁首時是透明的一列；捲下去後外層套成一顆浮起來的膠囊（毛玻璃 + 細邊 + 淡影），裡面的連結不變
+    // 一直是一顆浮起來的膠囊（毛玻璃 + 細邊 + 淡影），不隨捲動切換；裡面的連結不變
     <nav aria-label="主要導覽" className="sticky top-0 z-50 px-3 pt-3 sm:px-6 print:hidden">
       <div
-        className={cn(
-          // 圓角固定 1.75rem（= 收合時 3.5rem 高的一半，看起來就是膠囊），開選單時形狀不變、只往下長
-          'mx-auto max-w-270 rounded-[1.75rem] border border-transparent ',
-          floating &&
-            'bg-bg/80 border-border shadow-[0_12px_32px_-18px_rgba(0,0,0,0.6)] backdrop-blur-[12px]'
-        )}
+        // 圓角固定 1.75rem（= 收合時 3.5rem 高的一半，看起來就是膠囊），開選單時形狀不變、只往下長
+        className="bg-bg/80 border-border mx-auto max-w-270 rounded-[1.75rem] border shadow-[0_12px_32px_-18px_rgba(0,0,0,0.6)] backdrop-blur-[12px]"
       >
         <div className="flex h-14 items-center justify-between px-5">
           {/* 字標：手寫體。它只是回首頁，不做 hover。 */}
@@ -137,7 +121,7 @@ export function Nav() {
             aria-expanded={menuOpen}
             aria-controls="nav-menu"
             aria-label={menuOpen ? d.closeMenu : d.openMenu}
-            className="text-text-2 hover:text-text -mr-2 hidden h-11 w-11 items-center justify-center max-[720px]:flex"
+            className="text-text-2 hover:text-text -mr-2 hidden h-11 w-11 items-center justify-center max-[720px]:flex transition-colors"
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -148,15 +132,15 @@ export function Nav() {
           id="nav-menu"
           inert={!menuOpen}
           className={cn(
-            'grid min-[721px]:hidden ',
+            'grid transition-[grid-template-rows] duration-300 ease-out min-[721px]:hidden',
             menuOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
           )}
         >
           <div className="min-h-0 overflow-hidden">
             <div
               className={cn(
-                'border-line border-t px-5 pt-2 pb-4 ',
-                menuOpen ? 'opacity-100 ' : 'opacity-0'
+                'border-line border-t px-5 pt-2 pb-4 transition-opacity duration-200',
+                menuOpen ? 'opacity-100 delay-100' : 'opacity-0'
               )}
             >
               {NAV_LINKS.map((link, i) => (

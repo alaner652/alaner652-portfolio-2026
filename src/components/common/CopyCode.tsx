@@ -28,7 +28,7 @@ export function CopyCode() {
       type="button"
       onClick={copy}
       aria-label="複製程式碼"
-      className="text-text-2 hover:text-text -mr-2.5 min-h-9 cursor-pointer px-2.5 font-mono text-xs"
+      className="text-text-2 hover:text-text -mr-2.5 min-h-9 cursor-pointer px-2.5 font-mono text-xs transition-colors"
     >
       {copied ? '已複製 ✓' : '複製'}
     </button>

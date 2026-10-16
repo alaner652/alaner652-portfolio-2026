@@ -25,6 +25,7 @@
   --color-selection: #5a2a12;
   --color-selection-text: #ffd9c4;
   --color-live: #4ade80; /* 首頁「最近」那顆綠點，只用在這裡 */
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.1, 1); /* 跟 src/lib/motion.ts 的 ease.out 同一條 */
 
   /* ── 字級 ──
      內文級距沿用；頁面上的大字（88/104/112/120/140）直接照稿寫 clamp，不另起名字。 */
@@ -79,9 +80,10 @@
 }
 
 /* ── 導覽列與 Footer ──
-   em：信箱 hover 時 4px 橘底線（靜態，沒有過渡）。 */
+   em：信箱 hover 時 4px 橘底線從左畫出來。 */
 .em {
   background: linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 0% 4px no-repeat;
+  transition: background-size 0.45s var(--ease-out-soft);
 }
 .em:hover,
 .em:focus-visible {
@@ -316,6 +318,44 @@
   -webkit-text-stroke: 0;
 }
 
+/* ── 動畫（docs/動畫設計.md）──
+   元件層的動畫走 motion（src/components/motion/*）；這裡只放三種純 CSS 就夠的：
+   換頁（View Transitions）、跑馬燈（常駐）、hover 過渡的 easing。 */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(.page) {
+    animation: page-out 0.22s var(--ease-out-soft) both;
+  }
+  ::view-transition-new(.page) {
+    animation: page-in 0.32s var(--ease-out-soft) both;
+  }
+  .marquee {
+    animation: marquee 40s linear infinite;
+  }
+  .marquee-reverse {
+    animation-direction: reverse;
+  }
+  .group\/tile:hover .marquee {
+    animation-play-state: paused;
+  }
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 /* ── 背景點綴（全部靜態，沒有動畫）──
    grain：整頁一層很淡的顆粒，fixed、不吃滑鼠，讓大面積暗底不是一塊平的。
    dots：細點陣，鋪在空的大面積上（首頁沒照片的 Hero、接案頁「怎麼合作」深底帶、頁尾、履歷頁的桌面）。
@@ -347,6 +387,11 @@
 /* 列印：標題跟它底下的內容不要被切到兩頁、連結不印底線。
    導覽、頁尾、跳過連結用元素上的 print:hidden 藏，底色在 layout 的 body 上處理。 */
 @media print {
+  /* 進場動畫沒跑完就按列印：全部直接完成狀態 */
+  [style*='opacity'] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
   /* 履歷：整張紙白底黑字，邊線換淺灰，外部連結後面印出網址 */
   .resume-paper,
   .resume-paper * {

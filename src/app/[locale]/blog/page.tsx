@@ -1,3 +1,4 @@
+import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { PostIndex } from '@/components/sections/PostIndex'
 import { pageMeta } from '@/i18n/meta'
 import { initLocale, t } from '@/i18n/server'
@@ -29,8 +30,11 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <section className="wrap pt-7 md:pt-14">
-        <div className="border-line border-b pb-4 md:pb-5">
-          <div className="text-text-3 flex justify-between font-mono text-[11px] tracking-[0.1em] md:text-xs">
+        <Reveal load stagger={itemStagger} className="border-line border-b pb-4 md:pb-5">
+          <RevealItem
+            small
+            className="text-text-3 flex justify-between font-mono text-[11px] tracking-[0.1em] md:text-xs"
+          >
             <span>
               {d.vol} {latest?.slice(0, 4)}
             </span>
@@ -38,25 +42,28 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
               {d.count(posts.length)}
               {latest && oldest && (
                 <span className="hidden md:inline">
-                  {' '}
-                  · {ym(oldest)} — {ym(latest)}
+                  {''}· {ym(oldest)} — {ym(latest)}
                 </span>
               )}
             </span>
-          </div>
-          <h1 className="text-text mt-2.5 text-[48px] leading-[1.05] font-black tracking-[-0.04em] md:mt-3.5 md:text-[clamp(64px,8.3vw,120px)] md:leading-none md:tracking-[-0.05em]">
-            {d.h1a}
-            <br />
-            {d.h1b}
-          </h1>
-          <p className="font-hand text-accent mt-2.5 text-[22px] md:mt-5 md:text-[30px]">
+          </RevealItem>
+          <RevealItem small>
+            <h1 className="text-text mt-2.5 text-[48px] leading-[1.05] font-black tracking-[-0.04em] md:mt-3.5 md:text-[clamp(64px,8.3vw,120px)] md:leading-none md:tracking-[-0.05em]">
+              {d.h1a}
+              <br />
+              {d.h1b}
+            </h1>
+          </RevealItem>
+          <RevealItem
+            small
+            as="p"
+            className="font-hand text-accent mt-2.5 text-[22px] md:mt-5 md:text-[30px]"
+          >
             {d.note}
-          </p>
-        </div>
+          </RevealItem>
+        </Reveal>
       </section>
-      <div className="">
-        <PostIndex posts={posts} tags={tags} locale={locale} />
-      </div>
+      <PostIndex posts={posts} tags={tags} locale={locale} />
     </>
   )
 }

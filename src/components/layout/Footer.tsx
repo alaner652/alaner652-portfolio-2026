@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 
 import { CopyButton } from '@/components/common/CopyButton'
 import { Clock } from '@/components/layout/Clock'
+import { Reveal } from '@/components/motion/Reveal'
 import { SITE_CONFIG } from '@/constants'
 import { LLink as Link, useDict } from '@/i18n/client'
 import { splitLocale } from '@/i18n/config'
@@ -67,7 +68,7 @@ function Socials({ className = '' }: { className?: string }) {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-text"
+            className="hover:text-text transition-colors"
           >
             {label} ↗
           </a>
@@ -89,20 +90,22 @@ export function Footer() {
     return (
       <footer className="border-line dots border-t print:hidden">
         <div className="wrap pt-18 pb-7 md:pt-30 md:pb-10">
-          <p className="font-hand text-accent text-[26px] md:text-[36px]">
-            {hire ? d.askHire : d.ask}
-          </p>
-          <Discord className="mt-2 text-[44px] leading-[1.1] tracking-[-0.03em] md:mt-3 md:text-[clamp(56px,6.5vw,96px)] md:tracking-[-0.04em]" />
-          <div className="mt-5 md:mt-7">
-            <Email />
-          </div>
-          {hire && <p className="text-text-2 mt-4 text-base">{d.hireNote}</p>}
+          <Reveal>
+            <p className="font-hand text-accent text-[26px] md:text-[36px]">
+              {hire ? d.askHire : d.ask}
+            </p>
+            <Discord className="mt-2 text-[44px] leading-[1.1] tracking-[-0.03em] md:mt-3 md:text-[clamp(56px,6.5vw,96px)] md:tracking-[-0.04em]" />
+            <div className="mt-5 md:mt-7">
+              <Email />
+            </div>
+            {hire && <p className="text-text-2 mt-4 text-base">{d.hireNote}</p>}
+          </Reveal>
           <div className="border-line text-text-2 mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t pt-5 font-mono text-xs md:mt-24">
             <span>
               {SITE_CONFIG.copyright}
               {!hire && (
                 <>
-                  {' · '}
+                  {' ·'}
                   <Clock prefix="" label={d.clockLabel} />
                 </>
               )}
@@ -125,7 +128,10 @@ export function Footer() {
               <Email compact />
             </div>
           </div>
-          <Link href="/blog" className="text-text hover:text-accent font-mono text-[13px]">
+          <Link
+            href="/blog"
+            className="text-text hover:text-accent font-mono text-[13px] transition-colors"
+          >
             {d.backToBlog}
           </Link>
         </div>

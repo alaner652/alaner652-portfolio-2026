@@ -13,7 +13,7 @@ const fmt = new Intl.DateTimeFormat('zh-TW', {
 /** 台北現在時間，每秒走。伺服器先出佔位，掛載後才開始跳，所以不會有 hydration 差異。 */
 export function Clock({
   className,
-  prefix = '台北 ',
+  prefix = '台北',
   label = '台北現在時間',
 }: {
   className?: string

@@ -39,7 +39,7 @@ export function Toc({ headings, compact = false }: { headings: TocHeading[]; com
           <a
             href={`#${h.id}`}
             aria-current={active === h.id ? 'location' : undefined}
-            className="text-text-3 hover:text-text aria-[current]:text-accent block py-1.5 text-[13px] leading-[1.45] aria-[current]:font-bold"
+            className="text-text-3 hover:text-text aria-[current]:text-accent block py-1.5 text-[13px] leading-[1.45] aria-[current]:font-bold transition-colors"
           >
             {active === h.id && <span aria-hidden="true">● </span>}
             {h.text}

@@ -37,7 +37,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
       {/* top row: date + tags */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ color: '#7C8189', fontSize: '15px', letterSpacing: '0.04em' }}>
-          {'Writing / ' + date}
+          {'Writing /' + date}
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           {tags.slice(0, 3).map((tag: string) => (

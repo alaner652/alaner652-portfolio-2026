@@ -11,11 +11,11 @@ const BLOG_DIR = path.join(process.cwd(), 'src/content/blog')
     先把程式碼區塊和 MDX 標籤拿掉，不然一篇貼了很多 log 的文章會被算成半小時。 */
 export function estimateReadingMinutes(content: string): number {
   const text = content
-    .replace(/```[\s\S]*?```/g, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/^(import|export)\s.*$/gm, ' ')
+    .replace(/```[\s\S]*?```/g,'')
+    .replace(/<[^>]+>/g,'')
+    .replace(/^(import|export)\s.*$/gm,'')
   const cjk = (text.match(/[\u2e80-\u9fff\uf900-\ufaff]/g) ?? []).length
-  const words = (text.replace(/[\u2e80-\u9fff\uf900-\ufaff]/g, ' ').match(/[A-Za-z0-9]+/g) ?? [])
+  const words = (text.replace(/[\u2e80-\u9fff\uf900-\ufaff]/g,'').match(/[A-Za-z0-9]+/g) ?? [])
     .length
   return Math.max(1, Math.round(cjk / 400 + words / 200))
 }

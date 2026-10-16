@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+import { CountUp } from '@/components/motion/CountUp'
+import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { ProjectIndex } from '@/components/sections/ProjectIndex'
 import { WORK_ITEMS } from '@/constants'
 import { content } from '@/i18n/content'
@@ -17,27 +19,34 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
   return (
     <>
       <section className="wrap flex items-end justify-between gap-6 pt-7 md:gap-10 md:pt-14">
-        <div className="">
-          <div className="text-text-3 text-[13px] md:text-sm">{d.title}</div>
-          <h1 className="text-text mt-2.5 text-[34px] leading-[1.2] font-black tracking-[-0.02em] md:mt-3 md:text-[clamp(44px,4.5vw,64px)] md:leading-[1.1] md:tracking-[-0.03em]">
-            {d.h1a}
-            <br className="hidden md:block" />
-            {d.h1b}
-          </h1>
-        </div>
+        <Reveal load stagger={itemStagger}>
+          <RevealItem small className="text-text-3 text-[13px] md:text-sm">
+            {d.title}
+          </RevealItem>
+          <RevealItem small>
+            <h1 className="text-text mt-2.5 text-[34px] leading-[1.2] font-black tracking-[-0.02em] md:mt-3 md:text-[clamp(44px,4.5vw,64px)] md:leading-[1.1] md:tracking-[-0.03em]">
+              {d.h1a}
+              <br className="hidden md:block" />
+              {d.h1b}
+            </h1>
+          </RevealItem>
+        </Reveal>
         <div className="shrink-0 text-right">
-          <div
+          <CountUp
+            to={WORK_ITEMS.length}
             className="outline-num text-[64px] md:text-[160px] md:leading-[0.85]"
-            aria-hidden="true"
+          />
+          <Reveal
+            load
+            small
+            delay={0.6}
+            className="font-hand text-accent mt-2 hidden text-[24px] md:block"
           >
-            {String(WORK_ITEMS.length).padStart(2, '0')}
-          </div>
-          <div className="font-hand text-accent mt-2 hidden text-[24px] md:block">{d.note}</div>
+            {d.note}
+          </Reveal>
         </div>
       </section>
-      <div className="">
-        <ProjectIndex items={content().WORK_ITEMS} />
-      </div>
+      <ProjectIndex items={content().WORK_ITEMS} />
     </>
   )
 }

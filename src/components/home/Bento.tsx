@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { LLink as Link } from '@/i18n/client'
 
 import { SkillIcon } from '@/components/common/SkillIcon'
+import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { ContributionSnake } from '@/components/home/ContributionSnake'
 import { RIDING_PHOTOS, SITE_CONFIG, SKILLS } from '@/constants'
 import SKILL_ICONS from '@/constants/skill-icons.json'
@@ -10,7 +11,7 @@ import { t } from '@/i18n/server'
 import { type Contributions, getContributions } from '@/lib/github'
 
 const TILE =
-  'group/tile bg-surface border-line rounded-card hover:border-border-strong relative flex flex-col overflow-hidden border p-6 '
+  'group/tile bg-surface border-line rounded-card hover:border-border-strong relative flex flex-col overflow-hidden border p-6 transition-colors'
 
 /** 工作之外：整格一張追焦照，字疊在上面。 */
 function PhotoTile() {
@@ -38,7 +39,7 @@ function PhotoTile() {
       <ArrowUpRight
         size={20}
         strokeWidth={1.5}
-        className="absolute right-6 bottom-6 flex size-11 items-center justify-center rounded-full border border-white/60 p-2.5 text-white group-hover/tile:border-white group-hover/tile:bg-white/15"
+        className="absolute right-6 bottom-6 flex size-11 items-center justify-center rounded-full border border-white/60 p-2.5 text-white group-hover/tile:border-white group-hover/tile:bg-white/15 transition-colors"
         aria-hidden
       />
     </Link>
@@ -51,11 +52,13 @@ const LOGO_SKILLS = SKILLS.flatMap((g) => g.items).filter(
   (name, i, all) => ICON_MAP[name] && all.findIndex((n) => ICON_MAP[n] === ICON_MAP[name]) === i
 )
 
-/** 一排 logo（靜態，沒有跑馬燈） */
-function LogoRow({ items }: { items: string[] }) {
+/** 一排 logo 往左流：內容複製兩份，跑到 -50% 剛好接回起點；40s 一圈，hover 整格時暫停（globals.css .marquee）。 */
+function LogoRow({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
   return (
-    <div className="flex w-max gap-3">
-      {items.map((name, i) => (
+    <div
+      className={reverse ? 'marquee marquee-reverse flex w-max gap-3' : 'marquee flex w-max gap-3'}
+    >
+      {[...items, ...items].map((name, i) => (
         <SkillIcon key={`${name}-${i}`} name={name} size={40} />
       ))}
     </div>
@@ -69,7 +72,7 @@ function SkillsTile() {
   return (
     <Link href="/about#skills" className={`${TILE} md:col-span-5`}>
       <div className="text-text-3 text-2xs font-mono tracking-[0.18em] uppercase">{d.skills}</div>
-      <h2 className="group-hover/tile:text-accent mt-3 text-[28px] font-black tracking-[-0.02em]">
+      <h2 className="group-hover/tile:text-accent mt-3 text-[28px] font-black tracking-[-0.02em] transition-colors">
         {d.skills}
       </h2>
       <div
@@ -77,12 +80,12 @@ function SkillsTile() {
         aria-hidden="true"
       >
         <LogoRow items={LOGO_SKILLS.slice(0, half)} />
-        <LogoRow items={LOGO_SKILLS.slice(half)} />
+        <LogoRow items={LOGO_SKILLS.slice(half)} reverse />
       </div>
       <ArrowRight
         size={22}
         strokeWidth={1.5}
-        className="text-text-2 group-hover/tile:text-accent absolute right-6 bottom-6"
+        className="text-text-2 group-hover/tile:text-accent absolute right-6 bottom-6 transition-colors"
         aria-hidden
       />
     </Link>
@@ -107,7 +110,7 @@ function GithubTile({ data }: { data: Contributions | null }) {
           <ContributionSnake days={data.days} pad={pad} />
         </div>
       ) : (
-        <h2 className="group-hover/tile:text-accent text-[28px] font-black tracking-[-0.02em]">
+        <h2 className="group-hover/tile:text-accent text-[28px] font-black tracking-[-0.02em] transition-colors">
           GitHub
         </h2>
       )}
@@ -121,7 +124,7 @@ function GithubTile({ data }: { data: Contributions | null }) {
         <ArrowUpRight
           size={22}
           strokeWidth={1.5}
-          className="text-text-2 group-hover/tile:text-accent ml-auto"
+          className="text-text-2 group-hover/tile:text-accent ml-auto transition-colors"
           aria-hidden
         />
       </div>
@@ -130,18 +133,27 @@ function GithubTile({ data }: { data: Contributions | null }) {
 }
 
 /** Hero 底下的 Bento：一張追焦照 + 技能跑馬燈，底下一整條 GitHub 貢獻圖。
-    緊貼著 Hero，相片的上緣會露在第一屏底下，所以不用捲到才出現的 RevealWrapper，
-    而是接在 Hero 的按鈕後面淡入（.intro：第二次進首頁就不等了）。專案跟文章不在這裡，往下捲就是。 */
+    三格露出一成就逐格進場（相片的上緣在第一屏底下，門檻放低）。專案跟文章不在這裡，往下捲就是。 */
 export async function Bento() {
   const contributions = await getContributions()
 
   return (
-    <nav aria-label={t().home.bentoLabel} className="intro wrap pt-10 pb-6 md:pt-16 md:pb-10">
-      <div className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12">
-        <PhotoTile />
-        <SkillsTile />
-        <GithubTile data={contributions} />
-      </div>
+    <nav aria-label={t().home.bentoLabel} className="wrap pt-10 pb-6 md:pt-16 md:pb-10">
+      <Reveal
+        stagger={itemStagger}
+        viewport={{ once: true, amount: 0.1 }}
+        className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12"
+      >
+        <RevealItem className="contents">
+          <PhotoTile />
+        </RevealItem>
+        <RevealItem className="contents">
+          <SkillsTile />
+        </RevealItem>
+        <RevealItem className="contents">
+          <GithubTile data={contributions} />
+        </RevealItem>
+      </Reveal>
     </nav>
   )
 }

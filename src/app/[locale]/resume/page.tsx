@@ -5,6 +5,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { ReactNode } from 'react'
 import remarkGfm from 'remark-gfm'
 
+import { Reveal } from '@/components/motion/Reveal'
 import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
 import { content } from '@/i18n/content'
 import { zh } from '@/i18n/dict'
@@ -49,7 +50,7 @@ function splitEntries(body: string): CVEntry[] {
     const entry: CVEntry = { title: parts[i].trim(), rest: parts[i + 1].trim() }
     if (first && !first.startsWith('-')) {
       const tech = first.match(/^_(.+)_$/)
-      if (tech) entry.tech = tech[1].split(' · ')
+      if (tech) entry.tech = tech[1].split(' ·')
       else entry.period = first
       entry.rest = lines.slice(1).join('\n').trim()
     }
@@ -147,12 +148,26 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}
       />
       <div className="mx-auto max-w-[1040px] px-3 pt-4 pb-12 md:px-10 md:pt-8 md:pb-24 print:max-w-none print:p-0">
-        <article className="resume-paper border-line bg-[#14171a] border px-4.5 py-6 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)] md:px-16 md:py-14 print:border-0 print:p-0 print:shadow-none">
+        {/* 整張紙從下面微縮著落下來（docs/動畫設計.md 履歷 1）；紙裡面的內容不另外動 */}
+        <Reveal
+          load
+          as="article"
+          variants={{
+            hidden: { opacity: 0, y: 28, scale: 0.985 },
+            show: {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              transition: { duration: 0.9, ease: [0.2, 0.7, 0.1, 1] },
+            },
+          }}
+          className="resume-paper border-line bg-[#14171a] border px-4.5 py-6 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)] md:px-16 md:py-14 print:border-0 print:p-0 print:shadow-none"
+        >
           {/* 抬頭 */}
           <header className="border-text grid gap-4 border-b-2 pb-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-6 md:pb-7">
             <div>
               <h1 className="text-text text-[34px] leading-none font-black tracking-[-0.02em] md:text-[52px]">
-                吳宸麒{' '}
+                吳宸麒{''}
                 <span className="text-text-2 text-[15px] font-medium tracking-normal md:text-2xl">
                   Wu Chen-Chi
                 </span>
@@ -162,7 +177,10 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
               </div>
             </div>
             <div className="text-text font-mono text-xs leading-[1.9] md:text-right md:text-[12.5px]">
-              <a href={`mailto:${SITE_CONFIG.email}`} className="hover:text-accent">
+              <a
+                href={`mailto:${SITE_CONFIG.email}`}
+                className="hover:text-accent transition-colors"
+              >
                 {SITE_CONFIG.email}
               </a>
               <br />
@@ -170,12 +188,12 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
                 href={SITE_CONFIG.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-accent"
+                className="hover:text-accent transition-colors"
               >
                 github.com/alaner652
               </a>
               <br />
-              <Link href="/" className="hover:text-accent">
+              <Link href="/" className="hover:text-accent transition-colors">
                 alaner652.com
               </Link>
               <br />
@@ -220,7 +238,7 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
                   >
                     <h3 className="text-text text-base font-bold">
                       {href ? (
-                        <Link href={href} className="hover:text-accent">
+                        <Link href={href} className="hover:text-accent transition-colors">
                           {e.title}
                         </Link>
                       ) : (
@@ -229,7 +247,7 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
                     </h3>
                     {e.tech && (
                       <div className="text-text-3 mt-0.5 font-mono text-[11px]">
-                        {e.tech.join(' · ')}
+                        {e.tech.join(' ·')}
                       </div>
                     )}
                     <Bullets source={e.rest} />
@@ -245,7 +263,7 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
                 {SKILLS.map((g) => (
                   <div key={g.label} className="border-line border-t py-2.5">
                     <dt className="text-text-3 font-mono text-[11px]">{g.label}</dt>
-                    <dd className="text-text mt-0.5">{g.items.join(' · ')}</dd>
+                    <dd className="text-text mt-0.5">{g.items.join(' ·')}</dd>
                   </div>
                 ))}
               </dl>
@@ -277,7 +295,7 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
               {d.signature}
             </span>
           </div>
-        </article>
+        </Reveal>
       </div>
     </div>
   )

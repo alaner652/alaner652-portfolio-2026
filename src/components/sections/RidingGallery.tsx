@@ -4,6 +4,9 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { LightboxImage } from '@/components/motion/Lightbox'
+import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
+
 import { cn } from '@/lib/utils'
 import type { Photo } from '@/types'
 
@@ -30,7 +33,8 @@ const GRID: { i: number; cls: string; pos?: string }[] = [
 ]
 
 const pad = (n: number) => String(n + 1).padStart(2, '0')
-const IMG = 'object-cover '
+const IMG =
+  'object-cover transition-transform duration-1000 ease-[var(--ease-out-soft)] group-hover/shot:scale-[1.04]'
 
 export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Labels }) {
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -62,7 +66,7 @@ export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Lab
 
   return (
     <section id="offduty" className="pt-14 pb-10 md:pt-28 md:pb-24" aria-label={labels.list}>
-      <div className="wrap mb-5 flex items-end justify-between gap-6 md:mb-8">
+      <Reveal className="wrap mb-5 flex items-end justify-between gap-6 md:mb-8">
         <div>
           <div className="text-text-3 font-mono text-[11px] tracking-[0.18em] uppercase md:text-xs">
             {labels.eyebrow}
@@ -72,14 +76,19 @@ export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Lab
           </h2>
         </div>
         <span className="text-text-2 hidden shrink-0 text-[15px] md:inline">{labels.note}</span>
-      </div>
+      </Reveal>
 
       {/* 錯落的格子，點了放大 */}
-      <ul className="wrap grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-5">
+      <Reveal
+        as="ul"
+        stagger={itemStagger}
+        viewport={{ once: true, amount: 0.1 }}
+        className="wrap grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-5"
+      >
         {GRID.map(({ i, cls, pos }) => {
           const p = photos[i]
           return (
-            <li key={p.src} className={cn('flex flex-col', cls)}>
+            <RevealItem as="li" key={p.src} className={cn('flex flex-col', cls)}>
               <button
                 type="button"
                 onClick={() => show(i)}
@@ -95,10 +104,10 @@ export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Lab
                   className={cn(IMG, pos)}
                 />
               </button>
-            </li>
+            </RevealItem>
           )
         })}
-      </ul>
+      </Reveal>
 
       <dialog
         ref={dialogRef}
@@ -122,24 +131,25 @@ export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Lab
                 type="button"
                 onClick={close}
                 aria-label={labels.close}
-                className="border-border text-text-2 hover:border-border-strong hover:text-text flex size-11 items-center justify-center rounded-full border"
+                className="border-border text-text-2 hover:border-border-strong hover:text-text flex size-11 items-center justify-center rounded-full border transition-colors"
               >
                 <X size={18} strokeWidth={1.5} aria-hidden />
               </button>
             </div>
 
             <figure className="relative flex min-h-0 flex-1 flex-col items-center justify-center gap-4 py-4 md:gap-5">
-              <Image
-                key={current.src}
-                src={current.src}
-                alt={current.alt}
-                width={current.width}
-                height={current.height}
-                sizes="100vw"
-                quality={90}
-                priority
-                className="h-auto max-h-full w-auto max-w-full object-contain"
-              />
+              <LightboxImage id={current.src}>
+                <Image
+                  src={current.src}
+                  alt={current.alt}
+                  width={current.width}
+                  height={current.height}
+                  sizes="100vw"
+                  quality={90}
+                  priority
+                  className="h-auto max-h-full w-auto max-w-full object-contain"
+                />
+              </LightboxImage>
               <figcaption className="text-text-2 w-full max-w-[60ch] text-center text-[14px] leading-[1.7] md:text-[15px]">
                 {current.alt}
               </figcaption>
@@ -157,7 +167,7 @@ export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Lab
                   type="button"
                   onClick={() => step(dir)}
                   aria-label={label}
-                  className="border-border text-text-2 hover:border-border-strong hover:text-text flex size-11 items-center justify-center rounded-full border md:pointer-events-auto"
+                  className="border-border text-text-2 hover:border-border-strong hover:text-text flex size-11 items-center justify-center rounded-full border md:pointer-events-auto transition-colors"
                 >
                   <Icon size={20} strokeWidth={1.5} aria-hidden />
                 </button>
