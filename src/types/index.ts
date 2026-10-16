@@ -18,8 +18,6 @@ export interface WorkItem {
   category: ProjectCategory
   title: string
   description: string
-  /** 可以放很大的一個短結果（「10 個 agent 工具」這種），只有精選才需要。沒有就不填。 */
-  stat?: string
   /** 一句結果：做完之後世界哪裡不一樣了。卡片和精選列把它放在描述前面，
       因為訪客先看結果再決定要不要讀細節。沒有可說的結果就不填，不要硬湊。 */
   result?: string
@@ -39,13 +37,6 @@ export interface WorkItem {
   featured?: boolean
 }
 
-export interface ExperienceItem {
-  period: string
-  role: string
-  org: string
-  description: string
-}
-
 export interface EducationItem {
   period: string
   school: string
@@ -58,8 +49,6 @@ export interface EducationItem {
 export interface JourneyEntry {
   /** 年份或區間，像「2019」「2022 — 2023」。首位年份用來排序與縮圖 */
   period: string
-  /** 當時的年級：小六、國一、專三… */
-  stage: string
   /** 這段的主軸：遊戲、接案、Web、社群、資安… */
   track: string
   title: string

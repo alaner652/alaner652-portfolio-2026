@@ -3,7 +3,7 @@ import { join } from 'node:path'
 
 import { ImageResponse } from 'next/og'
 
-export const alt = 'alaner652 — 吳宸麒的個人網站'
+export const alt = 'alaner652 — small R 的個人網站'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -53,7 +53,7 @@ export default async function Image() {
             fontFamily: 'NotoSansTC, sans-serif',
           }}
         >
-          吳宸麒，全端工程師 · 資安。台北。
+          small R，全端工程師 · 資安。台北。
         </div>
       </div>
 

@@ -5,7 +5,6 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { ReactNode } from 'react'
 import remarkGfm from 'remark-gfm'
 
-import { PrintButton } from '@/components/common/PrintButton'
 import { EDUCATION, SITE_CONFIG, SKILLS, WORK_ITEMS } from '@/constants'
 import { getPostBySlug } from '@/lib/mdx'
 
@@ -133,7 +132,7 @@ const resumeJsonLd = {
 }
 
 /** 履歷：深色底上一張紙。抬頭（名字／職稱／聯絡）→ 摘要 → 左欄經歷＋專案、右欄技能＋學歷＋工作之外 → 手寫簽名。
-    列印時整張紙變白底黑字（globals.css 的 @media print .resume-paper），導覽和按鈕藏起來，連結印出網址。 */
+    用瀏覽器列印（⌘P）就能存成 PDF：整張紙變白底黑字（globals.css 的 @media print .resume-paper），導覽藏起來，連結印出網址。 */
 export default function ResumePage() {
   const post = getPostBySlug('resume')
   if (!post) notFound()
@@ -152,10 +151,6 @@ export default function ResumePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}
       />
       <div className="mx-auto max-w-[1040px] px-3 pt-4 pb-12 md:px-10 md:pt-8 md:pb-24 print:max-w-none print:p-0">
-        <div className="mb-3 flex justify-end md:mb-4 print:hidden">
-          <PrintButton />
-        </div>
-
         <article className="resume-paper border-line bg-[#14171a] border px-4.5 py-6 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)] md:px-16 md:py-14 print:border-0 print:p-0 print:shadow-none">
           {/* 抬頭 */}
           <header className="border-text grid gap-4 border-b-2 pb-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-6 md:pb-7">

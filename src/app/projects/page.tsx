@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { ProjectIndex } from '@/components/sections/ProjectIndex'
 import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
 
-const DESCRIPTION = '吳宸麒 (alaner652) 做過的東西：還在跑的、開源的，以及一些已經停了的。'
+const DESCRIPTION = 'small R (alaner652) 做過的東西：還在跑的、開源的，以及一些已經停了的。'
 
 export const metadata: Metadata = {
   title: '做過的東西',

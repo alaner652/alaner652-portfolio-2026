@@ -4,7 +4,7 @@ import { Cases, Faq, HireHero, Process, Services } from '@/components/sections/H
 import { SITE_CONFIG } from '@/constants'
 
 const DESCRIPTION =
-  '找 alaner652 接案：網頁產品、LINE Bot 與自動化、系統整合、授權範圍內的資安檢測。從需求到上線一個人做完，按案報價。'
+  '找 alaner652 接案：網頁產品、Roblox 遊戲、LINE Bot 與自動化、系統整合、授權範圍內的資安檢測。從需求到上線一個人做完，按案報價。'
 
 export const metadata: Metadata = {
   title: '接案',

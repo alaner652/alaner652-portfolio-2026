@@ -11,7 +11,7 @@ export function AboutHero() {
         <div className="relative aspect-square w-full overflow-hidden md:col-span-5 md:rounded-sm">
           <Image
             src={SITE_CONFIG.avatar}
-            alt="吳宸麒的照片"
+            alt="small R 的照片"
             fill
             priority
             sizes="(min-width: 768px) 520px, 100vw"
@@ -68,7 +68,7 @@ export function Timeline() {
     <section className="wrap pt-14 md:pt-28">
       <div className="mb-2 flex items-baseline justify-between gap-6 md:mb-6">
         <h2 className="text-text text-[30px] leading-[1.3] font-black md:text-h2 md:tracking-[-0.03em]">
-          從小六第一次打開 Roblox 開始
+          從第一次打開 Roblox 開始
         </h2>
         <span className="font-hand text-accent hidden shrink-0 text-[26px] md:inline">
           往下滑，一年一年來 ↓
@@ -96,7 +96,7 @@ export function Timeline() {
                 <div className="text-text-3 pb-1 font-mono text-[11px] md:mt-2.5 md:pb-0 md:text-xs">
                   <span className="sr-only">{t.period}，</span>
                   {range !== year && <span>{range} · </span>}
-                  {t.stage} · {t.track}
+                  {t.track}
                 </div>
               </div>
               <div className="md:col-span-5">

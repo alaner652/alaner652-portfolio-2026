@@ -3,7 +3,6 @@ import type {
   SiteConfig,
   NavLink,
   WorkItem,
-  ExperienceItem,
   EducationItem,
   JourneyEntry,
   Offer,
@@ -24,10 +23,10 @@ export const SITE_CONFIG: SiteConfig = {
   // 首頁 Hero 的滿版人物照（橫式、人在右 1/3）。放進 public/ 再填路徑；沒填就是純暗底
   heroPhoto: undefined,
   description:
-    '吳宸麒 (alaner652)，台北的全端工程師，專注資安。用攻擊者的視角把產品做到上線；在大學電算中心做授權範圍內的資安與內部自動化。',
+    'small R（alaner652），台北的全端工程師，專注資安。用攻擊者的視角把產品做到上線；在大學電算中心做授權範圍內的資安與內部自動化。',
   location: 'Taipei',
   timezone: 'GMT+8',
-  copyright: '© 2026 吳宸麒 · 台北',
+  copyright: '© 2026 small R · 台北',
 }
 
 /** 首頁 Hero 底下「最近」那一句，自己每週改。 */
@@ -42,9 +41,9 @@ export const NAV_LINKS: NavLink[] = [
 ]
 
 /** /about「我是誰」那張卡的自介，首頁 Bento 也拿同一段。裡面的每個事實都來自下面的
-    EXPERIENCE / EDUCATION / JOURNEY，這裡只是把它們串成話；改了那邊記得回來對一次。 */
+    JOURNEY / EDUCATION，這裡只是把它們串成話；改了那邊記得回來對一次。 */
 export const ABOUT_WHO =
-  '吳宸麒，網路上叫 alaner652 或 small R。台北城市科技大學資訊工程科五專部四年級。國中自己摸 Roblox Studio，2022 年開始有人付錢請我寫遊戲；後來自己做產品，前端後端部署一個人包。2026 年因為通報校務系統的漏洞被電算中心找進去，現在在授權範圍內做資安和內部自動化。'
+  'small R，網路上叫 alaner652。國中自己摸 Roblox Studio，2022 年開始有人付錢請我寫遊戲；後來自己做產品，前端後端部署一個人包。2026 年因為通報校務系統的漏洞被電算中心找進去，現在在授權範圍內做資安和內部自動化。'
 
 /** /about「我想說的」那張卡：一段開場 + 幾句從專案和文章裡撿回來的話。
     lines 每一句後面的 from 是它出自哪裡，不要放沒有出處的金句。 */
@@ -58,7 +57,7 @@ export const ABOUT_WORDS = {
   ],
 }
 
-/** 首頁「我能做什麼」的三步，照交付流程排。每一步都對應下面 WORK_ITEMS / EXPERIENCE
+/** 首頁「我能做什麼」的三步，照交付流程排。每一步都對應下面 WORK_ITEMS / JOURNEY
     裡的實際東西，不要寫沒有東西撐的主張。履歷的 Summary 是同一組說法的英文版，改這裡也要一起改。 */
 export const OFFERS: Offer[] = [
   {
@@ -82,7 +81,7 @@ export const OFFERS: Offer[] = [
 /** /hire 的內容。這頁的讀者是要付錢的人，不是審查委員：只講接什麼、怎麼合作、做過哪些，
     不講學歷。examples 對到 WORK_ITEMS 的 title，改專案名記得回來對一次。 */
 export const HIRE = {
-  lead: '接網頁產品、LINE Bot、內部自動化，和授權範圍內的資安檢測。從需求到上線一個人做完，不用在三個人之間傳話。',
+  lead: '接網頁產品、Roblox 遊戲、LINE Bot、內部自動化，和授權範圍內的資安檢測。從需求到上線一個人做完，不用在三個人之間傳話。',
   services: [
     {
       label: '網頁產品',
@@ -90,6 +89,13 @@ export const HIRE = {
         '點餐、預約、後台、活動頁這類要真的上線給人用的東西。前端、後端、資料庫、部署、網域一起包，交付的是能跑的網址，不是一份程式碼。',
       deliverable: '能跑的網址，不是一包程式碼',
       examples: ['早餐店點餐系統', '一句一幀'],
+    },
+    {
+      label: '遊戲開發',
+      description:
+        'Roblox 遊戲，用 Luau 寫整套系統：技能、戰鬥、打擊感、FPS 框架、養成與背包。2022 年起接案做過，2026 年也自己發行了一款。可以接整個遊戲，也可以只做你缺的那一塊系統。',
+      deliverable: '能玩的遊戲，或接得進你專案的系統模組',
+      examples: ['Build The Cat Gunner', 'Cooking Game'],
     },
     {
       label: 'LINE Bot 與自動化',
@@ -155,38 +161,50 @@ export const HIRE = {
     },
   ],
   /** /hire「做過的案子」要列的專案，照 WORK_ITEMS 的 title。挑真的像交付物的。 */
-  cases: ['早餐店點餐系統', '一句一幀', 'Cooking Game'],
+  cases: ['早餐店點餐系統', '一句一幀', 'Build The Cat Gunner'],
 }
 
-/** 所有專案一份清單，停掉的也留著，用狀態標示。
-    電算中心的資安工作不在這裡：那是經歷，不是作品，寫在 EXPERIENCE / JOURNEY 和 OFFERS 的證據連結。
+/** 所有專案一份清單，照「最新、最完整的優先」排，停掉的也留著。前三個標 featured 上首頁。
+    電算中心的資安工作不在這裡：那是經歷，不是作品，寫在 JOURNEY 和 OFFERS。
     category 對應清單上方的篩選 chip；preview 由 `npm run shots` 產生：有產品畫面的放畫面，
     沒有的放 GitHub 的 repo 卡（2026-10-15 決定：沒圖的列空著更糟）。
     result 是一句結果，全部取自 description 裡已經寫的事，不另外加數字。 */
 export const WORK_ITEMS: WorkItem[] = [
   {
-    status: '已暫停',
-    tone: 'idle',
-    category: 'AI',
-    slug: 'agora-ai',
-    title: 'Agora-AI',
+    status: '運作中',
+    tone: 'live',
+    category: '遊戲',
+    slug: 'build-the-cat-gunner',
     featured: true,
-    stat: '10 個 agent 工具',
-    result: '沒有文件的校務 API，逆向成 10 個 agent 工具。',
+    title: 'Build The Cat Gunner',
+    result: '接案之後第一款自己發行的 Roblox 遊戲。',
     description:
-      '把沒有文件的校務 API 逆向出來，包成 10 個 agent 工具，使用者可以直接問「我這週有什麼課」。部署在校方提供的 VM 上。目前暫停，想重新想清楚範圍。',
-    metrics: ['FastAPI', 'Next.js', 'Docker'],
-    link: 'https://github.com/alaner652/Agora-AI',
-    preview: '/shots/agora-ai.png',
-    card: true,
+      "帶著貓咪小隊一路打：擲骰合成槍枝從 D 升到 XX，每 10 關一隻 Boss，打到底就重生再來。接案之後第一款以 Alaner's Studio 名義自己發行的遊戲，2026 年 10 月上線，持續更新中。",
+    metrics: ['Luau', 'Roblox'],
+    link: 'https://www.roblox.com/games/104411764341408',
+    preview: '/shots/build-the-cat-gunner.png',
+  },
+  {
+    status: '開源',
+    tone: 'open',
+    category: 'AI',
+    slug: 'tpcu-mcp',
+    featured: true,
+    title: 'TPCU MCP',
+    result: 'Agora-AI 的範圍重新想過一次：不做後端，做成 MCP server。',
+    description:
+      '把校務系統的課表、缺曠、成績、請假、工讀考勤包成 18 個 MCP 工具，Claude Code、Claude Desktop 這類支援 MCP 的 AI 應用可以直接在對話裡查和操作。stdio transport、零額外後端；帳密只在記憶體，不落地。有副作用的工具帶 destructiveHint，要先向使用者確認。頁面流程和解析規則延用 Agora-AI，用 TypeScript 重寫成獨立專案。',
+    metrics: ['TypeScript', 'MCP SDK', 'Vitest'],
+    link: 'https://github.com/alaner652/tpcu-mcp',
+    preview: '/shots/tpcu-mcp.jpg',
   },
   {
     status: '運作中',
     tone: 'live',
     category: 'Web',
     slug: 'girls-band-shot',
-    title: '一句一幀',
     featured: true,
+    title: '一句一幀',
     result: '三個各做各的舊專案，併成一套搬到網頁上。',
     description:
       '輸入台詞，找到那個畫面。把三個各做各的舊專案併成一套並搬到網頁上，截圖和 GIF 改成用 ffmpeg 即時生成加 LRU cache。',
@@ -200,8 +218,6 @@ export const WORK_ITEMS: WorkItem[] = [
     category: 'Web',
     slug: 'order',
     title: '早餐店點餐系統',
-    featured: true,
-    stat: '狀態機 + SSE',
     result: '訂單用狀態機管理、SSE 即時同步進度。',
     description:
       '掃碼用 LINE 登入點餐，下單推 Flex Message 給店主。訂單用狀態機管、SSE 同步進度，並存菜單快照，之後改菜單不會動到歷史訂單。',
@@ -211,30 +227,32 @@ export const WORK_ITEMS: WorkItem[] = [
     card: true,
   },
   {
-    status: '開源',
-    tone: 'open',
-    category: 'AI',
-    slug: 'tpcu-mcp',
-    title: 'TPCU MCP',
-    result: 'Agora-AI 的範圍重新想過一次：不做後端，做成 MCP server。',
-    description:
-      '把校務系統的課表、缺曠、成績、請假、工讀考勤包成 18 個 MCP 工具，Claude Code、Claude Desktop 這類支援 MCP 的 AI 應用可以直接在對話裡查和操作。stdio transport、零額外後端；帳密只在記憶體，不落地。有副作用的工具帶 destructiveHint，要先向使用者確認。頁面流程和解析規則延用 Agora-AI，用 TypeScript 重寫成獨立專案。',
-    metrics: ['TypeScript', 'MCP SDK', 'Vitest'],
-    link: 'https://github.com/alaner652/tpcu-mcp',
-    preview: '/shots/tpcu-mcp.jpg',
-  },
-  {
+    slug: 'alaner652-portfolio',
     status: '運作中',
     tone: 'live',
-    category: '遊戲',
-    slug: 'build-the-cat-gunner',
-    title: 'Build The Cat Gunner',
-    result: '接案之後第一款自己發行的 Roblox 遊戲。',
+    category: 'Web',
+    title: 'alaner652.com',
+    result: '你正在看的這個網站：設計稿先畫完，再照稿一頁一頁做出來。',
     description:
-      "帶著貓咪小隊一路打：擲骰合成槍枝從 D 升到 XX，每 10 關一隻 Boss，打到底就重生再來。接案之後第一款以 Alaner's Studio 名義自己發行的遊戲，2026 年 10 月上線，持續更新中。",
-    metrics: ['Luau', 'Roblox'],
-    link: 'https://www.roblox.com/games/104411764341408',
-    preview: '/shots/build-the-cat-gunner.jpg',
+      '這個網站本身。Next.js App Router、Tailwind CSS v4，文章用 MDX 寫；設計稿先在畫布上定案（暗色、少卡片、每頁一個版面主軸），再照稿實作。作品、經歷、技能全部只有一份資料，首頁、關於、履歷都從同一處讀。',
+    metrics: ['Next.js', 'Tailwind CSS', 'MDX'],
+    link: 'https://github.com/alaner652/alaner652-portfolio-2026',
+    demo: 'https://alaner652.com',
+    preview: '/shots/alaner652-portfolio.png',
+  },
+  {
+    status: '已暫停',
+    tone: 'idle',
+    category: 'AI',
+    slug: 'agora-ai',
+    title: 'Agora-AI',
+    result: '沒有文件的校務 API，逆向成 10 個 agent 工具。',
+    description:
+      '把沒有文件的校務 API 逆向出來，包成 10 個 agent 工具，使用者可以直接問「我這週有什麼課」。部署在校方提供的 VM 上。目前暫停，想重新想清楚範圍。',
+    metrics: ['FastAPI', 'Next.js', 'Docker'],
+    link: 'https://github.com/alaner652/Agora-AI',
+    preview: '/shots/agora-ai.png',
+    card: true,
   },
   {
     status: '已停用',
@@ -302,29 +320,10 @@ export const WORK_ITEMS: WorkItem[] = [
   },
 ]
 
-export const EXPERIENCE: ExperienceItem[] = [
-  {
-    period: '2026 — 現在',
-    role: '資安與自動化',
-    org: '校電算中心',
-    description:
-      '通報漏洞之後被找進去的，沒有正式職稱，學校以記功、獎狀與獎學金支持。資安在授權範圍內動手，也寫內部自動化工具減少單位的人工流程。在這裡才體會到：看得到問題，不代表有權限去動它。',
-  },
-  {
-    period: '2022 — 2024',
-    role: '接案開發者',
-    org: 'Roblox · 遠端',
-    description:
-      '本質是自由接案，2022 年開始有人付錢請我寫。後來和幾個各地的開發者固定合作做遊戲，全英文溝通，我負責技能系統、打擊感和 FPS 框架。國中自己摸 Roblox Studio 起家。',
-  },
-]
-
-/** /about「經歷」：照時間講，舊的在上。年份是用「2023 進五專、現在專四」往回推的學年度，
-    寫學年開始那一年。這裡講的是「那時候在幹嘛」，職稱和學歷的正式版在 EXPERIENCE / EDUCATION。 */
+/** /about「經歷」：照時間講，舊的在上，寫那一年在幹嘛。學歷的正式版只在 /resume（EDUCATION）。 */
 export const JOURNEY: JourneyEntry[] = [
   {
     period: '2019',
-    stage: '小六',
     track: '遊戲',
     title: '第一次打開 Roblox',
     milestone: true,
@@ -332,15 +331,12 @@ export const JOURNEY: JourneyEntry[] = [
   },
   {
     period: '2020',
-    stage: '國一',
     track: '轉學',
     title: '體育班，然後轉學',
-    detail:
-      '上學期在體育班，下學期轉到桃園市立觀音高中國中部。那陣子很迷 Roblox，大部分時間都泡在裡面。',
+    detail: '上學期在體育班，下學期轉學。那陣子很迷 Roblox，大部分時間都泡在裡面。',
   },
   {
     period: '2021',
-    stage: '國二',
     track: '遊戲',
     title: '開始做遊戲、寫程式',
     detail:
@@ -348,7 +344,6 @@ export const JOURNEY: JourneyEntry[] = [
   },
   {
     period: '2022 — 2023',
-    stage: '國三 → 專一',
     track: '接案',
     title: '開始有人付錢請我寫',
     milestone: true,
@@ -357,22 +352,18 @@ export const JOURNEY: JourneyEntry[] = [
   },
   {
     period: '2023',
-    stage: '專一',
     track: 'Web',
-    title: '撕榜進五專，開始碰網頁',
-    detail:
-      '透過撕榜進台北城市科技大學資訊工程科五專部。下學期開始接觸前端、網頁這些遊戲以外的領域。',
+    title: '開始碰網頁',
+    detail: '開始接觸前端、網頁這些遊戲以外的領域。',
   },
   {
     period: '2024',
-    stage: '專二',
     track: '社群',
     title: '走出去看別人怎麼做',
     detail: '開始參加不同領域的社群。暑假以開發者身分去 Flutter Meetup，現場最年輕的是我。',
   },
   {
     period: '2025',
-    stage: '專三',
     track: '資安',
     title: '沉澱，然後打出第一個洞',
     milestone: true,
@@ -381,12 +372,10 @@ export const JOURNEY: JourneyEntry[] = [
   },
   {
     period: '2026 —',
-    stage: '專四',
     track: '現在',
     title: '還沒開始的一年',
     milestone: true,
-    detail:
-      '電算中心的工作還在做。專四的目標是特殊選才，專心一點讀書；遊戲、打工、創業、自學繼續並行。',
+    detail: '電算中心的工作還在做。遊戲、打工、創業、自學繼續並行。',
     current: true,
   },
 ]
