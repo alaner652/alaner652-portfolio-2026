@@ -24,6 +24,8 @@ export function pageMeta(
   const d = getDict(locale)[key]
   const url = localePath(locale, path)
   const title = `${d.title} | ${SITE_CONFIG.name}`
+  // 內頁自己定義了 openGraph，就不會繼承 app/[locale]/opengraph-image，這裡明確指回去
+  const image = localePath(locale, '/opengraph-image')
   return {
     title: d.title,
     description: d.description,
@@ -35,12 +37,14 @@ export function pageMeta(
       type,
       locale: OG_LOCALE[locale],
       siteName: SITE_CONFIG.name,
+      images: [image],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description: d.description,
       creator: `@${SITE_CONFIG.handle}`,
+      images: [image],
     },
   }
 }

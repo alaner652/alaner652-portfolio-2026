@@ -10,7 +10,14 @@ import { DEFAULT_LOCALE, LOCALES } from '@/i18n/config'
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (pathname === `/${DEFAULT_LOCALE}` || pathname.startsWith(`/${DEFAULT_LOCALE}/`)) {
+  // metadata 圖（opengraph-image / twitter-image）是 app/[locale] 底下的檔案路由，帶 zh 前綴的網址
+  // 就是它真正的位置，不轉址；Discord、Line 抓圖時才不會被導去一個不存在的根路徑
+  const isMetaImage = /\/(opengraph-image|twitter-image)(\d*)$/.test(pathname)
+
+  if (
+    !isMetaImage &&
+    (pathname === `/${DEFAULT_LOCALE}` || pathname.startsWith(`/${DEFAULT_LOCALE}/`))
+  ) {
     const url = request.nextUrl.clone()
     url.pathname = pathname.slice(DEFAULT_LOCALE.length + 1) || '/'
     return NextResponse.redirect(url, 308)
@@ -25,6 +32,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // 跳過 _next、API、根目錄的 metadata 圖（opengraph-image / icon）與所有帶副檔名的靜態檔
-  matcher: ['/((?!_next|api|opengraph-image|twitter-image|icon|apple-icon|.*\\..*).*)'],
+  // 跳過 _next、API、根目錄的 icon 與所有帶副檔名的靜態檔。
+  // /opengraph-image 不跳過：它要被改寫成 /zh/opengraph-image（圖在 app/[locale] 底下）
+  matcher: ['/((?!_next|api|icon|apple-icon|.*\\..*).*)'],
 }
