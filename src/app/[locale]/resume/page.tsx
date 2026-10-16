@@ -147,7 +147,7 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}
       />
       <div className="mx-auto max-w-[1040px] px-3 pt-4 pb-12 md:px-10 md:pt-8 md:pb-24 print:max-w-none print:p-0">
-        <article className="resume-paper border-line bg-[#14171a] border px-4.5 py-6 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)] md:px-16 md:py-14 print:border-0 print:p-0 print:shadow-none">
+        <article className="page-in resume-paper border-line bg-[#14171a] border px-4.5 py-6 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)] md:px-16 md:py-14 print:border-0 print:p-0 print:shadow-none">
           {/* 抬頭 */}
           <header className="border-text grid gap-4 border-b-2 pb-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-6 md:pb-7">
             <div>

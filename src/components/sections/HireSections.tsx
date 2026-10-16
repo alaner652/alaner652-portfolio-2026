@@ -1,7 +1,6 @@
-import Image from 'next/image'
-import { LLink as Link } from '@/i18n/client'
-
+import { WorkRows } from '@/components/home/WorkRows'
 import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
+import { LLink as Link } from '@/i18n/client'
 import { content } from '@/i18n/content'
 import { t } from '@/i18n/server'
 import { BUTTON_PRIMARY } from '@/lib/button'
@@ -21,10 +20,10 @@ export function HireHero() {
   const { HIRE } = content()
   return (
     <section className="wrap pt-11 pb-10 md:pt-24 md:pb-22">
-      <div className="text-accent font-mono text-[11px] tracking-[0.14em] md:text-[13px]">
+      <div className="page-in text-accent font-mono text-[11px] tracking-[0.14em] md:text-[13px]">
         {d.eyebrow}
       </div>
-      <h1 className="text-text mt-4 text-[clamp(40px,11vw,50px)] leading-[1.05] font-black tracking-[-0.04em] md:mt-6 md:text-[clamp(64px,7.8vw,112px)] md:leading-[1.02] md:tracking-[-0.05em]">
+      <h1 className="page-in text-text mt-4 text-[clamp(40px,11vw,50px)] leading-[1.05] font-black tracking-[-0.04em] [--i:1] md:mt-6 md:text-[clamp(64px,7.8vw,112px)] md:leading-[1.02] md:tracking-[-0.05em]">
         {d.h1a}
         <br />
         {d.h1b}
@@ -37,7 +36,7 @@ export function HireHero() {
         </span>
         {d.h1d}
       </h1>
-      <div className="mt-5 flex flex-col gap-6 md:mt-10 md:flex-row md:items-end md:justify-between md:gap-10">
+      <div className="page-in mt-5 flex flex-col gap-6 [--i:2] md:mt-10 md:flex-row md:items-end md:justify-between md:gap-10">
         <p className="text-text-2 max-w-[30em] text-base leading-[1.8] md:text-xl">{HIRE.lead}</p>
         <a
           href={SITE_CONFIG.discord}
@@ -57,7 +56,7 @@ export function Services() {
   const d = t().hire
   const { HIRE } = content()
   return (
-    <section className="wrap" id="services">
+    <section className="page-in wrap [--i:3]" id="services">
       {/* 桌面 */}
       <div className="hidden md:block">
         {HIRE.services.map((s, i) => (
@@ -115,120 +114,105 @@ export function Services() {
   )
 }
 
-/** 怎麼合作：深一階的底，四步排在一條線上（前兩顆橘點），手機改成左邊一條直線。 */
+/** 怎麼合作：深一階的底，四步用全站同一套巨大空心編號（關於頁的年份、文章頁的月份），
+    第一步填橘＝從這裡開始。桌面四欄細直線分隔，手機一步一列、編號在左。 */
 export function Process() {
   const d = t().hire
   const { HIRE } = content()
   return (
     <section className="bg-bg-deep border-line mt-12 border-y py-10 md:mt-24 md:py-18" id="process">
       <div className="wrap">
-        <div className="flex items-baseline justify-between gap-6">
-          <h2 className="text-text text-[30px] font-black md:text-[44px]">{d.process}</h2>
-          <span className="font-hand text-accent hidden text-[26px] md:inline">
-            {d.processNote}
-          </span>
-        </div>
-        <div className="relative mt-6 md:mt-14">
-          <div
-            aria-hidden="true"
-            className="absolute top-[9px] right-0 left-0 hidden h-px bg-[linear-gradient(90deg,var(--color-accent),var(--color-border-strong))] md:block"
-          />
-          <ol className="border-border-strong relative ml-[9px] border-l md:ml-0 md:grid md:grid-cols-4 md:gap-8 md:border-l-0">
-            {HIRE.steps.map((p, i) => (
-              <li key={p.label} className="relative pb-6 pl-6.5 last:pb-0 md:pb-0 md:pl-0">
-                <span
-                  className={cn(
-                    'bg-bg-deep absolute top-0.5 -left-2.5 block size-[19px] rounded-full border-2 md:static md:top-auto md:left-auto',
-                    i < 2 ? 'border-accent' : 'border-text-3'
-                  )}
-                  aria-hidden="true"
-                />
-                <div className="text-text-3 font-mono text-[11px] md:mt-5 md:text-xs">{NO(i)}</div>
-                <h3 className="text-text mt-0.5 text-xl font-black md:mt-1.5 md:text-[26px]">
+        <h2 className="text-text text-[30px] font-black md:text-[44px]">{d.process}</h2>
+        <ol className="mt-4 md:mt-12 md:grid md:grid-cols-4">
+          {HIRE.steps.map((p, i) => (
+            <li
+              key={p.label}
+              className={cn(
+                'border-line grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4 border-t py-5 md:block md:border-t-0 md:border-l md:px-7 md:py-0',
+                i === 0 && 'md:border-l-0 md:pl-0',
+                i === HIRE.steps.length - 1 && 'md:pr-0'
+              )}
+            >
+              <div
+                className={cn(
+                  'outline-num text-[56px] md:text-[96px]',
+                  i === 0 && 'text-accent [-webkit-text-stroke:0]'
+                )}
+                style={i === 0 ? undefined : { color: 'var(--color-bg-deep)' }}
+                aria-hidden="true"
+              >
+                {NO(i)}
+              </div>
+              <div className="md:mt-7">
+                <h3 className="text-text text-xl font-black md:text-[26px]">
+                  <span className="sr-only">{NO(i)} </span>
                   {p.label}
                 </h3>
                 <p className="text-text-2 mt-1 text-sm leading-[1.75] md:mt-2.5 md:text-[15px] md:leading-[1.8]">
                   {p.description}
                 </p>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <p className="font-hand text-accent mt-1 text-right text-[22px] md:hidden">
-          {d.processNote}
-        </p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   )
 }
 
-/** 做過的案子：三張（截圖 + 名字 + 技術），連作品頁。手機橫向捲。 */
+/** 做過的案子：跟首頁一樣的作品列（編號 / 大標 / 一句結果，滑過截圖跟著游標浮出），
+    不放三張風格不一的縮圖。 */
 export function Cases() {
   const d = t()
   const { HIRE, WORK_ITEMS: items0 } = content()
   const items = HIRE.cases.flatMap((c) => items0.filter((w) => w.title === c))
   return (
-    <section className="pt-12 md:pt-24" id="cases">
-      <div className="wrap mb-4 flex items-baseline justify-between gap-6 md:mb-6">
+    <section className="wrap pt-12 md:pt-24" id="cases">
+      <div className="mb-4 flex items-baseline justify-between gap-6 md:mb-6">
         <h2 className="text-text text-[30px] font-black md:text-[44px]">{d.hire.cases}</h2>
         <Link
           href="/projects"
-          className="border-accent text-text hover:text-accent hidden border-b pb-0.5 text-sm transition-colors md:inline"
+          className="text-text hover:text-accent font-mono text-[13px] transition-colors"
         >
           {d.hire.allWork}
         </Link>
       </div>
-      <ul className="flex gap-3 overflow-x-auto px-5 [scrollbar-width:none] md:wrap md:grid md:grid-cols-3 md:gap-6 md:overflow-visible">
-        {items.map((w) => (
-          <li key={w.slug} className="w-60 shrink-0 md:w-auto">
-            <Link href={`/projects/${w.slug}`} className="group/case block">
-              {w.preview && (
-                <div className="border-border bg-raised relative aspect-[5/3] overflow-hidden rounded-sm border">
-                  <Image
-                    src={w.preview}
-                    alt={d.projects.screenAlt(w.title)}
-                    fill
-                    sizes="(min-width: 768px) 420px, 240px"
-                    className="object-cover object-top transition-transform duration-500 group-hover/case:scale-[1.03] motion-reduce:transition-none"
-                  />
-                </div>
-              )}
-              <div className="text-text group-hover/case:text-accent mt-2.5 text-base font-bold transition-colors md:mt-3.5 md:text-xl">
-                {w.title}
-              </div>
-              {w.metrics && (
-                <div className="text-text-3 mt-1 hidden font-mono text-xs md:block">
-                  {w.metrics.join(' · ')}
-                </div>
-              )}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <WorkRows items={items} start={1} />
     </section>
   )
 }
 
-/** 先講清楚：問題左、答案右。 */
+/** 先講清楚：手風琴。一列一題（編號 / 問題 / +），按一下往下展開答案，同時只開一題。
+    欄位跟上面「接什麼」對齊（80px 編號欄）。 */
 export function Faq() {
   const d = t().hire
   const { HIRE } = content()
   return (
     <section className="wrap pt-12 pb-12 md:pt-28 md:pb-24" id="notes">
       <h2 className="text-text mb-2 text-[30px] font-black md:mb-6 md:text-[44px]">{d.faq}</h2>
-      <dl>
-        {HIRE.notes.map(({ q, a }) => (
-          <div
-            key={q}
-            className="border-line grid gap-1.5 border-t py-4.5 md:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] md:gap-8 md:py-7"
-          >
-            <dt className="text-text text-[17px] font-black md:text-[22px]">{q}</dt>
-            <dd className="text-text-body text-[14.5px] leading-[1.8] md:text-[17px] md:leading-[1.85]">
+      <div className="border-line border-b">
+        {HIRE.notes.map(({ q, a }, i) => (
+          <details key={q} name="faq" className="group/q border-line border-t">
+            <summary className="grid min-h-16 cursor-pointer list-none grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3.5 py-4 md:min-h-24 md:grid-cols-[80px_minmax(0,1fr)_40px] md:gap-x-6 md:py-6 [&::-webkit-details-marker]:hidden">
+              <span className="text-text-3 font-mono text-[13px] md:text-base" aria-hidden="true">
+                {NO(i)}
+              </span>
+              <span className="text-text group-hover/q:text-accent group-open/q:text-accent text-[19px] leading-[1.3] font-black tracking-[-0.02em] transition-colors md:text-[clamp(24px,2.2vw,30px)]">
+                {q}
+              </span>
+              <span
+                className="text-text-3 group-open/q:text-accent justify-self-end text-2xl leading-none transition-transform duration-300 ease-(--ease-out-soft) group-open/q:rotate-45 motion-reduce:transition-none"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            <p className="text-text-body max-w-[46em] animate-[fade-up_0.35s_var(--ease-out-soft)_both] pb-6 text-[15px] leading-[1.8] motion-reduce:animate-none md:ml-[104px] md:pb-9 md:text-[17px] md:leading-[1.85]">
               {a}
-            </dd>
-          </div>
+            </p>
+          </details>
         ))}
-      </dl>
+      </div>
     </section>
   )
 }

@@ -1,9 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import { LLink as Link } from '@/i18n/client'
 import { useState, type PointerEvent } from 'react'
 
+import { LLink as Link } from '@/i18n/client'
 import { cn } from '@/lib/utils'
 import type { WorkItem } from '@/types'
 
@@ -11,9 +11,9 @@ interface WorkRowsProps {
   items: WorkItem[]
   /** 列表編號從幾號開始（精選那件佔了 01） */
   start: number
-  /** 「還有 N 個」那列 */
-  rest: number
-  moreLabel: string
+  /** 「還有 N 個」那列；不給就不顯示（接案頁只列三件） */
+  rest?: number
+  moreLabel?: string
 }
 
 /** 首頁作品清單：一列一件、細線分隔。滑過某列：標題變橘並右移 16px、其他列退到 35%、
@@ -83,21 +83,25 @@ export function WorkRows({ items, start, rest, moreLabel }: WorkRowsProps) {
           </Link>
         )
       })}
-      <Link
-        href="/projects"
-        onPointerEnter={() => setHover(-1)}
-        className={cn(row, 'border-b', any && 'opacity-35')}
-      >
-        <span className="text-accent font-mono text-[13px] md:text-base">+{rest}</span>
-        <span className="text-text-2 text-lg md:text-xl">{moreLabel}</span>
-        <span />
-      </Link>
+      {rest !== undefined ? (
+        <Link
+          href="/projects"
+          onPointerEnter={() => setHover(-1)}
+          className={cn(row, 'border-b', any && 'opacity-35')}
+        >
+          <span className="text-accent font-mono text-[13px] md:text-base">+{rest}</span>
+          <span className="text-text-2 text-lg md:text-xl">{moreLabel}</span>
+          <span />
+        </Link>
+      ) : (
+        <div className="border-line border-t" />
+      )}
 
       {/* 跟著游標的截圖：桌面才有（手機沒有 hover） */}
       {current?.preview && (
         <div
           aria-hidden="true"
-          className="border-border-strong bg-raised pointer-events-none absolute top-0 left-0 hidden w-80 overflow-hidden rounded-md border transition-[transform,opacity] duration-200 ease-[var(--ease-out-soft)] md:block motion-reduce:transition-none"
+          className="border-border-strong bg-raised pointer-events-none absolute top-0 left-0 hidden w-80 overflow-hidden rounded-md border transition-[transform,opacity] duration-200 ease-[var(--ease-out-soft)] motion-reduce:transition-none md:block"
           style={{
             transform: `translate(${pos.x + 32}px, ${pos.y - 110}px) rotate(${hover % 2 ? 3 : -3}deg)`,
           }}

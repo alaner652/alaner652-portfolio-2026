@@ -7,7 +7,7 @@ import { SITE_CONFIG } from '@/constants'
 import { t } from '@/i18n/server'
 import { BUTTON_PRIMARY } from '@/lib/button'
 
-/** 第一屏：滿版人物照（有檔案才放；沒有就是暗底）、左下角一句手寫開場、兩行逐字上浮的主張、一顆按鈕、一行「最近」。
+/** 第一屏：滿版人物照（有檔案才放；沒有就是暗底，文字改垂直置中、高度收短，免得上半屏空著）、左下角一句手寫開場、兩行逐字上浮的主張、一顆按鈕。
     照片上壓兩層黑色遮罩讓字讀得清楚（稿上唯一允許的漸層）。文字區掛 .hero-drift 跟著捲動往下漂並淡出。
     開頁動畫一個分頁只演一次（IntroOnce + globals.css 的 html[data-intro='done']）。 */
 export function Hero() {
@@ -17,7 +17,11 @@ export function Hero() {
   const photo = SITE_CONFIG.heroPhoto
   return (
     <section
-      className="relative flex min-h-[78svh] flex-col justify-end overflow-hidden md:min-h-[min(800px,92svh)]"
+      className={
+        photo
+          ? 'relative flex min-h-[78svh] flex-col justify-end overflow-hidden md:min-h-[min(800px,92svh)]'
+          : 'relative flex min-h-[64svh] flex-col justify-center overflow-hidden md:min-h-[min(680px,78svh)]'
+      }
       data-nav-overlay={photo ? '' : undefined}
     >
       <IntroOnce />
@@ -37,7 +41,13 @@ export function Hero() {
           />
         </>
       )}
-      <div className="wrap hero-drift relative pb-8 md:pb-16">
+      <div
+        className={
+          photo
+            ? 'wrap hero-drift relative pb-8 md:pb-16'
+            : 'wrap hero-drift relative py-10 md:py-14'
+        }
+      >
         <p className="font-hand text-accent text-[26px] md:text-[34px]">{d.hi}</p>
         <h1
           aria-label={LINE_1 + LINE_2}
@@ -52,11 +62,6 @@ export function Hero() {
           </Link>
           <span className="text-text-2 text-base">{d.tagline}</span>
         </div>
-        <p className="intro motion-safe:animate-fade-up mt-5 flex items-center gap-3 text-[13px] [--fade-delay:1100ms] md:mt-10 md:text-[15px]">
-          <span className="bg-live inline-block size-2 rounded-full" aria-hidden="true" />
-          <span className="text-text-3 font-mono text-xs">{d.recentLabel}</span>
-          <span className="text-text">{d.recent}</span>
-        </p>
       </div>
     </section>
   )

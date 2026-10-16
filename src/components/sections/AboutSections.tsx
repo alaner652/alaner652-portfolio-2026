@@ -14,7 +14,7 @@ export function AboutHero() {
   return (
     <section className="md:wrap md:grid md:grid-cols-12 md:items-end md:gap-10 md:pt-16">
       {SITE_CONFIG.avatar && (
-        <div className="relative aspect-square w-full overflow-hidden md:col-span-5 md:rounded-sm">
+        <div className="page-in relative aspect-square w-full overflow-hidden md:col-span-5 md:rounded-sm">
           <Image
             src={SITE_CONFIG.avatar}
             alt={d.photoAlt}
@@ -27,14 +27,14 @@ export function AboutHero() {
         </div>
       )}
       <div className="wrap pt-7 md:col-span-7 md:px-0 md:pt-0 md:pb-3">
-        <p className="font-hand text-accent text-[28px] md:text-[36px]">{d.hi}</p>
-        <h1 className="text-text mt-1 text-[46px] leading-[1.05] font-black tracking-[-0.03em] md:mt-2 md:text-[clamp(56px,6vw,88px)] md:leading-[1.02] md:tracking-[-0.04em]">
+        <p className="page-in font-hand text-accent text-[28px] [--i:1] md:text-[36px]">{d.hi}</p>
+        <h1 className="page-in text-text mt-1 text-[46px] leading-[1.05] font-black tracking-[-0.03em] [--i:2] md:mt-2 md:text-[clamp(56px,6vw,88px)] md:leading-[1.02] md:tracking-[-0.04em]">
           {d.h1}
         </h1>
-        <p className="text-text-body mt-5 max-w-[30em] text-base leading-[1.9] md:mt-8 md:text-xl">
+        <p className="page-in text-text-body mt-5 max-w-[30em] text-base leading-[1.9] [--i:3] md:mt-8 md:text-xl">
           {ABOUT_WHO}
         </p>
-        <p className="font-hand text-accent mt-4 text-right text-[30px] md:mt-7 md:inline-block md:-rotate-3 md:text-left md:text-[40px]">
+        <p className="page-in font-hand text-accent mt-4 text-right text-[30px] [--i:4] md:mt-7 md:inline-block md:-rotate-3 md:text-left md:text-[40px]">
           {d.signature}
         </p>
       </div>
@@ -46,7 +46,7 @@ export function AboutHero() {
 export function Beliefs() {
   const { ABOUT_WORDS } = content()
   return (
-    <section className="border-line mt-12 border-y md:mt-28">
+    <section className="page-in border-line mt-12 border-y [--i:5] md:mt-28">
       <ol className="wrap flex [scrollbar-width:none] overflow-x-auto md:grid md:grid-cols-4 md:overflow-visible">
         {ABOUT_WORDS.lines.map(({ text, from }, i) => (
           <li
@@ -131,8 +131,8 @@ export function Timeline() {
   )
 }
 
-/** 會的東西：左邊標題，右邊一組一列（mono 分類 + 一排技術）。
-    有 logo 的技術前面帶品牌色小磚（跟首頁 Bento 跑馬燈同一組 svg），沒有的只放文字。 */
+/** 會的東西：條列。左邊標題，右邊一組一列（mono 分類 + 一排技術），
+    有 logo 的前面帶小磚（跟首頁 Bento 同一組 svg），沒有的只放文字。 */
 export function SkillList() {
   const d = t().about
   const { SKILLS } = content()
