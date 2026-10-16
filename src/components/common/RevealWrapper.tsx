@@ -1,55 +1,9 @@
-'use client'
-
-import { useEffect, useRef, useState } from 'react'
-
-import { cn } from '@/lib/utils'
-
 interface RevealWrapperProps {
   children: React.ReactNode
   className?: string
 }
 
+/** 以前是捲到才淡入；全站拿掉動畫後只是一個普通的 div，留著是因為文章 MDX 裡還有人用。 */
 export function RevealWrapper({ children, className }: RevealWrapperProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduced || !('IntersectionObserver' in window)) {
-      requestAnimationFrame(() => setVisible(true))
-      return
-    }
-
-    const el = ref.current
-    if (!el) return
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          io.unobserve(el)
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
-    )
-
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-
-  return (
-    <div
-      ref={ref}
-      // 子元素想接著做分段進場，用 group-data-visible: 讀這個屬性（見 Offers）
-      data-visible={visible || undefined}
-      // `reveal` 讓 layout 裡的 <noscript> 樣式能在 JS 失效時強制顯示內容
-      className={cn(
-        'reveal group transition-[opacity,transform] duration-600 ease-out',
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4.5',
-        className
-      )}
-    >
-      {children}
-    </div>
-  )
+  return <div className={className}>{children}</div>
 }

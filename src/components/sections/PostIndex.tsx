@@ -67,7 +67,7 @@ export function PostIndex({ posts, tags }: { posts: BlogPost[]; tags: string[]; 
               aria-pressed={tag === t}
               onClick={() => setTag(t)}
               className={cn(
-                'min-h-10 shrink-0 cursor-pointer transition-colors',
+                'min-h-10 shrink-0 cursor-pointer ',
                 tag === t ? 'text-accent' : 'text-text-3 hover:text-text'
               )}
             >
@@ -116,7 +116,7 @@ export function PostIndex({ posts, tags }: { posts: BlogPost[]; tags: string[]; 
                       <span className="flex flex-col gap-2.5">
                         <span
                           className={cn(
-                            'text-text group-hover/post:text-accent leading-[1.35] font-black tracking-[-0.01em] transition-colors',
+                            'text-text group-hover/post:text-accent leading-[1.35] font-black tracking-[-0.01em] ',
                             big ? 'text-[26px] md:text-[48px]' : 'text-lg md:text-[26px]'
                           )}
                         >

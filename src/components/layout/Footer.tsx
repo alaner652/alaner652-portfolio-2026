@@ -37,7 +37,7 @@ function Email({ compact = false }: { compact?: boolean }) {
       <span className="text-text-3 font-mono text-xs">{d.orEmail}</span>
       <a
         href={`mailto:${SITE_CONFIG.email}`}
-        className={`em text-text-body hover:text-text font-bold transition-colors ${compact ? 'text-base md:text-lg' : 'text-lg md:text-2xl'}`}
+        className={`em text-text-body hover:text-text font-bold ${compact ? 'text-base md:text-lg' : 'text-lg md:text-2xl'}`}
       >
         {user}
         <wbr />
@@ -67,7 +67,7 @@ function Socials({ className = '' }: { className?: string }) {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-text transition-colors"
+            className="hover:text-text"
           >
             {label} ↗
           </a>
@@ -87,7 +87,7 @@ export function Footer() {
   if (pathname === '/' || pathname === '/hire') {
     const hire = pathname === '/hire'
     return (
-      <footer className="border-line border-t print:hidden">
+      <footer className="border-line dots border-t print:hidden">
         <div className="wrap pt-18 pb-7 md:pt-30 md:pb-10">
           <p className="font-hand text-accent text-[26px] md:text-[36px]">
             {hire ? d.askHire : d.ask}
@@ -125,10 +125,7 @@ export function Footer() {
               <Email compact />
             </div>
           </div>
-          <Link
-            href="/blog"
-            className="text-text hover:text-accent font-mono text-[13px] transition-colors"
-          >
+          <Link href="/blog" className="text-text hover:text-accent font-mono text-[13px]">
             {d.backToBlog}
           </Link>
         </div>

@@ -201,12 +201,11 @@ export default async function PostPage({
       />
 
       {/* 最上緣一條橘線，跟著整頁捲動長 */}
-      <div className="progress" aria-hidden="true" />
 
       {/* 頁首：置中。麵包屑 / 第一個標籤、標題、日期 · 分鐘 · 標籤 */}
       <header className="mx-auto max-w-[880px] px-5 pt-10 pb-8 text-center md:px-10 md:pt-20 md:pb-14">
         <div className="text-text-3 font-mono text-xs md:text-[13px]">
-          <Link href="/blog" className="hover:text-text transition-colors">
+          <Link href="/blog" className="hover:text-text">
             {d.title}
           </Link>
           {post.frontmatter.tags?.[0] && <> / #{post.frontmatter.tags[0]}</>}
@@ -258,7 +257,7 @@ export default async function PostPage({
                 <Link
                   key={r.slug}
                   href={`/blog/${r.slug}`}
-                  className="text-text-2 hover:text-text block transition-colors"
+                  className="text-text-2 hover:text-text block"
                 >
                   → {r.frontmatter.title}
                 </Link>
@@ -275,7 +274,7 @@ export default async function PostPage({
               <div className="text-text-3 font-mono text-[11px] md:text-[13px]">
                 {nextLabel} / {next.frontmatter.date.replaceAll('-', '.')}
               </div>
-              <div className="text-text group-hover/next:text-accent mt-1.5 text-[22px] leading-[1.4] font-black transition-colors md:mt-2.5 md:text-[clamp(28px,3.3vw,48px)] md:leading-[1.2]">
+              <div className="text-text group-hover/next:text-accent mt-1.5 text-[22px] leading-[1.4] font-black md:mt-2.5 md:text-[clamp(28px,3.3vw,48px)] md:leading-[1.2]">
                 {next.frontmatter.title}
               </div>
             </div>

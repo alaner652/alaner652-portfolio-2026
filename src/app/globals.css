@@ -2,7 +2,6 @@
 
 @theme {
   /* 站上所有 hover 轉場都是 180ms，設成預設值就不用每個 class 再寫一次 */
-  --default-transition-duration: 180ms;
 }
 
 @theme inline {
@@ -57,14 +56,6 @@
   --radius-chip: 6px;
   --radius-card: 10px;
   --radius-photo: 2px;
-
-  /* ── 動畫 ──
-     只動 transform / opacity，都在 motion-safe 下套用。
-     fade-up：分層淡入（錯開用 [--fade-delay:…]）。rise：逐字上浮（稿上的 Hero，45ms 一字）。
-     marquee：跑馬燈。 */
-  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.1, 1);
-  --animate-fade-up: fade-up 0.6s ease-out var(--fade-delay, 0ms) both;
-  --animate-marquee: marquee 40s linear infinite;
 }
 
 /* ── 版面 ──
@@ -88,56 +79,13 @@
 }
 
 /* ── 導覽列與 Footer ──
-   em：信箱 hover 時 4px 橘底線從左畫出來（Motion 稿）。
-   menu-overlay / menu-item：手機全螢幕選單淡入、項目逐行上浮（間隔由 inline animation-delay 排）。
-   reduce motion 時全部直接出現。 */
+   em：信箱 hover 時 4px 橘底線（靜態，沒有過渡）。 */
 .em {
   background: linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 0% 4px no-repeat;
-  transition: background-size 0.45s var(--ease-out-soft);
 }
 .em:hover,
 .em:focus-visible {
   background-size: 100% 4px;
-}
-@keyframes menu-in {
-  from {
-    opacity: 0;
-  }
-}
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .menu-overlay {
-    animation: menu-in 0.3s ease-out both;
-  }
-  .menu-item {
-    animation: rise-in 0.5s var(--ease-out-soft) both;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .em {
-    transition: none;
-  }
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(0.5rem);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 /* ── 文章內文（.prose-portfolio）──
@@ -362,90 +310,37 @@
 .ghost {
   color: transparent;
   -webkit-text-stroke: 1.5px var(--color-border-strong);
-  transition:
-    color 0.3s,
-    -webkit-text-stroke 0.3s;
 }
 .ghost-on {
   color: var(--color-accent);
   -webkit-text-stroke: 0;
 }
 
-/* 逐字上浮（Motion 稿）：每個字一個 span，從底下 105% 升到定位，每字間隔 45ms、0.8s。
-   行用 overflow hidden 遮住還沒升上來的字。延遲用 calc 算，easing 一定要 linear 以外的曲線也沒關係，
-   因為這不是 1ms 的跳動畫，結束狀態 0.9999 和 1 看不出差別。 */
-.rise-ln {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
-}
-.rise-ch {
-  display: inline-block;
-}
-@keyframes rise {
-  from {
-    transform: translateY(105%);
-  }
-}
-@keyframes hero-drift {
-  to {
-    transform: translateY(210px);
-    opacity: 0;
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .rise-ch {
-    animation: rise 0.8s var(--ease-out-soft) both;
-    animation-delay: calc(var(--base, 0ms) + var(--i, 0) * 45ms);
-  }
-  /* Hero 文字跟著捲動往下漂並淡出（translateY ≈ scroll × 0.3）。用 scroll timeline，不支援就不動 */
-  @supports (animation-timeline: scroll()) {
-    .hero-drift {
-      animation: hero-drift linear both;
-      animation-timeline: scroll();
-      animation-range: 0 700px;
-    }
-  }
-}
-/* 子頁（about / projects / blog / hire / resume）進場：掛 .page-in 的元素輕輕淡入上浮，
-   [--i:n] 一層錯開 80ms。只動 opacity / transform，reduced-motion 不動。首頁不用這個，首頁有自己的 intro。 */
-@media (prefers-reduced-motion: no-preference) {
-  .page-in {
-    animation: fade-up 0.7s var(--ease-out-soft) both;
-    animation-delay: calc(var(--i, 0) * 80ms);
-  }
-}
-/* 開頁動畫一個分頁只演一次：home/IntroOnce.tsx 看過就寫 cookie，首頁 page.tsx 讀到就在外層掛 data-intro="done"（站內切頁時 IntroOnce 也會掛在 <html>），
-   之後 Hero 的逐字上浮和掛了 .intro 的淡入（Bento 等）都直接是完成狀態。這條沒有 layer，壓得過 utilities。 */
-[data-intro='done'] .rise-ch,
-[data-intro='done'] .intro {
-  animation: none;
-}
-
-/* 文章頁最上緣的閱讀進度線：跟著整頁捲動長，瀏覽器不支援 scroll timeline 就不顯示 */
-.progress {
+/* ── 背景點綴（全部靜態，沒有動畫）──
+   grain：整頁一層很淡的顆粒，fixed、不吃滑鼠，讓大面積暗底不是一塊平的。
+   dots：細點陣，鋪在空的大面積上（首頁沒照片的 Hero、接案頁「怎麼合作」深底帶、頁尾、履歷頁的桌面）。
+   dots-fade：點陣往下淡出，用在 Hero，免得跟下面的內容打架。
+   不是光暈、不用徑向漸層。列印時全部拿掉。 */
+.grain {
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 60;
-  width: 100%;
-  height: 3px;
-  background: var(--color-accent);
-  transform: scaleX(0);
-  transform-origin: left;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
 }
-@keyframes grow-x {
-  to {
-    transform: scaleX(1);
-  }
+.dots {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.5' cy='1.5' r='1.5' fill='%232e3339'/%3E%3C/svg%3E");
+  background-size: 28px 28px;
 }
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .progress {
-      animation: grow-x 1s linear both;
-      animation-timeline: scroll();
-    }
+.dots-fade {
+  mask-image: linear-gradient(180deg, #000 30%, transparent 95%);
+}
+@media print {
+  .grain,
+  .dots {
+    display: none;
   }
 }
 

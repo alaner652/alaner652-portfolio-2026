@@ -115,7 +115,7 @@ export default async function ProjectPage({
         )}
         <div className="wrap relative pb-8 md:pb-12">
           <nav aria-label="麵包屑" className="text-text-3 text-sm">
-            <Link href="/projects" className="text-text-2 hover:text-text transition-colors">
+            <Link href="/projects" className="text-text-2 hover:text-text">
               {d.title}
             </Link>{' '}
             / {item.title}
@@ -154,7 +154,7 @@ export default async function ProjectPage({
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-accent hover:text-accent border-b transition-colors"
+                    className="border-accent hover:text-accent border-b"
                   >
                     {linkLabel(href, d.link)} ↗
                   </a>
@@ -196,7 +196,7 @@ export default async function ProjectPage({
         <div className="wrap flex items-end justify-between gap-6 py-8 md:py-12">
           <div>
             <div className="text-text-3 text-sm">{d.next}</div>
-            <div className="text-text group-hover/next:text-accent mt-2 text-[36px] leading-none font-black tracking-[-0.03em] transition-colors md:text-[clamp(48px,6vw,88px)] md:tracking-[-0.04em]">
+            <div className="text-text group-hover/next:text-accent mt-2 text-[36px] leading-none font-black tracking-[-0.03em] md:text-[clamp(48px,6vw,88px)] md:tracking-[-0.04em]">
               {next.title}
             </div>
           </div>

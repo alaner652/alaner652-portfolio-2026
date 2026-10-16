@@ -30,8 +30,7 @@ const GRID: { i: number; cls: string; pos?: string }[] = [
 ]
 
 const pad = (n: number) => String(n + 1).padStart(2, '0')
-const IMG =
-  'object-cover transition-transform duration-1000 ease-(--ease-out-soft) group-hover/shot:scale-[1.03] motion-reduce:transition-none'
+const IMG = 'object-cover '
 
 export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Labels }) {
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -123,7 +122,7 @@ export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Lab
                 type="button"
                 onClick={close}
                 aria-label={labels.close}
-                className="border-border text-text-2 hover:border-border-strong hover:text-text flex size-11 items-center justify-center rounded-full border transition-colors"
+                className="border-border text-text-2 hover:border-border-strong hover:text-text flex size-11 items-center justify-center rounded-full border"
               >
                 <X size={18} strokeWidth={1.5} aria-hidden />
               </button>
@@ -139,7 +138,7 @@ export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Lab
                 sizes="100vw"
                 quality={90}
                 priority
-                className="h-auto max-h-full w-auto max-w-full animate-[fade-up_0.45s_var(--ease-out-soft)_both] object-contain motion-reduce:animate-none"
+                className="h-auto max-h-full w-auto max-w-full object-contain"
               />
               <figcaption className="text-text-2 w-full max-w-[60ch] text-center text-[14px] leading-[1.7] md:text-[15px]">
                 {current.alt}
@@ -158,7 +157,7 @@ export function RidingGallery({ photos, labels }: { photos: Photo[]; labels: Lab
                   type="button"
                   onClick={() => step(dir)}
                   aria-label={label}
-                  className="border-border text-text-2 hover:border-border-strong hover:text-text flex size-11 items-center justify-center rounded-full border transition-colors md:pointer-events-auto"
+                  className="border-border text-text-2 hover:border-border-strong hover:text-text flex size-11 items-center justify-center rounded-full border md:pointer-events-auto"
                 >
                   <Icon size={20} strokeWidth={1.5} aria-hidden />
                 </button>

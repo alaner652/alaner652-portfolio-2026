@@ -23,7 +23,8 @@ export function ContributionSnake({ days, pad }: { days: ContributionDay[]; pad:
     const ctx = canvas?.getContext('2d')
     if (!canvas || !ctx) return
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // 全站沒有動畫：永遠只畫格子，蛇不出來
+    const reduce = true
     const css = getComputedStyle(canvas)
     const color = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback
     const amber = color('--color-accent', '#FF8648')

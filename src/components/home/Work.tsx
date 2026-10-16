@@ -18,10 +18,7 @@ export function Work() {
     <section className="wrap pt-18 md:pt-30">
       <div className="mb-6 flex items-baseline justify-between md:mb-8">
         <h2 className="text-text text-h2 font-black tracking-[-0.03em]">{d.home.work}</h2>
-        <Link
-          href="/projects"
-          className="text-text hover:text-accent font-mono text-[13px] transition-colors"
-        >
+        <Link href="/projects" className="text-text hover:text-accent font-mono text-[13px]">
           {d.home.allWork(WORK_ITEMS.length)}
         </Link>
       </div>
@@ -31,7 +28,7 @@ export function Work() {
         className="group/lead grid gap-6 md:grid-cols-12 md:items-center md:gap-10"
       >
         {lead.preview && (
-          <div className="border-border bg-raised overflow-hidden rounded-md border md:col-span-7 md:-rotate-1 md:transition-transform md:duration-500 md:group-hover/lead:rotate-0 motion-reduce:transition-none">
+          <div className="border-border bg-raised overflow-hidden rounded-md border md:col-span-7 md:-rotate-1">
             <Image
               src={lead.preview}
               alt={d.projects.screenAlt(lead.title)}
@@ -46,7 +43,7 @@ export function Work() {
           <span className="text-accent font-mono text-xs md:text-[13px]">
             01 · {d.projects.categories[lead.category] ?? lead.category}
           </span>
-          <span className="text-text group-hover/lead:text-accent text-[36px] leading-none font-black tracking-[-0.03em] transition-colors md:text-[56px]">
+          <span className="text-text group-hover/lead:text-accent text-[36px] leading-none font-black tracking-[-0.03em] md:text-[56px]">
             {lead.title}
           </span>
           <span className="text-text-body text-[15px] leading-[1.8] md:text-lg">

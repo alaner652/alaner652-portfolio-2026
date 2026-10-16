@@ -21,12 +21,12 @@ const NO = (i: number) => String(i + 1).padStart(2, '0')
 
 // 桌機連結：mono 編號 + 文字；目前頁面整個變橘（編號也是），hover 底下畫一條短線
 const DESKTOP_LINK =
-  'group/nl text-text-2 hover:text-text aria-[current=page]:text-accent relative flex h-11 items-center gap-1 px-1 transition-colors after:bg-accent after:absolute after:inset-x-1 after:bottom-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-250 after:ease-out hover:after:scale-x-100 motion-reduce:after:transition-none'
+  'group/nl text-text-2 hover:text-text aria-[current=page]:text-accent relative flex h-11 items-center gap-1 px-1 after:bg-accent after:absolute after:inset-x-1 after:bottom-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full hover:after:scale-x-100 '
 const INDEX = 'text-text-3 group-aria-[current=page]/nl:text-accent font-mono text-[10px]'
 
 // 手機選單是整列可點：編號 + 文字，目前頁橘色 + 左側橘短槓
 const MOBILE_LINK =
-  'group/ml text-text-2 hover:text-text aria-[current=page]:text-accent aria-[current=page]:border-accent -mx-3 flex h-11 items-center gap-3 border-l-2 border-transparent px-3 text-base transition-colors'
+  'group/ml text-text-2 hover:text-text aria-[current=page]:text-accent aria-[current=page]:border-accent -mx-3 flex h-11 items-center gap-3 border-l-2 border-transparent px-3 text-base '
 
 /** 語言切換：一個 icon，點了換到另一個語系的同一頁。目標語系寫在 aria-label / title 裡。 */
 function LocaleSwitch({
@@ -50,7 +50,7 @@ function LocaleSwitch({
       title={d.switchLabel}
       onClick={onNavigate}
       className={cn(
-        'text-text-2 hover:text-text flex size-11 items-center justify-center transition-colors',
+        'text-text-2 hover:text-text flex size-11 items-center justify-center ',
         className
       )}
     >
@@ -97,7 +97,7 @@ export function Nav() {
       <div
         className={cn(
           // 圓角固定 1.75rem（= 收合時 3.5rem 高的一半，看起來就是膠囊），開選單時形狀不變、只往下長
-          'mx-auto max-w-270 rounded-[1.75rem] border border-transparent transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300',
+          'mx-auto max-w-270 rounded-[1.75rem] border border-transparent ',
           floating &&
             'bg-bg/80 border-border shadow-[0_12px_32px_-18px_rgba(0,0,0,0.6)] backdrop-blur-[12px]'
         )}
@@ -137,7 +137,7 @@ export function Nav() {
             aria-expanded={menuOpen}
             aria-controls="nav-menu"
             aria-label={menuOpen ? d.closeMenu : d.openMenu}
-            className="text-text-2 hover:text-text -mr-2 hidden h-11 w-11 items-center justify-center transition-colors max-[720px]:flex"
+            className="text-text-2 hover:text-text -mr-2 hidden h-11 w-11 items-center justify-center max-[720px]:flex"
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -148,15 +148,15 @@ export function Nav() {
           id="nav-menu"
           inert={!menuOpen}
           className={cn(
-            'grid transition-[grid-template-rows] duration-300 ease-out min-[721px]:hidden motion-reduce:transition-none',
+            'grid min-[721px]:hidden ',
             menuOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
           )}
         >
           <div className="min-h-0 overflow-hidden">
             <div
               className={cn(
-                'border-line border-t px-5 pt-2 pb-4 transition-opacity duration-200 motion-reduce:transition-none',
-                menuOpen ? 'opacity-100 delay-100' : 'opacity-0'
+                'border-line border-t px-5 pt-2 pb-4 ',
+                menuOpen ? 'opacity-100 ' : 'opacity-0'
               )}
             >
               {NAV_LINKS.map((link, i) => (

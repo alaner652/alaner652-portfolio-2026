@@ -80,7 +80,7 @@ function Preview({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="border-border-strong text-text hover:border-text border-b pb-0.5 transition-colors"
+            className="border-border-strong text-text hover:border-text border-b pb-0.5"
           >
             {linkLabel(href, d.link)} ↗
           </a>
@@ -126,7 +126,7 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
               aria-pressed={filter === c}
               onClick={() => setFilter(c)}
               className={cn(
-                'min-h-11 shrink-0 cursor-pointer border-b-2 px-0.5 text-[15px] transition-colors md:text-base',
+                'min-h-11 shrink-0 cursor-pointer border-b-2 px-0.5 text-[15px] md:text-base',
                 filter === c
                   ? 'border-accent text-text'
                   : 'text-text-3 hover:text-text border-transparent'
@@ -161,7 +161,7 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
                   onPointerEnter={() => setHover(item.slug)}
                   onFocus={() => setHover(item.slug)}
                   className={cn(
-                    'group/row border-line grid grid-cols-[3.5rem_minmax(0,1fr)_auto] items-center gap-x-4 border-b py-5 transition-colors md:grid-cols-[5.5rem_minmax(0,1fr)_5rem_1.5rem] md:gap-x-5 md:py-6',
+                    'group/row border-line grid grid-cols-[3.5rem_minmax(0,1fr)_auto] items-center gap-x-4 border-b py-5 md:grid-cols-[5.5rem_minmax(0,1fr)_5rem_1.5rem] md:gap-x-5 md:py-6',
                     on && 'is-active'
                   )}
                 >
@@ -177,7 +177,7 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
                   <span className="min-w-0">
                     <span
                       className={cn(
-                        'block text-[20px] font-bold transition-colors md:text-[22px]',
+                        'block text-[20px] font-bold md:text-[22px]',
                         on ? 'text-accent' : 'text-text'
                       )}
                     >

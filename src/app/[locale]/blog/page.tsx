@@ -30,7 +30,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
     <>
       <section className="wrap pt-7 md:pt-14">
         <div className="border-line border-b pb-4 md:pb-5">
-          <div className="page-in text-text-3 flex justify-between font-mono text-[11px] tracking-[0.1em] md:text-xs">
+          <div className="text-text-3 flex justify-between font-mono text-[11px] tracking-[0.1em] md:text-xs">
             <span>
               {d.vol} {latest?.slice(0, 4)}
             </span>
@@ -44,17 +44,17 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
               )}
             </span>
           </div>
-          <h1 className="page-in text-text mt-2.5 text-[48px] [--i:1] leading-[1.05] font-black tracking-[-0.04em] md:mt-3.5 md:text-[clamp(64px,8.3vw,120px)] md:leading-none md:tracking-[-0.05em]">
+          <h1 className="text-text mt-2.5 text-[48px] leading-[1.05] font-black tracking-[-0.04em] md:mt-3.5 md:text-[clamp(64px,8.3vw,120px)] md:leading-none md:tracking-[-0.05em]">
             {d.h1a}
             <br />
             {d.h1b}
           </h1>
-          <p className="page-in font-hand text-accent mt-2.5 text-[22px] [--i:2] md:mt-5 md:text-[30px]">
+          <p className="font-hand text-accent mt-2.5 text-[22px] md:mt-5 md:text-[30px]">
             {d.note}
           </p>
         </div>
       </section>
-      <div className="page-in [--i:3]">
+      <div className="">
         <PostIndex posts={posts} tags={tags} locale={locale} />
       </div>
     </>

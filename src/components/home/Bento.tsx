@@ -10,7 +10,7 @@ import { t } from '@/i18n/server'
 import { type Contributions, getContributions } from '@/lib/github'
 
 const TILE =
-  'group/tile bg-surface border-line rounded-card hover:border-border-strong relative flex flex-col overflow-hidden border p-6 transition-colors'
+  'group/tile bg-surface border-line rounded-card hover:border-border-strong relative flex flex-col overflow-hidden border p-6 '
 
 /** 工作之外：整格一張追焦照，字疊在上面。 */
 function PhotoTile() {
@@ -25,7 +25,7 @@ function PhotoTile() {
         // Bento 緊貼在 90svh 的 Hero 底下，這張照片的上緣就在第一屏裡，是 LCP：先載，不然 dev 會一直警告
         priority
         sizes="(min-width: 768px) 620px, 100vw"
-        className="object-cover object-[50%_18%] transition-transform duration-700 ease-out group-hover/tile:scale-[1.03] motion-reduce:transition-none"
+        className="object-cover object-[50%_18%]"
       />
       <span
         className="absolute inset-0 bg-linear-to-t from-black/70 via-black/25 to-black/10"
@@ -38,7 +38,7 @@ function PhotoTile() {
       <ArrowUpRight
         size={20}
         strokeWidth={1.5}
-        className="absolute right-6 bottom-6 flex size-11 items-center justify-center rounded-full border border-white/60 p-2.5 text-white transition-colors group-hover/tile:border-white group-hover/tile:bg-white/15"
+        className="absolute right-6 bottom-6 flex size-11 items-center justify-center rounded-full border border-white/60 p-2.5 text-white group-hover/tile:border-white group-hover/tile:bg-white/15"
         aria-hidden
       />
     </Link>
@@ -51,13 +51,11 @@ const LOGO_SKILLS = SKILLS.flatMap((g) => g.items).filter(
   (name, i, all) => ICON_MAP[name] && all.findIndex((n) => ICON_MAP[n] === ICON_MAP[name]) === i
 )
 
-/** 一排 logo 往左流，內容複製兩份，跑到 -50% 剛好接回起點。hover 暫停，reduce-motion 不動。 */
-function LogoRow({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
+/** 一排 logo（靜態，沒有跑馬燈） */
+function LogoRow({ items }: { items: string[] }) {
   return (
-    <div
-      className={`animate-marquee flex w-max gap-3 group-hover/tile:[animation-play-state:paused] motion-reduce:animate-none ${reverse ? '[animation-direction:reverse]' : ''}`}
-    >
-      {[...items, ...items].map((name, i) => (
+    <div className="flex w-max gap-3">
+      {items.map((name, i) => (
         <SkillIcon key={`${name}-${i}`} name={name} size={40} />
       ))}
     </div>
@@ -71,7 +69,7 @@ function SkillsTile() {
   return (
     <Link href="/about#skills" className={`${TILE} md:col-span-5`}>
       <div className="text-text-3 text-2xs font-mono tracking-[0.18em] uppercase">{d.skills}</div>
-      <h2 className="group-hover/tile:text-accent mt-3 text-[28px] font-black tracking-[-0.02em] transition-colors">
+      <h2 className="group-hover/tile:text-accent mt-3 text-[28px] font-black tracking-[-0.02em]">
         {d.skills}
       </h2>
       <div
@@ -79,12 +77,12 @@ function SkillsTile() {
         aria-hidden="true"
       >
         <LogoRow items={LOGO_SKILLS.slice(0, half)} />
-        <LogoRow items={LOGO_SKILLS.slice(half)} reverse />
+        <LogoRow items={LOGO_SKILLS.slice(half)} />
       </div>
       <ArrowRight
         size={22}
         strokeWidth={1.5}
-        className="text-text-2 group-hover/tile:text-accent absolute right-6 bottom-6 transition-colors"
+        className="text-text-2 group-hover/tile:text-accent absolute right-6 bottom-6"
         aria-hidden
       />
     </Link>
@@ -109,7 +107,7 @@ function GithubTile({ data }: { data: Contributions | null }) {
           <ContributionSnake days={data.days} pad={pad} />
         </div>
       ) : (
-        <h2 className="group-hover/tile:text-accent text-[28px] font-black tracking-[-0.02em] transition-colors">
+        <h2 className="group-hover/tile:text-accent text-[28px] font-black tracking-[-0.02em]">
           GitHub
         </h2>
       )}
@@ -123,7 +121,7 @@ function GithubTile({ data }: { data: Contributions | null }) {
         <ArrowUpRight
           size={22}
           strokeWidth={1.5}
-          className="text-text-2 group-hover/tile:text-accent ml-auto transition-colors"
+          className="text-text-2 group-hover/tile:text-accent ml-auto"
           aria-hidden
         />
       </div>
@@ -138,10 +136,7 @@ export async function Bento() {
   const contributions = await getContributions()
 
   return (
-    <nav
-      aria-label={t().home.bentoLabel}
-      className="intro wrap motion-safe:animate-fade-up pt-10 pb-6 [--fade-delay:1300ms] md:pt-16 md:pb-10"
-    >
+    <nav aria-label={t().home.bentoLabel} className="intro wrap pt-10 pb-6 md:pt-16 md:pb-10">
       <div className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12">
         <PhotoTile />
         <SkillsTile />

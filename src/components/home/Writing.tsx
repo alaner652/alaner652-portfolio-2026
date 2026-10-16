@@ -30,7 +30,7 @@ export function Writing({ limit = 3 }: { limit?: number }) {
               href={`/blog/${post.slug}`}
               className="group/post border-line grid gap-x-6 gap-y-1 border-t py-4.5 md:grid-cols-[minmax(0,1fr)_110px] md:items-baseline md:py-6"
             >
-              <span className="text-text group-hover/post:text-accent text-lg leading-[1.5] font-bold transition-colors md:text-2xl md:leading-[1.45]">
+              <span className="text-text group-hover/post:text-accent text-lg leading-[1.5] font-bold md:text-2xl md:leading-[1.45]">
                 {post.frontmatter.title}
               </span>
               <span className="text-text-3 font-mono text-[11px] md:text-right md:text-xs">

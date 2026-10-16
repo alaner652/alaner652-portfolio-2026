@@ -20,10 +20,10 @@ export function HireHero() {
   const { HIRE } = content()
   return (
     <section className="wrap pt-11 pb-10 md:pt-24 md:pb-22">
-      <div className="page-in text-accent font-mono text-[11px] tracking-[0.14em] md:text-[13px]">
+      <div className="text-accent font-mono text-[11px] tracking-[0.14em] md:text-[13px]">
         {d.eyebrow}
       </div>
-      <h1 className="page-in text-text mt-4 text-[clamp(40px,11vw,50px)] leading-[1.05] font-black tracking-[-0.04em] [--i:1] md:mt-6 md:text-[clamp(64px,7.8vw,112px)] md:leading-[1.02] md:tracking-[-0.05em]">
+      <h1 className="text-text mt-4 text-[clamp(40px,11vw,50px)] leading-[1.05] font-black tracking-[-0.04em] md:mt-6 md:text-[clamp(64px,7.8vw,112px)] md:leading-[1.02] md:tracking-[-0.05em]">
         {d.h1a}
         <br />
         {d.h1b}
@@ -36,7 +36,7 @@ export function HireHero() {
         </span>
         {d.h1d}
       </h1>
-      <div className="page-in mt-5 flex flex-col gap-6 [--i:2] md:mt-10 md:flex-row md:items-end md:justify-between md:gap-10">
+      <div className="mt-5 flex flex-col gap-6 md:mt-10 md:flex-row md:items-end md:justify-between md:gap-10">
         <p className="text-text-2 max-w-[30em] text-base leading-[1.8] md:text-xl">{HIRE.lead}</p>
         <a
           href={SITE_CONFIG.discord}
@@ -56,7 +56,7 @@ export function Services() {
   const d = t().hire
   const { HIRE } = content()
   return (
-    <section className="page-in wrap [--i:3]" id="services">
+    <section className="wrap" id="services">
       {/* 桌面 */}
       <div className="hidden md:block">
         {HIRE.services.map((s, i) => (
@@ -65,7 +65,7 @@ export function Services() {
             className="group/svc border-line grid grid-cols-[80px_minmax(0,5fr)_minmax(0,6fr)] items-start gap-8 border-t py-10"
           >
             <span className="text-accent pt-2.5 font-mono text-xl">{NO(i)}</span>
-            <h3 className="text-text group-hover/svc:text-accent text-[clamp(36px,3.6vw,52px)] leading-[1.1] font-black tracking-[-0.03em] transition-colors">
+            <h3 className="text-text group-hover/svc:text-accent text-[clamp(36px,3.6vw,52px)] leading-[1.1] font-black tracking-[-0.03em]">
               {s.label}
             </h3>
             <div className="flex flex-col gap-3.5 pt-1.5">
@@ -77,7 +77,7 @@ export function Services() {
                 {s.examples?.[0] && (
                   <Link
                     href={exampleHref(s.examples[0])}
-                    className="text-text-2 hover:text-text shrink-0 transition-colors"
+                    className="text-text-2 hover:text-text shrink-0"
                   >
                     {s.examples[0]} ↗
                   </Link>
@@ -96,10 +96,7 @@ export function Services() {
               <span className="text-text flex-1 text-[26px] font-black tracking-[-0.02em]">
                 {s.label}
               </span>
-              <span
-                className="text-text-3 transition-transform group-open/d:rotate-45"
-                aria-hidden="true"
-              >
+              <span className="text-text-3 group-open/d:rotate-45" aria-hidden="true">
                 +
               </span>
             </summary>
@@ -120,7 +117,10 @@ export function Process() {
   const d = t().hire
   const { HIRE } = content()
   return (
-    <section className="bg-bg-deep border-line mt-12 border-y py-10 md:mt-24 md:py-18" id="process">
+    <section
+      className="dots bg-bg-deep border-line mt-12 border-y py-10 md:mt-24 md:py-18"
+      id="process"
+    >
       <div className="wrap">
         <h2 className="text-text text-[30px] font-black md:text-[44px]">{d.process}</h2>
         <ol className="mt-4 md:mt-12 md:grid md:grid-cols-4">
@@ -170,10 +170,7 @@ export function Cases() {
     <section className="wrap pt-12 md:pt-24" id="cases">
       <div className="mb-4 flex items-baseline justify-between gap-6 md:mb-6">
         <h2 className="text-text text-[30px] font-black md:text-[44px]">{d.hire.cases}</h2>
-        <Link
-          href="/projects"
-          className="text-text hover:text-accent font-mono text-[13px] transition-colors"
-        >
+        <Link href="/projects" className="text-text hover:text-accent font-mono text-[13px]">
           {d.hire.allWork}
         </Link>
       </div>
@@ -197,17 +194,17 @@ export function Faq() {
               <span className="text-text-3 font-mono text-[13px] md:text-base" aria-hidden="true">
                 {NO(i)}
               </span>
-              <span className="text-text group-hover/q:text-accent group-open/q:text-accent text-[19px] leading-[1.3] font-black tracking-[-0.02em] transition-colors md:text-[clamp(24px,2.2vw,30px)]">
+              <span className="text-text group-hover/q:text-accent group-open/q:text-accent text-[19px] leading-[1.3] font-black tracking-[-0.02em] md:text-[clamp(24px,2.2vw,30px)]">
                 {q}
               </span>
               <span
-                className="text-text-3 group-open/q:text-accent justify-self-end text-2xl leading-none transition-transform duration-300 ease-(--ease-out-soft) group-open/q:rotate-45 motion-reduce:transition-none"
+                className="text-text-3 group-open/q:text-accent justify-self-end text-2xl leading-none group-open/q:rotate-45"
                 aria-hidden="true"
               >
                 +
               </span>
             </summary>
-            <p className="text-text-body max-w-[46em] animate-[fade-up_0.35s_var(--ease-out-soft)_both] pb-6 text-[15px] leading-[1.8] motion-reduce:animate-none md:ml-[104px] md:pb-9 md:text-[17px] md:leading-[1.85]">
+            <p className="text-text-body max-w-[46em] pb-6 text-[15px] leading-[1.8] md:ml-[104px] md:pb-9 md:text-[17px] md:leading-[1.85]">
               {a}
             </p>
           </details>

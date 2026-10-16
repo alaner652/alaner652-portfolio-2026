@@ -17,7 +17,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
   return (
     <>
       <section className="wrap flex items-end justify-between gap-6 pt-7 md:gap-10 md:pt-14">
-        <div className="page-in">
+        <div className="">
           <div className="text-text-3 text-[13px] md:text-sm">{d.title}</div>
           <h1 className="text-text mt-2.5 text-[34px] leading-[1.2] font-black tracking-[-0.02em] md:mt-3 md:text-[clamp(44px,4.5vw,64px)] md:leading-[1.1] md:tracking-[-0.03em]">
             {d.h1a}
@@ -25,7 +25,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
             {d.h1b}
           </h1>
         </div>
-        <div className="page-in shrink-0 text-right [--i:1]">
+        <div className="shrink-0 text-right">
           <div
             className="outline-num text-[64px] md:text-[160px] md:leading-[0.85]"
             aria-hidden="true"
@@ -35,7 +35,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
           <div className="font-hand text-accent mt-2 hidden text-[24px] md:block">{d.note}</div>
         </div>
       </section>
-      <div className="page-in [--i:3]">
+      <div className="">
         <ProjectIndex items={content().WORK_ITEMS} />
       </div>
     </>

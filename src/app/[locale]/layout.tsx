@@ -99,18 +99,13 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col print:bg-white print:text-black">
-        {/* RevealWrapper 靠 IntersectionObserver 淡入；JS 失效時強制顯示，避免整頁空白 */}
-        <noscript>
-          <style>
-            {'.reveal,.reveal .reveal-item{opacity:1!important;transform:none!important}'}
-          </style>
-        </noscript>
         <a
           href="#main"
           className="focus:bg-surface focus:text-text focus:border-border sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-chip focus:border focus:px-4 focus:py-2 print:hidden"
         >
           {d.nav.skip}
         </a>
+        <div className="grain print:hidden" aria-hidden="true" />
         <Nav />
         <main id="main" className="flex-1">
           {children}
