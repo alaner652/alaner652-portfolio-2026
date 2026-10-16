@@ -6,105 +6,122 @@
 }
 
 @theme inline {
-  /* ── Portfolio design tokens (light cream / orange) ── */
-  --color-bg: #fcfaf4;
-  --color-panel: #ffffff;
-  --color-panel-hi: #f6f1e8;
-  --color-line: #ece5d7;
-  --color-line-soft: #f3ede1;
-  --color-txt: #332d24; /* 13.05:1 */
-  --color-dim: #736a5a; /*  5.11:1 — 承載資訊的次要文字用這層 */
-  --color-faint: #7e725d; /*  4.52:1 — 純裝飾用。舊值 #A79C88 只有 2.59:1，連大字級都不合格 */
-  /* orange primary (var name kept for compatibility) */
-  --color-amber: #e06122; /* 3.41:1 — 只能用在圖示、大字、hover 等非承載文字 */
-  --color-amber-text: #c0521b; /* 4.51:1 — 內文連結等小字要用這個 */
-  --color-amber-soft: rgba(224, 97, 34, 0.1);
+  /* ── 色票（design-handoff/HANDOFF.md）──
+     暗色為主、一個橘色、灰階分層。沒有光暈、沒有彩色陰影、沒有分類色盤。 */
+  --color-bg: #0e1013; /* 頁面底 */
+  --color-bg-deep: #0a0b0d; /* 履歷頁底、強調區塊底 */
+  --color-surface: #16191d;
+  --color-raised: #1e2227;
+  --color-line: #23272d; /* 分隔線 */
+  --color-border: #2a2e34; /* 元件外框 */
+  --color-border-strong: #3a3f46; /* 按鈕外框、空心字描邊 */
+  --color-text: #f2efe9;
+  --color-text-body: #c4c7cd; /* 長文正文 */
+  --color-text-2: #a3a7ae;
+  --color-text-3: #7c8189;
+  --color-accent: #ff8648; /* 唯一強調色 */
+  --color-accent-hover: #ff9d68;
+  --color-on-accent: #120a05; /* 橘底上的字 */
+  --color-accent-soft: rgba(255, 134, 72, 0.12);
+  --color-selection: #5a2a12;
+  --color-selection-text: #ffd9c4;
+  --color-live: #4ade80; /* 首頁「最近」那顆綠點，只用在這裡 */
 
-  /* ── 反白面 ──
-     全站只有兩個地方翻成深底：首頁精選作品、Footer。底色就是 txt、字就是 bg，
-     不另外調色，確保翻過來的對比跟正面一樣（13:1）。dim/line 用透明度，疊在深底上就對。 */
-  --color-ink: #332d24;
-  --color-ink-txt: #fcfaf4;
-  --color-ink-dim: rgba(252, 250, 244, 0.68); /* 7.6:1 */
-  --color-ink-faint: rgba(252, 250, 244, 0.5); /* 5.2:1 */
-  --color-ink-line: rgba(252, 250, 244, 0.14);
-  --color-ink-panel: rgba(252, 250, 244, 0.06);
-
-  /* ── 分類色盤 ──
-     五個色相，各配一組「文字色 ink + 10% 底色 tint」。
-     色彩在這個站上只用來編碼「類別」或「狀態」，不做裝飾——
-     所以要嘛整組一起用（chip），要嘛只用 ink（標籤、狀態點）。
-     每組的 ink 在自己的 tint 上都 ≥4.5:1，小字也合格；對頁面底色則都 ≥5.1:1。 */
-  --color-orange-ink: #b04b19; /* 4.51:1 on tint · 5.20:1 on bg */
-  /* 主要按鈕的底色。比 orange-ink 淺一階，但仍讓 --color-bg 的字保持 4.60:1；
-     再往 --color-amber(#E06122) 靠就只剩 3.5:1，按鈕上的小字會不合格。 */
-  --color-orange-cta: #ba5420;
-  --color-orange-tint: #f4e8de;
-  --color-gold-ink: #826511; /* 4.62:1 · 5.27:1 */
-  --color-gold-tint: #f0ebdd;
-  --color-green-ink: #1b7950; /* 4.52:1 · 5.16:1 */
-  --color-green-tint: #e6ede4;
-  --color-blue-ink: #2a6c9b; /* 4.73:1 · 5.41:1 */
-  --color-blue-tint: #e7eceb;
-  --color-plum-ink: #97386b; /* 5.61:1 · 6.50:1 */
-  --color-plum-tint: #f2e7e6;
-
-  /* ── 字級級數 ──
-     原本有 31 個各自為政的字級（0.96rem 與 0.97rem 差 0.16px 卻做同一件事）。
-     收斂成 7 個內文級 + 4 個標題級，每個對應一個語意角色。 */
-  --text-2xs: 0.72rem; /* metadata：日期、chip、copyright */
-  --text-xs: 0.8rem; /* eyebrow、狀態、分類標籤 */
-  --text-sm: 0.875rem; /* 次要說明、導覽 */
-  --text-base: 0.95rem; /* 列表內文、UI 文字 */
-  --text-md: 1.02rem; /* 段落內文 */
-  --text-lg: 1.18rem; /* 項目標題 */
-  --text-xl: 1.5rem; /* 字標 */
-  /* xs/sm/base/lg/xl 撞到 Tailwind 內建名稱，會連帶套用內建的行高。
-     設成 inherit 讓所有級距行為一致：只管字級，行高交給 leading-* 或 body。 */
+  /* ── 字級 ──
+     內文級距沿用；頁面上的大字（88/104/112/120/140）直接照稿寫 clamp，不另起名字。 */
+  --text-2xs: 0.72rem;
+  --text-xs: 0.8rem;
+  --text-sm: 0.875rem;
+  --text-base: 0.95rem;
+  --text-lg: 1.18rem;
+  --text-xl: 1.5rem;
   --text-xs--line-height: inherit;
   --text-sm--line-height: inherit;
   --text-base--line-height: inherit;
   --text-lg--line-height: inherit;
   --text-xl--line-height: inherit;
+  --text-lead: clamp(1.05rem, 1.7vw, 1.25rem);
+  --text-h2: clamp(1.75rem, 3.2vw, 3.5rem); /* 區塊標題 56px */
+  --text-h1: clamp(2.25rem, 5vw, 4rem); /* 內頁標題 64px */
 
-  --text-lead: clamp(1.05rem, 1.7vw, 1.2rem); /* Hero 副標 */
-  --text-h3: clamp(1.15rem, 2vw, 1.4rem); /* 項目標題、履歷區塊標題 */
-  /* 標題級距拉開：h2 跟內文至少 1.9 倍、h1 跟 h2 再差一級，
-     捲動時才感覺得到「換了一段」。display 給 Hero 主張、頁首大標、精選作品名。 */
-  --text-h2: clamp(1.6rem, 2.8vw, 2.25rem); /* 區塊開場句 */
-  --text-h1: clamp(2rem, 4vw, 3.25rem); /* 頁面標題 */
-  --text-quote: clamp(1.35rem, 2.4vw, 1.8rem); /* /about 的 pull quote */
-  /* Hero 兩層：手寫字標是全站最大的字，主張句是 display 層。
-     字標上限 9rem 讓 1440 寬時「small R」佔到半個版面；下限 4.5rem 在 375 寬仍是一行。
-     display 下限要讓 390px 手機塞得下「也打造自己的產品。」一整行。 */
-  --text-wordmark: clamp(4rem, 10vw, 8.5rem);
-  --text-display: clamp(1.9rem, 4vw, 3.25rem);
-
-  --font-display:
-    var(--font-space-grotesk), 'LXGW WenKai TC', var(--font-noto-tc), 'PingFang TC', system-ui,
-    sans-serif;
+  /* ── 字體（三種，各有工作）──
+     Noto Sans TC：全部內文與標題（粗標題用 900）。
+     JetBrains Mono：只用在導覽編號、日期、閱讀時間、小標籤。
+     Caveat：手寫註記，每頁一兩處；沒有中文字，所以中文接霞鶩文楷。 */
+  --font-body: var(--font-noto-tc), 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-body:
-    var(--font-inter), var(--font-noto-tc), 'PingFang TC', 'Microsoft JhengHei', system-ui,
-    sans-serif;
-  /* 手寫體：拉丁字母和數字用 Caveat，中文接霞鶩文楷（Caveat 沒有中文字，不接的話會掉到系統粗黑體，
-     一行裡兩種字體打架）。字標、段名、編號、手寫註記都用這個。 */
   --font-hand: var(--font-caveat), 'LXGW WenKai TC', var(--font-noto-tc), cursive;
 
-  /* ── 圓角：兩級就夠 ──
-     原本散在各處的 rounded-[4px]/[5px]/[6px]/[8px]/[10px] 做的是同兩件事。 */
-  --radius-chip: 6px; /* chip、按鈕、行內程式碼 */
-  --radius-card: 10px; /* 卡片、程式碼區塊、mac window */
+  /* ── 圓角 ──
+     稿上幾乎沒有圓角：相片 2px、截圖 4–6px、按鈕膠囊。card 留給 Bento 那三格。 */
+  --radius-chip: 6px;
+  --radius-card: 10px;
+  --radius-photo: 2px;
 
   /* ── 動畫 ──
-     都很輕，且只在 motion-safe 下套用（reduce 時不套，元素以最終狀態顯示）。
-     fade-up：Hero 進場的分層淡入。要錯開時間用 [--fade-delay:1750ms]，不要用 [animation-delay:…]：
-     animate-fade-up 是 shorthand，而且帶 motion-safe: 變體的 utility 會排在後面，會把前面的 animation-delay 蓋回 0。
-     blink：打字機游標；
-     marquee：首頁技能格的跑馬燈（內容複製兩份，跑到 -50% 剛好接回起點）。 */
+     只動 transform / opacity，都在 motion-safe 下套用。
+     fade-up：分層淡入（錯開用 [--fade-delay:…]）。rise：逐字上浮（稿上的 Hero，45ms 一字）。
+     marquee：跑馬燈。 */
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.1, 1);
   --animate-fade-up: fade-up 0.6s ease-out var(--fade-delay, 0ms) both;
-  --animate-blink: blink 1s steps(1) infinite;
-  --animate-marquee: marquee 36s linear infinite;
+  --animate-marquee: marquee 40s linear infinite;
+}
+
+/* ── 版面 ──
+   wrap：1320 寬 + 左右 40（手機 20），全站共用。
+   outline-num：空心的大數字（年份、月份、作品數），字填頁面底色、描一條細線。 */
+@utility wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (min-width: 768px) {
+    padding-inline: 40px;
+  }
+}
+@utility outline-num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  line-height: 0.9;
+  color: var(--color-bg);
+  -webkit-text-stroke: 1px var(--color-border-strong);
+}
+
+/* ── 導覽列與 Footer ──
+   em：信箱 hover 時 4px 橘底線從左畫出來（Motion 稿）。
+   menu-overlay / menu-item：手機全螢幕選單淡入、項目逐行上浮（間隔由 inline animation-delay 排）。
+   reduce motion 時全部直接出現。 */
+.em {
+  background: linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 0% 4px no-repeat;
+  transition: background-size 0.45s var(--ease-out-soft);
+}
+.em:hover,
+.em:focus-visible {
+  background-size: 100% 4px;
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-overlay {
+    animation: menu-in 0.3s ease-out both;
+  }
+  .menu-item {
+    animation: rise-in 0.5s var(--ease-out-soft) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .em {
+    transition: none;
+  }
 }
 
 @keyframes fade-up {
@@ -117,42 +134,40 @@
     transform: none;
   }
 }
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
 @keyframes marquee {
   to {
     transform: translateX(-50%);
   }
 }
 
-/* MDX blog prose styles */
+/* ── 文章內文（.prose-portfolio）──
+   稿：正文 17/1.9 text-body、首段放大一級、h2 黑體、拉出來的引言 34/900 左邊 4px 橘線、
+   行內程式碼偏橘、連結橘色底線、程式碼區塊深底上下線 + 行號。 */
+.prose-portfolio {
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--color-text-body);
+}
 .prose-portfolio h1,
 .prose-portfolio h2,
 .prose-portfolio h3,
 .prose-portfolio h4 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  color: var(--color-txt);
+  font-weight: 900;
+  color: var(--color-text);
+  line-height: 1.3;
   margin-bottom: 0.6em;
-  line-height: 1.15;
-  /* sticky nav 是 64px，錨點跳轉時標題不能被蓋住 */
-  scroll-margin-top: 80px;
+  scroll-margin-top: 88px; /* 錨點跳轉時標題不能被 sticky nav 蓋住 */
 }
-/* margin-top 用 rem 而非 em，否則 h1 會拿到 2×2rem 而 h3 只有 2×1.1rem */
 .prose-portfolio h1 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.6rem, 3vw, 2rem);
   margin-top: 2.5rem;
 }
 .prose-portfolio h2 {
-  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
-  margin-top: 2.5rem;
+  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+  margin-top: 2.75rem;
 }
 .prose-portfolio h3 {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   margin-top: 2rem;
 }
 .prose-portfolio h4 {
@@ -162,77 +177,118 @@
 .prose-portfolio > *:first-child {
   margin-top: 0;
 }
-
-/* 標題錨點：rehype-autolink-headings 用 wrap，連結不該長得像內文連結 */
+/* 導言：第一段放大一級、用主文字色 */
+.prose-portfolio > p:first-child {
+  font-size: 1.3em;
+  line-height: 1.8;
+  font-weight: 500;
+  color: var(--color-text);
+}
 .prose-portfolio .heading-anchor {
   color: inherit;
   text-decoration: none;
 }
 .prose-portfolio .heading-anchor:hover {
-  color: var(--color-amber);
+  color: var(--color-accent);
 }
-
-/* 量測欄寬交給外層容器（文章 720px、履歷 900px）決定。
-   以前 p 自己設 max-width:62ch，但 pre/table/ul 沒有，右緣會參差 80–260px。 */
 .prose-portfolio p {
-  color: var(--color-dim);
-  font-size: 1.05rem;
-  line-height: 1.75;
   margin-bottom: 1.2em;
 }
 .prose-portfolio a {
-  color: var(--color-amber-text);
+  color: var(--color-text);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+.prose-portfolio a:hover {
+  color: var(--color-accent);
 }
 .prose-portfolio code {
   font-family: var(--font-mono);
-  font-size: 0.875em;
-  background: var(--color-panel-hi);
-  border: 1px solid var(--color-line);
+  font-size: 0.88em;
+  color: #ffb48a;
+  background: var(--color-surface);
   padding: 2px 6px;
   border-radius: var(--radius-chip);
-  color: var(--color-txt);
 }
 .prose-portfolio pre {
-  background: var(--color-panel-hi);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-card);
-  padding: 20px 24px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--color-text-body);
   overflow-x: auto;
-  margin: 1.5em 0;
+  white-space: pre;
+  padding: 10px 0 18px;
+  margin: 0;
+  counter-reset: line;
 }
 .prose-portfolio pre code {
   background: none;
-  border: none;
   padding: 0;
-  font-size: 0.875rem;
+  color: inherit;
+  font-size: inherit;
+}
+/* 行號：每行一個 .code-line，前面用 counter 印號碼；user-select none 所以不會被選到或複製 */
+.prose-portfolio .code-line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 2.2em;
+  margin-right: 0.8em;
+  color: var(--color-text-3);
+  text-align: right;
+  user-select: none;
 }
 .prose-portfolio ul,
 .prose-portfolio ol {
-  color: var(--color-dim);
-  padding-left: 1.5em;
+  padding-left: 1.4em;
   margin-bottom: 1.2em;
+}
+.prose-portfolio ul {
+  list-style: disc;
+}
+.prose-portfolio ol {
+  list-style: decimal;
+}
+.prose-portfolio li::marker {
+  color: var(--color-text-3);
 }
 .prose-portfolio li {
   margin-bottom: 0.4em;
-  line-height: 1.65;
 }
 .prose-portfolio strong {
-  color: var(--color-txt);
-  font-weight: 600;
+  color: var(--color-text);
+  font-weight: 700;
 }
 .prose-portfolio hr {
   border: none;
-  border-top: 1px solid var(--color-line-soft);
+  border-top: 1px solid var(--color-line);
   margin: 2.5em 0;
 }
+/* 拉出來的一句話：全文最值得記住的那句 */
 .prose-portfolio blockquote {
-  border-left: 2px solid var(--color-amber);
-  padding-left: 1.2em;
-  color: var(--color-dim);
-  font-style: italic;
-  margin: 1.5em 0;
+  margin: 1.8em 0;
+  padding-left: 1em;
+  border-left: 4px solid var(--color-accent);
+  color: var(--color-text);
+  font-size: clamp(1.25rem, 2.3vw, 2.1rem);
+  line-height: 1.45;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+.prose-portfolio blockquote p {
+  margin: 0;
+}
+.prose-portfolio blockquote strong {
+  font-weight: inherit;
+}
+.prose-portfolio img {
+  border-radius: var(--radius-photo);
+}
+.prose-portfolio figcaption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-3);
 }
 .prose-portfolio table {
   width: 100%;
@@ -243,35 +299,42 @@
   overflow-x: auto;
 }
 .prose-portfolio th {
-  color: var(--color-txt);
-  font-weight: 600;
+  color: var(--color-text);
+  font-weight: 700;
   text-align: left;
   padding: 8px 12px;
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-border);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 .prose-portfolio td {
-  color: var(--color-dim);
   padding: 8px 12px;
-  border-bottom: 1px solid var(--color-line-soft);
+  border-bottom: 1px solid var(--color-line);
   vertical-align: top;
 }
 .prose-portfolio tr:last-child td {
   border-bottom: none;
 }
 
-/* mac-window pre reset — border/radius/margin provided by the wrapper */
-.prose-portfolio .mac-window pre {
-  border: none;
-  border-radius: 0;
-  margin: 0;
-  background: transparent;
+/* 履歷裡的要點：比文章小一號，清單貼著標題 */
+.prose-portfolio.prose-cv {
+  font-size: 14.5px;
+  line-height: 1.8;
+  margin-top: 0.4em;
+}
+.prose-portfolio.prose-cv ul {
+  margin-bottom: 0;
+  padding-left: 1.2em;
+}
+.prose-portfolio.prose-cv li {
+  margin-bottom: 0.15em;
+}
+.prose-portfolio.prose-cv p:last-child {
+  margin-bottom: 0;
 }
 
-/* mermaid flowchart — use loaded fonts (incl. CJK) and readable labels */
+/* mermaid：用載入的字體（含中文） */
 .mermaid,
 .mermaid text,
 .mermaid .nodeLabel,
@@ -283,302 +346,71 @@
   font-size: 0.82em;
 }
 
-/* card h3 reset — applied inside Card component and TaskList */
+/* 補充框（Card / TaskList）：裡面的段落和清單不要再吃外邊距 */
+.prose-portfolio .mdx-card > :last-child {
+  margin-bottom: 0;
+}
 .prose-portfolio .mdx-card h3 {
   margin-top: 0;
   font-size: 1rem;
 }
-.prose-portfolio .mdx-card ul {
-  margin-bottom: 0;
+.prose-portfolio .mdx-card strong {
+  color: var(--color-text);
 }
 
-/* ── 兩個小道具 ──
-   mark：橘色麥克筆底線，畫在關鍵字底下（只在大字上用，一段最多一處）。
-   ghost：空心線稿的大字，hover 到所在的 group 才填成橘色實心。 */
-.mark {
-  background-image: linear-gradient(
-    transparent 58%,
-    rgba(224, 97, 34, 0.32) 58%,
-    rgba(224, 97, 34, 0.32) 92%,
-    transparent 92%
-  );
-}
+/* 空心大字（/projects 的列編號）：線稿，滑到那列或選到就填成橘色實心 */
 .ghost {
   color: transparent;
-  -webkit-text-stroke: 1.5px var(--color-faint);
+  -webkit-text-stroke: 1.5px var(--color-border-strong);
   transition:
     color 0.3s,
     -webkit-text-stroke 0.3s;
 }
-.group\/claim:hover .ghost,
-.group\/claim:focus-within .ghost {
-  color: var(--color-amber);
+.ghost-on {
+  color: var(--color-accent);
   -webkit-text-stroke: 0;
 }
 
-/* /about 的時間軸：橘色進度線跟著捲動往下長，每一顆點進到視窗下半才亮。
-   用 CSS 的 view timeline，不用 JS；不支援的瀏覽器就直接顯示最終狀態。 */
-.timeline-progress {
-  transform: translateX(-50%) scaleY(1);
+/* 逐字上浮（Motion 稿）：每個字一個 span，從底下 105% 升到定位，每字間隔 45ms、0.8s。
+   行用 overflow hidden 遮住還沒升上來的字。延遲用 calc 算，easing 一定要 linear 以外的曲線也沒關係，
+   因為這不是 1ms 的跳動畫，結束狀態 0.9999 和 1 看不出差別。 */
+.rise-ln {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
 }
-.timeline-dot {
-  transition:
-    transform 0.3s ease-out,
-    opacity 0.3s ease-out;
-}
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .timeline-progress {
-      animation: timeline-grow linear both;
-      animation-timeline: view();
-      animation-range: entry 10% cover 65%;
-    }
-    .timeline-dot {
-      animation: timeline-pop linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 60%;
-    }
-  }
-}
-@keyframes timeline-grow {
-  from {
-    transform: translateX(-50%) scaleY(0);
-  }
-  to {
-    transform: translateX(-50%) scaleY(1);
-  }
-}
-@keyframes timeline-pop {
-  from {
-    opacity: 0.2;
-    transform: translateX(-50%) scale(0.4);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
-}
-
-/* ── v3 的道具與動 ──
-   原則：畫線 draw（手畫的線捲到才畫）、填色 fill（空心字從左往右填橘）、跟手 follow（相片跟著游標傾斜）。
-   全部 CSS；捲動用 animation-timeline: view()，瀏覽器不支援就直接是完成狀態；reduce motion 一律不動。 */
-
-/* 麥克筆（新版）：一條手畫的 SVG 線墊在字底下，pathLength=1 所以能畫出來。
-   舊的 .mark 留給還沒改版的頁面，改完就可以刪。 */
-.marker {
-  position: relative;
-  white-space: nowrap;
-  isolation: isolate;
-}
-.marker-line {
-  position: absolute;
-  left: -0.04em;
-  bottom: -0.1em;
-  z-index: -1;
-  width: calc(100% + 0.08em);
-  height: 0.42em;
-  overflow: visible;
-  pointer-events: none;
-}
-.marker-line path {
-  fill: none;
-  stroke: var(--color-amber);
-  stroke-opacity: 0.4;
-  stroke-width: 9;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-}
-.bg-ink .marker-line path {
-  stroke-opacity: 0.55;
-}
-
-/* 手畫線：年份底下那條曲線這類。.draw-load 開頁畫、.draw-view 捲到才畫 */
-.sketch {
-  fill: none;
-  stroke: var(--color-amber);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.draw-load path,
-.draw-view path,
-.draw-view circle,
-.draw-view rect,
-.draw-view polyline {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-}
-
-/* 空心大字：底層線稿、上層橘色用 clip-path 從左露出；滑過去也填 */
-.verb {
-  position: relative;
+.rise-ch {
   display: inline-block;
 }
-.verb-ghost {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--color-faint);
-  transition: -webkit-text-stroke-color 0.3s;
-}
-.verb-fill {
-  position: absolute;
-  inset: 0;
-  color: var(--color-amber);
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 0.6s ease-out;
-}
-.verb:hover .verb-ghost {
-  -webkit-text-stroke-color: var(--color-amber);
-}
-.verb:hover .verb-fill {
-  clip-path: inset(0 0 0 0);
-}
-/* 深底上的空心數字：線改用 50% 的米；整個條目 hover 才填 */
-.bg-ink .ghost {
-  -webkit-text-stroke-color: var(--color-ink-faint);
-}
-.group\/entry:hover .ghost,
-.group\/entry:focus-within .ghost {
-  color: var(--color-amber);
-  -webkit-text-stroke: 0;
-}
-.group\/card:hover .ghost,
-.group\/card:focus-within .ghost,
-.group\/row:hover .ghost,
-.group\/row:focus-within .ghost {
-  color: var(--color-amber);
-  -webkit-text-stroke: 0;
-}
-
-/* 印章：mono 字 + 細框，轉一點角度 */
-.stamp {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  line-height: 1;
-  border: 1.5px solid currentColor;
-  border-radius: 4px;
-  padding: 0.35em 0.6em;
-  white-space: nowrap;
-}
-
-/* 出血：從 1080 的欄位裡撐到整個視窗寬。body 已經 overflow-x: hidden，捲軸那幾 px 不會露餡 */
-.bleed {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-}
-
-@keyframes wipe-in {
+@keyframes rise {
   from {
-    clip-path: inset(0 100% 0 0);
+    transform: translateY(105%);
   }
+}
+@keyframes hero-drift {
   to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-@keyframes draw {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes drop {
-  from {
-    opacity: 0;
-    transform: translateY(-24px) rotate(-5deg);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  /* 開頁：字標被寫出來、相片掉下來、主張底下的線畫出來（順序靠各自的 delay） */
-  .enter-wipe {
-    animation: wipe-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  .enter-drop {
-    animation: drop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  .draw-load path {
-    animation: draw 0.7s ease-out both;
-    animation-delay: var(--draw-delay, 0ms);
-  }
-  /* 捲到才動：線捲進視窗畫出來；動詞捲到視窗中下段填橘 */
-  @supports (animation-timeline: view()) {
-    .draw-view path,
-    .draw-view circle,
-    .draw-view rect,
-    .draw-view polyline {
-      animation: draw 1s linear both;
-      animation-timeline: view();
-      animation-range: entry 15% entry 95%;
-    }
-    .verb-fill {
-      animation: wipe-in 1s linear both;
-      animation-timeline: view();
-      animation-range: entry 60% cover 45%;
-    }
-    .verb:hover .verb-fill {
-      animation: none;
-      clip-path: inset(0 0 0 0);
-    }
-  }
-}
-
-/* 打字：每個字一個 span（common/Typed.tsx、NameTyper），--i 排延遲，1ms 的動畫讓字「跳」出來不是淡入；
-   游標在句尾眨四下就消失。reduce motion 時沒有動畫：字直接全在，游標不出現。
-   easing 一定要 linear，不能用 steps(1, end)：延遲是 calc() 算的，有浮點誤差，動畫結束時的 progress
-   可能是 0.9999999999998 而不是 1，steps(1, end) 會把它當成 0，那個字就永遠不出現（哪個字中獎看運氣）。
-   linear 在 1ms 內從 0 到 1，視覺上一樣是「跳」出來，結束後 0.99999 跟 1 看不出差別。
-   游標的 keyframes 本身就是階梯（0–50% 亮、50–100% 暗），所以也用 linear，用 steps 反而整段都亮不會眨。 */
-.tcursor {
-  display: inline-block;
-  width: 0.06em;
-  min-width: 3px;
-  height: 0.85em;
-  margin-left: 0.08em;
-  vertical-align: -0.06em;
-  border-radius: 1px;
-  background: var(--color-amber);
-  opacity: 0;
-}
-@keyframes appear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes cursor-blink {
-  0%,
-  50% {
-    opacity: 1;
-  }
-  50.01%,
-  100% {
+    transform: translateY(210px);
     opacity: 0;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .tch {
-    animation: appear 1ms linear both;
-    animation-delay: calc(var(--base, 0ms) + var(--i, 0) * var(--step, 80ms));
+  .rise-ch {
+    animation: rise 0.8s var(--ease-out-soft) both;
+    animation-delay: calc(var(--base, 0ms) + var(--i, 0) * 45ms);
   }
-  .tcursor {
-    animation: cursor-blink 0.9s linear 4;
-    animation-delay: var(--base, 0ms);
+  /* Hero 文字跟著捲動往下漂並淡出（translateY ≈ scroll × 0.3）。用 scroll timeline，不支援就不動 */
+  @supports (animation-timeline: scroll()) {
+    .hero-drift {
+      animation: hero-drift linear both;
+      animation-timeline: scroll();
+      animation-range: 0 700px;
+    }
   }
 }
 /* 開頁動畫一個分頁只演一次：home/IntroOnce.tsx（和 layout.tsx 的開頁腳本）看過就在 <html> 掛 data-intro="done"，
-   之後 Hero 裡的打字、游標、畫線，以及掛了 .intro 的淡入（補充句、按鈕、Bento）都直接是完成狀態。
-   這條沒有 layer，所以壓得過 motion-safe:animate-fade-up 這類 utilities。 */
-html[data-intro='done'] .hero-intro :is(.tch, .tcursor, .draw-load path),
+   之後 Hero 的逐字上浮和掛了 .intro 的淡入（Bento 等）都直接是完成狀態。這條沒有 layer，壓得過 utilities。 */
+html[data-intro='done'] .rise-ch,
 html[data-intro='done'] .intro {
   animation: none;
 }
@@ -591,7 +423,7 @@ html[data-intro='done'] .intro {
   z-index: 60;
   width: 100%;
   height: 3px;
-  background: var(--color-amber);
+  background: var(--color-accent);
   transform: scaleX(0);
   transform-origin: left;
 }
@@ -612,6 +444,23 @@ html[data-intro='done'] .intro {
 /* 列印：標題跟它底下的內容不要被切到兩頁、連結不印底線。
    導覽、頁尾、跳過連結用元素上的 print:hidden 藏，底色在 layout 的 body 上處理。 */
 @media print {
+  /* 履歷：整張紙白底黑字，邊線換淺灰，外部連結後面印出網址 */
+  .resume-paper,
+  .resume-paper * {
+    color: #000 !important;
+    background: transparent !important;
+    border-color: #bbb !important;
+    box-shadow: none !important;
+  }
+  .resume-paper a[href^='http']::after,
+  .resume-paper a[href^='mailto']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: #555;
+  }
+  .resume-paper a[href^='mailto']::after {
+    content: '';
+  }
   .prose-portfolio h2,
   .prose-portfolio h3 {
     break-after: avoid;
@@ -631,7 +480,7 @@ html[data-intro='done'] .intro {
   * {
     box-sizing: border-box;
     /* Tailwind v4 的預設邊框色是 currentColor，這裡改成線條色當保底 */
-    border-color: var(--color-line);
+    border-color: var(--color-border);
     margin: 0;
     padding: 0;
   }
@@ -646,22 +495,22 @@ html[data-intro='done'] .intro {
   }
   body {
     background-color: var(--color-bg);
-    color: var(--color-txt);
+    color: var(--color-text);
     font-family: var(--font-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
   ::selection {
-    background: var(--color-amber-soft);
-    color: var(--color-txt);
+    background: var(--color-selection);
+    color: var(--color-selection-text);
   }
   a {
     color: inherit;
     text-decoration: none;
   }
   :focus-visible {
-    outline: 2px solid var(--color-amber);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 2px;
   }

@@ -13,7 +13,7 @@ export default async function Image() {
   return new ImageResponse(
     <div
       style={{
-        background: '#FCFAF4',
+        background: '#0E1013',
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -24,7 +24,7 @@ export default async function Image() {
     >
       <span
         style={{
-          color: '#736A5A',
+          color: '#A3A7AE',
           fontSize: '17px',
           fontFamily: 'sans-serif',
           letterSpacing: '0.04em',
@@ -36,7 +36,7 @@ export default async function Image() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div
           style={{
-            color: '#332D24',
+            color: '#F2EFE9',
             fontSize: '72px',
             fontFamily: 'sans-serif',
             fontWeight: '700',
@@ -48,7 +48,7 @@ export default async function Image() {
         </div>
         <div
           style={{
-            color: '#736A5A',
+            color: '#A3A7AE',
             fontSize: '24px',
             fontFamily: 'NotoSansTC, sans-serif',
           }}
@@ -66,7 +66,7 @@ export default async function Image() {
       >
         <div
           style={{
-            color: '#7E725D',
+            color: '#7C8189',
             fontSize: '15px',
             fontFamily: 'NotoSansTC, sans-serif',
             letterSpacing: '0.04em',
@@ -79,7 +79,7 @@ export default async function Image() {
             width: '10px',
             height: '10px',
             borderRadius: '50%',
-            background: '#E06122',
+            background: '#FF8648',
           }}
         />
       </div>

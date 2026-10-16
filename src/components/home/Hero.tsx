@@ -1,66 +1,62 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import type { CSSProperties } from 'react'
 
-import { Marker } from '@/components/common/Marker'
-import { Typed } from '@/components/common/Typed'
 import { IntroOnce } from '@/components/home/IntroOnce'
-import { NameTyper } from '@/components/home/NameTyper'
-import { SITE_CONFIG } from '@/constants'
-import { BUTTON_PRIMARY, BUTTON_SECONDARY } from '@/lib/button'
+import { Rise } from '@/components/home/Rise'
+import { RECENT, SITE_CONFIG } from '@/constants'
+import { BUTTON_PRIMARY } from '@/lib/button'
 
-/** 第一屏是一句話，自己把自己寫出來：「small R」一個字一個字跳出來（0.1s 起、每字 60ms），
-    接著主張緊接著打（0.6s 起、每字 70ms；中間不留空檔，留了會像卡住），打完游標在句尾眨幾下、麥克筆畫過關鍵字，
-    然後底排（細線 + 身分／補充句／按鈕三欄）一起淡入。不放圖，字標本身就是圖。全部是 CSS 延遲，reduce motion 直接全部顯示。
-    滑到名字上還是會換成本名或帳號（NameTyper）。
-    高度只撐 90svh，不是整屏：底下 Bento 的相片會露出一截，代替「往下捲」的提示。
+const LINE_1 = '不只寫程式，'
+const LINE_2 = '也打造自己的產品。'
+
+/** 第一屏：滿版人物照（有檔案才放；沒有就是暗底）、左下角一句手寫開場、兩行逐字上浮的主張、一顆按鈕、一行「最近」。
+    照片上壓兩層黑色遮罩讓字讀得清楚（稿上唯一允許的漸層）。文字區掛 .hero-drift 跟著捲動往下漂並淡出。
     開頁動畫一個分頁只演一次（IntroOnce + globals.css 的 html[data-intro='done']）。 */
 export function Hero() {
+  const photo = SITE_CONFIG.heroPhoto
   return (
-    <header className="hero-intro mx-auto flex min-h-[calc(90svh-4.25rem)] w-full max-w-270 flex-col px-6 pt-8 pb-12 md:pt-12">
+    <section
+      className="relative flex min-h-[78svh] flex-col justify-end overflow-hidden md:min-h-[min(800px,92svh)]"
+      data-nav-overlay={photo ? '' : undefined}
+    >
       <IntroOnce />
-      <div className="flex flex-1 flex-col justify-center py-8 [@media(max-height:760px)]:py-4">
-        {/* h1 = 名字 + 主張。讀屏會念「small R，不只寫程式，也打造自己的產品。」 */}
-        <h1>
-          <span className="font-hand text-wordmark text-txt -ml-[0.03em] block h-[1em] leading-[0.95] font-semibold tracking-[0.01em] whitespace-nowrap">
-            <NameTyper />
-          </span>
-          <span className="sr-only">，</span>
-          <span className="font-display text-display text-txt mt-6 block max-w-[18em] leading-[1.18] font-medium tracking-[-0.02em] md:mt-8">
-            <Typed text="不只寫程式，也" base={600} step={70} />
-            <Marker draw="load" delay={1700}>
-              <Typed text="打造自己的產品" base={1090} step={70} />
-            </Marker>
-            <Typed text="。" base={1580} />
-            <span
-              className="tcursor"
-              style={{ '--base': '1650ms' } as CSSProperties}
-              aria-hidden="true"
-            />
-          </span>
+      {photo && (
+        <>
+          <Image
+            src={photo}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[70%_center]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,16,19,.92)_0%,rgba(14,16,19,.55)_42%,rgba(14,16,19,0)_70%),linear-gradient(0deg,#0e1013_0%,rgba(14,16,19,0)_28%)]"
+          />
+        </>
+      )}
+      <div className="wrap hero-drift relative pb-8 md:pb-16">
+        <p className="font-hand text-accent text-[26px] md:text-[34px]">嗨，我是 small R —</p>
+        <h1
+          aria-label={LINE_1 + LINE_2}
+          className="text-text mt-1.5 text-[clamp(38px,10.6vw,48px)] md:max-w-[9em] leading-[1.08] font-black tracking-[-0.04em] md:mt-2.5 md:text-[clamp(64px,7.2vw,104px)] md:leading-[1.02] md:tracking-[-0.045em]"
+        >
+          <Rise text={LINE_1} base={100} />
+          <Rise text={LINE_2} base={100 + LINE_1.length * 45} accent={[6, 8]} />
         </h1>
-        {/* 底排照草稿 Hero A / v3 首頁：一條細線，底下三欄——左邊身分（mono 小字）、中間補充句、右邊兩顆按鈕。
-            手機疊成一欄。身分是純文字不是連結：第一屏只留兩顆按鈕。 */}
-        <div className="intro motion-safe:animate-fade-up border-line-soft mt-10 grid gap-x-6 gap-y-5 border-t pt-7 [--fade-delay:1750ms] md:mt-12 md:grid-cols-12 md:items-start">
-          <p className="text-faint flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-[0.1em] md:col-span-3 md:flex-col md:gap-y-1.5">
-            <span className="text-txt">吳宸麒</span>
-            <span>{SITE_CONFIG.handle}</span>
-            <span>
-              {SITE_CONFIG.location} · {SITE_CONFIG.timezone}
-            </span>
-          </p>
-          <p className="text-dim text-lead max-w-[28em] leading-[1.7] md:col-span-5">
-            寫網站、做資安、也做遊戲。最近第一次把自己的 Roblox 遊戲推上線。
-          </p>
-          <div className="flex flex-wrap gap-3 text-base md:col-span-4 md:justify-end">
-            <Link href="/projects" className={BUTTON_PRIMARY}>
-              探索我的作品
-            </Link>
-            <Link href="/about" className={BUTTON_SECONDARY}>
-              認識我
-            </Link>
-          </div>
+        <div className="intro motion-safe:animate-fade-up mt-6 flex flex-col gap-5 [--fade-delay:900ms] md:mt-10 md:flex-row md:items-center md:gap-7">
+          <Link href="/projects" className={BUTTON_PRIMARY}>
+            看我做過的東西 →
+          </Link>
+          <span className="text-text-2 text-base">寫網站、做資安、也做遊戲。</span>
         </div>
+        <p className="intro motion-safe:animate-fade-up mt-5 flex items-center gap-3 text-[13px] [--fade-delay:1100ms] md:mt-10 md:text-[15px]">
+          <span className="bg-live inline-block size-2 rounded-full" aria-hidden="true" />
+          <span className="text-text-3 font-mono text-xs">最近</span>
+          <span className="text-text">{RECENT}</span>
+        </p>
       </div>
-    </header>
+    </section>
   )
 }

@@ -9,7 +9,7 @@ import SKILL_ICONS from '@/constants/skill-icons.json'
 import { type Contributions, getContributions } from '@/lib/github'
 
 const TILE =
-  'group/tile bg-panel border-line-soft rounded-card hover:border-amber relative flex flex-col overflow-hidden border p-6 transition-colors'
+  'group/tile bg-surface border-line rounded-card hover:border-border-strong relative flex flex-col overflow-hidden border p-6 transition-colors'
 
 /** 工作之外：整格一張追焦照，字疊在上面。 */
 function PhotoTile() {
@@ -31,7 +31,7 @@ function PhotoTile() {
       />
       <div className="relative mt-auto text-white">
         <div className="text-2xs font-mono tracking-[0.18em] uppercase opacity-80">Off duty</div>
-        <h2 className="font-display text-h2 mt-3 font-medium tracking-[-0.015em]">工作之外</h2>
+        <h2 className="mt-3 text-[28px] font-black tracking-[-0.02em]">工作之外</h2>
       </div>
       <ArrowUpRight
         size={20}
@@ -67,8 +67,8 @@ function SkillsTile() {
   const half = Math.ceil(LOGO_SKILLS.length / 2)
   return (
     <Link href="/about#skills" className={`${TILE} md:col-span-5`}>
-      <div className="text-faint text-2xs font-mono tracking-[0.18em] uppercase">Skills</div>
-      <h2 className="font-display group-hover/tile:text-amber text-h2 mt-3 font-medium tracking-[-0.015em] transition-colors">
+      <div className="text-text-3 text-2xs font-mono tracking-[0.18em] uppercase">Skills</div>
+      <h2 className="group-hover/tile:text-accent mt-3 text-[28px] font-black tracking-[-0.02em] transition-colors">
         會的東西
       </h2>
       <div
@@ -81,7 +81,7 @@ function SkillsTile() {
       <ArrowRight
         size={22}
         strokeWidth={1.5}
-        className="text-dim group-hover/tile:text-amber absolute right-6 bottom-6 transition-colors"
+        className="text-text-2 group-hover/tile:text-accent absolute right-6 bottom-6 transition-colors"
         aria-hidden
       />
     </Link>
@@ -105,11 +105,11 @@ function GithubTile({ data }: { data: Contributions | null }) {
           <ContributionSnake days={data.days} pad={pad} />
         </div>
       ) : (
-        <h2 className="font-display group-hover/tile:text-amber text-h2 font-medium tracking-[-0.015em] transition-colors">
+        <h2 className="group-hover/tile:text-accent text-[28px] font-black tracking-[-0.02em] transition-colors">
           GitHub
         </h2>
       )}
-      <div className="text-faint text-2xs mt-5 flex items-center font-mono tracking-[0.18em] uppercase">
+      <div className="text-text-3 text-2xs mt-5 flex items-center font-mono tracking-[0.18em] uppercase">
         GitHub
         {data && (
           <span className="ml-3 tracking-[0.04em] normal-case">
@@ -119,7 +119,7 @@ function GithubTile({ data }: { data: Contributions | null }) {
         <ArrowUpRight
           size={22}
           strokeWidth={1.5}
-          className="text-dim group-hover/tile:text-amber ml-auto transition-colors"
+          className="text-text-2 group-hover/tile:text-accent ml-auto transition-colors"
           aria-hidden
         />
       </div>
@@ -136,7 +136,7 @@ export async function Bento() {
   return (
     <nav
       aria-label="工作之外、技能、GitHub"
-      className="intro motion-safe:animate-fade-up mx-auto max-w-270 px-6 pb-14 [--fade-delay:1900ms] md:pb-20"
+      className="intro wrap motion-safe:animate-fade-up pt-10 pb-6 [--fade-delay:1300ms] md:pt-16 md:pb-10"
     >
       <div className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12">
         <PhotoTile />

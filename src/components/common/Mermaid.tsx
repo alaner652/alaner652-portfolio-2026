@@ -21,19 +21,19 @@ export function Mermaid({ chart }: { chart: string }) {
         flowchart: { padding: 4, useMaxWidth: true },
         themeVariables: {
           background: 'transparent',
-          primaryColor: '#FFFFFF',
-          primaryBorderColor: '#ECE5D7',
-          primaryTextColor: '#332D24',
-          secondaryColor: '#FFFFFF',
-          tertiaryColor: '#FFFFFF',
-          lineColor: '#736A5A',
-          textColor: '#332D24',
-          edgeLabelBackground: '#F6F1E8',
+          primaryColor: '#1E2227',
+          primaryBorderColor: '#3A3F46',
+          primaryTextColor: '#F2EFE9',
+          secondaryColor: '#16191D',
+          tertiaryColor: '#16191D',
+          lineColor: '#A3A7AE',
+          textColor: '#F2EFE9',
+          edgeLabelBackground: '#0E1013',
           clusterBkg: 'transparent',
-          clusterBorder: '#ECE5D7',
-          titleColor: '#332D24',
-          nodeBorder: '#ECE5D7',
-          mainBkg: '#FFFFFF',
+          clusterBorder: '#3A3F46',
+          titleColor: '#F2EFE9',
+          nodeBorder: '#3A3F46',
+          mainBkg: '#1E2227',
         },
       })
 
@@ -72,8 +72,8 @@ export function Mermaid({ chart }: { chart: string }) {
   }, [chart])
 
   return (
-    <div className="border-line bg-panel-hi my-[1.5em] overflow-hidden rounded-card border">
-      <div ref={containerRef} className="flex min-h-20 justify-center overflow-x-auto p-6" />
+    <div className="border-line bg-bg-deep my-[1.6em] overflow-hidden border-y">
+      <div ref={containerRef} className="flex min-h-20 justify-center overflow-x-auto py-6" />
     </div>
   )
 }

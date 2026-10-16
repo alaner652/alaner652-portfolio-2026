@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import { Space_Grotesk, JetBrains_Mono, Inter, Noto_Sans_TC, Caveat } from 'next/font/google'
+import { JetBrains_Mono, Noto_Sans_TC, Caveat } from 'next/font/google'
 
 // 霞鶩文楷 TC — handwriting/kai font for Chinese headings (TC subset only, lazy per unicode-range)
 import '@fontsource/lxgw-wenkai-tc/chinese-traditional-400.css'
@@ -10,35 +10,23 @@ import { Footer } from '@/components/layout/Footer'
 import { Nav } from '@/components/layout/Nav'
 import { SITE_CONFIG } from '@/constants'
 
-const spaceGrotesk = Space_Grotesk({
-  variable: '--font-space-grotesk',
-  subsets: ['latin'],
-  weight: ['500', '600', '700'],
-})
-
 const jetbrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains-mono',
   subsets: ['latin'],
-  weight: ['400', '500', '700'],
+  weight: ['400', '500'],
 })
 
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-})
-
-// 手寫體，只用在 nav 的「small R」字標；variable font 一支檔案就夠
+// 手寫體：Caveat 只有拉丁字母，中文由 globals.css 的 --font-hand 接霞鶩文楷
 const caveat = Caveat({
   variable: '--font-caveat',
   subsets: ['latin'],
   weight: 'variable',
 })
 
-// CJK font — cannot preload a subset, so self-host all weights lazily
+// 主要字體：內文 400、標題 900。CJK 無法預載子集，交給瀏覽器照 unicode-range 懶載
 const notoSansTC = Noto_Sans_TC({
   variable: '--font-noto-tc',
-  weight: ['400', '500', '700'],
+  weight: ['400', '500', '700', '900'],
   preload: false,
 })
 
@@ -92,7 +80,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     // dev 的 hydration 比對會把它當成伺服器多出來的屬性而報錯；只壓這一層，裡面的不受影響
     <html
       lang="zh-Hant"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} ${notoSansTC.variable} ${caveat.variable}`}
+      className={`${jetbrainsMono.variable} ${notoSansTC.variable} ${caveat.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col print:bg-white print:text-black">
@@ -112,7 +100,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </noscript>
         <a
           href="#main"
-          className="focus:bg-panel focus:text-txt focus:border-line sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-chip focus:border focus:px-4 focus:py-2 print:hidden"
+          className="focus:bg-surface focus:text-text focus:border-border sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-chip focus:border focus:px-4 focus:py-2 print:hidden"
         >
           跳到主要內容
         </a>

@@ -1,4 +1,3 @@
-import { ArrowUpRight } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -6,11 +5,8 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { ReactNode } from 'react'
 import remarkGfm from 'remark-gfm'
 
-import { MetricChip } from '@/components/common/MetricChip'
-import { PageHeader } from '@/components/common/PageHeader'
-import { Section } from '@/components/layout/Section'
-import { SkillRow } from '@/components/sections/Skills'
-import { EDUCATION, SITE_CONFIG, SKILLS } from '@/constants'
+import { PrintButton } from '@/components/common/PrintButton'
+import { EDUCATION, SITE_CONFIG, SKILLS, WORK_ITEMS } from '@/constants'
 import { getPostBySlug } from '@/lib/mdx'
 
 const RESUME_TITLE = '全端工程師 · 資安'
@@ -46,11 +42,8 @@ interface CVSection {
 }
 interface CVEntry {
   title: string
-  /** 時間，經歷用 */
   period?: string
-  /** 技術，專案用，排成 chip */
   tech?: string[]
-  /** 剩下的 markdown（要點） */
   rest: string
 }
 
@@ -92,37 +85,28 @@ function CVLink({ href, children }: { href?: string; children?: ReactNode }) {
 const mdxComponents = { a: CVLink }
 const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } }
 
-function Prose({ source }: { source: string }) {
+function Bullets({ source }: { source: string }) {
   return (
-    <div className="prose-portfolio [&>*:last-child]:mb-0">
+    <div className="prose-portfolio prose-cv">
       <MDXRemote source={source} components={mdxComponents} options={mdxOptions} />
     </div>
   )
 }
 
-/** 一條：左邊標題 + 手寫的時間，右邊技術 chip 和要點。跟 /about 技能列同一種 3/9 格。 */
-function Entry({ entry }: { entry: CVEntry }) {
+/** 專案標題「Agora-AI — 校務 AI 助理」對到 WORK_ITEMS，連去作品頁 */
+function caseHref(title: string) {
+  const item = WORK_ITEMS.find((w) => title.startsWith(w.title))
+  return item ? `/projects/${item.slug}` : undefined
+}
+
+/** 區塊標題：mono 小字、橘色、拉開字距 */
+function H({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <li className="grid gap-y-3 py-7 md:grid-cols-12 md:gap-x-6 print:break-inside-avoid">
-      <div className="md:col-span-4">
-        <h3 className="font-display text-txt text-h3 leading-[1.3] font-medium tracking-[-0.015em]">
-          {entry.title}
-        </h3>
-        {entry.period && (
-          <p className="font-hand text-faint mt-2 text-[1.2rem] leading-none">{entry.period}</p>
-        )}
-      </div>
-      <div className="md:col-span-8">
-        {entry.tech && (
-          <div className="mb-3 flex flex-wrap gap-2">
-            {entry.tech.map((t) => (
-              <MetricChip key={t}>{t}</MetricChip>
-            ))}
-          </div>
-        )}
-        <Prose source={entry.rest} />
-      </div>
-    </li>
+    <h2
+      className={`text-accent mb-3.5 font-mono text-[11px] tracking-[0.16em] uppercase ${className}`}
+    >
+      {children}
+    </h2>
   )
 }
 
@@ -148,12 +132,8 @@ const resumeJsonLd = {
   },
 }
 
-const CONTACT_LINK =
-  'text-dim hover:text-amber inline-flex min-h-11 items-center gap-1 text-sm transition-colors'
-
-/** 履歷。用站上現成的東西拼：PageHeader 當抬頭（名字 + 摘要 + 聯絡方式）、
-    每一段一個 Section（虛線 + 手寫段名）、技能用 /about 的 SkillRow、學歷讀 EDUCATION，
-    經歷和專案是 resume.mdx 裡的條目，排成 4/8 格。不用 RevealWrapper：列印時不能有還沒淡入的段落。 */
+/** 履歷：深色底上一張紙。抬頭（名字／職稱／聯絡）→ 摘要 → 左欄經歷＋專案、右欄技能＋學歷＋工作之外 → 手寫簽名。
+    列印時整張紙變白底黑字（globals.css 的 @media print .resume-paper），導覽和按鈕藏起來，連結印出網址。 */
 export default function ResumePage() {
   const post = getPostBySlug('resume')
   if (!post) notFound()
@@ -166,95 +146,148 @@ export default function ResumePage() {
   const interests = get('興趣')?.body ?? ''
 
   return (
-    <>
+    <div className="bg-bg-deep -mb-px print:bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}
       />
-      <PageHeader
-        eyebrow="履歷"
-        meta={RESUME_TITLE}
-        title={
-          <>
-            吳宸麒{' '}
-            <span className="text-dim text-[0.55em] font-normal tracking-normal">Wu Chen-Chi</span>
-          </>
-        }
-        note={summary}
-        actions={
-          <>
-            <a href={`mailto:${SITE_CONFIG.email}`} className={CONTACT_LINK}>
-              {SITE_CONFIG.email}
-            </a>
-            <a
-              href={SITE_CONFIG.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={CONTACT_LINK}
-            >
-              GitHub <ArrowUpRight size={14} aria-hidden />
-            </a>
-            <Link href="/" className={CONTACT_LINK}>
-              <span className="print:hidden">作品集</span>
-              <span className="hidden print:inline">alaner652.com</span>
-              <ArrowUpRight size={14} aria-hidden className="print:hidden" />
-            </Link>
-            <span className="text-faint text-sm">台北 · GMT+8</span>
-          </>
-        }
-      />
+      <div className="mx-auto max-w-[1040px] px-3 pt-4 pb-12 md:px-10 md:pt-8 md:pb-24 print:max-w-none print:p-0">
+        <div className="mb-3 flex justify-end md:mb-4 print:hidden">
+          <PrintButton />
+        </div>
 
-      <Section id="experience" label="經歷" wrapClassName="print:py-8">
-        <ol className="divide-line-soft border-line-soft divide-y border-y">
-          {experience.map((e) => (
-            <Entry key={e.title} entry={e} />
-          ))}
-        </ol>
-      </Section>
-
-      <Section id="projects" label="專案" wrapClassName="print:py-8">
-        <ol className="divide-line-soft border-line-soft divide-y border-y">
-          {projects.map((e) => (
-            <Entry key={e.title} entry={e} />
-          ))}
-        </ol>
-      </Section>
-
-      <Section id="skills" label="會的東西" wrapClassName="print:py-8">
-        <dl className="divide-line-soft border-line-soft divide-y border-y">
-          {SKILLS.map((group) => (
-            <SkillRow key={group.label} group={group} />
-          ))}
-        </dl>
-      </Section>
-
-      <Section id="education" label="學歷" wrapClassName="print:py-8">
-        <ul className="divide-line-soft border-line-soft divide-y border-y">
-          {EDUCATION.map((e) => (
-            <li
-              key={e.school}
-              className="grid gap-y-3 py-7 md:grid-cols-12 md:gap-x-6 print:break-inside-avoid"
-            >
-              <div className="md:col-span-4">
-                <h3 className="font-display text-txt text-h3 leading-[1.3] font-medium tracking-[-0.015em]">
-                  {e.school}
-                </h3>
-                <p className="font-hand text-faint mt-2 text-[1.2rem] leading-none">{e.period}</p>
+        <article className="resume-paper border-line bg-[#14171a] border px-4.5 py-6 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)] md:px-16 md:py-14 print:border-0 print:p-0 print:shadow-none">
+          {/* 抬頭 */}
+          <header className="border-text grid gap-4 border-b-2 pb-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-6 md:pb-7">
+            <div>
+              <h1 className="text-text text-[34px] leading-none font-black tracking-[-0.02em] md:text-[52px]">
+                吳宸麒{' '}
+                <span className="text-text-2 text-[15px] font-medium tracking-normal md:text-2xl">
+                  Wu Chen-Chi
+                </span>
+              </h1>
+              <div className="text-accent mt-2.5 text-[15px] font-bold md:mt-3 md:text-[17px]">
+                {RESUME_TITLE}
               </div>
-              <div className="md:col-span-8">
-                <p className="text-txt text-md">{e.program}</p>
-                {e.note && <p className="text-dim mt-1 text-base leading-[1.7]">{e.note}</p>}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </Section>
+            </div>
+            <div className="text-text font-mono text-xs leading-[1.9] md:text-right md:text-[12.5px]">
+              <a href={`mailto:${SITE_CONFIG.email}`} className="hover:text-accent">
+                {SITE_CONFIG.email}
+              </a>
+              <br />
+              <a
+                href={SITE_CONFIG.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent"
+              >
+                github.com/alaner652
+              </a>
+              <br />
+              <Link href="/" className="hover:text-accent">
+                alaner652.com
+              </Link>
+              <br />
+              <span className="text-text-3">台北 · GMT+8</span>
+            </div>
+          </header>
 
-      {interests && (
-        <Section id="offduty" label="工作之外" wrapClassName="print:py-8">
-          <p className="text-dim max-w-[52ch] text-md leading-[1.7]">{interests}</p>
-        </Section>
-      )}
-    </>
+          {summary && (
+            <p className="text-text-body mt-4 text-[14.5px] leading-[1.85] md:mt-6 md:text-base md:leading-[1.9]">
+              {summary}
+            </p>
+          )}
+
+          <div className="mt-7 grid gap-10 md:mt-9 md:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] md:gap-12">
+            {/* 左欄：經歷、專案 */}
+            <div>
+              <H>經歷</H>
+              {experience.map((e) => (
+                <section
+                  key={e.title}
+                  className="border-line border-t py-3.5 md:py-4.5 print:break-inside-avoid"
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <h3 className="text-text text-base font-bold md:text-[17px]">{e.title}</h3>
+                    {e.period && (
+                      <span className="text-text-3 font-mono text-[11px] md:text-xs">
+                        {e.period}
+                      </span>
+                    )}
+                  </div>
+                  <Bullets source={e.rest} />
+                </section>
+              ))}
+
+              <H className="mt-7">專案</H>
+              {projects.map((e) => {
+                const href = caseHref(e.title)
+                return (
+                  <section
+                    key={e.title}
+                    className="border-line border-t py-3.5 md:py-4.5 print:break-inside-avoid"
+                  >
+                    <h3 className="text-text text-base font-bold">
+                      {href ? (
+                        <Link href={href} className="hover:text-accent transition-colors">
+                          {e.title}
+                        </Link>
+                      ) : (
+                        e.title
+                      )}
+                    </h3>
+                    {e.tech && (
+                      <div className="text-text-3 mt-0.5 font-mono text-[11px]">
+                        {e.tech.join(' · ')}
+                      </div>
+                    )}
+                    <Bullets source={e.rest} />
+                  </section>
+                )
+              })}
+            </div>
+
+            {/* 右欄：技能、學歷、工作之外 */}
+            <div>
+              <H>技能</H>
+              <dl className="text-sm leading-[1.75]">
+                {SKILLS.map((g) => (
+                  <div key={g.label} className="border-line border-t py-2.5">
+                    <dt className="text-text-3 font-mono text-[11px]">{g.label}</dt>
+                    <dd className="text-text mt-0.5">{g.items.join(' · ')}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <H className="mt-7">學歷</H>
+              {EDUCATION.map((e) => (
+                <div key={e.school} className="border-line border-t pt-2.5 text-sm leading-[1.75]">
+                  <b className="text-text">{e.school}</b>
+                  <br />
+                  <span className="text-text">{e.program}</span>
+                  <br />
+                  <span className="text-text-3 font-mono text-xs">{e.period}</span>
+                </div>
+              ))}
+
+              {interests && (
+                <>
+                  <H className="mt-7">工作之外</H>
+                  <p className="border-line text-text-body border-t pt-2.5 text-sm leading-[1.8]">
+                    {interests}
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-8 flex justify-end md:mt-10">
+            <span className="font-hand text-accent inline-block -rotate-3 text-[28px] md:text-[34px]">
+              — small R
+            </span>
+          </div>
+        </article>
+      </div>
+    </div>
   )
 }

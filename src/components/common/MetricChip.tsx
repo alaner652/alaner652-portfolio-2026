@@ -1,21 +1,16 @@
-import { TONE_CHIP } from '@/lib/tone'
 import { cn } from '@/lib/utils'
-import type { Tone } from '@/types'
 
 interface MetricChipProps {
   children: React.ReactNode
-  /** 帶了色調就用分類色，沒帶就是中性灰——技術名詞本身不分類時維持中性 */
-  tone?: Tone
   className?: string
 }
 
-/** 技術標籤。只用底色不用外框——一頁上有二三十顆，加了框線整片會很吵。 */
-export function MetricChip({ children, tone, className }: MetricChipProps) {
+/** 行內的數字或短詞標籤（「4 GB」「症狀相似」）：mono、偏橘，跟行內程式碼同一個調子但不是程式碼。 */
+export function MetricChip({ children, className }: MetricChipProps) {
   return (
     <span
       className={cn(
-        'rounded-chip px-2 py-1 font-mono text-2xs',
-        tone ? TONE_CHIP[tone] : 'bg-panel-hi text-dim',
+        'bg-surface rounded-chip px-1.5 py-0.5 font-mono text-[0.85em] text-[#ffb48a]',
         className
       )}
     >

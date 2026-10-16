@@ -1,7 +1,7 @@
 import { Bento } from '@/components/home/Bento'
-import { FeaturedWork } from '@/components/home/FeaturedWork'
+import { Caps } from '@/components/home/Caps'
 import { Hero } from '@/components/home/Hero'
-import { Offers } from '@/components/home/Offers'
+import { Work } from '@/components/home/Work'
 import { Writing } from '@/components/home/Writing'
 import { SITE_CONFIG } from '@/constants'
 
@@ -22,9 +22,7 @@ const personJsonLd = {
   address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
 }
 
-/** 首頁：Hero → Bento（相片／技能／GitHub，最一開始的三格）→ 我能做什麼（三個大動詞）
-    → 做過的東西（一列一件，替上面三個動詞作證）→ 最新文章。
-    Bento 緊接在 Hero 底下：第一屏只有字，第一張圖要早一點出現，而且 Hero 故意留 10% 讓它露出來。
+/** 首頁：Hero → Bento（追焦照／技能／GitHub，他最喜歡的三格）→ 做過的東西 → 三個動詞 → 最近寫的 → 大型 Footer。
     年份和經歷只在 /about，不在這裡再講一次。 */
 export default function Home() {
   return (
@@ -35,8 +33,8 @@ export default function Home() {
       />
       <Hero />
       <Bento />
-      <Offers />
-      <FeaturedWork />
+      <Work />
+      <Caps />
       <Writing limit={3} />
     </>
   )

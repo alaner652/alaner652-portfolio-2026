@@ -5,6 +5,8 @@ description: "網站上兩個系列的圖片全掛，查了半天才發現根因
 tags: ["debugging", "bash", "deployment", "postmortem", "frontend"]
 ---
 
+網站上兩個系列的圖片全掛，查了一個下午，根因是部署腳本裡的一行 `echo`：macOS 內建的 bash 3.2 把全形逗號吃進了變數名，配上 `set -u` 直接結束，而且沒有留下任何一個字。順帶挖出另外兩個洞。
+
 ## 症狀：兩個系列的圖全掛
 
 [一句一幀](https://girls-band-shot.alaner652.com) 上線之後陸續加了兩個系列。某天打開網站，搜尋 MyGO!!!!! 和 YUME∞MITA，畫面上一張圖都出不來，Ave Mujica 卻完全正常。
@@ -126,7 +128,7 @@ git fetch origin && git checkout $branch && git pull && docker compose up -d --b
 
 第三件事是資料本身。MyGO 那個 db 是比較早期的 extractor 產的，裡面的 `video_path` 長這樣：
 
-```
+```text
 ../web/data/mygo/videos/ep01.mp4     ← 舊的
 videos/ep01.mp4                       ← 現在的格式
 ```

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-import { SITE_CONFIG } from '@/constants'
+import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
 import { getAllPosts } from '@/lib/mdx'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -28,5 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  return [...staticRoutes, ...postRoutes]
+  const projectRoutes: MetadataRoute.Sitemap = WORK_ITEMS.map((w) => ({
+    url: `${base}/projects/${w.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }))
+
+  return [...staticRoutes, ...projectRoutes, ...postRoutes]
 }

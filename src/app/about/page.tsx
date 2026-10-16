@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 
-import { Marker } from '@/components/common/Marker'
-import { PageHeader } from '@/components/common/PageHeader'
-import { About } from '@/components/sections/About'
-import { Experience } from '@/components/sections/Experience'
-import { OffDuty } from '@/components/sections/OffDuty'
-import { Skills } from '@/components/sections/Skills'
+import {
+  AboutHero,
+  Beliefs,
+  Riding,
+  SkillList,
+  Timeline,
+} from '@/components/sections/AboutSections'
 import { SITE_CONFIG } from '@/constants'
 
 const DESCRIPTION =
@@ -31,25 +32,15 @@ export const metadata: Metadata = {
   },
 }
 
-/** 中文版的自我介紹頁。事實跟 /resume 同源（constants），只是這裡有版面、那邊可列印。 */
+/** 關於：照片＋自介 → 四句信念 → 一年一年的故事 → 會的東西 → 假日在山路上。事實跟 /resume 同源（constants）。 */
 export default function AboutPage() {
   return (
     <>
-      <PageHeader
-        eyebrow="關於"
-        title={
-          <>
-            我是誰、做過什麼、
-            <Marker draw="load" delay={900}>
-              會什麼
-            </Marker>
-          </>
-        }
-      />
-      <About />
-      <Experience />
-      <Skills />
-      <OffDuty />
+      <AboutHero />
+      <Beliefs />
+      <Timeline />
+      <SkillList />
+      <Riding />
     </>
   )
 }

@@ -1,5 +1,3 @@
-import { Bot, Globe, Layers, Plug, ShieldCheck, ShieldHalf, Wrench } from 'lucide-react'
-
 import type {
   Photo,
   SiteConfig,
@@ -23,12 +21,17 @@ export const SITE_CONFIG: SiteConfig = {
   threads: 'https://www.threads.com/@alaner652',
   email: 'hhgg12661@gmail.com',
   avatar: '/avatar.jpg',
+  // 首頁 Hero 的滿版人物照（橫式、人在右 1/3）。放進 public/ 再填路徑；沒填就是純暗底
+  heroPhoto: undefined,
   description:
     '吳宸麒 (alaner652)，台北的全端工程師，專注資安。用攻擊者的視角把產品做到上線；在大學電算中心做授權範圍內的資安與內部自動化。',
   location: 'Taipei',
   timezone: 'GMT+8',
-  copyright: '© 2026 吳宸麒，台北',
+  copyright: '© 2026 吳宸麒 · 台北',
 }
+
+/** 首頁 Hero 底下「最近」那一句，自己每週改。 */
+export const RECENT = '第一次把自己的 Roblox 遊戲推上線'
 
 export const NAV_LINKS: NavLink[] = [
   { label: '關於', href: '/about' },
@@ -61,23 +64,17 @@ export const OFFERS: Offer[] = [
   {
     verb: '做出來',
     label: '端到端交付',
-    tone: 'orange',
-    icon: Layers,
     description: '前端、後端、部署維運一個人做完。一句一幀、早餐店點餐系統都是這樣做出來的。',
   },
   {
     verb: '守得住',
     label: '攻防視角',
-    tone: 'green',
-    icon: ShieldHalf,
     description:
       '用攻擊者的方式看自己做的東西。在一套校務系統找到 IDOR，負責任揭露後受邀進電算中心修補。',
   },
   {
     verb: '摸清楚',
     label: '逆向與自動化',
-    tone: 'blue',
-    icon: Wrench,
     description: '把沒有文件的系統摸清楚，變成能用的 API 和工具。Agora-AI 就是這樣來的。',
   },
 ]
@@ -89,34 +86,30 @@ export const HIRE = {
   services: [
     {
       label: '網頁產品',
-      tone: 'orange',
-      icon: Globe,
       description:
         '點餐、預約、後台、活動頁這類要真的上線給人用的東西。前端、後端、資料庫、部署、網域一起包，交付的是能跑的網址，不是一份程式碼。',
+      deliverable: '能跑的網址，不是一包程式碼',
       examples: ['早餐店點餐系統', '一句一幀'],
     },
     {
       label: 'LINE Bot 與自動化',
-      tone: 'green',
-      icon: Bot,
       description:
         'LINE 官方帳號、Flex Message 推播、Discord Bot、定時通知。把每天要人手做一次的事變成一支腳本，或是接進你現有的流程。',
+      deliverable: '跑起來的 Bot / 腳本',
       examples: ['早餐店點餐系統', 'Easy TPCU'],
     },
     {
       label: '逆向與系統整合',
-      tone: 'blue',
-      icon: Plug,
       description:
         '沒有文件的舊系統、只有網頁介面沒有 API 的服務，摸清楚之後包成能用的 API，再接進新的東西。',
+      deliverable: '可呼叫的 API',
       examples: ['Agora-AI'],
     },
     {
       label: '資安檢測',
-      tone: 'plum',
-      icon: ShieldCheck,
       description:
         '在書面授權範圍內對 Web 應用做弱點檢測（IDOR、XSS、CSRF、權限設計這類），交一份看得懂的報告，需要的話一起修。只做有授權的。',
+      deliverable: '看得懂的報告 + 修補建議',
       examples: ['大學校務系統的資安工作'],
     },
   ] satisfies HireService[],
@@ -175,6 +168,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '已暫停',
     tone: 'idle',
     category: 'AI',
+    slug: 'agora-ai',
     title: 'Agora-AI',
     featured: true,
     stat: '10 個 agent 工具',
@@ -190,6 +184,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '運作中',
     tone: 'live',
     category: 'Web',
+    slug: 'girls-band-shot',
     title: '一句一幀',
     featured: true,
     result: '三個各做各的舊專案，併成一套搬到網頁上。',
@@ -203,6 +198,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '開源',
     tone: 'open',
     category: 'Web',
+    slug: 'order',
     title: '早餐店點餐系統',
     featured: true,
     stat: '狀態機 + SSE',
@@ -218,6 +214,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '開源',
     tone: 'open',
     category: 'AI',
+    slug: 'tpcu-mcp',
     title: 'TPCU MCP',
     result: 'Agora-AI 的範圍重新想過一次：不做後端，做成 MCP server。',
     description:
@@ -230,10 +227,11 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '運作中',
     tone: 'live',
     category: '遊戲',
+    slug: 'build-the-cat-gunner',
     title: 'Build The Cat Gunner',
     result: '接案之後第一款自己發行的 Roblox 遊戲。',
     description:
-      '帶著貓咪小隊一路打：擲骰合成槍枝從 D 升到 XX，每 10 關一隻 Boss，打到底就重生再來。接案之後第一款以 Alaner\'s Studio 名義自己發行的遊戲，2026 年 10 月上線，持續更新中。',
+      "帶著貓咪小隊一路打：擲骰合成槍枝從 D 升到 XX，每 10 關一隻 Boss，打到底就重生再來。接案之後第一款以 Alaner's Studio 名義自己發行的遊戲，2026 年 10 月上線，持續更新中。",
     metrics: ['Luau', 'Roblox'],
     link: 'https://www.roblox.com/games/104411764341408',
     preview: '/shots/build-the-cat-gunner.jpg',
@@ -242,6 +240,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '已停用',
     tone: 'idle',
     category: '工具',
+    slug: 'easy-tpcu',
     title: 'Easy TPCU',
     result: '分析校務系統的副產品，後來變成 Agora-AI 的起點。',
     description:
@@ -254,6 +253,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '已停用',
     tone: 'idle',
     category: '工具',
+    slug: 'ave-mujica-bot',
     title: 'Ave Mujica Bot',
     result: '第一個真的有人在用的東西。',
     description:
@@ -265,6 +265,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '已下線',
     tone: 'idle',
     category: 'AI',
+    slug: 'foodie-ai',
     title: 'Foodie AI',
     result: '架構撐不住、後端掛了，但學到「跑得起來」和「撐得住」是兩件事。',
     description:
@@ -278,6 +279,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '開源',
     tone: 'open',
     category: '工具',
+    slug: 'osu-map-manager',
     title: 'osu! Map Manager',
     result: '打包成 exe，朋友不用裝 Python 也能跑。',
     description: '純粹自己要用才寫的譜面管理工具，打包成 exe，朋友不用裝 Python 也能跑。',
@@ -289,6 +291,7 @@ export const WORK_ITEMS: WorkItem[] = [
     status: '接案作品',
     tone: 'idle',
     category: '遊戲',
+    slug: 'cooking-game',
     title: 'Cooking Game',
     result: '用 Luau 做出整套遊戲系統與互動邏輯。',
     description:
@@ -323,7 +326,6 @@ export const JOURNEY: JourneyEntry[] = [
     period: '2019',
     stage: '小六',
     track: '遊戲',
-    tone: 'orange',
     title: '第一次打開 Roblox',
     milestone: true,
     detail: '先是玩。後來發現遊戲是可以自己做的，也是從這裡開始查英文教學、看 YouTube。',
@@ -332,7 +334,6 @@ export const JOURNEY: JourneyEntry[] = [
     period: '2020',
     stage: '國一',
     track: '轉學',
-    tone: 'gold',
     title: '體育班，然後轉學',
     detail:
       '上學期在體育班，下學期轉到桃園市立觀音高中國中部。那陣子很迷 Roblox，大部分時間都泡在裡面。',
@@ -341,7 +342,6 @@ export const JOURNEY: JourneyEntry[] = [
     period: '2021',
     stage: '國二',
     track: '遊戲',
-    tone: 'orange',
     title: '開始做遊戲、寫程式',
     detail:
       '從 Roblox Studio 和 Lua 開始，從改地圖到搞懂函數、事件、物件，第一次自己把遊戲做出來。',
@@ -350,7 +350,6 @@ export const JOURNEY: JourneyEntry[] = [
     period: '2022 — 2023',
     stage: '國三 → 專一',
     track: '接案',
-    tone: 'orange',
     title: '開始有人付錢請我寫',
     milestone: true,
     detail:
@@ -360,7 +359,6 @@ export const JOURNEY: JourneyEntry[] = [
     period: '2023',
     stage: '專一',
     track: 'Web',
-    tone: 'blue',
     title: '撕榜進五專，開始碰網頁',
     detail:
       '透過撕榜進台北城市科技大學資訊工程科五專部。下學期開始接觸前端、網頁這些遊戲以外的領域。',
@@ -369,7 +367,6 @@ export const JOURNEY: JourneyEntry[] = [
     period: '2024',
     stage: '專二',
     track: '社群',
-    tone: 'green',
     title: '走出去看別人怎麼做',
     detail: '開始參加不同領域的社群。暑假以開發者身分去 Flutter Meetup，現場最年輕的是我。',
   },
@@ -377,7 +374,6 @@ export const JOURNEY: JourneyEntry[] = [
     period: '2025',
     stage: '專三',
     track: '資安',
-    tone: 'plum',
     title: '沉澱，然後打出第一個洞',
     milestone: true,
     detail:
@@ -387,7 +383,6 @@ export const JOURNEY: JourneyEntry[] = [
     period: '2026 —',
     stage: '專四',
     track: '現在',
-    tone: 'green',
     title: '還沒開始的一年',
     milestone: true,
     detail:
@@ -416,25 +411,21 @@ export const RIDING_PHOTOS: Photo[] = [
 ]
 
 export const SKILLS: SkillGroup[] = [
-  { label: '語言', tone: 'orange', items: ['Python', 'TypeScript', 'Lua / Luau', 'SQL'] },
+  { label: '語言', items: ['Python', 'TypeScript', 'Lua / Luau', 'SQL'] },
   {
     label: '後端與資料',
-    tone: 'green',
     items: ['FastAPI', 'Next.js API Routes', 'Drizzle ORM', 'SQLite'],
   },
   {
     label: '前端',
-    tone: 'blue',
     items: ['Next.js', 'React', 'Tailwind CSS'],
   },
   {
     label: '基礎設施',
-    tone: 'gold',
     items: ['Docker', 'Linux', 'OpenWrt', 'Cloudflare Tunnel', 'Proxmox', 'Tailscale'],
   },
   {
     label: '資安',
-    tone: 'plum',
     items: ['Burp Suite', 'IDOR / XSS / CSRF', '負責任揭露', 'WAF / reverse proxy'],
   },
 ]

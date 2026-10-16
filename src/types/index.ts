@@ -1,8 +1,3 @@
-import type { LucideIcon } from 'lucide-react'
-
-/** 分類色盤的五個色相。對應 globals.css 的 --color-{tone}-ink / -tint。 */
-export type Tone = 'orange' | 'gold' | 'green' | 'blue' | 'plum'
-
 /** 專案目前的狀態，決定狀態點的顏色。 */
 export type WorkStatus = 'live' | 'open' | 'idle'
 
@@ -16,6 +11,8 @@ export interface NavLink {
 }
 
 export interface WorkItem {
+  /** 作品詳情頁的網址：/projects/{slug}。跟 public/shots/ 的檔名一致 */
+  slug: string
   status: string
   tone: WorkStatus
   category: ProjectCategory
@@ -63,9 +60,8 @@ export interface JourneyEntry {
   period: string
   /** 當時的年級：小六、國一、專三… */
   stage: string
-  /** 這段的主軸，同時是 chip 的文字：遊戲、接案、Web、社群、資安… */
+  /** 這段的主軸：遊戲、接案、Web、社群、資安… */
   track: string
-  tone: Tone
   title: string
   detail: string
   /** 正在進行的那一段，chip 換成「現在」 */
@@ -89,16 +85,14 @@ export interface Offer {
   verb: string
   label: string
   description: string
-  tone: Tone
-  icon: LucideIcon
 }
 
 /** /hire「接什麼」的一項：一種案型 + 一句範圍 + 幾個站上做過的例子（對到 WORK_ITEMS 的 title）。 */
 export interface HireService {
   label: string
   description: string
-  tone: Tone
-  icon: LucideIcon
+  /** 交付的是什麼，一句：「能跑的網址，不是一包程式碼」 */
+  deliverable: string
   /** 做過的例子，頁面上列成小字：通常是 WORK_ITEMS 的 title，也可以是經歷（像電算中心的資安工作）。
       沒做過的案型就不要放 */
   examples?: string[]
@@ -113,7 +107,6 @@ export interface HireStep {
 export interface SkillGroup {
   label: string
   items: string[]
-  tone: Tone
 }
 
 export interface BlogPostFrontmatter {
@@ -145,6 +138,8 @@ export interface SiteConfig {
   threads?: string
   /** public/ 底下的頭像路徑（例如 '/avatar.jpg'）。沒填的話 Hero 用 monogram 佔位。 */
   avatar?: string
+  /** 首頁 Hero 滿版照，public/ 底下的路徑。沒填就不放圖 */
+  heroPhoto?: string
   description: string
   location: string
   timezone: string

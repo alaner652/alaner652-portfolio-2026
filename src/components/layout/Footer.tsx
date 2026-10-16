@@ -1,58 +1,120 @@
-import { ArrowUpRight } from 'lucide-react'
+'use client'
 
-import { CopyEmail } from '@/components/common/CopyEmail'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+import { CopyButton } from '@/components/common/CopyButton'
+import { Clock } from '@/components/layout/Clock'
 import { SITE_CONFIG } from '@/constants'
 
-/** 有填才顯示；順序照重要性，GitHub 最前。 */
 const SOCIALS: [string, string | undefined][] = [
   ['GitHub', SITE_CONFIG.github],
   ['Instagram', SITE_CONFIG.instagram],
   ['Threads', SITE_CONFIG.threads],
-  ['LinkedIn', SITE_CONFIG.linkedin],
 ]
 
-const LINK =
-  'text-ink-dim hover:text-ink-txt inline-flex min-h-10 items-center gap-1 text-sm transition-colors'
-
-/** 全站的收尾。翻成深底，字標放大——網站用什麼記號開場，就用什麼記號結束。
-    左邊是字標 + 一句話 + 信箱，右邊社群連結。站內連結導覽列就有，這裡不再列一次；
-    最底下只剩版權。 */
-export function Footer() {
+/** 信箱：@ 是橘的，hover 時底線從左畫出來（.em）。手機允許在 @ 前斷行。 */
+function Email({ className }: { className: string }) {
+  const [user, domain] = SITE_CONFIG.email.split('@')
   return (
-    <footer className="bg-ink text-ink-txt print:hidden">
-      <div className="mx-auto max-w-270 px-6 pt-16 pb-10 md:pt-24 md:pb-12">
-        <div className="grid gap-12 md:grid-cols-12 md:gap-x-8">
-          <div className="md:col-span-8">
-            <p className="font-hand text-[clamp(3rem,6vw,5rem)] leading-none font-semibold tracking-[0.01em]">
-              small&nbsp;<span className="text-amber">R</span>
-            </p>
-            <p className="font-hand text-ink-dim mt-6 text-[1.5rem] leading-none">
-              有東西想一起做？寫信給我 ↓
-            </p>
-            <CopyEmail email={SITE_CONFIG.email} className="mt-4" />
-          </div>
+    <a href={`mailto:${SITE_CONFIG.email}`} className={`em text-text font-black ${className}`}>
+      {user}
+      <wbr />
+      <span className="text-accent">@</span>
+      {domain}
+    </a>
+  )
+}
 
-          <div className="md:col-span-3 md:col-start-10">
-            <div className="text-ink-faint text-2xs mb-3 font-mono tracking-[0.12em] uppercase">
-              社群
-            </div>
-            <ul className="flex flex-col">
-              {SOCIALS.map(([label, href]) =>
-                href ? (
-                  <li key={label}>
-                    <a href={href} target="_blank" rel="noopener noreferrer" className={LINK}>
-                      {label}
-                      <ArrowUpRight size={12} className="text-ink-faint" aria-hidden />
-                    </a>
-                  </li>
-                ) : null
+function Socials({ className = '' }: { className?: string }) {
+  return (
+    <span className={`flex gap-6 ${className}`}>
+      {SOCIALS.map(([label, href]) =>
+        href ? (
+          <a
+            key={label}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-text transition-colors"
+          >
+            {label} ↗
+          </a>
+        ) : null
+      )}
+    </span>
+  )
+}
+
+/** Footer 只做一件事：讓人寫信。信箱永遠是最大的字，不放表單、不重複主導覽。
+    三種變體照路徑：首頁／接案是整頁的收尾（大型），文章頁接在「下一篇」底下，其他內頁精簡；履歷沒有 Footer。 */
+export function Footer() {
+  const pathname = usePathname()
+  if (pathname === '/resume') return null
+
+  if (pathname === '/' || pathname === '/hire') {
+    const hire = pathname === '/hire'
+    return (
+      <footer className="border-line border-t print:hidden">
+        <div className="wrap pt-18 pb-7 md:pt-30 md:pb-10">
+          <p className="font-hand text-accent text-[26px] md:text-[36px]">
+            {hire ? '說說你想做什麼 ↓' : '有東西想一起做？'}
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-4 md:mt-3">
+            <Email className="text-[30px] leading-[1.15] tracking-[-0.02em] md:text-[clamp(44px,5.5vw,80px)] md:tracking-[-0.04em]" />
+            <CopyButton text={SITE_CONFIG.email} label="複製 Email" className="w-full md:w-auto" />
+          </div>
+          {hire && (
+            <p className="text-text-2 mt-4 text-base">
+              做什麼、給誰用、大概什麼時候要。不用寫規格書，一兩天內回你。
+            </p>
+          )}
+          <div className="border-line text-text-2 mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t pt-5 font-mono text-xs md:mt-24">
+            <span>
+              {SITE_CONFIG.copyright}
+              {!hire && (
+                <>
+                  {' · '}
+                  <Clock prefix="" />
+                </>
               )}
-            </ul>
+            </span>
+            <Socials />
           </div>
         </div>
+      </footer>
+    )
+  }
 
-        <div className="border-ink-line text-ink-faint text-2xs mt-14 border-t pt-6 font-mono tracking-[0.04em] md:mt-20">
-          {SITE_CONFIG.copyright}
+  if (pathname.startsWith('/blog/')) {
+    return (
+      <footer className="print:hidden">
+        <div className="wrap flex flex-wrap items-end justify-between gap-6 pt-8 pb-7 md:pt-10 md:pb-8">
+          <div>
+            <div className="text-text-3 font-mono text-xs tracking-[0.14em]">想聊這篇？</div>
+            <Email className="mt-2 block text-[26px] md:text-[40px] md:tracking-[-0.02em]" />
+          </div>
+          <Link
+            href="/blog"
+            className="text-text hover:text-accent font-mono text-[13px] transition-colors"
+          >
+            ← 回到心得分享
+          </Link>
+        </div>
+      </footer>
+    )
+  }
+
+  return (
+    <footer className="border-line border-t print:hidden">
+      <div className="wrap flex flex-wrap items-end justify-between gap-6 pt-9 pb-7 md:pt-12 md:pb-8">
+        <div>
+          <div className="text-text-3 font-mono text-xs tracking-[0.14em]">有東西想一起做？</div>
+          <Email className="mt-2 block text-[28px] md:text-[44px] md:tracking-[-0.02em]" />
+        </div>
+        <div className="text-text-3 flex flex-wrap gap-6 font-mono text-xs">
+          <Socials />
+          <span>{SITE_CONFIG.copyright}</span>
         </div>
       </div>
     </footer>

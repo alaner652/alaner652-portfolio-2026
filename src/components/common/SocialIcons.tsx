@@ -49,7 +49,7 @@ export function SocialIcons({ className = '' }: { className?: string }) {
               rel="noopener noreferrer"
               aria-label={label}
               title={label}
-              className="text-dim hover:text-amber flex size-11 items-center justify-center transition-colors"
+              className="text-text-2 hover:text-accent flex size-11 items-center justify-center transition-colors"
             >
               <svg viewBox="0 0 24 24" width={20} height={20} fill="currentColor" aria-hidden>
                 <path d={path} />

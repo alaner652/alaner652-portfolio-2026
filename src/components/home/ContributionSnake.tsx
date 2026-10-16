@@ -26,9 +26,9 @@ export function ContributionSnake({ days, pad }: { days: ContributionDay[]; pad:
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const css = getComputedStyle(canvas)
     const color = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback
-    const amber = color('--color-amber', '#E06122')
-    const empty = color('--color-panel-hi', '#F6F1E8')
-    const ink = color('--color-txt', '#332D24')
+    const amber = color('--color-accent', '#FF8648')
+    const empty = color('--color-raised', '#1E2227')
+    const ink = color('--color-text', '#F2EFE9')
 
     // levels[col][row]：-1 是這一年還沒到／不存在的格子
     const totalCols = Math.ceil((pad + days.length) / ROWS)

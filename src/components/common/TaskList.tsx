@@ -5,6 +5,7 @@ type Props = {
   tasks: string
 }
 
+/** 文章裡的待辦清單：mono 的 [✓] / [ ]，做完的字亮、沒做的字暗。跟 Card 同一種框。 */
 export function TaskList({ title, tasks }: Props) {
   // MDX 傳進來的是字串，格式錯了不該讓整個路由 500
   let items: Task[] = []
@@ -16,34 +17,24 @@ export function TaskList({ title, tasks }: Props) {
   }
 
   return (
-    <div className="mdx-card bg-panel border-line-soft mb-5 rounded-card border px-6 py-5">
-      {title && <h3 style={{ marginTop: 0, marginBottom: '0.75rem' }}>{title}</h3>}
-      <ul style={{ listStyle: 'none', paddingLeft: 0, margin: 0 }}>
+    <aside className="mdx-card bg-surface border-accent my-[1.6em] rounded-r-sm border-l-2 px-5 py-4 md:px-6">
+      {title && <h3 className="text-text mb-3 text-base font-bold">{title}</h3>}
+      <ul className="m-0 list-none p-0">
         {items.map((task, i) => (
-          <li
-            key={i}
-            style={{
-              display: 'flex',
-              gap: '0.6rem',
-              marginBottom: '0.5rem',
-              alignItems: 'flex-start',
-            }}
-          >
+          <li key={i} className="mb-1.5 flex items-start gap-2.5 text-[0.95em] leading-[1.7]">
             <span
-              style={{
-                color: task.completed ? 'var(--color-amber)' : 'var(--color-faint)',
-                flexShrink: 0,
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.82em',
-                paddingTop: '0.2em',
-              }}
+              className={`shrink-0 pt-0.5 font-mono text-[0.8em] ${task.completed ? 'text-accent' : 'text-text-3'}`}
+              aria-hidden="true"
             >
               {task.completed ? '[✓]' : '[ ]'}
             </span>
-            <span style={{ color: 'var(--color-dim)', lineHeight: 1.65 }}>{task.title}</span>
+            <span className={task.completed ? 'text-text' : 'text-text-2'}>
+              <span className="sr-only">{task.completed ? '已完成：' : '未完成：'}</span>
+              {task.title}
+            </span>
           </li>
         ))}
       </ul>
-    </div>
+    </aside>
   )
 }

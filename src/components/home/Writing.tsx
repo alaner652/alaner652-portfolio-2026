@@ -1,52 +1,51 @@
-import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
-import { RevealWrapper } from '@/components/common/RevealWrapper'
-import { HAND_LINK, Section } from '@/components/layout/Section'
 import { getAllPosts } from '@/lib/mdx'
 
-/** 首頁的文章區：一列一篇，左邊手寫日期，右邊大標題；滑過去標題底下刷出一條麥克筆。完整清單在 /blog。 */
+/** 「2026-09-05」→「09.05」 */
+export function shortDate(date: string) {
+  const [, m, d] = date.split('-')
+  return `${m}.${d}`
+}
+
+/** 最近寫的：左邊標題 + 手寫一句，右邊三篇一列一篇（標題 + 日期 · 分鐘），最後「全部 N 篇 →」。 */
 export function Writing({ limit = 3 }: { limit?: number }) {
-  const posts = getAllPosts().slice(0, limit)
+  const all = getAllPosts()
+  const posts = all.slice(0, limit)
 
   return (
-    <Section
-      id="writing"
-      label="心得分享"
-      aside={
-        <Link href="/blog" className={HAND_LINK}>
-          全部文章 <ArrowRight size={18} aria-hidden />
-        </Link>
-      }
-    >
-      <RevealWrapper>
-        {posts.length > 0 ? (
-          <ol className="divide-line-soft border-line-soft divide-y border-y">
-            {posts.map((post) => (
-              <li key={post.slug}>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="group/row grid items-baseline gap-x-6 gap-y-1 py-6 md:grid-cols-12 md:py-7"
-                >
-                  <span className="font-hand text-faint text-[1.2rem] leading-none md:col-span-2">
-                    {post.frontmatter.date} · {post.readingMinutes} 分
-                  </span>
-                  <span className="font-display text-txt group-hover/row:text-amber before:bg-amber/30 relative isolate text-[clamp(1.3rem,2vw,1.75rem)] leading-[1.3] font-medium tracking-[-0.015em] transition-colors before:absolute before:inset-x-[-0.1em] before:bottom-[0.1em] before:-z-10 before:h-[0.4em] before:origin-left before:scale-x-0 before:transition-transform before:duration-500 before:ease-out before:content-[''] group-hover/row:before:scale-x-100 motion-reduce:before:transition-none md:col-span-9">
-                    {post.frontmatter.title}
-                  </span>
-                  <ArrowRight
-                    size={22}
-                    className="text-faint group-hover/row:text-amber hidden justify-self-end transition-[color,transform] group-hover/row:translate-x-1 md:col-span-1 md:block"
-                    aria-hidden
-                  />
-                </Link>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="text-faint font-mono text-xs">Posts coming soon.</p>
-        )}
-      </RevealWrapper>
-    </Section>
+    <section className="wrap grid gap-6 pt-22 pb-18 md:grid-cols-12 md:gap-10 md:pt-36 md:pb-30">
+      <div className="md:col-span-4">
+        <h2 className="text-text text-h2 font-black tracking-[-0.03em]">最近寫的</h2>
+        <p className="font-hand text-accent mt-1 text-[22px] md:mt-2 md:text-[28px]">
+          大多是記錄，不是教學。
+        </p>
+      </div>
+      <ol className="md:col-span-8">
+        {posts.map((post) => (
+          <li key={post.slug}>
+            <Link
+              href={`/blog/${post.slug}`}
+              className="group/post border-line grid gap-x-6 gap-y-1 border-t py-4.5 md:grid-cols-[minmax(0,1fr)_110px] md:items-baseline md:py-6"
+            >
+              <span className="text-text group-hover/post:text-accent text-lg leading-[1.5] font-bold transition-colors md:text-2xl md:leading-[1.45]">
+                {post.frontmatter.title}
+              </span>
+              <span className="text-text-3 font-mono text-[11px] md:text-right md:text-xs">
+                {shortDate(post.frontmatter.date)} · {post.readingMinutes}′
+              </span>
+            </Link>
+          </li>
+        ))}
+        <li>
+          <Link
+            href="/blog"
+            className="text-accent border-line block border-t pt-4 font-mono text-[13px] md:pt-5"
+          >
+            全部 {all.length} 篇 →
+          </Link>
+        </li>
+      </ol>
+    </section>
   )
 }

@@ -7,8 +7,8 @@ export interface TocHeading {
   text: string
 }
 
-/** 文章左欄的目錄：列出 h2，捲到哪一節就亮哪一節。黏在視窗上緣底下，只在寬螢幕出現。 */
-export function Toc({ headings }: { headings: TocHeading[] }) {
+/** 文章的目錄：列出 h2，捲到哪一節就亮哪一節。桌面黏在左欄；手機收在 <details> 裡。 */
+export function Toc({ headings, compact = false }: { headings: TocHeading[]; compact?: boolean }) {
   const [active, setActive] = useState(headings[0]?.id)
 
   useEffect(() => {
@@ -16,13 +16,10 @@ export function Toc({ headings }: { headings: TocHeading[] }) {
       .map((h) => document.getElementById(h.id))
       .filter((el): el is HTMLElement => Boolean(el))
     if (els.length === 0 || !('IntersectionObserver' in window)) return
-
-    // 視窗上面 20% 當成「讀到這裡」的線：最後一個越過那條線的標題就是目前的節
+    // 視窗上面 15% 當成「讀到這裡」的線
     const io = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id)
-        }
+        for (const entry of entries) if (entry.isIntersecting) setActive(entry.target.id)
       },
       { rootMargin: '-15% 0px -75% 0px', threshold: 0 }
     )
@@ -32,22 +29,42 @@ export function Toc({ headings }: { headings: TocHeading[] }) {
 
   if (headings.length === 0) return null
 
+  const list = (
+    <ol className="border-line flex flex-col border-l pl-4">
+      {headings.map((h) => (
+        <li key={h.id}>
+          <a
+            href={`#${h.id}`}
+            aria-current={active === h.id ? 'location' : undefined}
+            className="text-text-3 hover:text-text aria-[current]:text-accent block py-1.5 text-[13px] leading-[1.45] transition-colors aria-[current]:font-bold"
+          >
+            {active === h.id && <span aria-hidden="true">● </span>}
+            {h.text}
+          </a>
+        </li>
+      ))}
+    </ol>
+  )
+
+  if (compact) {
+    return (
+      <details className="border-line group/toc border-b">
+        <summary className="text-accent flex min-h-11 cursor-pointer list-none items-center justify-between font-mono text-[13px] [&::-webkit-details-marker]:hidden">
+          目錄
+          <span className="transition-transform group-open/toc:rotate-45" aria-hidden="true">
+            +
+          </span>
+        </summary>
+        <nav aria-label="文章目錄" className="pb-4">
+          {list}
+        </nav>
+      </details>
+    )
+  }
+
   return (
-    <nav aria-label="目錄" className="sticky top-22">
-      <div className="font-hand text-dim mb-4 text-[1.5rem] leading-none">目錄 —</div>
-      <ol className="border-line-soft flex flex-col gap-0.5 border-l">
-        {headings.map((h) => (
-          <li key={h.id}>
-            <a
-              href={`#${h.id}`}
-              aria-current={active === h.id ? 'location' : undefined}
-              className="text-faint hover:text-txt aria-[current]:text-amber-text aria-[current]:border-amber -ml-px block border-l-2 border-transparent py-1.5 pl-3.5 text-xs leading-[1.4] transition-colors"
-            >
-              {h.text}
-            </a>
-          </li>
-        ))}
-      </ol>
+    <nav aria-label="文章目錄" className="sticky top-24">
+      {list}
     </nav>
   )
 }

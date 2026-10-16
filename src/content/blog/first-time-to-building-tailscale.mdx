@@ -5,6 +5,8 @@ description: "在 OpenWrt 23.05.3 環境下部署 Tailscale 的技術筆記，�
 tags: ["networking", "homelab", "openwrt", "tailscale", "vpn"]
 ---
 
+在 OpenWrt 23.05.3 上把 Tailscale 裝起來、當 Subnet Router 和 Exit Node 用。先講踩到的坑，再給一份照著做就能跑的流程。
+
 ## 1. 踩坑紀錄與反思
 
 在這次部署過程中，我意識到即使是對指令熟悉的開發者，在處理 Tailscale 的特定參數邏輯時仍需格外注意。
@@ -20,6 +22,8 @@ tags: ["networking", "homelab", "openwrt", "tailscale", "vpn"]
 - **備份的重要性**：在動家裡的網路設備前，若有先做設定備份，就算搞壞了也能快速恢復，避免全家斷網。
 
 - **查證大於速度**：教學影片中的文件路徑或區塊可能隨版本更新而變動，操作前必須先確認當下軟體版本與官方文件的匹配度。
+
+> 備份先做，查證再動手。
 
 ---
 
@@ -75,7 +79,11 @@ tailscale up --advertise-exit-node --advertise-routes=10.0.0.0/24 --snat-subnet-
 3. `/etc/init.d/tailscale enable`
 4. `/etc/init.d/tailscale start`
 
-> **注意**：若使用 OpenWrt 22.03 版本，啟動時建議加入 `--netfilter-mode=off` 以避免與新版 nftables 衝突。
+<Card>
+
+**注意**：若使用 OpenWrt 22.03 版本，啟動時建議加入 `--netfilter-mode=off` 以避免與新版 nftables 衝突。
+
+</Card>
 
 ### 步驟二：防火牆與介面設定 (LuCI 介面)
 

@@ -1,9 +1,8 @@
 import GithubSlugger from 'github-slugger'
-import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { isValidElement, type ComponentProps, type ReactNode } from 'react'
+import { isValidElement, type ReactNode } from 'react'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
@@ -23,6 +22,7 @@ import { getAllPosts, getPostBySlug } from '@/lib/mdx'
 import { cn } from '@/lib/utils'
 import type { BlogPost } from '@/types'
 
+/** 程式碼區塊：mermaid 交給 Mermaid；其他的每行包一個 span 讓 CSS 畫行號，外面套 MacWindow（語言 + 複製）。 */
 function Pre({ children }: { children: ReactNode }) {
   if (isValidElement(children)) {
     const { className, children: code } = children.props as {
@@ -36,9 +36,25 @@ function Pre({ children }: { children: ReactNode }) {
       typeof className === 'string' && className.startsWith('language-')
         ? className.slice(9)
         : undefined
+    const body =
+      typeof code === 'string' ? (
+        <code className={className}>
+          {code
+            .replace(/\n$/, '')
+            .split('\n')
+            .map((line, i) => (
+              <span key={i} className="code-line">
+                {line}
+                {'\n'}
+              </span>
+            ))}
+        </code>
+      ) : (
+        children
+      )
     return (
       <MacWindow title={lang}>
-        <pre>{children}</pre>
+        <pre>{body}</pre>
       </MacWindow>
     )
   }
@@ -69,33 +85,15 @@ function extractHeadings(content: string): TocHeading[] {
   return headings
 }
 
-/** 文章結尾的上一篇／下一篇：兩個虛線框。 */
-function ReadNext({
-  post,
-  dir,
-  className,
-}: {
-  post: BlogPost
-  dir: 'prev' | 'next'
-  className?: string
-}) {
-  return (
-    <Link
-      href={`/blog/${post.slug}`}
-      className={cn(
-        'group/rn border-line hover:border-amber rounded-card block border border-dashed px-5 py-4 transition-colors',
-        dir === 'next' && 'text-right',
-        className
-      )}
-    >
-      <span className="font-hand text-faint text-[1.2rem] leading-none">
-        {dir === 'prev' ? '← 上一篇' : '下一篇 →'}
-      </span>
-      <span className="font-display group-hover/rn:text-amber text-md mt-2 block leading-[1.35] font-medium tracking-[-0.01em] transition-colors">
-        {post.frontmatter.title}
-      </span>
-    </Link>
-  )
+/** 相關文章：共同標籤最多的前兩篇。 */
+function related(all: BlogPost[], slug: string, tags: string[] = []) {
+  return all
+    .filter((p) => p.slug !== slug)
+    .map((p) => ({ p, n: (p.frontmatter.tags ?? []).filter((t) => tags.includes(t)).length }))
+    .filter((x) => x.n > 0)
+    .sort((a, b) => b.n - a.n)
+    .slice(0, 2)
+    .map((x) => x.p)
 }
 
 export async function generateStaticParams() {
@@ -147,30 +145,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const older = index >= 0 ? posts[index + 1] : undefined
   const newer = index > 0 ? posts[index - 1] : undefined
 
-  // h2 前面一個手寫的章節編號（照目錄的順序，用 id 對照），只在寬螢幕有左欄的時候露出（放在內文欄外面）
-  const sectionNo = new Map(headings.map((h, i) => [h.id, String(i + 1).padStart(2, '0')]))
-  const H2 = ({ children, ...props }: ComponentProps<'h2'>) => {
-    const n = props.id ? sectionNo.get(props.id) : undefined
-    return (
-      <h2 {...props} className="relative">
-        {n && (
-          <span
-            className="font-hand text-amber absolute top-[0.1em] -left-[2.4em] text-[1.1em] leading-none max-xl:hidden"
-            aria-hidden="true"
-          >
-            {n}
-          </span>
-        )}
-        {children}
-      </h2>
-    )
-  }
   const mdxComponents = {
     TaskList,
     Mermaid,
     MacWindow,
     pre: Pre,
-    h2: H2,
     Card,
     Columns,
     Eyebrow,
@@ -193,102 +172,104 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     image: `${SITE_CONFIG.url}/blog/${slug}/opengraph-image`,
   }
 
+  const next = newer ?? older
+  const nextLabel = newer ? '下一篇' : '上一篇'
+  const rel = related(posts, slug, post.frontmatter.tags)
+  const [y, m] = post.frontmatter.date.split('-')
+  const dotDate = post.frontmatter.date.replaceAll('-', '.')
+
   return (
     <article>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+
       {/* 最上緣一條橘線，跟著整頁捲動長 */}
       <div className="progress" aria-hidden="true" />
 
-      {/* 頁首：標題撐 9 欄；右邊日期印章、讀多久、標籤 */}
-      <header className="mx-auto max-w-[77rem] px-6 pt-12 md:pt-16">
-        <div className="border-line-soft grid gap-x-6 gap-y-8 border-b pb-10 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-9">
-            <Link
-              href="/blog"
-              className="text-faint hover:text-amber flex min-h-11 w-fit items-center gap-1.5 font-mono text-xs transition-colors"
-            >
-              <ArrowLeft size={14} aria-hidden />
-              全部文章
-            </Link>
-            <p className="font-hand text-dim mt-7 text-[1.6rem] leading-none md:text-[1.85rem]">
-              心得分享 —
-            </p>
-            <h1 className="font-display text-h1 mt-4 max-w-[18em] leading-[1.12] font-medium tracking-[-0.02em]">
-              {post.frontmatter.title}
-            </h1>
-            {post.frontmatter.description && (
-              <p className="text-dim text-lead mt-5 max-w-[40em] leading-[1.7]">
-                {post.frontmatter.description}
-              </p>
-            )}
-          </div>
-          <div className="flex flex-col items-start gap-4 md:col-span-3 md:items-end">
-            <span className="stamp text-amber-text inline-flex rotate-6 flex-col items-center gap-1 px-3 py-2">
-              <b className="font-display text-[1.05rem] font-bold tracking-[-0.02em]">
-                <time>{post.frontmatter.date}</time>
-              </b>
-              <small className="text-[0.62rem] tracking-[0.16em]">TAIPEI</small>
-            </span>
-            <span className="font-hand text-faint text-[1.25rem] leading-none">
-              {post.readingMinutes} 分鐘，慢慢看
-            </span>
-            {post.frontmatter.tags && (
-              <div className="flex flex-wrap gap-2 md:justify-end">
-                {post.frontmatter.tags.map((tag) => (
-                  <MetricChip key={tag}>{tag}</MetricChip>
-                ))}
-              </div>
-            )}
-          </div>
+      {/* 頁首：置中。麵包屑 / 第一個標籤、標題、日期 · 分鐘 · 標籤 */}
+      <header className="mx-auto max-w-[880px] px-5 pt-10 pb-8 text-center md:px-10 md:pt-20 md:pb-14">
+        <div className="text-text-3 font-mono text-xs md:text-[13px]">
+          <Link href="/blog" className="hover:text-text transition-colors">
+            心得分享
+          </Link>
+          {post.frontmatter.tags?.[0] && <> / #{post.frontmatter.tags[0]}</>}
+        </div>
+        <h1 className="text-text mt-3.5 text-[32px] leading-[1.35] font-black md:mt-6 md:text-[clamp(40px,4vw,56px)] md:leading-[1.3] md:tracking-[-0.02em]">
+          {post.frontmatter.title}
+        </h1>
+        <div className="text-text-3 mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 font-mono text-xs md:mt-7 md:text-[13px]">
+          <time dateTime={post.frontmatter.date}>{dotDate}</time>
+          <span>{post.readingMinutes} 分鐘</span>
+          {post.frontmatter.tags && (
+            <span>{post.frontmatter.tags.map((t) => `#${t}`).join(' ')}</span>
+          )}
         </div>
       </header>
 
-      {/* 內文：寬螢幕三欄——左邊黏著的目錄、中間 720 的文章、右邊留白；窄螢幕只剩文章 */}
-      <div className="mx-auto max-w-[77rem] px-6 pt-12 pb-14 md:pb-20 xl:grid xl:grid-cols-[200px_minmax(0,720px)_220px] xl:justify-center xl:gap-x-12">
-        <aside className="hidden xl:block">
-          <Toc headings={headings} />
+      {/* 內文：寬螢幕三欄（目錄 2 / 文章 7 / 相關 3），窄螢幕目錄收成 details */}
+      <div className="wrap grid grid-cols-1 gap-x-12 pb-12 md:pb-20 xl:grid-cols-[220px_minmax(0,760px)_220px] xl:justify-center">
+        <aside className="mb-6 xl:mb-0">
+          <div className="xl:hidden">
+            <Toc headings={headings} compact />
+          </div>
+          <div className="hidden xl:block">
+            <Toc headings={headings} />
+          </div>
         </aside>
         <div
           className={cn(
-            'mx-auto xl:mx-0 xl:max-w-none',
-            post.frontmatter.wide ? 'max-w-225' : 'max-w-180'
+            'min-w-0',
+            post.frontmatter.wide ? 'md:max-w-[60rem]' : 'md:max-w-[46rem]',
+            'md:mx-auto xl:mx-0 xl:max-w-none'
           )}
         >
           <div className="prose-portfolio">
             <MDXRemote source={post.content} components={mdxComponents} options={mdxOptions} />
           </div>
-
-          <footer className="border-line mt-14 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-dashed pt-7">
-            <div className="flex items-center gap-4">
-              <span
-                className="font-hand text-txt inline-flex -rotate-6 items-center justify-center rounded-[4px] border-2 border-current px-2 py-1 text-[1.4rem] leading-none"
-                aria-hidden="true"
-              >
-                完
-              </span>
-              <span className="font-hand text-faint text-[1.3rem] leading-none">
-                寫於 {post.frontmatter.date}，台北
-              </span>
-            </div>
-          </footer>
-          {(older || newer) && (
-            <nav aria-label="上一篇與下一篇" className="mt-7 grid gap-4 sm:grid-cols-2">
-              {older && <ReadNext post={older} dir="prev" />}
-              {newer && (
-                <ReadNext
-                  post={newer}
-                  dir="next"
-                  className={older ? undefined : 'sm:col-start-2'}
-                />
-              )}
-            </nav>
-          )}
+          <p className="font-hand text-accent mt-8 text-right text-[24px] md:mt-10 md:text-[28px]">
+            — small R, {y}.{m}
+          </p>
         </div>
-        <div className="hidden xl:block" aria-hidden="true" />
+        <aside className="hidden xl:block">
+          {rel.length > 0 && (
+            <div className="border-line text-text-3 sticky top-24 border-t pt-4 font-mono text-xs leading-[2]">
+              相關
+              {rel.map((r) => (
+                <Link
+                  key={r.slug}
+                  href={`/blog/${r.slug}`}
+                  className="text-text-2 hover:text-text block transition-colors"
+                >
+                  → {r.frontmatter.title}
+                </Link>
+              ))}
+            </div>
+          )}
+        </aside>
       </div>
+
+      {next && (
+        <Link href={`/blog/${next.slug}`} className="group/next border-line block border-y">
+          <div className="wrap flex items-end justify-between gap-6 py-6 md:py-10">
+            <div>
+              <div className="text-text-3 font-mono text-[11px] md:text-[13px]">
+                {nextLabel} / {next.frontmatter.date.replaceAll('-', '.')}
+              </div>
+              <div className="text-text group-hover/next:text-accent mt-1.5 text-[22px] leading-[1.4] font-black transition-colors md:mt-2.5 md:text-[clamp(28px,3.3vw,48px)] md:leading-[1.2]">
+                {next.frontmatter.title}
+              </div>
+            </div>
+            <span
+              className="text-accent hidden text-[56px] leading-none md:block"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </div>
+        </Link>
+      )}
     </article>
   )
 }
