@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import { LLink as Link } from '@/i18n/client'
 import { notFound } from 'next/navigation'
 
+import { TechList } from '@/components/common/TechList'
 import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
-import { content } from '@/i18n/content'
+import { LLink as Link } from '@/i18n/client'
 import { hasLocale, localePath } from '@/i18n/config'
-import { getDict } from '@/i18n/dict'
+import { content } from '@/i18n/content'
+import type { getDict } from '@/i18n/dict'
 import { languages } from '@/i18n/meta'
 import { initLocale, t } from '@/i18n/server'
 import { cn } from '@/lib/utils'
@@ -38,7 +39,7 @@ export async function generateMetadata({
       type: 'website',
       locale: l === 'en' ? 'en_US' : 'zh_TW',
       siteName: SITE_CONFIG.name,
-      images: item.preview ? [item.preview] : undefined,
+      // 預覽圖由同層的 opengraph-image.tsx 產生（封面 + 標題 + 技術 logo），不直接用原始截圖
     },
     twitter: {
       card: 'summary_large_image',
@@ -86,6 +87,8 @@ export default async function ProjectPage({
   const item = items[index]
   const next = items[(index + 1) % items.length]
   const links = [item.link, item.demo].filter((l): l is string => Boolean(l))
+  // GitHub 卡不算產品畫面，不放進「畫面」；有 gallery 的照樣列
+  const screens = [...(item.preview && !item.card ? [item.preview] : []), ...(item.gallery ?? [])]
 
   return (
     <article>
@@ -117,8 +120,8 @@ export default async function ProjectPage({
           <nav aria-label="麵包屑" className="text-text-3 text-sm">
             <Link href="/projects" className="text-text-2 hover:text-text transition-colors">
               {d.title}
-            </Link>{''}
-            / {item.title}
+            </Link>
+            {''}/ {item.title}
           </nav>
           <h1 className="text-text mt-3 text-[clamp(44px,12vw,56px)] leading-none font-black tracking-[-0.04em] md:mt-4 md:text-[clamp(72px,9.5vw,140px)] md:leading-[0.95] md:tracking-[-0.05em]">
             {item.title}
@@ -141,7 +144,11 @@ export default async function ProjectPage({
           <div className="border-line flex justify-between gap-4 border-b py-3 md:block md:border-r md:border-b-0 md:py-5 md:pl-6">
             <dt className="text-text-3 text-[13px]">{d.tech}</dt>
             <dd className="text-text text-right md:mt-1 md:text-left">
-              {item.metrics?.join('、') ?? '—'}
+              {item.metrics ? (
+                <TechList items={item.metrics} size={18} className="justify-end md:justify-start" />
+              ) : (
+                '—'
+              )}
             </dd>
           </div>
           <div className="flex justify-between gap-4 py-3 md:block md:py-5 md:pl-6">
@@ -173,20 +180,26 @@ export default async function ProjectPage({
             {item.description}
           </p>
         </Sec>
-        {item.preview && !item.card && (
+        {screens.length > 0 && (
           <Sec no="02" title={d.screens}>
-            <figure className="m-0">
-              <div className="border-border overflow-hidden rounded border">
-                <Image
-                  src={item.preview}
-                  alt={d.screenAlt(item.title)}
-                  width={1600}
-                  height={900}
-                  sizes="(min-width: 768px) 860px, 100vw"
-                  className="w-full"
-                />
-              </div>
-            </figure>
+            {/* 封面在前，網站其他分頁接在後面，一張一列照順序往下排 */}
+            <div className="grid gap-4 md:gap-6">
+              {screens.map((src, i) => (
+                <figure key={src} className="m-0">
+                  <div className="border-border overflow-hidden rounded border">
+                    <Image
+                      src={src}
+                      alt={d.screenAlt(item.title)}
+                      width={1600}
+                      height={900}
+                      sizes="(min-width: 768px) 860px, 100vw"
+                      className="w-full"
+                      loading={i === 0 ? undefined : 'lazy'}
+                    />
+                  </div>
+                </figure>
+              ))}
+            </div>
           </Sec>
         )}
       </div>
@@ -196,7 +209,7 @@ export default async function ProjectPage({
         <div className="wrap flex items-end justify-between gap-6 py-8 md:py-12">
           <div>
             <div className="text-text-3 text-sm">{d.next}</div>
-            <div className="text-text group-hover/next:text-accent mt-2 text-[36px] leading-none font-black tracking-[-0.03em] md:text-[clamp(48px,6vw,88px)] md:tracking-[-0.04em] transition-colors">
+            <div className="text-text group-hover/next:text-accent mt-2 text-[36px] leading-none font-black tracking-[-0.03em] transition-colors md:text-[clamp(48px,6vw,88px)] md:tracking-[-0.04em]">
               {next.title}
             </div>
           </div>

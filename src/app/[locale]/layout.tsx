@@ -115,7 +115,8 @@ export default async function RootLayout({
         </noscript>
         <MotionProviders>
           <Nav />
-          <main id="main" className="flex-1">
+          {/* pt 讓出導覽列的高度；有自己底色的頁首用 data-nav-overlay 墊回最上緣 */}
+          <main id="main" className="flex-1 pt-(--nav-h) print:pt-0">
             {/* 換頁：舊頁淡出微沉、新頁淡入微浮（globals.css 的 ::view-transition-*(.page)） */}
             <ViewTransition default="page">{children}</ViewTransition>
           </main>

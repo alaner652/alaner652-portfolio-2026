@@ -88,7 +88,7 @@ export function Footer() {
   if (pathname === '/' || pathname === '/hire') {
     const hire = pathname === '/hire'
     return (
-      <footer className="border-line dots border-t print:hidden">
+      <footer className="border-line stripes border-t print:hidden">
         <div className="wrap pt-18 pb-7 md:pt-30 md:pb-10">
           <Reveal>
             <p className="font-hand text-accent text-[26px] md:text-[36px]">

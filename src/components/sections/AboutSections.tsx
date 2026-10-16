@@ -180,16 +180,17 @@ export function SkillList() {
             key={g.label}
             className="border-line border-t py-3 md:grid md:grid-cols-[160px_minmax(0,1fr)] md:gap-6 md:py-4"
           >
-            <div className="text-text-3 font-mono text-[11px] md:pt-1.5 md:text-[13px]">
+            <div className="text-text-3 font-mono text-[11px] md:pt-2.5 md:text-[13px]">
               {g.label}
             </div>
-            <ul className="mt-1.5 flex flex-wrap gap-x-5 gap-y-2 md:mt-0">
+            {/* 每項一顆同款細框標籤：有沒有 logo 都裝在一樣的框裡，才不會像圖掉了；框也把項目邊界分清楚 */}
+            <ul className="mt-2 flex flex-wrap gap-2 md:mt-0">
               {g.items.map((name) => (
                 <li
                   key={name}
-                  className="text-text flex items-center gap-2 text-[15px] leading-[1.7] md:text-lg"
+                  className="border-line bg-bg-deep text-text-2 flex h-9 items-center gap-2 rounded-[10px] border px-3 text-sm has-[img]:pl-1.5 md:text-[15px]"
                 >
-                  <SkillIcon name={name} size={20} />
+                  <SkillIcon name={name} size={24} />
                   {name}
                 </li>
               ))}

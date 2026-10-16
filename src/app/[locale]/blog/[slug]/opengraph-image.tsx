@@ -1,111 +1,34 @@
-import { readFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { getDict } from '@/i18n/dict'
+import { getAllPosts, getPostBySlug } from '@/lib/mdx'
+import { ogImage, ogLocale } from '@/lib/og'
 
-import { ImageResponse } from 'next/og'
-
-import { getPostBySlug } from '@/lib/mdx'
-
+export const alt = 'small R — Post'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
+export function generateStaticParams() {
+  return getAllPosts().map((p) => ({ slug: p.slug }))
+}
+
+/** 單篇文章：文章標題 + 描述，kicker 放日期與閱讀時間，底下列標籤 */
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>
+}) {
+  const locale = await ogLocale(params)
   const { slug } = await params
-  const post = getPostBySlug(slug)
-  const title = post?.frontmatter.title ?? 'Writing'
-  const description = post?.frontmatter.description ?? ''
-  const date = post?.frontmatter.date ?? ''
-  const tags = post?.frontmatter.tags ?? []
-
-  const fontData = await readFile(join(process.cwd(), 'public/fonts/NotoSansTC-Regular.ttf'))
-
-  const titleFontSize = title.length > 22 ? '48px' : '60px'
-  const shortDesc = description.length > 72 ? description.slice(0, 72) + '…' : description
-
-  return new ImageResponse(
-    <div
-      style={{
-        background: '#0E1013',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: '72px 80px',
-        fontFamily: 'NotoSansTC',
-      }}
-    >
-      {/* top row: date + tags */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ color: '#7C8189', fontSize: '15px', letterSpacing: '0.04em' }}>
-          {'Writing /' + date}
-        </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {tags.slice(0, 3).map((tag: string) => (
-            <div
-              key={tag}
-              style={{
-                color: '#7C8189',
-                fontSize: '13px',
-                border: '1px solid #E7DEC9',
-                padding: '3px 8px',
-                borderRadius: '4px',
-              }}
-            >
-              {tag}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* title + description */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          maxWidth: '980px',
-        }}
-      >
-        <div
-          style={{
-            color: '#F2EFE9',
-            fontSize: titleFontSize,
-            fontWeight: '700',
-            lineHeight: 1.15,
-            letterSpacing: '-0.01em',
-          }}
-        >
-          {title}
-        </div>
-        <div
-          style={{
-            color: '#A3A7AE',
-            fontSize: '18px',
-            fontWeight: '400',
-            lineHeight: 1.5,
-            marginTop: '18px',
-            maxWidth: '860px',
-          }}
-        >
-          {shortDesc}
-        </div>
-      </div>
-
-      {/* bottom row: site + handle */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div
-            style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FF8648' }}
-          />
-          <span style={{ color: '#A3A7AE', fontSize: '15px', letterSpacing: '0.04em' }}>
-            alaner652.com
-          </span>
-        </div>
-        <div style={{ color: '#7C8189', fontSize: '14px' }}>alaner652</div>
-      </div>
-    </div>,
-    {
-      ...size,
-      fonts: [{ name: 'NotoSansTC', data: fontData, style: 'normal', weight: 400 }],
-    }
-  )
+  const d = getDict(locale).blog
+  const post = getPostBySlug(slug, locale)
+  const fm = post?.frontmatter
+  return ogImage({
+    locale,
+    path: `/blog/${slug}`,
+    kicker: [d.title, fm?.date, post ? d.minutes(post.readingMinutes) : null]
+      .filter(Boolean)
+      .join(' · '),
+    title: fm?.title ?? d.title,
+    subtitle: fm?.description,
+    tags: (fm?.tags ?? []).map((t) => `#${t}`),
+  })
 }

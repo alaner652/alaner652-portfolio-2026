@@ -142,7 +142,7 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
   const interests = get('興趣', 'Off duty')?.body ?? ''
 
   return (
-    <div className="dots bg-bg-deep -mb-px print:bg-white print:bg-none">
+    <div className="bg-bg-deep -mb-px print:bg-white" data-nav-overlay="">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeJsonLd) }}

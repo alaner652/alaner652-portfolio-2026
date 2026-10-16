@@ -66,7 +66,8 @@ export const WORK_EN: Record<string, { status: string; result?: string; descript
   },
   soullike: {
     status: 'Prototype',
-    result: 'A soulslike boss fight you can play start to finish: combos, blocks, executions, and an enemy that reads your moves.',
+    result:
+      'A soulslike boss fight you can play start to finish: combos, blocks, executions, and an enemy that reads your moves.',
     description:
       'A vertical slice of a soulslike action game on Roblox. Five-hit light combo, heavy attack, block, roll i-frames, backstabs and executions; the enemy has a posture bar and staggers when it breaks. Hit timing comes from keyframe markers on the animations, not hand-typed numbers. The enemy notices you by sight, hearing and line of sight, and delays its swings to break your rhythm. Player and enemy share one data-driven state machine, and damage, i-frame and hyper-armor windows are all computed on the server. Solo, AI-assisted; some animations are still placeholders.',
   },
@@ -260,14 +261,13 @@ export const HIRE_EN = {
 /** 照 SKILLS 的順序 */
 export const SKILLS_EN_LABELS = [
   'Languages',
-  'Roblox development',
-  'Backend and data',
+  'Game development',
+  'Backend and services',
   'Frontend',
   'Infrastructure',
-  'Security',
   'Tools and AI',
 ]
-export const SKILL_ITEMS_EN: Record<string, string> = { 負責任揭露: 'Responsible disclosure' }
+export const SKILL_ITEMS_EN: Record<string, string> = {}
 
 export const EDUCATION_EN = [
   {

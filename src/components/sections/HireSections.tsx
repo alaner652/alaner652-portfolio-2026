@@ -145,7 +145,7 @@ export function Process() {
   const { HIRE } = content()
   return (
     <section
-      className="dots bg-bg-deep border-line mt-12 border-y py-10 md:mt-24 md:py-18"
+      className="blueprint bg-bg-deep border-line mt-12 border-y py-10 md:mt-24 md:py-18"
       id="process"
     >
       <div className="wrap">

@@ -24,7 +24,13 @@ export function SkillIcon({
       aria-hidden
       width={size}
       height={size}
-      style={{ width: size, height: size, borderRadius: size * 0.22 }}
+      // 小磚底色 #242938 跟頁面暗底太接近，描一圈淡白邊，磚的輪廓才看得出來
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size * 0.22,
+        boxShadow: '0 0 0 1px rgba(255,255,255,0.1)',
+      }}
       className={`shrink-0 ${className}`}
     />
   )

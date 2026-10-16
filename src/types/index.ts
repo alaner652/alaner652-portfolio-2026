@@ -11,7 +11,7 @@ export interface NavLink {
 }
 
 export interface WorkItem {
-  /** 作品詳情頁的網址：/projects/{slug}。跟 public/shots/ 的檔名一致 */
+  /** 作品詳情頁的網址：/projects/{slug}。跟 public/shots/works/ 底下的資料夾名一致 */
   slug: string
   status: string
   tone: WorkStatus
@@ -31,6 +31,8 @@ export interface WorkItem {
       只放真的看得到產品的圖（網站截圖、影片畫面）；GitHub 自動產生的 repo 卡不算，
       那種圖每張都長一樣，沒圖的項目改用排版式封面（ProjectCover 自己處理）。 */
   preview?: string
+  /** 更多畫面：網站其他分頁的截圖（public/shots/works/{slug}/more-N），詳情頁「畫面」排在封面後面。 */
+  gallery?: string[]
   /** preview 是 GitHub 的 repo 卡，不是產品畫面。列表照放，但不拿來當 /projects 的主視覺。 */
   card?: boolean
   /** 首頁精選。挑三個能替 OFFERS 那三條主張作證的，順序照 WORK_ITEMS。 */

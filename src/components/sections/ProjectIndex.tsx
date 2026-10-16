@@ -1,10 +1,11 @@
 'use client'
 
-import Image from 'next/image'
-import { LLink as Link } from '@/i18n/client'
 import { AnimatePresence, motion } from 'motion/react'
+import Image from 'next/image'
 import { useMemo, useState } from 'react'
 
+import { TechList } from '@/components/common/TechList'
+import { LLink as Link } from '@/i18n/client'
 import { useDict } from '@/i18n/client'
 import { tr } from '@/lib/motion'
 import { cn } from '@/lib/utils'
@@ -70,7 +71,11 @@ function Preview({
       </div>
       <p className="text-text-2 text-[15px] leading-[1.8] md:text-base">{item.description}</p>
       {item.metrics && (
-        <p className="text-text-3 border-line border-t pt-3.5 text-sm">{item.metrics.join('、')}</p>
+        <TechList
+          items={item.metrics}
+          size={18}
+          className="text-text-3 border-line flex border-t pt-3.5 text-sm"
+        />
       )}
       <div className="flex flex-wrap gap-6 text-[15px]">
         <Link href={`/projects/${item.slug}`} className="border-accent text-accent border-b pb-0.5">
@@ -119,7 +124,7 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
         <div
           role="group"
           aria-label={d.category}
-          className="-mx-5 flex gap-6 overflow-x-auto px-5 [scrollbar-width:none] md:mx-0 md:gap-7 md:px-0"
+          className="-mx-5 flex [scrollbar-width:none] gap-6 overflow-x-auto px-5 md:mx-0 md:gap-7 md:px-0"
         >
           {([ALL, ...CATEGORIES] as Filter[]).map((c) => (
             <button
@@ -151,7 +156,7 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={d.searchPlaceholder}
-            className="border-border-strong text-text placeholder:text-text-3 h-9 w-44 border-b bg-transparent text-sm outline-none focus-visible:border-accent md:w-55"
+            className="border-border-strong text-text placeholder:text-text-3 focus-visible:border-accent h-9 w-44 border-b bg-transparent text-sm outline-none md:w-55"
           />
         </label>
       </div>
@@ -199,9 +204,11 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
                         {item.title}
                       </span>
                       {item.metrics && (
-                        <span className="text-text-3 mt-0.5 block text-[13px]">
-                          {item.metrics.join(' /')}
-                        </span>
+                        <TechList
+                          items={item.metrics}
+                          size={14}
+                          className="text-text-3 mt-1 flex text-[13px]"
+                        />
                       )}
                     </span>
                     <span className="text-text-2 text-sm">

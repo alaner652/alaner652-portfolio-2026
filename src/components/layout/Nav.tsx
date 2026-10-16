@@ -81,7 +81,13 @@ export function Nav() {
 
   return (
     // 一直是一顆浮起來的膠囊（毛玻璃 + 細邊 + 淡影），不隨捲動切換；裡面的連結不變
-    <nav aria-label="主要導覽" className="sticky top-0 z-50 px-3 pt-3 sm:px-6 print:hidden">
+    // 浮在頁面上、不佔版面：sticky 讓它跟著捲，負的 margin-bottom 把它的高度還給 main，
+    // main 從頁面最上緣開始（換頁的 view transition 拍的是 main，否則膠囊後面會露出一條底色）。
+    // 高度改了要同步 globals.css 的 --nav-h
+    <nav
+      aria-label="主要導覽"
+      className="sticky top-0 z-50 mb-[calc(var(--nav-h)*-1)] px-3 pt-3 sm:px-6 print:hidden"
+    >
       <div
         // 圓角固定 1.75rem（= 收合時 3.5rem 高的一半，看起來就是膠囊），開選單時形狀不變、只往下長
         className="bg-bg/80 border-border mx-auto max-w-270 rounded-[1.75rem] border shadow-[0_12px_32px_-18px_rgba(0,0,0,0.6)] backdrop-blur-[12px]"

@@ -28,9 +28,9 @@ export function Hero() {
           ? 'relative flex min-h-[78svh] flex-col justify-end overflow-hidden md:min-h-[min(800px,92svh)]'
           : 'relative flex min-h-[64svh] flex-col justify-center overflow-hidden md:min-h-[min(680px,78svh)]'
       }
-      data-nav-overlay={photo ? '' : undefined}
+      data-nav-overlay=""
     >
-      {!photo && <div aria-hidden="true" className="dots dots-fade absolute inset-0" />}
+      {!photo && <div aria-hidden="true" className="stripes fade-down absolute inset-0" />}
       {photo && (
         <>
           <Image

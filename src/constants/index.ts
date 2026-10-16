@@ -20,7 +20,8 @@ export const SITE_CONFIG: SiteConfig = {
   threads: 'https://www.threads.com/@alaner652',
   discord: 'https://discord.gg/HXn95dRd',
   email: 'hhgg12661@gmail.com',
-  avatar: '/avatar.jpg',
+  // 2026-10-17 暫時換成解析度較高的玩偶近照（原本的 /avatar.jpg 只有 400px，先留著）
+  avatar: '/avatar-plush.jpg',
   // 首頁 Hero 的滿版人物照（橫式、人在右 1/3）。放進 public/ 再填路徑；沒填就是純暗底
   heroPhoto: undefined,
   description:
@@ -181,9 +182,9 @@ export const WORK_ITEMS: WorkItem[] = [
     result: '接案之後第一款自己發行的 Roblox 遊戲。',
     description:
       "帶著貓咪小隊一路打：擲骰合成槍枝從 D 升到 XX，每 10 關一隻 Boss，打到底就重生再來。接案之後第一款以 Alaner's Studio 名義自己發行的遊戲，2026 年 10 月上線，持續更新中。",
-    metrics: ['Luau', 'Roblox'],
+    metrics: ['Luau', 'Roblox Studio'],
     link: 'https://www.roblox.com/games/104411764341408',
-    preview: '/shots/build-the-cat-gunner.png',
+    preview: '/shots/works/build-the-cat-gunner/cover.png',
   },
   {
     status: '開源',
@@ -195,9 +196,9 @@ export const WORK_ITEMS: WorkItem[] = [
     result: 'Agora-AI 的範圍重新想過一次：不做後端，做成 MCP server。',
     description:
       '把校務系統的課表、缺曠、成績、請假、工讀考勤包成 18 個 MCP 工具，Claude Code、Claude Desktop 這類支援 MCP 的 AI 應用可以直接在對話裡查和操作。stdio transport、零額外後端；帳密只在記憶體，不落地。有副作用的工具帶 destructiveHint，要先向使用者確認。頁面流程和解析規則延用 Agora-AI，用 TypeScript 重寫成獨立專案。',
-    metrics: ['TypeScript', 'MCP SDK', 'Vitest'],
+    metrics: ['TypeScript', 'MCP', 'Vitest'],
     link: 'https://github.com/alaner652/tpcu-mcp',
-    preview: '/shots/tpcu-mcp.jpg',
+    preview: '/shots/works/tpcu-mcp/cover.jpg',
   },
   {
     status: '運作中',
@@ -211,7 +212,8 @@ export const WORK_ITEMS: WorkItem[] = [
       '輸入台詞，找到那個畫面。把三個各做各的舊專案併成一套並搬到網頁上，截圖和 GIF 改成用 ffmpeg 即時生成加 LRU cache。',
     metrics: ['Next.js', 'EasyOCR', 'ffmpeg'],
     link: 'https://girls-band-shot.alaner652.com',
-    preview: '/shots/girls-band-shot.png',
+    preview: '/shots/works/girls-band-shot/cover.jpg',
+    gallery: ['/shots/works/girls-band-shot/more-1.jpg'],
   },
   {
     status: '開源',
@@ -222,9 +224,9 @@ export const WORK_ITEMS: WorkItem[] = [
     result: '訂單用狀態機管理、SSE 即時同步進度。',
     description:
       '掃碼用 LINE 登入點餐，下單推 Flex Message 給店主。訂單用狀態機管、SSE 同步進度，並存菜單快照，之後改菜單不會動到歷史訂單。',
-    metrics: ['Next.js', 'SQLite + Drizzle', 'LINE Bot'],
+    metrics: ['Next.js', 'SQLite', 'Drizzle ORM', 'LINE Messaging API'],
     link: 'https://github.com/alaner652/order',
-    preview: '/shots/order.png',
+    preview: '/shots/works/order/cover.png',
     card: true,
   },
   {
@@ -239,7 +241,8 @@ export const WORK_ITEMS: WorkItem[] = [
     metrics: ['Next.js', 'Tailwind CSS', 'MDX'],
     link: 'https://github.com/alaner652/alaner652-portfolio-2026',
     demo: 'https://alaner652.com',
-    preview: '/shots/alaner652-portfolio.png',
+    preview: '/shots/works/alaner652-portfolio/cover.jpg',
+    gallery: [1, 2, 3, 4, 5].map((n) => `/shots/works/alaner652-portfolio/more-${n}.jpg`),
   },
   {
     status: '已暫停',
@@ -252,7 +255,7 @@ export const WORK_ITEMS: WorkItem[] = [
       '把沒有文件的校務 API 逆向出來，包成 10 個 agent 工具，使用者可以直接問「我這週有什麼課」。部署在校方提供的 VM 上。目前暫停，想重新想清楚範圍。',
     metrics: ['FastAPI', 'Next.js', 'Docker'],
     link: 'https://github.com/alaner652/Agora-AI',
-    preview: '/shots/agora-ai.png',
+    preview: '/shots/works/agora-ai/cover.png',
     card: true,
   },
   {
@@ -265,7 +268,7 @@ export const WORK_ITEMS: WorkItem[] = [
     description:
       '自動登入校務系統抓缺勤、畫成圖推到 Discord。分析校務系統的副產品，後來變成 Agora-AI 的起點。',
     link: 'https://github.com/alaner652/tpcu-absence-notifier',
-    preview: '/shots/easy-tpcu.png',
+    preview: '/shots/works/easy-tpcu/cover.png',
     card: true,
   },
   {
@@ -278,7 +281,7 @@ export const WORK_ITEMS: WorkItem[] = [
     description:
       'OCR 逐幀把字幕轉成 JSON 索引，串 Discord Bot 查截圖。第一個真的有人在用的東西，現在由一句一幀接手。',
     link: 'https://www.youtube.com/watch?v=2rXTrJ6X4a8',
-    preview: '/shots/ave-mujica-bot.jpg',
+    preview: '/shots/works/ave-mujica-bot/cover.jpg',
   },
   {
     status: '已下線',
@@ -291,7 +294,7 @@ export const WORK_ITEMS: WorkItem[] = [
       '語意餐廳推薦。想法我現在還是覺得可以，但架構撐不住，後端早就掛了。第一次搞懂「跑得起來」和「撐得住」是兩件事。',
     link: 'https://github.com/alaner652/FoodieAI',
     demo: 'https://www.youtube.com/watch?v=780-adKzw94',
-    preview: '/shots/foodie-ai.png',
+    preview: '/shots/works/foodie-ai/cover.png',
     card: true,
   },
   {
@@ -303,7 +306,7 @@ export const WORK_ITEMS: WorkItem[] = [
     result: '打包成 exe，朋友不用裝 Python 也能跑。',
     description: '純粹自己要用才寫的譜面管理工具，打包成 exe，朋友不用裝 Python 也能跑。',
     link: 'https://github.com/alaner652/osu_map_manager',
-    preview: '/shots/osu-map-manager.png',
+    preview: '/shots/works/osu-map-manager/cover.png',
     card: true,
   },
   {
@@ -315,7 +318,7 @@ export const WORK_ITEMS: WorkItem[] = [
     result: '一場打得完的魂系頭目戰：連段、格擋、處決，還有會讀你動作的敵人。',
     description:
       'Roblox 上的魂系動作遊戲垂直切片。五段連段、重擊、格擋、翻滾無敵幀、背刺與處決；敵人有架勢條，打穿會破防。攻擊判定的時機從動畫的 keyframe marker 推出來，不手寫。敵人靠視野、聽覺、視線三件事發現你，還會延遲揮擊打亂節奏。玩家和敵人共用一套資料驅動的狀態機，傷害、無敵與超甲窗口全部由伺服器計算。一人開發、AI 輔助，部分動畫還是佔位。',
-    metrics: ['Luau', 'Roblox', 'Rojo'],
+    metrics: ['Luau', 'Roblox Studio', 'Rojo'],
   },
   {
     status: '接案作品',
@@ -326,9 +329,9 @@ export const WORK_ITEMS: WorkItem[] = [
     result: '用 Luau 做出整套遊戲系統與互動邏輯。',
     description:
       '接案期間在 Roblox 上開發的料理主題遊戲，用 Luau 實作遊戲系統與互動邏輯。影片是當時的展示。',
-    metrics: ['Luau', 'Roblox'],
+    metrics: ['Luau', 'Roblox Studio'],
     link: 'https://youtu.be/gYcwkoDgL_g',
-    preview: '/shots/cooking-game.jpg',
+    preview: '/shots/works/cooking-game/cover.jpg',
   },
 ]
 
@@ -386,8 +389,7 @@ export const JOURNEY: JourneyEntry[] = [
     track: '資安',
     title: '沉澱，資安長出來',
     milestone: true,
-    detail:
-      '少跑外面，一個人專研更多東西，資安是這一年長出來的。也開始投實習。',
+    detail: '少跑外面，一個人專研更多東西，資安是這一年長出來的。也開始投實習。',
   },
   {
     period: '2026 —',
@@ -420,41 +422,56 @@ export const RIDING_PHOTOS: Photo[] = [
 ]
 
 export const SKILLS: SkillGroup[] = [
-  { label: '語言', items: ['Python', 'TypeScript', 'Lua / Luau', 'SQL'] },
   {
-    label: 'Roblox 開發',
+    label: '語言',
+    items: ['Python', 'TypeScript', 'JavaScript', 'Lua', 'Luau', 'C', 'C++', 'C#', 'Java', 'Go'],
+  },
+  {
+    label: '遊戲開發',
     items: [
       'Roblox Studio',
       'Rojo',
       'Wally',
-      'Aftman / Rokit',
       'Lune',
       'luau-lsp',
-      'Selene',
       'StyLua',
-      'react-lua',
       'Charm',
-      'ProfileStore',
+      'Unity',
+      'Godot',
     ],
   },
   {
-    label: '後端與資料',
-    items: ['FastAPI', 'Next.js API Routes', 'Drizzle ORM', 'SQLite'],
+    label: '後端與服務',
+    items: [
+      'FastAPI',
+      'Next.js API Routes',
+      'Drizzle ORM',
+      'PostgreSQL',
+      'SQLite',
+      'MongoDB',
+      'Supabase',
+      'Appwrite',
+    ],
   },
   {
     label: '前端',
-    items: ['Next.js', 'React', 'Tailwind CSS'],
+    items: ['Next.js', 'React', 'Vue', 'Tailwind CSS'],
   },
   {
     label: '基礎設施',
     items: ['Docker', 'Linux', 'OpenWrt', 'Cloudflare Tunnel', 'Proxmox', 'Tailscale'],
   },
   {
-    label: '資安',
-    items: ['Burp Suite', 'IDOR / XSS / CSRF', '負責任揭露', 'WAF / reverse proxy'],
-  },
-  {
     label: '工具與 AI',
-    items: ['Git', 'Claude Code', 'MCP', 'Gemini API', 'LINE Messaging API', 'Vitest', 'ffmpeg'],
+    items: [
+      'Git',
+      'Burp Suite',
+      'Claude Code',
+      'MCP',
+      'Gemini API',
+      'LINE Messaging API',
+      'Vitest',
+      'ffmpeg',
+    ],
   },
 ]

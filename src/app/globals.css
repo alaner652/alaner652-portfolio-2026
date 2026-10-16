@@ -356,10 +356,31 @@
   }
 }
 
+/* ── 導覽列底下的區塊 ──
+   導覽列浮在頁面上不佔版面，main 從最上緣開始、用 padding-top 讓出 --nav-h。
+   頁首如果有自己的底（照片、斜紋、履歷的深色桌面），加 data-nav-overlay：往上墊到膠囊底下，
+   再用同樣的 padding 把內容推回原位，底色才會一路鋪到頁面頂端。只加在每頁最上面那一塊。 */
+:root {
+  --nav-h: 70px; /* Nav：pt-3 (12) + h-14 (56) + 上下邊框 (2) */
+}
+[data-nav-overlay] {
+  margin-top: calc(var(--nav-h) * -1);
+  padding-top: var(--nav-h);
+}
+@media print {
+  [data-nav-overlay] {
+    margin-top: 0;
+    padding-top: 0;
+  }
+}
+
 /* ── 背景點綴（全部靜態，沒有動畫）──
    grain：整頁一層很淡的顆粒，fixed、不吃滑鼠，讓大面積暗底不是一塊平的。
-   dots：細點陣，鋪在空的大面積上（首頁沒照片的 Hero、接案頁「怎麼合作」深底帶、頁尾、履歷頁的桌面）。
-   dots-fade：點陣往下淡出，用在 Hero，免得跟下面的內容打架。
+   每一區用不同的點綴，免得整站到處長得一樣（2026-10-17，他嫌全站點陣單調又詭異）：
+   stripes：135° 細斜紋，取自設計稿佔位圖的斜紋，用在首頁 Hero（沒照片時）和頁尾。
+   blueprint：細格線，像藍圖，只用在接案頁「怎麼合作」那條流程帶。
+   fade-down：往下淡出，用在 Hero，免得跟下面的內容打架。
+   履歷頁不放點綴：一張紙放在素色桌面上就好。
    不是光暈、不用徑向漸層。列印時全部拿掉。 */
 .grain {
   position: fixed;
@@ -370,16 +391,22 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
 }
-.dots {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.5' cy='1.5' r='1.5' fill='%232e3339'/%3E%3C/svg%3E");
-  background-size: 28px 28px;
+.stripes {
+  background-image: repeating-linear-gradient(135deg, transparent 0 13px, #202328 13px 14px);
 }
-.dots-fade {
+.blueprint {
+  background-image:
+    linear-gradient(#1f2227 1px, transparent 1px), linear-gradient(90deg, #1f2227 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: -1px -1px;
+}
+.fade-down {
   mask-image: linear-gradient(180deg, #000 30%, transparent 95%);
 }
 @media print {
   .grain,
-  .dots {
+  .stripes,
+  .blueprint {
     display: none;
   }
 }
