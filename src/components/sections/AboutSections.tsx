@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import { SkillIcon } from '@/components/common/SkillIcon'
-import { RidingStrip } from '@/components/sections/RidingStrip'
+import { RidingGallery } from '@/components/sections/RidingGallery'
 import { RIDING_PHOTOS, SITE_CONFIG } from '@/constants'
 import { content } from '@/i18n/content'
 import { t } from '@/i18n/server'
@@ -21,6 +21,7 @@ export function AboutHero() {
             fill
             priority
             sizes="(min-width: 768px) 520px, 100vw"
+            quality={90}
             className="object-cover"
           />
         </div>
@@ -46,7 +47,7 @@ export function Beliefs() {
   const { ABOUT_WORDS } = content()
   return (
     <section className="border-line mt-12 border-y md:mt-28">
-      <ol className="wrap flex overflow-x-auto [scrollbar-width:none] md:grid md:grid-cols-4 md:overflow-visible">
+      <ol className="wrap flex [scrollbar-width:none] overflow-x-auto md:grid md:grid-cols-4 md:overflow-visible">
         {ABOUT_WORDS.lines.map(({ text, from }, i) => (
           <li
             key={text}
@@ -76,7 +77,7 @@ export function Timeline() {
   return (
     <section className="wrap pt-14 md:pt-28">
       <div className="mb-2 flex items-baseline justify-between gap-6 md:mb-6">
-        <h2 className="text-text text-[30px] leading-[1.3] font-black md:text-h2 md:tracking-[-0.03em]">
+        <h2 className="text-text md:text-h2 text-[30px] leading-[1.3] font-black md:tracking-[-0.03em]">
           {d.timeline}
         </h2>
         <span className="font-hand text-accent hidden shrink-0 text-[26px] md:inline">
@@ -144,7 +145,9 @@ export function SkillList() {
             key={g.label}
             className="border-line border-t py-3 md:grid md:grid-cols-[160px_minmax(0,1fr)] md:gap-6 md:py-4"
           >
-            <dt className="text-text-3 font-mono text-[11px] md:pt-1.5 md:text-[13px]">{g.label}</dt>
+            <dt className="text-text-3 font-mono text-[11px] md:pt-1.5 md:text-[13px]">
+              {g.label}
+            </dt>
             <dd className="mt-1.5 md:mt-0">
               <ul className="flex flex-wrap gap-x-5 gap-y-2">
                 {g.items.map((name) => (
@@ -165,28 +168,22 @@ export function SkillList() {
   )
 }
 
-/** 工作之外：標題 + 一句旁註，底下是照稿排的追焦照橫排（RidingStrip，點了放大）。 */
+/** 工作之外：滿版一張正面迎來的追焦照收尾，標題壓在照片左下；底下四張照真實比例錯落排，點了放大。 */
 export function Riding() {
   const d = t().about
   return (
-    <section id="offduty" className="pt-14 pb-10 md:pt-28 md:pb-24">
-      <div className="wrap mb-4 flex items-baseline justify-between gap-6 md:mb-6">
-        <h2 className="text-text text-[26px] font-black md:text-h2 md:tracking-[-0.03em]">
-          <span className="md:hidden">{d.ridingShort}</span>
-          <span className="hidden md:inline">{d.riding}</span>
-        </h2>
-        <span className="text-text-2 hidden text-[15px] md:inline">{d.ridingNote}</span>
-      </div>
-      <RidingStrip
-        photos={RIDING_PHOTOS}
-        labels={{
-          list: d.ridingLabel,
-          open: d.ridingOpen,
-          close: d.ridingClose,
-          prev: d.ridingPrev,
-          next: d.ridingNext,
-        }}
-      />
-    </section>
+    <RidingGallery
+      photos={RIDING_PHOTOS}
+      labels={{
+        eyebrow: d.ridingEyebrow,
+        title: d.riding,
+        note: d.ridingNote,
+        list: d.ridingLabel,
+        open: d.ridingOpen,
+        close: d.ridingClose,
+        prev: d.ridingPrev,
+        next: d.ridingNext,
+      }}
+    />
   )
 }
