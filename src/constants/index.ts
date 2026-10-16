@@ -18,6 +18,7 @@ export const SITE_CONFIG: SiteConfig = {
   github: 'https://github.com/alaner652',
   instagram: 'https://www.instagram.com/alaner652/',
   threads: 'https://www.threads.com/@alaner652',
+  discord: 'https://discord.gg/HXn95dRd',
   email: 'hhgg12661@gmail.com',
   avatar: '/avatar.jpg',
   // 首頁 Hero 的滿版人物照（橫式、人在右 1/3）。放進 public/ 再填路徑；沒填就是純暗底
@@ -123,7 +124,7 @@ export const HIRE = {
     {
       label: '聊需求',
       description:
-        '寄信說你要做什麼、給誰用、大概什麼時候要。不用寫規格書，一兩天內回你，先確認我做不做得到。',
+        'Discord 或寄信說你要做什麼、給誰用、大概什麼時候要。不用寫規格書，先確認我做不做得到。',
     },
     {
       label: '報價',

@@ -1,12 +1,11 @@
 'use client'
 
-import { Menu, X } from 'lucide-react'
+import { Languages, Menu, X } from 'lucide-react'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { BrandIcon } from '@/components/common/SocialIcons'
-import { NAV_LINKS, SITE_CONFIG } from '@/constants'
+import { NAV_LINKS } from '@/constants'
 import { LLink as Link, useDict } from '@/i18n/client'
 import { LOCALES, localePath, splitLocale, type Locale } from '@/i18n/config'
 import { cn } from '@/lib/utils'
@@ -18,7 +17,6 @@ const LABEL: Record<string, 'about' | 'projects' | 'blog' | 'resume' | 'hire'> =
   '/resume': 'resume',
   '/hire': 'hire',
 }
-const LOCALE_LABEL: Record<Locale, string> = { zh: '中', en: 'EN' }
 const NO = (i: number) => String(i + 1).padStart(2, '0')
 
 // 桌機連結：mono 編號 + 文字；目前頁面整個變橘（編號也是），hover 底下畫一條短線
@@ -30,7 +28,7 @@ const INDEX = 'text-text-3 group-aria-[current=page]/nl:text-accent font-mono te
 const MOBILE_LINK =
   'group/ml text-text-2 hover:text-text aria-[current=page]:text-accent aria-[current=page]:border-accent -mx-3 flex h-11 items-center gap-3 border-l-2 border-transparent px-3 text-base transition-colors'
 
-/** 語言切換：一顆小膠囊，兩個語系並排，目前的那個實色。 */
+/** 語言切換：一個 icon，點了換到另一個語系的同一頁。目標語系寫在 aria-label / title 裡。 */
 function LocaleSwitch({
   locale,
   path,
@@ -43,36 +41,21 @@ function LocaleSwitch({
   onNavigate?: () => void
 }) {
   const d = useDict().nav
+  const other: Locale = locale === 'zh' ? 'en' : 'zh'
   return (
-    <div
+    <NextLink
+      href={localePath(other, path)}
+      hrefLang={other === 'zh' ? 'zh-Hant' : 'en'}
+      aria-label={d.switchLabel}
+      title={d.switchLabel}
+      onClick={onNavigate}
       className={cn(
-        'border-border flex rounded-full border p-0.5 font-mono text-[11px]',
+        'text-text-2 hover:text-text flex size-11 items-center justify-center transition-colors',
         className
       )}
-      aria-label={d.switchLabel}
     >
-      {LOCALES.map((l) =>
-        l === locale ? (
-          <span
-            key={l}
-            aria-current="true"
-            className="bg-text text-bg flex h-6 min-w-8 items-center justify-center rounded-full px-2"
-          >
-            {LOCALE_LABEL[l]}
-          </span>
-        ) : (
-          <NextLink
-            key={l}
-            href={localePath(l, path)}
-            hrefLang={l === 'zh' ? 'zh-Hant' : 'en'}
-            onClick={onNavigate}
-            className="text-text-2 hover:text-text flex h-6 min-w-8 items-center justify-center rounded-full px-2 transition-colors"
-          >
-            {LOCALE_LABEL[l]}
-          </NextLink>
-        )
-      )}
-    </div>
+      <Languages size={18} strokeWidth={1.75} aria-hidden="true" />
+    </NextLink>
   )
 }
 
@@ -129,7 +112,7 @@ export function Nav() {
             small&nbsp;<span className="text-accent">R</span>
           </Link>
 
-          {/* 桌機：編號連結列 → 語言切換 → GitHub */}
+          {/* 桌機：編號連結列 → 語言切換 icon */}
           <div className="flex items-center gap-4 text-sm max-[720px]:hidden">
             {NAV_LINKS.map((link, i) => (
               <Link
@@ -144,17 +127,7 @@ export function Nav() {
                 {d[LABEL[link.href]] ?? link.label}
               </Link>
             ))}
-            <LocaleSwitch locale={locale} path={pathname} className="ml-2" />
-            <a
-              href={SITE_CONFIG.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              title="GitHub"
-              className="text-text-2 hover:text-accent -mr-2 flex size-11 items-center justify-center transition-colors"
-            >
-              <BrandIcon name="GitHub" size={20} />
-            </a>
+            <LocaleSwitch locale={locale} path={pathname} className="-mr-2 ml-1" />
           </div>
 
           {/* 手機：開合選單 */}
@@ -203,15 +176,7 @@ export function Nav() {
                   {d[LABEL[link.href]] ?? link.label}
                 </Link>
               ))}
-              <div className="border-line mt-2 flex items-center justify-between border-t pt-3">
-                <a
-                  href={SITE_CONFIG.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-text-2 hover:text-accent flex h-11 items-center gap-2 font-mono text-sm transition-colors"
-                >
-                  <BrandIcon name="GitHub" size={16} /> GitHub
-                </a>
+              <div className="border-line mt-2 flex items-center justify-end border-t pt-2">
                 <LocaleSwitch
                   locale={locale}
                   path={pathname}

@@ -125,6 +125,8 @@ export interface SiteConfig {
   /** 社群帳號，Footer 跟 Person JSON-LD 的 sameAs 用。 */
   instagram?: string
   threads?: string
+  /** Discord 好友邀請連結 */
+  discord?: string
   /** public/ 底下的頭像路徑（例如 '/avatar.jpg'）。沒填的話 Hero 用 monogram 佔位。 */
   avatar?: string
   /** 首頁 Hero 滿版照，public/ 底下的路徑。沒填就不放圖 */

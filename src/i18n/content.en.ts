@@ -207,7 +207,7 @@ export const HIRE_EN = {
     {
       label: 'Talk',
       description:
-        "Email me what you want to build, who it's for, and roughly when. No spec needed. I reply within a day or two and confirm whether I can do it.",
+        "Message me on Discord (or email) with what you want to build, who it's for, and roughly when. No spec needed. I'll confirm whether I can do it.",
     },
     {
       label: 'Quote',

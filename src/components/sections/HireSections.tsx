@@ -40,7 +40,9 @@ export function HireHero() {
       <div className="mt-5 flex flex-col gap-6 md:mt-10 md:flex-row md:items-end md:justify-between md:gap-10">
         <p className="text-text-2 max-w-[30em] text-base leading-[1.8] md:text-xl">{HIRE.lead}</p>
         <a
-          href={`mailto:${SITE_CONFIG.email}`}
+          href={SITE_CONFIG.discord}
+          target="_blank"
+          rel="noopener noreferrer"
           className={cn(BUTTON_PRIMARY, 'shrink-0 justify-center')}
         >
           {d.cta}

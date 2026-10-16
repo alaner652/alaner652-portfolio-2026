@@ -114,6 +114,7 @@ const resumeJsonLd = {
       SITE_CONFIG.github,
       SITE_CONFIG.instagram,
       SITE_CONFIG.threads,
+      SITE_CONFIG.discord,
       SITE_CONFIG.linkedin,
     ].filter(Boolean),
     jobTitle: '全端工程師',

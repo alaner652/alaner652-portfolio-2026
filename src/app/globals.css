@@ -408,10 +408,10 @@
     }
   }
 }
-/* 開頁動畫一個分頁只演一次：home/IntroOnce.tsx（和 layout.tsx 的開頁腳本）看過就在 <html> 掛 data-intro="done"，
+/* 開頁動畫一個分頁只演一次：home/IntroOnce.tsx 看過就寫 cookie，首頁 page.tsx 讀到就在外層掛 data-intro="done"（站內切頁時 IntroOnce 也會掛在 <html>），
    之後 Hero 的逐字上浮和掛了 .intro 的淡入（Bento 等）都直接是完成狀態。這條沒有 layer，壓得過 utilities。 */
-html[data-intro='done'] .rise-ch,
-html[data-intro='done'] .intro {
+[data-intro='done'] .rise-ch,
+[data-intro='done'] .intro {
   animation: none;
 }
 

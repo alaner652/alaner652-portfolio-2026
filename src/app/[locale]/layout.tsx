@@ -1,6 +1,5 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { JetBrains_Mono, Noto_Sans_TC, Caveat } from 'next/font/google'
 
 // 霞鶩文楷 TC — handwriting/kai font for Chinese headings (TC subset only, lazy per unicode-range)
@@ -100,12 +99,6 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col print:bg-white print:text-black">
-        {/* 首頁開頁動畫一個分頁只演一次：看過就在 <html> 掛 data-intro="done"（見 home/IntroOnce.tsx）。
-            用 next/script 的 beforeInteractive 放在 hydration 之前；原生 <script> 在語系切換時會被 React 當成
-            client render 而警告。dev 下它可能排得比較後面，硬重整時偶爾會先閃一下動畫，production 不會。 */}
-        <Script id="intro-once" strategy="beforeInteractive">
-          {`try{if(sessionStorage.getItem('intro'))document.documentElement.dataset.intro='done'}catch(e){}`}
-        </Script>
         {/* RevealWrapper 靠 IntersectionObserver 淡入；JS 失效時強制顯示，避免整頁空白 */}
         <noscript>
           <style>
