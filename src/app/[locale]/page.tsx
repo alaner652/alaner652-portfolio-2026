@@ -4,6 +4,7 @@ import { Hero } from '@/components/home/Hero'
 import { Work } from '@/components/home/Work'
 import { Writing } from '@/components/home/Writing'
 import { SITE_CONFIG } from '@/constants'
+import { initLocale } from '@/i18n/server'
 
 const personJsonLd = {
   '@context': 'https://schema.org',
@@ -24,7 +25,8 @@ const personJsonLd = {
 
 /** 首頁：Hero → Bento（追焦照／技能／GitHub，他最喜歡的三格）→ 做過的東西 → 三個動詞 → 最近寫的 → 大型 Footer。
     年份和經歷只在 /about，不在這裡再講一次。 */
-export default function Home() {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params)
   return (
     <>
       <script

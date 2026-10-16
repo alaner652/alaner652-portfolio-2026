@@ -1,24 +1,23 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
+import { LLink as Link } from '@/i18n/client'
 import { useMemo, useState } from 'react'
 
-import { WORK_ITEMS } from '@/constants'
+import { useDict } from '@/i18n/client'
 import { cn } from '@/lib/utils'
 import { PROJECT_CATEGORIES } from '@/types'
 import type { ProjectCategory, WorkItem } from '@/types'
 
-const ALL = '全部' as const
+const ALL = '__all__' as const
 type Filter = typeof ALL | ProjectCategory
 
-const CATEGORIES = PROJECT_CATEGORIES.filter((c) => WORK_ITEMS.some((i) => i.category === c))
-
-function linkLabel(url: string) {
-  if (url.includes('github')) return 'GitHub'
-  if (url.includes('youtu')) return '影片'
-  if (url.includes('roblox')) return 'Roblox'
-  return '線上版'
+type P = ReturnType<typeof useDict>['projects']
+function linkLabel(url: string, L: P['link']) {
+  if (url.includes('github')) return L.github
+  if (url.includes('youtu')) return L.video
+  if (url.includes('roblox')) return L.roblox
+  return L.live
 }
 
 function matches(item: WorkItem, q: string) {
@@ -35,10 +34,12 @@ function Preview({
   index,
   className,
   title = true,
+  d,
 }: {
   item: WorkItem
   index: number
   className?: string
+  d: P
   /** 手機版接在列底下時標題已經在列上，不再印一次 */
   title?: boolean
 }) {
@@ -49,7 +50,7 @@ function Preview({
         <div className="border-border bg-raised overflow-hidden rounded border">
           <Image
             src={item.preview}
-            alt={`${item.title} 的畫面`}
+            alt={d.screenAlt(item.title)}
             width={1200}
             height={600}
             sizes="(min-width: 768px) 520px, 100vw"
@@ -71,7 +72,7 @@ function Preview({
       )}
       <div className="flex flex-wrap gap-6 text-[15px]">
         <Link href={`/projects/${item.slug}`} className="border-accent text-accent border-b pb-0.5">
-          看完整介紹 →
+          {d.caseLink}
         </Link>
         {ext.map((href) => (
           <a
@@ -81,7 +82,7 @@ function Preview({
             rel="noopener noreferrer"
             className="border-border-strong text-text hover:border-text border-b pb-0.5 transition-colors"
           >
-            {linkLabel(href)} ↗
+            {linkLabel(href, d.link)} ↗
           </a>
         ))}
       </div>
@@ -91,7 +92,9 @@ function Preview({
 
 /** /projects：一張目錄。左邊一列一件（空心大編號，滑過填橘），右邊黏著的預覽欄跟著換。
     上方分類 tab 帶數量、搜尋框找專案或技術。 */
-export function ProjectIndex() {
+export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
+  const d = useDict().projects
+  const CATEGORIES = PROJECT_CATEGORIES.filter((c) => WORK_ITEMS.some((i) => i.category === c))
   const [filter, setFilter] = useState<Filter>(ALL)
   const [q, setQ] = useState('')
   const [hover, setHover] = useState<string | null>(null)
@@ -113,7 +116,7 @@ export function ProjectIndex() {
       <div className="wrap border-line mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-b md:mt-10">
         <div
           role="group"
-          aria-label="分類"
+          aria-label={d.category}
           className="-mx-5 flex gap-6 overflow-x-auto px-5 [scrollbar-width:none] md:mx-0 md:gap-7 md:px-0"
         >
           {([ALL, ...CATEGORIES] as Filter[]).map((c) => (
@@ -129,18 +132,18 @@ export function ProjectIndex() {
                   : 'text-text-3 hover:text-text border-transparent'
               )}
             >
-              {c}
+              {c === ALL ? d.all : (d.categories[c] ?? c)}
               <sup className="ml-0.5 font-mono text-[11px]">{count(c)}</sup>
             </button>
           ))}
         </div>
         <label className="text-text-3 flex items-center gap-2 text-sm">
-          搜尋
+          {d.search}
           <input
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="專案或技術"
+            placeholder={d.searchPlaceholder}
             className="border-border-strong text-text placeholder:text-text-3 h-9 w-44 border-b bg-transparent text-sm outline-none focus-visible:border-accent md:w-55"
           />
         </label>
@@ -148,9 +151,7 @@ export function ProjectIndex() {
 
       <div className="wrap grid gap-8 pt-2 pb-20 md:grid-cols-12 md:gap-8 md:pb-24">
         <ol className="md:col-span-7" onPointerLeave={() => setHover(null)}>
-          {items.length === 0 && (
-            <li className="text-text-3 py-10 text-sm">沒有符合「{q}」的專案。</li>
-          )}
+          {items.length === 0 && <li className="text-text-3 py-10 text-sm">{d.empty(q)}</li>}
           {items.map((item, i) => {
             const on = i === activeIndex
             return (
@@ -188,7 +189,9 @@ export function ProjectIndex() {
                       </span>
                     )}
                   </span>
-                  <span className="text-text-2 text-sm">{item.category}</span>
+                  <span className="text-text-2 text-sm">
+                    {d.categories[item.category] ?? item.category}
+                  </span>
                   <span
                     className={cn('hidden md:block', on ? 'text-accent' : 'text-text-3')}
                     aria-hidden="true"
@@ -202,6 +205,7 @@ export function ProjectIndex() {
                     item={active}
                     index={i}
                     title={false}
+                    d={d}
                     className="border-line border-b py-5 md:hidden"
                   />
                 )}
@@ -212,7 +216,7 @@ export function ProjectIndex() {
         {active && (
           <aside className="hidden md:col-span-5 md:block">
             <div className="sticky top-24">
-              <Preview item={active} index={activeIndex} />
+              <Preview item={active} index={activeIndex} d={d} />
             </div>
           </aside>
         )}

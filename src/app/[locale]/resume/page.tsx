@@ -1,34 +1,19 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import { LLink as Link } from '@/i18n/client'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import type { ReactNode } from 'react'
 import remarkGfm from 'remark-gfm'
 
-import { EDUCATION, SITE_CONFIG, SKILLS, WORK_ITEMS } from '@/constants'
+import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
+import { content } from '@/i18n/content'
+import { zh } from '@/i18n/dict'
+import { pageMeta } from '@/i18n/meta'
+import { initLocale, t } from '@/i18n/server'
 import { getPostBySlug } from '@/lib/mdx'
 
-const RESUME_TITLE = '全端工程師 · 資安'
-const DESCRIPTION = '吳宸麒 — 全端工程師，專注在資安、自動化與逆向。'
-
-export const metadata: Metadata = {
-  title: '履歷',
-  description: DESCRIPTION,
-  alternates: { canonical: '/resume' },
-  openGraph: {
-    title: `履歷 | ${SITE_CONFIG.name}`,
-    description: DESCRIPTION,
-    url: '/resume',
-    type: 'profile',
-    locale: 'zh_TW',
-    siteName: SITE_CONFIG.name,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `履歷 | ${SITE_CONFIG.name}`,
-    description: DESCRIPTION,
-    creator: `@${SITE_CONFIG.handle}`,
-  },
+export function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  return params.then(({ locale }) => pageMeta(locale, 'resume', '/resume', 'profile'))
 }
 
 /* ── 把 resume.mdx 拆成版面要的形狀 ──
@@ -93,7 +78,14 @@ function Bullets({ source }: { source: string }) {
 }
 
 /** 專案標題「Agora-AI — 校務 AI 助理」對到 WORK_ITEMS，連去作品頁 */
+/** 英文履歷裡的專案標題 */
+const ALIASES: Record<string, string> = {
+  'Breakfast shop ordering system': 'order',
+  'Girls Band Shot': 'girls-band-shot',
+}
 function caseHref(title: string) {
+  const alias = Object.keys(ALIASES).find((k) => title.startsWith(k))
+  if (alias) return `/projects/${ALIASES[alias]}`
   const item = WORK_ITEMS.find((w) => title.startsWith(w.title))
   return item ? `/projects/${item.slug}` : undefined
 }
@@ -125,7 +117,7 @@ const resumeJsonLd = {
       SITE_CONFIG.linkedin,
     ].filter(Boolean),
     jobTitle: '全端工程師',
-    description: DESCRIPTION,
+    description: zh.resume.description,
     address: { '@type': 'PostalAddress', addressLocality: 'Taipei', addressCountry: 'TW' },
     knowsAbout: ['Full-Stack Development', 'Security Research', 'Next.js', 'TypeScript', 'Python'],
   },
@@ -133,16 +125,19 @@ const resumeJsonLd = {
 
 /** 履歷：深色底上一張紙。抬頭（名字／職稱／聯絡）→ 摘要 → 左欄經歷＋專案、右欄技能＋學歷＋工作之外 → 手寫簽名。
     用瀏覽器列印（⌘P）就能存成 PDF：整張紙變白底黑字（globals.css 的 @media print .resume-paper），導覽藏起來，連結印出網址。 */
-export default function ResumePage() {
-  const post = getPostBySlug('resume')
+export default async function ResumePage({ params }: { params: Promise<{ locale: string }> }) {
+  const locale = await initLocale(params)
+  const d = t().resume
+  const post = getPostBySlug('resume', locale)
   if (!post) notFound()
 
   const sections = splitSections(post.content)
-  const get = (title: string) => sections.find((s) => s.title === title)
-  const summary = get('摘要')?.body ?? ''
-  const experience = splitEntries(get('經歷')?.body ?? '')
-  const projects = splitEntries(get('專案')?.body ?? '')
-  const interests = get('興趣')?.body ?? ''
+  const { SKILLS, EDUCATION } = content()
+  const get = (...titles: string[]) => sections.find((s) => titles.includes(s.title))
+  const summary = get('摘要', 'Summary')?.body ?? ''
+  const experience = splitEntries(get('經歷', 'Experience')?.body ?? '')
+  const projects = splitEntries(get('專案', 'Projects')?.body ?? '')
+  const interests = get('興趣', 'Off duty')?.body ?? ''
 
   return (
     <div className="bg-bg-deep -mb-px print:bg-white">
@@ -162,7 +157,7 @@ export default function ResumePage() {
                 </span>
               </h1>
               <div className="text-accent mt-2.5 text-[15px] font-bold md:mt-3 md:text-[17px]">
-                {RESUME_TITLE}
+                {d.role}
               </div>
             </div>
             <div className="text-text font-mono text-xs leading-[1.9] md:text-right md:text-[12.5px]">
@@ -183,7 +178,7 @@ export default function ResumePage() {
                 alaner652.com
               </Link>
               <br />
-              <span className="text-text-3">台北 · GMT+8</span>
+              <span className="text-text-3">{d.location}</span>
             </div>
           </header>
 
@@ -196,7 +191,7 @@ export default function ResumePage() {
           <div className="mt-7 grid gap-10 md:mt-9 md:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] md:gap-12">
             {/* 左欄：經歷、專案 */}
             <div>
-              <H>經歷</H>
+              <H>{d.experience}</H>
               {experience.map((e) => (
                 <section
                   key={e.title}
@@ -214,7 +209,7 @@ export default function ResumePage() {
                 </section>
               ))}
 
-              <H className="mt-7">專案</H>
+              <H className="mt-7">{d.projects}</H>
               {projects.map((e) => {
                 const href = caseHref(e.title)
                 return (
@@ -244,7 +239,7 @@ export default function ResumePage() {
 
             {/* 右欄：技能、學歷、工作之外 */}
             <div>
-              <H>技能</H>
+              <H>{d.skills}</H>
               <dl className="text-sm leading-[1.75]">
                 {SKILLS.map((g) => (
                   <div key={g.label} className="border-line border-t py-2.5">
@@ -254,7 +249,7 @@ export default function ResumePage() {
                 ))}
               </dl>
 
-              <H className="mt-7">學歷</H>
+              <H className="mt-7">{d.education}</H>
               {EDUCATION.map((e) => (
                 <div key={e.school} className="border-line border-t pt-2.5 text-sm leading-[1.75]">
                   <b className="text-text">{e.school}</b>
@@ -267,7 +262,7 @@ export default function ResumePage() {
 
               {interests && (
                 <>
-                  <H className="mt-7">工作之外</H>
+                  <H className="mt-7">{d.offDuty}</H>
                   <p className="border-line text-text-body border-t pt-2.5 text-sm leading-[1.8]">
                     {interests}
                   </p>
@@ -278,7 +273,7 @@ export default function ResumePage() {
 
           <div className="mt-8 flex justify-end md:mt-10">
             <span className="font-hand text-accent inline-block -rotate-3 text-[28px] md:text-[34px]">
-              — small R
+              {d.signature}
             </span>
           </div>
         </article>

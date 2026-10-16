@@ -1,11 +1,12 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
+import { LLink as Link } from '@/i18n/client'
 
 import { SkillIcon } from '@/components/common/SkillIcon'
 import { ContributionSnake } from '@/components/home/ContributionSnake'
 import { RIDING_PHOTOS, SITE_CONFIG, SKILLS } from '@/constants'
 import SKILL_ICONS from '@/constants/skill-icons.json'
+import { t } from '@/i18n/server'
 import { type Contributions, getContributions } from '@/lib/github'
 
 const TILE =
@@ -13,6 +14,7 @@ const TILE =
 
 /** 工作之外：整格一張追焦照，字疊在上面。 */
 function PhotoTile() {
+  const d = t().home
   const photo = RIDING_PHOTOS[4]
   return (
     <Link href="/about#offduty" className={`${TILE} min-h-64 bg-transparent md:col-span-7`}>
@@ -30,8 +32,8 @@ function PhotoTile() {
         aria-hidden="true"
       />
       <div className="relative mt-auto text-white">
-        <div className="text-2xs font-mono tracking-[0.18em] uppercase opacity-80">Off duty</div>
-        <h2 className="mt-3 text-[28px] font-black tracking-[-0.02em]">工作之外</h2>
+        <div className="text-2xs font-mono tracking-[0.18em] uppercase opacity-80">{d.offDuty}</div>
+        <h2 className="mt-3 text-[28px] font-black tracking-[-0.02em]">{d.offDuty}</h2>
       </div>
       <ArrowUpRight
         size={20}
@@ -64,12 +66,13 @@ function LogoRow({ items, reverse = false }: { items: string[]; reverse?: boolea
 
 /** 技能：兩排彩色 logo 一左一右流過去，兩邊漸淡。清單直接來自 SKILLS，跟 /about 一致。 */
 function SkillsTile() {
+  const d = t().home
   const half = Math.ceil(LOGO_SKILLS.length / 2)
   return (
     <Link href="/about#skills" className={`${TILE} md:col-span-5`}>
-      <div className="text-text-3 text-2xs font-mono tracking-[0.18em] uppercase">Skills</div>
+      <div className="text-text-3 text-2xs font-mono tracking-[0.18em] uppercase">{d.skills}</div>
       <h2 className="group-hover/tile:text-accent mt-3 text-[28px] font-black tracking-[-0.02em] transition-colors">
-        會的東西
+        {d.skills}
       </h2>
       <div
         className="-mx-6 mt-6 mb-10 space-y-3 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
@@ -90,6 +93,7 @@ function SkillsTile() {
 
 /** GitHub：整格就是貢獻圖，蛇在上面爬。次數只當小字，不當標題。抓不到就只剩連結。 */
 function GithubTile({ data }: { data: Contributions | null }) {
+  const d = t().home
   // 第一天不是週日的話前面補空格，讓每一直欄都是週日到週六
   const pad = data ? new Date(data.days[0].date).getUTCDay() : 0
 
@@ -113,7 +117,7 @@ function GithubTile({ data }: { data: Contributions | null }) {
         GitHub
         {data && (
           <span className="ml-3 tracking-[0.04em] normal-case">
-            最近一年 {data.total.toLocaleString('en-US')} 次貢獻
+            {d.contributions(data.total.toLocaleString('en-US'))}
           </span>
         )}
         <ArrowUpRight
@@ -135,7 +139,7 @@ export async function Bento() {
 
   return (
     <nav
-      aria-label="工作之外、技能、GitHub"
+      aria-label={t().home.bentoLabel}
       className="intro wrap motion-safe:animate-fade-up pt-10 pb-6 [--fade-delay:1300ms] md:pt-16 md:pb-10"
     >
       <div className="grid gap-4 sm:gap-5 md:auto-rows-[minmax(11rem,auto)] md:grid-cols-12">

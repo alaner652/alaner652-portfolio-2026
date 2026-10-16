@@ -1,9 +1,14 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
+import { LLink as Link } from '@/i18n/client'
 import { notFound } from 'next/navigation'
 
 import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
+import { content } from '@/i18n/content'
+import { hasLocale, localePath } from '@/i18n/config'
+import { getDict } from '@/i18n/dict'
+import { languages } from '@/i18n/meta'
+import { initLocale, t } from '@/i18n/server'
 import { cn } from '@/lib/utils'
 
 export function generateStaticParams() {
@@ -13,23 +18,25 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
-  const item = WORK_ITEMS.find((w) => w.slug === slug)
+  const { slug, locale } = await params
+  const l = hasLocale(locale) ? locale : 'zh'
+  const path = `/projects/${slug}`
+  const item = content(l).WORK_ITEMS.find((w) => w.slug === slug)
   if (!item) return {}
   const title = item.title
   const description = item.result ?? item.description
   return {
     title,
     description,
-    alternates: { canonical: `/projects/${slug}` },
+    alternates: { canonical: localePath(l, path), languages: languages(path) },
     openGraph: {
       title: `${title} | ${SITE_CONFIG.name}`,
       description,
-      url: `/projects/${slug}`,
+      url: localePath(l, path),
       type: 'website',
-      locale: 'zh_TW',
+      locale: l === 'en' ? 'en_US' : 'zh_TW',
       siteName: SITE_CONFIG.name,
       images: item.preview ? [item.preview] : undefined,
     },
@@ -42,11 +49,12 @@ export async function generateMetadata({
   }
 }
 
-function linkLabel(url: string) {
-  if (url.includes('github')) return 'GitHub'
-  if (url.includes('youtu')) return '影片'
-  if (url.includes('roblox')) return 'Roblox'
-  return '線上版'
+type LinkLabels = ReturnType<typeof getDict>['projects']['link']
+function linkLabel(url: string, L: LinkLabels) {
+  if (url.includes('github')) return L.github
+  if (url.includes('youtu')) return L.video
+  if (url.includes('roblox')) return L.roblox
+  return L.live
 }
 
 /** 一段：左邊編號 + 標題，右邊內容。 */
@@ -64,12 +72,19 @@ function Sec({ no, title, children }: { no: string; title: string; children: Rea
 
 /** 作品詳情（簡化版）：滿版截圖當底的頁首 → 一列事實（分類／技術／連結）→ 概述 → 畫面 → 下一個作品。
     內容全部來自 WORK_ITEMS；之後要寫長一點的「問題／解法／學到的事」再加欄位。 */
-export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ProjectPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>
+}) {
+  await initLocale(params)
   const { slug } = await params
-  const index = WORK_ITEMS.findIndex((w) => w.slug === slug)
+  const d = t().projects
+  const items = content().WORK_ITEMS
+  const index = items.findIndex((w) => w.slug === slug)
   if (index < 0) notFound()
-  const item = WORK_ITEMS[index]
-  const next = WORK_ITEMS[(index + 1) % WORK_ITEMS.length]
+  const item = items[index]
+  const next = items[(index + 1) % items.length]
   const links = [item.link, item.demo].filter((l): l is string => Boolean(l))
 
   return (
@@ -101,7 +116,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         <div className="wrap relative pb-8 md:pb-12">
           <nav aria-label="麵包屑" className="text-text-3 text-sm">
             <Link href="/projects" className="text-text-2 hover:text-text transition-colors">
-              做過的東西
+              {d.title}
             </Link>{' '}
             / {item.title}
           </nav>
@@ -120,17 +135,17 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <div className="border-line border-y">
         <dl className="wrap grid gap-x-6 text-[15px] md:grid-cols-3">
           <div className="border-line flex justify-between gap-4 border-b py-3 md:block md:border-r md:border-b-0 md:py-5">
-            <dt className="text-text-3 text-[13px]">分類</dt>
-            <dd className="text-text md:mt-1">{item.category}</dd>
+            <dt className="text-text-3 text-[13px]">{d.category}</dt>
+            <dd className="text-text md:mt-1">{d.categories[item.category] ?? item.category}</dd>
           </div>
           <div className="border-line flex justify-between gap-4 border-b py-3 md:block md:border-r md:border-b-0 md:py-5 md:pl-6">
-            <dt className="text-text-3 text-[13px]">技術</dt>
+            <dt className="text-text-3 text-[13px]">{d.tech}</dt>
             <dd className="text-text text-right md:mt-1 md:text-left">
               {item.metrics?.join('、') ?? '—'}
             </dd>
           </div>
           <div className="flex justify-between gap-4 py-3 md:block md:py-5 md:pl-6">
-            <dt className="text-text-3 text-[13px]">連結</dt>
+            <dt className="text-text-3 text-[13px]">{d.links}</dt>
             <dd className="text-text flex gap-4 md:mt-1">
               {links.length ? (
                 links.map((href) => (
@@ -141,11 +156,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                     rel="noopener noreferrer"
                     className="border-accent hover:text-accent border-b transition-colors"
                   >
-                    {linkLabel(href)} ↗
+                    {linkLabel(href, d.link)} ↗
                   </a>
                 ))
               ) : (
-                <span className="text-text-3">沒有公開連結</span>
+                <span className="text-text-3">{d.noLinks}</span>
               )}
             </dd>
           </div>
@@ -153,18 +168,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </div>
 
       <div className="wrap">
-        <Sec no="01" title="概述">
+        <Sec no="01" title={d.overview}>
           <p className="text-text-body text-[15px] leading-[1.9] md:text-[17px]">
             {item.description}
           </p>
         </Sec>
         {item.preview && !item.card && (
-          <Sec no="02" title="畫面">
+          <Sec no="02" title={d.screens}>
             <figure className="m-0">
               <div className="border-border overflow-hidden rounded border">
                 <Image
                   src={item.preview}
-                  alt={`${item.title} 的畫面`}
+                  alt={d.screenAlt(item.title)}
                   width={1600}
                   height={900}
                   sizes="(min-width: 768px) 860px, 100vw"
@@ -180,7 +195,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <Link href={`/projects/${next.slug}`} className="group/next border-line block border-t">
         <div className="wrap flex items-end justify-between gap-6 py-8 md:py-12">
           <div>
-            <div className="text-text-3 text-sm">下一個作品</div>
+            <div className="text-text-3 text-sm">{d.next}</div>
             <div className="text-text group-hover/next:text-accent mt-2 text-[36px] leading-none font-black tracking-[-0.03em] transition-colors md:text-[clamp(48px,6vw,88px)] md:tracking-[-0.04em]">
               {next.title}
             </div>

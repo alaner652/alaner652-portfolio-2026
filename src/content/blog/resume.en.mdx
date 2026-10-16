@@ -1,0 +1,70 @@
+---
+title: 'Resume'
+date: '2026-07-23'
+description: 'Wu Chen-Chi — full-stack engineer · security'
+tags: ['resume']
+wide: true
+hidden: true
+---
+
+{/* Skills and education are not here: /resume reads SKILLS and EDUCATION from constants, same source as /about. */}
+
+## Summary
+
+Full-stack engineer focused on security, automation and reverse engineering. I find real problems in the systems I use every day, disclose them responsibly, and turn undocumented internal interfaces into usable tools.
+
+---
+
+## Experience
+
+### Security and automation · University computing center
+
+2026 – present
+
+- Disclosed vulnerabilities in the school's administrative system through HITCON ZeroDay, including an IDOR that exposed other students' data.
+- Brought in by the computing center after the disclosure to assess and fix within authorization: closed several backdoors and fixed several XSS issues.
+- Wrote internal automation tools in Python that replaced manual operations work and cut repetitive tasks for the unit.
+- Proposed a WAF and reverse-proxy hardening plan; it was later outsourced to a vendor and implemented along largely the same lines.
+- Recognized by the school with two merit citations, a certificate and a scholarship.
+
+### Freelance Roblox developer · Remote
+
+2022 – 2024
+
+- Freelance work with developers around the world on game projects, all communication in English.
+- Combat, FPS, progression and inventory systems in Luau.
+- Self-taught in Roblox Studio since middle school; first paid job in 2022.
+
+---
+
+## Projects
+
+### Agora-AI — campus AI assistant
+
+_FastAPI · Next.js · Docker · SQLite · Gemini API_
+
+- Reverse engineered the undocumented school system and wrapped it into a usable API.
+- Built an AI agent with 10 tools that answers natural-language questions about timetables, grades, attendance and leave.
+- Containerized with Docker and deployed to a school VM through Cloudflare Tunnel.
+- Paused for now while I rethink the scope.
+
+### Breakfast shop ordering system
+
+_Next.js · Drizzle ORM · SQLite · LINE Messaging API_
+
+- Scan a QR code to order; order status is pushed to the owner over LINE in real time.
+- Order lifecycle modeled as a state machine and synced to the front end over SSE.
+- Nine tables designed with Drizzle ORM; orders store snapshot fields so later menu edits never alter past records.
+
+### Girls Band Shot — subtitle screenshot search
+
+_Next.js · Python · EasyOCR · ffmpeg_
+
+- Built a subtitle index with OCR to search for the frame matching a line across three series.
+- Replaced pre-rendered frames with on-demand ffmpeg generation plus an LRU cache, cutting image storage from 4 GB to zero.
+
+---
+
+## Off duty
+
+Motorcycles, HomeLab (Proxmox, Immich, Docker), electric guitar, osu!, lifting

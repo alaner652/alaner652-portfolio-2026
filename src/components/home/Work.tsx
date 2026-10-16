@@ -1,12 +1,15 @@
 import Image from 'next/image'
-import Link from 'next/link'
+import { LLink as Link } from '@/i18n/client'
 
 import { WorkRows } from '@/components/home/WorkRows'
-import { WORK_ITEMS } from '@/constants'
+import { content } from '@/i18n/content'
+import { t } from '@/i18n/server'
 
 /** 做過的東西：第一件精選放大（截圖微斜 -1°、右邊一段），接著兩件一列一件，最後「還有 N 個」。
     精選和列表都讀 WORK_ITEMS 標 featured 的那幾件，順序照資料。 */
 export function Work() {
+  const d = t()
+  const { WORK_ITEMS } = content()
   const featured = WORK_ITEMS.filter((i) => i.featured)
   const [lead, ...rows] = featured
   const rest = WORK_ITEMS.length - featured.length
@@ -14,12 +17,12 @@ export function Work() {
   return (
     <section className="wrap pt-18 md:pt-30">
       <div className="mb-6 flex items-baseline justify-between md:mb-8">
-        <h2 className="text-text text-h2 font-black tracking-[-0.03em]">做過的東西</h2>
+        <h2 className="text-text text-h2 font-black tracking-[-0.03em]">{d.home.work}</h2>
         <Link
           href="/projects"
           className="text-text hover:text-accent font-mono text-[13px] transition-colors"
         >
-          全部 {WORK_ITEMS.length} 個 →
+          {d.home.allWork(WORK_ITEMS.length)}
         </Link>
       </div>
 
@@ -31,7 +34,7 @@ export function Work() {
           <div className="border-border bg-raised overflow-hidden rounded-md border md:col-span-7 md:-rotate-1 md:transition-transform md:duration-500 md:group-hover/lead:rotate-0 motion-reduce:transition-none">
             <Image
               src={lead.preview}
-              alt={`${lead.title} 的畫面`}
+              alt={d.projects.screenAlt(lead.title)}
               width={1200}
               height={600}
               sizes="(min-width: 768px) 740px, 100vw"
@@ -40,7 +43,9 @@ export function Work() {
           </div>
         )}
         <div className="flex flex-col gap-3 md:col-span-5 md:gap-4">
-          <span className="text-accent font-mono text-xs md:text-[13px]">01 · {lead.category}</span>
+          <span className="text-accent font-mono text-xs md:text-[13px]">
+            01 · {d.projects.categories[lead.category] ?? lead.category}
+          </span>
           <span className="text-text group-hover/lead:text-accent text-[36px] leading-none font-black tracking-[-0.03em] transition-colors md:text-[56px]">
             {lead.title}
           </span>
@@ -48,13 +53,13 @@ export function Work() {
             {lead.result ?? lead.description}
           </span>
           <span className="border-accent text-text self-start border-b pb-0.5 text-[15px]">
-            看完整介紹 →
+            {d.home.caseLink}
           </span>
         </div>
       </Link>
 
       <div className="mt-10 md:mt-18">
-        <WorkRows items={rows} start={2} rest={rest} />
+        <WorkRows items={rows} start={2} rest={rest} moreLabel={d.home.more(rest)} />
       </div>
     </section>
   )

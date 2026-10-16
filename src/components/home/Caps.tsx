@@ -1,9 +1,11 @@
-import { OFFERS } from '@/constants'
+import { content } from '@/i18n/content'
+import { t } from '@/i18n/server'
 
 /** 三個動詞：做出來、守得住、摸清楚。80px 黑體加一個橘色句點，底下一句說明。三欄，手機疊成一欄。 */
 export function Caps() {
+  const { OFFERS } = content()
   return (
-    <section className="wrap pt-22 md:pt-36" aria-label="我能做什麼">
+    <section className="wrap pt-22 md:pt-36" aria-label={t().home.caps}>
       <ul className="grid gap-9 md:grid-cols-3 md:gap-10">
         {OFFERS.map((offer) => (
           <li key={offer.verb} className="flex flex-col gap-2.5 md:gap-3.5">

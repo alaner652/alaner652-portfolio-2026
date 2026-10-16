@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
+import { LLink as Link } from '@/i18n/client'
 import { useState, type PointerEvent } from 'react'
 
 import { cn } from '@/lib/utils'
@@ -13,11 +13,12 @@ interface WorkRowsProps {
   start: number
   /** 「還有 N 個」那列 */
   rest: number
+  moreLabel: string
 }
 
 /** 首頁作品清單：一列一件、細線分隔。滑過某列：標題變橘並右移 16px、其他列退到 35%、
     那件的截圖跟著游標浮出並微傾 ±3°（純 transform / opacity）。最後一列「還有 N 個」帶去 /projects。 */
-export function WorkRows({ items, start, rest }: WorkRowsProps) {
+export function WorkRows({ items, start, rest, moreLabel }: WorkRowsProps) {
   const [hover, setHover] = useState(-1)
   const [pos, setPos] = useState({ x: 0, y: 0 })
   const any = hover >= 0
@@ -88,7 +89,7 @@ export function WorkRows({ items, start, rest }: WorkRowsProps) {
         className={cn(row, 'border-b', any && 'opacity-35')}
       >
         <span className="text-accent font-mono text-[13px] md:text-base">+{rest}</span>
-        <span className="text-text-2 text-lg md:text-xl">還有 {rest} 個 →</span>
+        <span className="text-text-2 text-lg md:text-xl">{moreLabel}</span>
         <span />
       </Link>
 

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
+import { useDict } from '@/i18n/client'
+
 export interface TocHeading {
   id: string
   text: string
@@ -9,6 +11,7 @@ export interface TocHeading {
 
 /** 文章的目錄：列出 h2，捲到哪一節就亮哪一節。桌面黏在左欄；手機收在 <details> 裡。 */
 export function Toc({ headings, compact = false }: { headings: TocHeading[]; compact?: boolean }) {
+  const d = useDict().blog
   const [active, setActive] = useState(headings[0]?.id)
 
   useEffect(() => {
@@ -50,12 +53,12 @@ export function Toc({ headings, compact = false }: { headings: TocHeading[]; com
     return (
       <details className="border-line group/toc border-b">
         <summary className="text-accent flex min-h-11 cursor-pointer list-none items-center justify-between font-mono text-[13px] [&::-webkit-details-marker]:hidden">
-          目錄
+          {d.toc}
           <span className="transition-transform group-open/toc:rotate-45" aria-hidden="true">
             +
           </span>
         </summary>
-        <nav aria-label="文章目錄" className="pb-4">
+        <nav aria-label={d.tocLabel} className="pb-4">
           {list}
         </nav>
       </details>
@@ -63,7 +66,7 @@ export function Toc({ headings, compact = false }: { headings: TocHeading[]; com
   }
 
   return (
-    <nav aria-label="文章目錄" className="sticky top-24">
+    <nav aria-label={d.tocLabel} className="sticky top-24">
       {list}
     </nav>
   )

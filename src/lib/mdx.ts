@@ -23,7 +23,8 @@ export function estimateReadingMinutes(content: string): number {
 export function getAllPosts(): BlogPost[] {
   if (!fs.existsSync(BLOG_DIR)) return []
 
-  const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.mdx'))
+  // *.en.mdx 是翻譯，不算一篇獨立文章
+  const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.mdx') && !f.endsWith('.en.mdx'))
 
   return files
     .map((filename) => {
@@ -40,10 +41,19 @@ export function getAllPosts(): BlogPost[] {
     .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())
 }
 
+/** 讀一篇。locale 是 en 時先找 slug.en.mdx，沒有就退回中文並把 lang 標成 zh，頁面好提示。 */
 export function getPostBySlug(
-  slug: string
-): { frontmatter: BlogPostFrontmatter; content: string; readingMinutes: number } | null {
-  const filePath = path.join(BLOG_DIR, `${slug}.mdx`)
+  slug: string,
+  locale: 'zh' | 'en' = 'zh'
+): {
+  frontmatter: BlogPostFrontmatter
+  content: string
+  readingMinutes: number
+  lang: 'zh' | 'en'
+} | null {
+  const enPath = path.join(BLOG_DIR, `${slug}.en.mdx`)
+  const useEn = locale === 'en' && fs.existsSync(enPath)
+  const filePath = useEn ? enPath : path.join(BLOG_DIR, `${slug}.mdx`)
   if (!fs.existsSync(filePath)) return null
 
   const raw = fs.readFileSync(filePath, 'utf8')
@@ -52,5 +62,6 @@ export function getPostBySlug(
     frontmatter: data as BlogPostFrontmatter,
     content,
     readingMinutes: estimateReadingMinutes(content),
+    lang: useEn ? 'en' : 'zh',
   }
 }

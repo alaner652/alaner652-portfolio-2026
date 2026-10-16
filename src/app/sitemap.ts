@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
+import { LOCALES, localePath } from '@/i18n/config'
 import { getAllPosts } from '@/lib/mdx'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -35,5 +36,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
-  return [...staticRoutes, ...projectRoutes, ...postRoutes]
+  // 每條路由兩個語系，並互相標 hreflang
+  return [...staticRoutes, ...projectRoutes, ...postRoutes].flatMap((r) => {
+    const path = r.url.slice(base.length) || '/'
+    const languages = Object.fromEntries(
+      LOCALES.map((l) => [l === 'zh' ? 'zh-Hant' : l, `${base}${localePath(l, path)}`])
+    )
+    return LOCALES.map((l) => ({
+      ...r,
+      url: `${base}${localePath(l, path)}`,
+      alternates: { languages },
+    }))
+  })
 }

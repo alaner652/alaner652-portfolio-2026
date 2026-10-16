@@ -1,24 +1,85 @@
 'use client'
 
 import { Menu, X } from 'lucide-react'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { BrandIcon } from '@/components/common/SocialIcons'
 import { NAV_LINKS, SITE_CONFIG } from '@/constants'
+import { LLink as Link, useDict } from '@/i18n/client'
+import { LOCALES, localePath, splitLocale, type Locale } from '@/i18n/config'
 import { cn } from '@/lib/utils'
 
-// 桌機連結：底下一條 amber 線，hover 時從左畫出來；目前頁面則常駐
-const DESKTOP_LINK =
-  'text-text-2 hover:text-text aria-[current=page]:text-text relative flex h-11 items-center px-1 transition-colors after:bg-accent after:absolute after:inset-x-1 after:bottom-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-250 after:ease-out hover:after:scale-x-100 aria-[current=page]:after:scale-x-100 motion-reduce:after:transition-none'
+const LABEL: Record<string, 'about' | 'projects' | 'blog' | 'resume' | 'hire'> = {
+  '/about': 'about',
+  '/projects': 'projects',
+  '/blog': 'blog',
+  '/resume': 'resume',
+  '/hire': 'hire',
+}
+const LOCALE_LABEL: Record<Locale, string> = { zh: '中', en: 'EN' }
+const NO = (i: number) => String(i + 1).padStart(2, '0')
 
-// 手機選單是整列可點，只改字色與左側的 amber 短槓
+// 桌機連結：mono 編號 + 文字；目前頁面整個變橘（編號也是），hover 底下畫一條短線
+const DESKTOP_LINK =
+  'group/nl text-text-2 hover:text-text aria-[current=page]:text-accent relative flex h-11 items-center gap-1 px-1 transition-colors after:bg-accent after:absolute after:inset-x-1 after:bottom-2.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-250 after:ease-out hover:after:scale-x-100 motion-reduce:after:transition-none'
+const INDEX = 'text-text-3 group-aria-[current=page]/nl:text-accent font-mono text-[10px]'
+
+// 手機選單是整列可點：編號 + 文字，目前頁橘色 + 左側橘短槓
 const MOBILE_LINK =
-  'text-text-2 hover:text-text aria-[current=page]:text-accent aria-[current=page]:border-accent -mx-3 flex h-11 items-center border-l-2 border-transparent px-3 text-base transition-colors'
+  'group/ml text-text-2 hover:text-text aria-[current=page]:text-accent aria-[current=page]:border-accent -mx-3 flex h-11 items-center gap-3 border-l-2 border-transparent px-3 text-base transition-colors'
+
+/** 語言切換：一顆小膠囊，兩個語系並排，目前的那個實色。 */
+function LocaleSwitch({
+  locale,
+  path,
+  className,
+  onNavigate,
+}: {
+  locale: Locale
+  path: string
+  className?: string
+  onNavigate?: () => void
+}) {
+  const d = useDict().nav
+  return (
+    <div
+      className={cn(
+        'border-border flex rounded-full border p-0.5 font-mono text-[11px]',
+        className
+      )}
+      aria-label={d.switchLabel}
+    >
+      {LOCALES.map((l) =>
+        l === locale ? (
+          <span
+            key={l}
+            aria-current="true"
+            className="bg-text text-bg flex h-6 min-w-8 items-center justify-center rounded-full px-2"
+          >
+            {LOCALE_LABEL[l]}
+          </span>
+        ) : (
+          <NextLink
+            key={l}
+            href={localePath(l, path)}
+            hrefLang={l === 'zh' ? 'zh-Hant' : 'en'}
+            onClick={onNavigate}
+            className="text-text-2 hover:text-text flex h-6 min-w-8 items-center justify-center rounded-full px-2 transition-colors"
+          >
+            {LOCALE_LABEL[l]}
+          </NextLink>
+        )
+      )}
+    </div>
+  )
+}
 
 export function Nav() {
-  const pathname = usePathname()
+  const fullPath = usePathname()
+  const { locale, path: pathname } = splitLocale(fullPath)
+  const d = useDict().nav
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -46,8 +107,6 @@ export function Nav() {
   }
 
   const floating = scrolled || menuOpen
-  // 字標一直在（舊版首頁第一屏是大字標才藏；現在 Hero 沒有字標了）
-  const hideMark = false
 
   return (
     // 在頁首時是透明的一列；捲下去後外層套成一顆浮起來的膠囊（毛玻璃 + 細邊 + 淡影），裡面的連結不變
@@ -61,52 +120,51 @@ export function Nav() {
         )}
       >
         <div className="flex h-14 items-center justify-between px-5">
-          {/* 字標：手寫體，跟 Hero 的「small R」同一套。它只是回首頁，不做 hover。
-              invisible 連同 tab 順序一起藏，不會有看不見卻能 focus 的連結 */}
+          {/* 字標：手寫體。它只是回首頁，不做 hover。 */}
           <Link
             href="/"
-            aria-label="回到首頁"
-            className={cn(
-              'font-hand text-text -ml-1 flex h-11 items-center pr-1 text-[1.75rem] leading-none font-semibold tracking-[0.01em] transition-[opacity,visibility] duration-300 motion-reduce:transition-none',
-              hideMark && 'invisible opacity-0'
-            )}
+            aria-label={d.home}
+            className="font-hand text-text -ml-1 flex h-11 items-center pr-1 text-[1.75rem] leading-none font-semibold tracking-[0.01em]"
           >
             small&nbsp;<span className="text-accent">R</span>
           </Link>
 
-          {/* 桌機：連結列 + GitHub */}
-          <div className="flex items-center gap-5 text-sm max-[680px]:hidden">
-            {NAV_LINKS.map((link) => (
+          {/* 桌機：編號連結列 → 語言切換 → GitHub */}
+          <div className="flex items-center gap-4 text-sm max-[720px]:hidden">
+            {NAV_LINKS.map((link, i) => (
               <Link
                 key={link.href}
                 href={link.href}
                 aria-current={isActive(link.href) ? 'page' : undefined}
                 className={DESKTOP_LINK}
               >
-                {link.label}
+                <span className={INDEX} aria-hidden="true">
+                  {NO(i)}
+                </span>
+                {d[LABEL[link.href]] ?? link.label}
               </Link>
             ))}
-            {/* GitHub 只放 icon，跟 Hero 的社群列同一套 glyph */}
+            <LocaleSwitch locale={locale} path={pathname} className="ml-2" />
             <a
               href={SITE_CONFIG.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
               title="GitHub"
-              className="text-text-2 hover:text-accent -mr-2 ml-1 flex size-11 items-center justify-center transition-colors"
+              className="text-text-2 hover:text-accent -mr-2 flex size-11 items-center justify-center transition-colors"
             >
               <BrandIcon name="GitHub" size={20} />
             </a>
           </div>
 
-          {/* 手機：開合選單，桌機那四個連結原樣搬下來 */}
+          {/* 手機：開合選單 */}
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
             aria-controls="nav-menu"
-            aria-label={menuOpen ? '關閉選單' : '開啟選單'}
-            className="text-text-2 hover:text-text -mr-2 hidden h-11 w-11 items-center justify-center transition-colors max-[680px]:flex"
+            aria-label={menuOpen ? d.closeMenu : d.openMenu}
+            className="text-text-2 hover:text-text -mr-2 hidden h-11 w-11 items-center justify-center transition-colors max-[720px]:flex"
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -117,7 +175,7 @@ export function Nav() {
           id="nav-menu"
           inert={!menuOpen}
           className={cn(
-            'grid transition-[grid-template-rows] duration-300 ease-out min-[681px]:hidden motion-reduce:transition-none',
+            'grid transition-[grid-template-rows] duration-300 ease-out min-[721px]:hidden motion-reduce:transition-none',
             menuOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
           )}
         >
@@ -128,7 +186,7 @@ export function Nav() {
                 menuOpen ? 'opacity-100 delay-100' : 'opacity-0'
               )}
             >
-              {NAV_LINKS.map((link) => (
+              {NAV_LINKS.map((link, i) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -136,17 +194,30 @@ export function Nav() {
                   aria-current={isActive(link.href) ? 'page' : undefined}
                   className={MOBILE_LINK}
                 >
-                  {link.label}
+                  <span
+                    className="text-text-3 group-aria-[current=page]/ml:text-accent font-mono text-[11px]"
+                    aria-hidden="true"
+                  >
+                    {NO(i)}
+                  </span>
+                  {d[LABEL[link.href]] ?? link.label}
                 </Link>
               ))}
-              <a
-                href={SITE_CONFIG.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-text-2 hover:text-accent border-line mt-2 flex h-11 items-center gap-2 border-t pt-2 font-mono text-sm transition-colors"
-              >
-                <BrandIcon name="GitHub" size={16} /> GitHub
-              </a>
+              <div className="border-line mt-2 flex items-center justify-between border-t pt-3">
+                <a
+                  href={SITE_CONFIG.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-2 hover:text-accent flex h-11 items-center gap-2 font-mono text-sm transition-colors"
+                >
+                  <BrandIcon name="GitHub" size={16} /> GitHub
+                </a>
+                <LocaleSwitch
+                  locale={locale}
+                  path={pathname}
+                  onNavigate={() => setMenuOpen(false)}
+                />
+              </div>
             </div>
           </div>
         </div>

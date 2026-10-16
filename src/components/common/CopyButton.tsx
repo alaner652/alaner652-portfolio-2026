@@ -7,11 +7,19 @@ import { cn } from '@/lib/utils'
 interface CopyButtonProps {
   text: string
   label?: string
+  doneLabel?: string
+  liveText?: string
   className?: string
 }
 
 /** 複製按鈕：按下去文字變成「已複製 ✓」、底色翻橘，兩秒後恢復。沒有 clipboard 權限就什麼都不做。 */
-export function CopyButton({ text, label = '複製', className }: CopyButtonProps) {
+export function CopyButton({
+  text,
+  label = '複製',
+  doneLabel = '已複製 ✓',
+  liveText = '信箱已複製',
+  className,
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -42,10 +50,10 @@ export function CopyButton({ text, label = '複製', className }: CopyButtonProp
           className
         )}
       >
-        {copied ? '已複製 ✓' : label}
+        {copied ? doneLabel : label}
       </button>
       <span role="status" aria-live="polite" className="sr-only">
-        {copied ? '信箱已複製' : ''}
+        {copied ? liveText : ''}
       </span>
     </>
   )

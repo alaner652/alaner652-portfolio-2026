@@ -1,5 +1,5 @@
 import GithubSlugger from 'github-slugger'
-import Link from 'next/link'
+import { LLink as Link } from '@/i18n/client'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { isValidElement, type ReactNode } from 'react'
@@ -18,6 +18,9 @@ import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { TaskList } from '@/components/common/TaskList'
 import { Toc, type TocHeading } from '@/components/common/Toc'
 import { SITE_CONFIG } from '@/constants'
+import { hasLocale, localePath } from '@/i18n/config'
+import { languages } from '@/i18n/meta'
+import { initLocale, t } from '@/i18n/server'
 import { getAllPosts, getPostBySlug } from '@/lib/mdx'
 import { cn } from '@/lib/utils'
 import type { BlogPost } from '@/types'
@@ -101,16 +104,22 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }))
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const post = getPostBySlug(slug)
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>
+}) {
+  const { slug, locale } = await params
+  const l = hasLocale(locale) ? locale : 'zh'
+  const post = getPostBySlug(slug, l)
   if (!post || post.frontmatter.hidden) return {}
-  const canonicalUrl = `/blog/${slug}`
+  const path = `/blog/${slug}`
+  const canonicalUrl = localePath(l, path)
   return {
     title: post.frontmatter.title,
     description: post.frontmatter.description,
     keywords: post.frontmatter.tags,
-    alternates: { canonical: canonicalUrl },
+    alternates: { canonical: canonicalUrl, languages: languages(path) },
     openGraph: {
       title: post.frontmatter.title,
       description: post.frontmatter.description,
@@ -120,7 +129,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       modifiedTime: post.frontmatter.date,
       tags: post.frontmatter.tags,
       siteName: SITE_CONFIG.name,
-      locale: 'zh_TW',
+      locale: l === 'en' ? 'en_US' : 'zh_TW',
       authors: [SITE_CONFIG.name],
     },
     twitter: {
@@ -132,9 +141,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>
+}) {
+  const locale = await initLocale(params)
+  const d = t().blog
   const { slug } = await params
-  const post = getPostBySlug(slug)
+  const post = getPostBySlug(slug, locale)
   // hidden 文章有自己的路由（例如 resume.mdx → /resume），不從 /blog 再曝光一次
   if (!post || post.frontmatter.hidden) notFound()
 
@@ -173,7 +188,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   }
 
   const next = newer ?? older
-  const nextLabel = newer ? '下一篇' : '上一篇'
+  const nextLabel = newer ? d.next : d.prev
   const rel = related(posts, slug, post.frontmatter.tags)
   const [y, m] = post.frontmatter.date.split('-')
   const dotDate = post.frontmatter.date.replaceAll('-', '.')
@@ -192,7 +207,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <header className="mx-auto max-w-[880px] px-5 pt-10 pb-8 text-center md:px-10 md:pt-20 md:pb-14">
         <div className="text-text-3 font-mono text-xs md:text-[13px]">
           <Link href="/blog" className="hover:text-text transition-colors">
-            心得分享
+            {d.title}
           </Link>
           {post.frontmatter.tags?.[0] && <> / #{post.frontmatter.tags[0]}</>}
         </div>
@@ -201,11 +216,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </h1>
         <div className="text-text-3 mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 font-mono text-xs md:mt-7 md:text-[13px]">
           <time dateTime={post.frontmatter.date}>{dotDate}</time>
-          <span>{post.readingMinutes} 分鐘</span>
+          <span>{d.minutes(post.readingMinutes)}</span>
           {post.frontmatter.tags && (
             <span>{post.frontmatter.tags.map((t) => `#${t}`).join(' ')}</span>
           )}
         </div>
+        {locale === 'en' && post.lang === 'zh' && (
+          <p className="text-text-3 mt-4 text-[13px]">{d.zhOnly}</p>
+        )}
       </header>
 
       {/* 內文：寬螢幕三欄（目錄 2 / 文章 7 / 相關 3），窄螢幕目錄收成 details */}
@@ -229,13 +247,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             <MDXRemote source={post.content} components={mdxComponents} options={mdxOptions} />
           </div>
           <p className="font-hand text-accent mt-8 text-right text-[24px] md:mt-10 md:text-[28px]">
-            — small R, {y}.{m}
+            {d.signature}, {y}.{m}
           </p>
         </div>
         <aside className="hidden xl:block">
           {rel.length > 0 && (
             <div className="border-line text-text-3 sticky top-24 border-t pt-4 font-mono text-xs leading-[2]">
-              相關
+              {d.related}
               {rel.map((r) => (
                 <Link
                   key={r.slug}
