@@ -1,4 +1,6 @@
 import type {
+  HireReceipt,
+  HireReview,
   Photo,
   SiteConfig,
   NavLink,
@@ -83,87 +85,111 @@ export const OFFERS: Offer[] = [
 /** /hire 的內容。這頁的讀者是要付錢的人，不是審查委員：只講接什麼、怎麼合作、做過哪些，
     不講學歷。examples 對到 WORK_ITEMS 的 title，改專案名記得回來對一次。 */
 export const HIRE = {
-  lead: '接網頁產品、Roblox 遊戲、LINE Bot、內部自動化，和授權範圍內的資安檢測。從需求到上線一個人做完，不用在三個人之間傳話。',
+  lead: 'Roblox 腳本師，專長是戰鬥系統：連段、技能、打擊感、FPS 框架，也能接整個遊戲。2022 年開始接案、2024 年起正式收費，現在是 CubexStudios 的共同創辦人兼首席腳本師。',
+  /** 客戶在 Discord 留的評價，原文照登（錯字也不改）。截圖在 docs/roblox-evidence/raw/ */
+  reviews: [
+    {
+      name: 'King Croc',
+      text: '10/10, great services with smooth scripting. Exceeds heavily with combat based requests, has a nice personality and is easy to communicate to. I highly recommend.',
+    },
+    {
+      name: 'Handly',
+      text: 'Small R, thank you for that combat system 🙏 It works very well, your prices are the best that I found on the market. I will contact you in the future for more scripts',
+    },
+    {
+      name: 'DiaszVFX',
+      text: '11/10 Small R is deffinitely who anyone should go to when script related stuff is needed, the combat looks sick and makes the game enjoyable and it was delivered in a shorter time in comparison to past developers i worked with, overall, great scripter!',
+    },
+    {
+      name: 'killer91',
+      text: '100/10, Small R is the best scripter I know and even then he is constantly improving and learning more things. The combat and skills he makes look really cool, and just from seeing what he has made I can imagine how clean the code is. I can tell he puts a lot of effort into his work and into learning new skills',
+    },
+    {
+      name: 'pi派萌',
+      text: 'SmallR是我在進行多次合作中，最愉快的一次，他寫的腳本非常順暢，並完美的完成我的所有需求，因此我十分推薦他跟您做合作',
+    },
+  ] satisfies HireReview[],
+  /** PayPal 收款紀錄，只列個人客戶：姓名打碼、不放金額（2026-10-17 他選的公開程度）。
+      CubexStudios 的三筆不列在這裡，寫成工作室經歷（他是共同創辦人，算客戶付款會灌水）。
+      備註照收據原文，被 PayPal 截斷的那則保留刪節號。 */
+  receipts: [
+    { who: 'H. P.', month: 1, day: 20 },
+    { who: 'J. C.', month: 4, day: 6, memo: 'Good work 👍 Taiwan #1' },
+    { who: 'J. C.', month: 5, day: 7, memo: 'Love you brother keep up the great wo…' },
+    { who: 'J. C.', month: 5, day: 29, memo: 'Keep up the great work' },
+  ] satisfies HireReceipt[],
+  studio:
+    '2024 年開始替 CubexStudios 寫腳本，委託過劍類戰鬥系統（Sword System）。後來成為共同創辦人兼首席腳本師，2026 年起一起做工作室自己的遊戲。',
   services: [
     {
-      label: '網頁產品',
+      label: '戰鬥系統',
       description:
-        '點餐、預約、後台、活動頁這類要真的上線給人用的東西。前端、後端、資料庫、部署、網域一起包，交付的是能跑的網址，不是一份程式碼。',
-      deliverable: '能跑的網址，不是一包程式碼',
-      examples: ['早餐店點餐系統', '一句一幀'],
+        '連段、技能、格擋與閃避、處決、打擊感（鏡頭震動、受擊硬直、特效時機），也做過 FPS 框架。傷害和判定放在伺服器算，客戶端只送「我出招了」，exploit 改不了結果。客戶的評價裡最常被提到的就是這一塊。',
+      deliverable: '接得進你專案的戰鬥模組',
+      examples: ['soullike'],
     },
     {
-      label: '遊戲開發',
+      label: '遊戲系統',
       description:
-        'Roblox 遊戲，用 Luau 寫整套系統：技能、戰鬥、打擊感、FPS 框架、養成與背包。2022 年開始接案，2024 年起正式收費委託，同年開始和 CubexStudios 合作，現在是共同創辦人兼首席腳本師。2026 年也自己發行了一款，腳本之外的企劃、UI、數值平衡和上線後的數據分析都自己做。工作流是 Rojo + Git：在編輯器寫 strict Luau，用 Rojo 同步進 Studio，Wally 管套件，luau-lsp、Selene、StyLua 做型別與風格檢查，純邏輯用 Lune 在 Studio 外跑測試。可以接整個遊戲，也可以只做你缺的那一塊系統。',
-      deliverable: '能玩的遊戲，或接得進你專案的系統模組',
-      examples: ['Build The Cat Gunner', 'soullike', 'Cooking Game'],
+        '養成、背包、抽卡與合成、Boss、排行榜、每日任務、存檔。存檔用 ProfileStore 鎖 session，每個 remote 都先做頻率限制、型別、所有權和餘額檢查才寫入。',
+      deliverable: '可以直接接上的系統模組',
+      examples: ['Cooking Game'],
     },
     {
-      label: 'LINE Bot 與自動化',
+      label: '整個遊戲',
       description:
-        'LINE 官方帳號、Flex Message 推播、Discord Bot、定時通知。把每天要人手做一次的事變成一支腳本，或是接進你現有的流程。',
-      deliverable: '跑起來的 Bot / 腳本',
-      examples: ['早餐店點餐系統', 'Easy TPCU'],
-    },
-    {
-      label: '逆向與系統整合',
-      description:
-        '沒有文件的舊系統、只有網頁介面沒有 API 的服務，摸清楚之後包成能用的 API，再接進新的東西。',
-      deliverable: '可呼叫的 API',
-      examples: ['Agora-AI'],
-    },
-    {
-      label: '資安檢測',
-      description:
-        '在書面授權範圍內對 Web 應用做弱點檢測（IDOR、XSS、CSRF、權限設計這類），交一份看得懂的報告，需要的話一起修。只做有授權的。',
-      deliverable: '看得懂的報告 + 修補建議',
-      examples: ['大學校務系統的資安工作'],
+        '從企劃、系統、UI 到上線後看數據調整。Build The Cat Gunner 就是一個人（AI 輔助）從開工做到上架。也可以只接你缺的那一塊。',
+      deliverable: '能上架的遊戲',
+      examples: ['Build The Cat Gunner'],
     },
   ] satisfies HireService[],
+  /** 怎麼寫：工作流一句話 + 一排工具 logo（名稱對得到 skill-icons.json 才有 logo） */
+  workflow:
+    'Rojo + Git：在編輯器寫 strict Luau，用 Rojo 同步進 Studio，Wally 管套件，luau-lsp、Selene、StyLua 做型別與風格檢查，純邏輯用 Lune 在 Studio 外跑測試。可調的數值都放在 config，不用翻程式碼就能改。',
+  tools: ['Roblox Studio', 'Rojo', 'Wally', 'Lune', 'luau-lsp', 'StyLua', 'Charm', 'Git', 'Selene'],
   steps: [
     {
       label: '聊需求',
       description:
-        'Discord 或寄信說你要做什麼、給誰用、大概什麼時候要。不用寫規格書，先確認我做不做得到。',
+        'Discord 傳訊息說你要做什麼系統、什麼類型的遊戲、大概什麼時候要。有參考影片最好，不用寫規格書。',
     },
     {
       label: '報價',
       description:
-        '按案報價，不算時薪。範圍和交付物白紙黑字寫清楚，之後加東西另外算，不會做到一半改價。',
+        '按案報價，PayPal 收款。範圍和交付物先講清楚，之後加東西另外算，不會做到一半改價。',
     },
     {
       label: '開發',
       description:
-        '先上一個能用的版本讓你摸，再往上加。過程中有進度就給你看，不會消失兩個禮拜然後交一包東西。',
+        '先做一個能動的版本錄給你看，再往上加。有進度就更新，不會消失兩個禮拜然後交一包東西。',
     },
     {
-      label: '交付與維運',
+      label: '交付',
       description:
-        '原始碼歸你。部署、網域、怎麼改文字和圖片會教到你能自己來。上線後約定期限內的問題我處理。',
+        '程式碼歸你：可以是 Rojo 專案，也可以直接放進你的 place。數值放在 config，會說明怎麼調。交付後約定期限內的問題我處理。',
     },
   ] satisfies HireStep[],
   /** 先講清楚省大家時間。 */
   notes: [
     {
-      q: '不接什麼？',
-      a: '純視覺設計、原生 iOS / Android App、需要 24 小時待命的維運。這些我做不好，會介紹你找別人。',
+      q: '可以用英文溝通嗎？',
+      a: '可以。合作過的開發者大多在國外，一直都是全英文溝通。',
     },
     {
       q: '多久能做完？',
-      a: '看範圍。一個 LINE Bot 或單頁活動網站通常一到兩週；點餐系統這種規模一到兩個月。報價時會一起給時程。',
+      a: '看範圍。報價時會一起給時程，做不到的不會先答應。',
     },
     {
       q: '做完之後東西是誰的？',
-      a: '你的。原始碼、網域、帳號都在你名下，我只留作品集展示的權利，而且會先問過你。',
+      a: '你的。我只留作品集展示的權利，而且會先問過你；要保密的案子就不放。',
     },
     {
-      q: '資安檢測要什麼前提？',
-      a: '系統擁有者的書面授權，寫清楚範圍和時間。沒有這份東西我不會動手，這是底線。',
+      q: 'Roblox 以外的也接嗎？',
+      a: '接。網頁產品、LINE Bot、自動化、系統整合、授權範圍內的資安檢測都做過，案例在作品集。',
     },
   ],
-  /** /hire「做過的案子」要列的專案，照 WORK_ITEMS 的 title。挑真的像交付物的。 */
-  cases: ['早餐店點餐系統', '一句一幀', 'Build The Cat Gunner'],
+  /** /hire「作品」要列的專案，照 WORK_ITEMS 的 title。 */
+  cases: ['soullike', 'Build The Cat Gunner', 'Cooking Game'],
 }
 
 /** 所有專案一份清單，照「最新、最完整的優先」排，停掉的也留著。前三個標 featured 上首頁。
@@ -310,15 +336,19 @@ export const WORK_ITEMS: WorkItem[] = [
     card: true,
   },
   {
-    status: '原型',
-    tone: 'idle',
+    status: '可遊玩的原型',
+    tone: 'live',
     category: '遊戲',
     slug: 'soullike',
     title: 'soullike',
     result: '一場打得完的魂系頭目戰：連段、格擋、處決，還有會讀你動作的敵人。',
     description:
-      'Roblox 上的魂系動作遊戲垂直切片。五段連段、重擊、格擋、翻滾無敵幀、背刺與處決；敵人有架勢條，打穿會破防。攻擊判定的時機從動畫的 keyframe marker 推出來，不手寫。敵人靠視野、聽覺、視線三件事發現你，還會延遲揮擊打亂節奏。玩家和敵人共用一套資料驅動的狀態機，傷害、無敵與超甲窗口全部由伺服器計算。一人開發、AI 輔助，部分動畫還是佔位。',
+      'Roblox 上的魂系動作遊戲，目標是盡可能重現魂系的戰鬥手感，花了很多時間研究每一代的特色和數值。五段連段、重擊、格擋、翻滾無敵幀、背刺與處決；敵人有架勢條，打穿會破防。攻擊判定的時機從動畫的 keyframe marker 推出來，不手寫。敵人靠視野、聽覺、視線三件事發現你，還會延遲揮擊打亂節奏。玩家和敵人共用一套資料驅動的狀態機，傷害、無敵與超甲窗口全部由伺服器計算。離完美重現還有一大段路：有些動作甚至還沒有對應的動畫可以做。一人開發、AI 輔助。',
     metrics: ['Luau', 'Roblox Studio', 'Rojo'],
+    link: 'https://www.roblox.com/games/87345305308537/soullike',
+    preview: '/shots/works/soullike/cover.jpg',
+    // 實機影片：等上傳到 YouTube 後填網址（video: 'https://youtu.be/…'）。裁好的檔在 docs/soullike-demo-cropped.mp4
+    gallery: [1, 2, 3, 4].map((n) => `/shots/works/soullike/more-${n}.jpg`),
   },
   {
     status: '接案作品',

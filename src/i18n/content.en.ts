@@ -65,11 +65,11 @@ export const WORK_EN: Record<string, { status: string; result?: string; descript
       'A beatmap manager I wrote purely for myself, packaged as an exe so friends can run it without installing Python.',
   },
   soullike: {
-    status: 'Prototype',
+    status: 'Playable prototype',
     result:
       'A soulslike boss fight you can play start to finish: combos, blocks, executions, and an enemy that reads your moves.',
     description:
-      'A vertical slice of a soulslike action game on Roblox. Five-hit light combo, heavy attack, block, roll i-frames, backstabs and executions; the enemy has a posture bar and staggers when it breaks. Hit timing comes from keyframe markers on the animations, not hand-typed numbers. The enemy notices you by sight, hearing and line of sight, and delays its swings to break your rhythm. Player and enemy share one data-driven state machine, and damage, i-frame and hyper-armor windows are all computed on the server. Solo, AI-assisted; some animations are still placeholders.',
+      'A soulslike action game on Roblox that tries to recreate how Souls combat feels as closely as possible; a lot of the time went into studying what each game in the series does and how its numbers work. Five-hit light combo, heavy attack, block, roll i-frames, backstabs and executions; the enemy has a posture bar and staggers when it breaks. Hit timing comes from keyframe markers on the animations, not hand-typed numbers. The enemy notices you by sight, hearing and line of sight, and delays its swings to break your rhythm. Player and enemy share one data-driven state machine, and damage, i-frame and hyper-armor windows are all computed on the server. A faithful recreation is still a long way off: some moves don’t even have animations to build them with yet. Solo, AI-assisted.',
   },
   'cooking-game': {
     status: 'Client work',
@@ -181,79 +181,69 @@ export const ABOUT_WORDS_EN = {
 }
 
 export const HIRE_EN = {
-  lead: 'Web products, Roblox games, LINE bots, internal automation, and authorized security testing. One person from brief to launch, so nothing gets lost between three people.',
+  lead: 'Roblox scripter focused on combat systems: combos, skills, hit feel and FPS frameworks, and whole games too. Commissions since 2022, paid work since 2024, and now co-founder and lead scripter at CubexStudios.',
+  studio:
+    'Started scripting for CubexStudios in 2024, including a commissioned sword combat system (Sword System). Later became co-founder and lead scripter; since 2026 we build the studio’s own games.',
   services: [
     {
-      label: 'Web products',
+      label: 'Combat systems',
       description:
-        'Ordering, booking, admin panels, event pages: things that actually go live for real users. Front end, back end, database, deployment and domain, all included. You get a working URL, not a folder of code.',
-      deliverable: 'A working URL, not a bundle of code',
+        'Combos, skills, blocking and dodging, executions, hit feel (camera shake, hit stun, effect timing), plus FPS frameworks. Damage and hit detection run on the server; the client only says "I swung", so exploits can\'t change the outcome. It\'s the part clients mention most in their reviews.',
+      deliverable: 'A combat module that drops into your project',
     },
     {
-      label: 'Game development',
+      label: 'Game systems',
       description:
-        "Roblox games with full systems in Luau: skills, combat, hit feel, FPS frameworks, progression and inventory. Commissions since 2022, paid work since 2024, the same year I started with CubexStudios, where I'm now co-founder and lead scripter. In 2026 I also shipped my own game, doing the design, UI, balancing and post-launch analytics beyond the scripting. My workflow is Rojo + Git: strict Luau in a real editor, synced into Studio with Rojo, packages via Wally, type and style checks with luau-lsp, Selene and StyLua, and pure logic tested outside Studio with Lune. I can take the whole game or just the system you're missing.",
-      deliverable: 'A playable game, or a system module that fits your project',
+        'Progression, inventory, gacha and merging, bosses, leaderboards, daily quests, saving. Saves use session-locked ProfileStore, and every remote checks rate limit, types, ownership and balance before it writes anything.',
+      deliverable: 'A system module ready to plug in',
     },
     {
-      label: 'LINE bots and automation',
+      label: 'A whole game',
       description:
-        'LINE official accounts, Flex Message pushes, Discord bots, scheduled notifications. Turn the thing someone does by hand every day into a script, or plug it into your existing workflow.',
-      deliverable: 'A running bot or script',
-    },
-    {
-      label: 'Reverse engineering and integration',
-      description:
-        'Legacy systems with no docs, services with a web UI but no API: figure them out, wrap them into a usable API, then connect them to something new.',
-      deliverable: 'A callable API',
-    },
-    {
-      label: 'Security testing',
-      description:
-        'Vulnerability testing on web apps within written authorization (IDOR, XSS, CSRF, permission design), delivered as a report you can actually read, and fixed together if you want. Authorized work only.',
-      deliverable: 'A readable report plus fix recommendations',
+        'From design, systems and UI to tuning with live data after launch. Build The Cat Gunner went from first commit to published by one person (AI-assisted). Or I take just the piece you’re missing.',
+      deliverable: 'A game ready to publish',
     },
   ],
-  /** 第五項的例子不是作品，顯示用 */
-  securityExample: 'Security work on a university system',
+  workflow:
+    'Rojo + Git: strict Luau in a real editor, synced into Studio with Rojo, packages via Wally, type and style checks with luau-lsp, Selene and StyLua, and pure logic tested outside Studio with Lune. Tunable numbers live in config, so you can change them without touching code.',
   steps: [
     {
       label: 'Talk',
       description:
-        "Message me on Discord (or email) with what you want to build, who it's for, and roughly when. No spec needed. I'll confirm whether I can do it.",
+        "Message me on Discord with the system you need, what kind of game it's for and roughly when. Reference videos help; no spec needed.",
     },
     {
       label: 'Quote',
       description:
-        'Quoted per project, not hourly. Scope and deliverables in writing; extras are quoted separately, and the price never changes midway.',
+        'Quoted per project, paid via PayPal. Scope and deliverables agreed up front; extras are quoted separately, and the price never changes midway.',
     },
     {
       label: 'Build',
       description:
-        "A usable version first so you can try it, then we add to it. You see progress as it happens; I won't vanish for two weeks and hand over a bundle.",
+        "A working version first, recorded so you can see it, then we add to it. You get updates as it moves; I won't vanish for two weeks and hand over a bundle.",
     },
     {
-      label: 'Handover and support',
+      label: 'Handover',
       description:
-        "The source code is yours. I'll show you how to deploy, manage the domain and edit text and images until you can do it yourself. Issues after launch are handled for an agreed period.",
+        'The code is yours: as a Rojo project or dropped straight into your place. Numbers live in config and I’ll show you how to tune them. Issues after handover are covered for an agreed period.',
     },
   ],
   notes: [
     {
-      q: "What don't you take?",
-      a: "Pure visual design, native iOS / Android apps, and 24/7 on-call operations. I'm not good at those and will point you to someone else.",
+      q: 'Can we work in English?',
+      a: 'Yes. Most developers I’ve worked with are overseas, and it has always been in English.',
     },
     {
       q: 'How long does it take?',
-      a: 'Depends on scope. A LINE bot or a single-page event site usually takes one to two weeks; something the size of the ordering system, one to two months. The timeline comes with the quote.',
+      a: "Depends on scope. The timeline comes with the quote, and I won't promise what I can't deliver.",
     },
     {
       q: 'Who owns the result?',
-      a: "You do. Source code, domain and accounts are all in your name. I only keep the right to show it in my portfolio, and I'll ask first.",
+      a: 'You do. I only keep the right to show it in my portfolio, and I’ll ask first; confidential work stays out.',
     },
     {
-      q: 'What does security testing require?',
-      a: "Written authorization from the system owner, with scope and time window spelled out. Without it I don't touch anything. That's the line.",
+      q: 'Do you take work outside Roblox?',
+      a: 'Yes. Web products, LINE bots, automation, system integration and authorized security testing; the cases are in my portfolio.',
     },
   ],
 }

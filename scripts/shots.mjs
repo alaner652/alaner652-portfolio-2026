@@ -45,6 +45,7 @@ const TARGETS = [
   { slug: 'osu-map-manager', kind: 'github', repo: 'alaner652/osu_map_manager' },
   { slug: 'cooking-game', kind: 'youtube', videoId: 'gYcwkoDgL_g' },
   // 註：tpcu-mcp 是對話截圖、build-the-cat-gunner 是遊戲 icon 合成的 2:1 封面，都是手動放進 public/shots/works/ 的。
+  // 註：soullike 的封面、more-N 和 demo.mp4 都是從 Studio 錄影裁出遊戲視窗（ffmpeg crop=862:658:380:248）手動做的。
   // 註：ZeroDay 公告頁在 Cloudflare 後面，伺服器端抓 og:image 會被 403 擋掉，
   // 所以 campus-security 的縮圖得手動放進 public/shots/works/。og kind 對其他站仍可用。
 ]

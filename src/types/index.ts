@@ -31,6 +31,9 @@ export interface WorkItem {
       只放真的看得到產品的圖（網站截圖、影片畫面）；GitHub 自動產生的 repo 卡不算，
       那種圖每張都長一樣，沒圖的項目改用排版式封面（ProjectCover 自己處理）。 */
   preview?: string
+  /** 實機影片：YouTube 網址（嵌入播放器），或 public/ 底下的 mp4。詳情頁「畫面」排第一個。
+      影片不進 repo（會永久留在 git 歷史），優先放 YouTube。 */
+  video?: string
   /** 更多畫面：網站其他分頁的截圖（public/shots/works/{slug}/more-N），詳情頁「畫面」排在封面後面。 */
   gallery?: string[]
   /** preview 是 GitHub 的 repo 卡，不是產品畫面。列表照放，但不拿來當 /projects 的主視覺。 */
@@ -90,6 +93,22 @@ export interface HireService {
 }
 
 /** /hire「怎麼合作」的一步。 */
+/** /hire「客戶怎麼說」：Discord 上的評價，原文照登 */
+export interface HireReview {
+  name: string
+  text: string
+}
+
+/** /hire「接案紀錄」：PayPal 收款，付款人打碼、不放金額 */
+export interface HireReceipt {
+  /** 打碼後的付款人，像「J. C.」 */
+  who: string
+  month: number
+  day: number
+  /** 付款附言，照收據原文 */
+  memo?: string
+}
+
 export interface HireStep {
   label: string
   description: string

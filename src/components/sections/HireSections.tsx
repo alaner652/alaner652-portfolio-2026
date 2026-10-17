@@ -1,3 +1,4 @@
+import { TechList } from '@/components/common/TechList'
 import { WorkRows } from '@/components/home/WorkRows'
 import { Accordion } from '@/components/motion/Accordion'
 import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
@@ -5,7 +6,7 @@ import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
 import { LLink as Link } from '@/i18n/client'
 import { content } from '@/i18n/content'
 import { t } from '@/i18n/server'
-import { BUTTON_PRIMARY } from '@/lib/button'
+import { BUTTON_PRIMARY, BUTTON_SECONDARY } from '@/lib/button'
 import { cn } from '@/lib/utils'
 
 const NO = (i: number) => String(i + 1).padStart(2, '0')
@@ -77,7 +78,8 @@ export function Services() {
   const d = t().hire
   const { HIRE } = content()
   return (
-    <section className="wrap" id="services">
+    <section className="wrap pt-12 md:pt-24" id="services">
+      <SecHead title={d.services} />
       {/* 桌面 */}
       <div className="hidden md:block">
         {HIRE.services.map((s, i) => (
@@ -101,14 +103,17 @@ export function Services() {
                 <span>
                   {d.deliver} {s.deliverable}
                 </span>
-                {s.examples?.[0] && (
-                  <Link
-                    href={exampleHref(s.examples[0])}
-                    className="text-text-2 hover:text-text shrink-0 transition-colors"
-                  >
-                    {s.examples[0]} ↗
-                  </Link>
-                )}
+                <span className="flex shrink-0 gap-4">
+                  {s.examples?.map((e) => (
+                    <Link
+                      key={e}
+                      href={exampleHref(e)}
+                      className="text-text-2 hover:text-text transition-colors"
+                    >
+                      {e} ↗
+                    </Link>
+                  ))}
+                </span>
               </div>
             </RevealItem>
           </Reveal>
@@ -220,6 +225,152 @@ export function Faq() {
         <h2 className="text-text mb-2 text-[30px] font-black md:mb-6 md:text-[44px]">{d.faq}</h2>
       </Reveal>
       <Accordion items={HIRE.notes} />
+    </section>
+  )
+}
+
+/** 一個區塊的標題列：大標 + 一行小字說明（評價怎麼來的、收據怎麼打碼） */
+function SecHead({ title, note }: { title: string; note?: string }) {
+  return (
+    <Reveal className="mb-6 md:mb-10">
+      <h2 className="text-text text-[30px] font-black md:text-[44px]">{title}</h2>
+      {note && <p className="text-text-3 mt-2 font-mono text-xs md:text-[13px]">{note}</p>}
+    </Reveal>
+  )
+}
+
+/** 名字的第一個字當頭像：不拿別人的大頭貼來用 */
+function Initial({ name, className }: { name: string; className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        'bg-raised text-accent border-border flex size-10 shrink-0 items-center justify-center rounded-full border font-mono text-sm',
+        className
+      )}
+    >
+      {[...name][0]?.toUpperCase()}
+    </span>
+  )
+}
+
+/** 客戶怎麼說：Discord 評價原文照登，長短不一，用多欄瀑布流排，不硬切成一樣高的卡 */
+export function Reviews() {
+  const d = t().hire
+  const { HIRE } = content()
+  return (
+    <section className="wrap pt-12 md:pt-24" id="reviews">
+      <SecHead title={d.reviews} note={d.reviewsNote} />
+      <Reveal stagger={itemStagger} className="gap-4 md:columns-2 md:gap-6 lg:columns-3">
+        {HIRE.reviews.map((r) => (
+          <RevealItem key={r.name} className="mb-4 break-inside-avoid md:mb-6">
+            <figure className="bg-surface border-border m-0 rounded-xl border p-5 md:p-6">
+              <blockquote className="text-text-body text-[15px] leading-[1.8] md:text-base">
+                {r.text}
+              </blockquote>
+              <figcaption className="mt-5 flex items-center gap-3">
+                <Initial name={r.name} />
+                <span className="flex flex-col">
+                  <span className="text-text text-sm font-bold">{r.name}</span>
+                  <span className="text-text-3 font-mono text-[11px]">Discord</span>
+                </span>
+              </figcaption>
+            </figure>
+          </RevealItem>
+        ))}
+      </Reveal>
+    </section>
+  )
+}
+
+/** 接案紀錄：PayPal 收據重畫成卡片（付款人打碼、不放金額）；右邊是工作室經歷（CubexStudios） */
+export function Receipts() {
+  const d = t().hire
+  const { HIRE } = content()
+  return (
+    <section className="wrap pt-12 md:pt-24" id="record">
+      <div className="grid gap-10 md:grid-cols-12 md:gap-10">
+        <div className="md:col-span-7">
+          <SecHead title={d.receipts} note={d.receiptsNote} />
+          <Reveal as="ul" stagger={itemStagger} className="grid gap-3">
+            {HIRE.receipts.map((r) => (
+              <RevealItem
+                as="li"
+                key={`${r.month}-${r.day}`}
+                className="bg-surface border-border flex items-start gap-4 rounded-xl border p-4 md:p-5"
+              >
+                <Initial name={r.who} />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <span className="text-text font-bold tracking-[0.08em]">{r.who}</span>
+                    <span className="text-text-3 shrink-0 font-mono text-[11px]">PayPal</span>
+                  </div>
+                  <p className="text-text-2 mt-0.5 text-sm">
+                    {d.receiptDate(r.month, r.day)} · {d.received}
+                  </p>
+                  {r.memo && <p className="text-text-body mt-2 truncate text-[15px]">“{r.memo}”</p>}
+                </div>
+              </RevealItem>
+            ))}
+          </Reveal>
+        </div>
+        <Reveal className="md:col-span-5 md:pt-[76px]">
+          <div className="border-line border-t pt-6 md:border-t-0 md:border-l md:pt-0 md:pl-10">
+            <p className="text-accent font-mono text-xs tracking-[0.14em] md:text-[13px]">
+              {d.studio}
+            </p>
+            <h3 className="text-text mt-2 text-[26px] font-black md:text-[32px]">CubexStudios</h3>
+            <p className="text-text-body mt-3 text-[15px] leading-[1.85] md:text-base">
+              {HIRE.studio}
+            </p>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+/** 怎麼寫：工作流一段話 + 工具 logo */
+export function Workflow() {
+  const d = t().hire
+  const { HIRE } = content()
+  return (
+    <section className="wrap pt-12 md:pt-24" id="workflow">
+      <div className="border-line grid gap-6 border-t pt-8 md:grid-cols-12 md:gap-8 md:pt-12">
+        <Reveal className="md:col-span-4">
+          <h2 className="text-text text-[30px] font-black md:text-[44px]">{d.workflow}</h2>
+        </Reveal>
+        <Reveal stagger={itemStagger} className="md:col-span-8">
+          <RevealItem>
+            <p className="text-text-body text-[15px] leading-[1.9] md:text-[17px]">
+              {HIRE.workflow}
+            </p>
+          </RevealItem>
+          <RevealItem>
+            <TechList items={HIRE.tools} size={24} className="text-text-2 mt-6 flex text-sm" />
+          </RevealItem>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+/** Roblox 以外的需求：一句話 + 連到作品集 */
+export function OtherWork() {
+  const d = t().hire
+  return (
+    <section className="wrap pb-12 md:pb-24" id="other">
+      <Reveal className="bg-surface border-border flex flex-col gap-5 rounded-2xl border p-6 md:flex-row md:items-center md:justify-between md:gap-10 md:p-10">
+        <div>
+          <h2 className="text-text text-[24px] font-black md:text-[32px]">{d.otherTitle}</h2>
+          <p className="text-text-2 mt-2 max-w-[36em] text-[15px] leading-[1.8] md:text-base">
+            {d.otherText}
+          </p>
+        </div>
+        <Link href="/projects" className={cn(BUTTON_SECONDARY, 'shrink-0 justify-center')}>
+          {d.otherCta}
+        </Link>
+      </Reveal>
     </section>
   )
 }

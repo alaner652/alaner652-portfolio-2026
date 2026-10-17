@@ -41,14 +41,9 @@ const EN: typeof ZH = {
   HIRE: {
     ...HIRE,
     lead: HIRE_EN.lead,
-    services: HIRE.services.map((s, i) => ({
-      ...s,
-      ...(HIRE_EN.services[i] ?? {}),
-      // 最後一項的例子不是作品，換成英文說法；其餘例子是專案名，不翻
-      examples: s.examples?.map((e) =>
-        WORK_ITEMS.some((w) => w.title === e) ? e : HIRE_EN.securityExample
-      ),
-    })),
+    studio: HIRE_EN.studio,
+    workflow: HIRE_EN.workflow,
+    services: HIRE.services.map((s, i) => ({ ...s, ...(HIRE_EN.services[i] ?? {}) })),
     steps: HIRE.steps.map((s, i) => ({ ...s, ...(HIRE_EN.steps[i] ?? {}) })),
     notes: HIRE.notes.map((n, i) => ({ ...n, ...(HIRE_EN.notes[i] ?? {}) })),
   },

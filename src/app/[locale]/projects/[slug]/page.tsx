@@ -51,6 +51,11 @@ export async function generateMetadata({
 }
 
 type LinkLabels = ReturnType<typeof getDict>['projects']['link']
+/** youtu.be/ID、youtube.com/watch?v=ID、/shorts/ID 都抓得到；不是 YouTube 回 null */
+function youtubeId(url: string) {
+  return url.match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/)([\w-]{11})/)?.[1] ?? null
+}
+
 function linkLabel(url: string, L: LinkLabels) {
   if (url.includes('github')) return L.github
   if (url.includes('youtu')) return L.video
@@ -87,8 +92,14 @@ export default async function ProjectPage({
   const item = items[index]
   const next = items[(index + 1) % items.length]
   const links = [item.link, item.demo].filter((l): l is string => Boolean(l))
-  // GitHub 卡不算產品畫面，不放進「畫面」；有 gallery 的照樣列
-  const screens = [...(item.preview && !item.card ? [item.preview] : []), ...(item.gallery ?? [])]
+  // GitHub 卡不算產品畫面，不放進「畫面」；有影片時封面已經是影片的 poster，不再重複列一張
+  const screens = [
+    // 本機 mp4 會拿封面當 poster，就不重複列；YouTube 有自己的縮圖，封面照放
+    ...(item.preview && !item.card && !(item.video && !youtubeId(item.video))
+      ? [item.preview]
+      : []),
+    ...(item.gallery ?? []),
+  ]
 
   return (
     <article>
@@ -180,10 +191,37 @@ export default async function ProjectPage({
             {item.description}
           </p>
         </Sec>
-        {screens.length > 0 && (
+        {(screens.length > 0 || item.video) && (
           <Sec no="02" title={d.screens}>
             {/* 封面在前，網站其他分頁接在後面，一張一列照順序往下排 */}
             <div className="grid gap-4 md:gap-6">
+              {/* 影片按了才載：preload=metadata 只拿長度和第一格，不拖慢頁面 */}
+              {item.video && youtubeId(item.video) && (
+                <div className="border-border aspect-video overflow-hidden rounded border bg-black">
+                  {/* nocookie 網域：沒按播放前不放追蹤 cookie */}
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${youtubeId(item.video)}?rel=0`}
+                    title={d.videoAlt(item.title)}
+                    loading="lazy"
+                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                    allowFullScreen
+                    className="block h-full w-full"
+                  />
+                </div>
+              )}
+              {item.video && !youtubeId(item.video) && (
+                <div className="border-border overflow-hidden rounded border">
+                  <video
+                    src={item.video}
+                    poster={item.preview}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    aria-label={d.videoAlt(item.title)}
+                    className="block w-full bg-black"
+                  />
+                </div>
+              )}
               {screens.map((src, i) => (
                 <figure key={src} className="m-0">
                   <div className="border-border overflow-hidden rounded border">
