@@ -1,4 +1,5 @@
 import type {
+  HireWorkflowStep,
   HireReceipt,
   HireReview,
   Photo,
@@ -86,37 +87,89 @@ export const OFFERS: Offer[] = [
     不講學歷。examples 對到 WORK_ITEMS 的 title，改專案名記得回來對一次。 */
 export const HIRE = {
   lead: 'Roblox 腳本師，專長是戰鬥系統：連段、技能、打擊感、FPS 框架，也能接整個遊戲。2022 年開始接案、2024 年起正式收費，現在是 CubexStudios 的共同創辦人兼首席腳本師。',
-  /** 客戶在 Discord 留的評價，原文照登（錯字也不改）。截圖在 docs/roblox-evidence/raw/ */
+  /** 客戶在 Discord 留的評價。桌機放原始截圖（public/proof/reviews/，原檔在 docs/roblox-evidence/raw/），
+      text 是截圖裡的原文（錯字也不改），給替代文字和手機版用。 */
   reviews: [
     {
       name: 'King Croc',
+      image: '/proof/reviews/king-croc.png',
+      width: 944,
+      height: 126,
       text: '10/10, great services with smooth scripting. Exceeds heavily with combat based requests, has a nice personality and is easy to communicate to. I highly recommend.',
     },
     {
       name: 'Handly',
+      image: '/proof/reviews/handly.png',
+      width: 1020,
+      height: 107,
       text: 'Small R, thank you for that combat system 🙏 It works very well, your prices are the best that I found on the market. I will contact you in the future for more scripts',
     },
     {
       name: 'DiaszVFX',
+      image: '/proof/reviews/diaszvfx.png',
+      width: 706,
+      height: 154,
       text: '11/10 Small R is deffinitely who anyone should go to when script related stuff is needed, the combat looks sick and makes the game enjoyable and it was delivered in a shorter time in comparison to past developers i worked with, overall, great scripter!',
     },
     {
       name: 'killer91',
+      image: '/proof/reviews/killer91.png',
+      width: 762,
+      height: 161,
       text: '100/10, Small R is the best scripter I know and even then he is constantly improving and learning more things. The combat and skills he makes look really cool, and just from seeing what he has made I can imagine how clean the code is. I can tell he puts a lot of effort into his work and into learning new skills',
     },
     {
       name: 'pi派萌',
+      image: '/proof/reviews/pi-pai-meng.png',
+      width: 1033,
+      height: 85,
       text: 'SmallR是我在進行多次合作中，最愉快的一次，他寫的腳本非常順暢，並完美的完成我的所有需求，因此我十分推薦他跟您做合作',
     },
   ] satisfies HireReview[],
-  /** PayPal 收款紀錄，只列個人客戶：姓名打碼、不放金額（2026-10-17 他選的公開程度）。
+  /** PayPal 收款紀錄，只列個人客戶。用原始截圖（真實性），頭像模糊、姓名用遮罩條蓋掉；金額照原圖顯示
+      （public/proof/receipts/，原檔在 docs/roblox-evidence/raw/；2026-10-18 他選「原始截圖 + 一點美化」）。
       CubexStudios 的三筆不列在這裡，寫成工作室經歷（他是共同創辦人，算客戶付款會灌水）。
       備註照收據原文，被 PayPal 截斷的那則保留刪節號。 */
   receipts: [
-    { who: 'H. P.', month: 1, day: 20 },
-    { who: 'J. C.', month: 4, day: 6, memo: 'Good work 👍 Taiwan #1' },
-    { who: 'J. C.', month: 5, day: 7, memo: 'Love you brother keep up the great wo…' },
-    { who: 'J. C.', month: 5, day: 29, memo: 'Keep up the great work' },
+    {
+      image: '/proof/receipts/receipt-1.jpg',
+      amount: '+$95.30 USD',
+      width: 1170,
+      height: 347,
+      who: 'H. P.',
+      month: 1,
+      day: 20,
+    },
+    {
+      image: '/proof/receipts/receipt-2.jpg',
+      amount: '+$15.00 USD',
+      width: 1170,
+      height: 339,
+      who: 'J. C.',
+      month: 4,
+      day: 6,
+      memo: 'Good work 👍 Taiwan #1',
+    },
+    {
+      image: '/proof/receipts/receipt-3.jpg',
+      amount: '+NT$2,014',
+      width: 1170,
+      height: 359,
+      who: 'J. C.',
+      month: 5,
+      day: 7,
+      memo: 'Love you brother keep up the great wo…',
+    },
+    {
+      image: '/proof/receipts/receipt-4.jpg',
+      amount: '+$35.00 USD',
+      width: 1170,
+      height: 327,
+      who: 'J. C.',
+      month: 5,
+      day: 29,
+      memo: 'Keep up the great work',
+    },
   ] satisfies HireReceipt[],
   studio:
     '2024 年開始替 CubexStudios 寫腳本，委託過劍類戰鬥系統（Sword System）。後來成為共同創辦人兼首席腳本師，2026 年起一起做工作室自己的遊戲。',
@@ -143,10 +196,22 @@ export const HIRE = {
       examples: ['Build The Cat Gunner'],
     },
   ] satisfies HireService[],
-  /** 怎麼寫：工作流一句話 + 一排工具 logo（名稱對得到 skill-icons.json 才有 logo） */
-  workflow:
-    'Rojo + Git：在編輯器寫 strict Luau，用 Rojo 同步進 Studio，Wally 管套件，luau-lsp、Selene、StyLua 做型別與風格檢查，純邏輯用 Lune 在 Studio 外跑測試。可調的數值都放在 config，不用翻程式碼就能改。',
-  tools: ['Roblox Studio', 'Rojo', 'Wally', 'Lune', 'luau-lsp', 'StyLua', 'Charm', 'Git', 'Selene'],
+  /** 怎麼寫：從寫程式碼到進 Studio 的四步，每步配工具 logo（名稱對得到 skill-icons.json 才有 logo） */
+  workflow: [
+    { label: '寫', text: '在編輯器寫 strict Luau，不直接在 Studio 裡改。', tools: ['Luau'] },
+    {
+      label: '檢查',
+      text: 'luau-lsp 抓型別錯誤，Selene、StyLua 管程式風格。',
+      tools: ['luau-lsp', 'StyLua'],
+    },
+    { label: '測試', text: '純邏輯用 Lune 在 Studio 外跑自動化測試。', tools: ['Lune'] },
+    {
+      label: '同步',
+      text: 'Rojo 同步進 Studio，Wally 管套件，Git 記下每一次修改。',
+      tools: ['Rojo', 'Wally', 'Git', 'Roblox Studio'],
+    },
+  ] satisfies HireWorkflowStep[],
+  workflowNote: '可調的數值都放在 config，不用翻程式碼就能改。',
   steps: [
     {
       label: '聊需求',

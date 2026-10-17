@@ -204,8 +204,19 @@ export const HIRE_EN = {
       deliverable: 'A game ready to publish',
     },
   ],
-  workflow:
-    'Rojo + Git: strict Luau in a real editor, synced into Studio with Rojo, packages via Wally, type and style checks with luau-lsp, Selene and StyLua, and pure logic tested outside Studio with Lune. Tunable numbers live in config, so you can change them without touching code.',
+  workflow: [
+    { label: 'Write', text: 'Strict Luau in a real editor, not edited inside Studio.' },
+    {
+      label: 'Check',
+      text: 'luau-lsp catches type errors; Selene and StyLua keep the style consistent.',
+    },
+    { label: 'Test', text: 'Pure logic runs automated tests outside Studio with Lune.' },
+    {
+      label: 'Sync',
+      text: 'Rojo syncs it into Studio, Wally manages packages, Git keeps every change.',
+    },
+  ],
+  workflowNote: 'Tunable numbers live in config, so you can change them without touching code.',
   steps: [
     {
       label: 'Talk',

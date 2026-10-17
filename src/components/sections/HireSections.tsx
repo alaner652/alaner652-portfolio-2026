@@ -1,4 +1,6 @@
-import { TechList } from '@/components/common/TechList'
+import Image from 'next/image'
+
+import { SkillIcon } from '@/components/common/SkillIcon'
 import { WorkRows } from '@/components/home/WorkRows'
 import { Accordion } from '@/components/motion/Accordion'
 import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
@@ -254,26 +256,55 @@ function Initial({ name, className }: { name: string; className?: string }) {
   )
 }
 
-/** 客戶怎麼說：Discord 評價原文照登，長短不一，用多欄瀑布流排，不硬切成一樣高的卡 */
+/** 原始截圖外面的那層框：深色襯底 + 細框 + 柔和陰影，內容不動，只是讓截圖跟網站搭得起來 */
+const SHOT_FRAME =
+  'bg-surface border-border rounded-2xl border p-2 shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)] md:p-2.5'
+
+/** 客戶怎麼說：桌機放 Discord 原始截圖（真實性比重打的字高），左右交錯排；
+    手機螢幕太窄，截圖縮下來字會糊，改顯示原文 + 連到原圖。 */
 export function Reviews() {
   const d = t().hire
   const { HIRE } = content()
   return (
     <section className="wrap pt-12 md:pt-24" id="reviews">
       <SecHead title={d.reviews} note={d.reviewsNote} />
-      <Reveal stagger={itemStagger} className="gap-4 md:columns-2 md:gap-6 lg:columns-3">
+      {/* 桌機：原始截圖 */}
+      <Reveal stagger={itemStagger} className="hidden flex-col gap-5 md:flex">
+        {HIRE.reviews.map((r, i) => (
+          <RevealItem key={r.name} className={cn('w-fit max-w-full', i % 2 === 1 && 'lg:self-end')}>
+            <figure className={cn(SHOT_FRAME, 'm-0')}>
+              <Image
+                src={r.image}
+                alt={`${r.name}：${r.text}`}
+                width={r.width}
+                height={r.height}
+                sizes="(min-width: 1100px) 1040px, 100vw"
+                className="block h-auto max-w-full rounded-xl"
+              />
+            </figure>
+          </RevealItem>
+        ))}
+      </Reveal>
+      {/* 手機：原文 + 原圖連結 */}
+      <Reveal stagger={itemStagger} className="grid gap-4 md:hidden">
         {HIRE.reviews.map((r) => (
-          <RevealItem key={r.name} className="mb-4 break-inside-avoid md:mb-6">
-            <figure className="bg-surface border-border m-0 rounded-xl border p-5 md:p-6">
-              <blockquote className="text-text-body text-[15px] leading-[1.8] md:text-base">
-                {r.text}
-              </blockquote>
+          <RevealItem key={r.name}>
+            <figure className="bg-surface border-border m-0 rounded-xl border p-5">
+              <blockquote className="text-text-body text-[15px] leading-[1.8]">{r.text}</blockquote>
               <figcaption className="mt-5 flex items-center gap-3">
                 <Initial name={r.name} />
-                <span className="flex flex-col">
+                <span className="flex flex-1 flex-col">
                   <span className="text-text text-sm font-bold">{r.name}</span>
                   <span className="text-text-3 font-mono text-[11px]">Discord</span>
                 </span>
+                <a
+                  href={r.image}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-2 hover:text-text font-mono text-[11px] transition-colors"
+                >
+                  {d.reviewsOriginal}
+                </a>
               </figcaption>
             </figure>
           </RevealItem>
@@ -283,7 +314,7 @@ export function Reviews() {
   )
 }
 
-/** 接案紀錄：PayPal 收據重畫成卡片（付款人打碼、不放金額）；右邊是工作室經歷（CubexStudios） */
+/** 接案紀錄：PayPal 原始截圖（頭像模糊、姓名與金額遮掉）；右邊是工作室經歷（CubexStudios） */
 export function Receipts() {
   const d = t().hire
   const { HIRE } = content()
@@ -292,24 +323,17 @@ export function Receipts() {
       <div className="grid gap-10 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-7">
           <SecHead title={d.receipts} note={d.receiptsNote} />
-          <Reveal as="ul" stagger={itemStagger} className="grid gap-3">
+          <Reveal as="ul" stagger={itemStagger} className="grid gap-3 md:gap-4">
             {HIRE.receipts.map((r) => (
-              <RevealItem
-                as="li"
-                key={`${r.month}-${r.day}`}
-                className="bg-surface border-border flex items-start gap-4 rounded-xl border p-4 md:p-5"
-              >
-                <Initial name={r.who} />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <span className="text-text font-bold tracking-[0.08em]">{r.who}</span>
-                    <span className="text-text-3 shrink-0 font-mono text-[11px]">PayPal</span>
-                  </div>
-                  <p className="text-text-2 mt-0.5 text-sm">
-                    {d.receiptDate(r.month, r.day)} · {d.received}
-                  </p>
-                  {r.memo && <p className="text-text-body mt-2 truncate text-[15px]">“{r.memo}”</p>}
-                </div>
+              <RevealItem as="li" key={r.image} className={SHOT_FRAME}>
+                <Image
+                  src={r.image}
+                  alt={d.receiptAlt(d.receiptDate(r.month, r.day), r.amount, r.memo)}
+                  width={r.width}
+                  height={r.height}
+                  sizes="(min-width: 768px) 640px, 100vw"
+                  className="block h-auto w-full rounded-xl"
+                />
               </RevealItem>
             ))}
           </Reveal>
@@ -330,27 +354,44 @@ export function Receipts() {
   )
 }
 
-/** 怎麼寫：工作流一段話 + 工具 logo */
+/** 怎麼寫：從寫程式碼到進 Studio 的四步，一步一格、箭頭串起來（手機改成直的），
+    每格上面是那一步用的工具 logo，底下一句 config 的說明。 */
 export function Workflow() {
   const d = t().hire
   const { HIRE } = content()
   return (
     <section className="wrap pt-12 md:pt-24" id="workflow">
-      <div className="border-line grid gap-6 border-t pt-8 md:grid-cols-12 md:gap-8 md:pt-12">
-        <Reveal className="md:col-span-4">
-          <h2 className="text-text text-[30px] font-black md:text-[44px]">{d.workflow}</h2>
-        </Reveal>
-        <Reveal stagger={itemStagger} className="md:col-span-8">
-          <RevealItem>
-            <p className="text-text-body text-[15px] leading-[1.9] md:text-[17px]">
-              {HIRE.workflow}
-            </p>
+      <SecHead title={d.workflow} note={HIRE.workflowNote} />
+      <Reveal as="ol" stagger={itemStagger} className="grid gap-3 md:grid-cols-4 md:gap-0">
+        {HIRE.workflow.map((w, i) => (
+          <RevealItem
+            as="li"
+            key={w.label}
+            className={cn('relative flex md:pr-8', i === HIRE.workflow.length - 1 && 'md:pr-0')}
+          >
+            <div className="bg-surface border-border flex w-full flex-col rounded-2xl border p-5 md:p-6">
+              <div className="flex items-center justify-between">
+                <span className="text-accent font-mono text-[13px]">{NO(i)}</span>
+                <span className="flex gap-1.5">
+                  {w.tools.map((tool) => (
+                    <SkillIcon key={tool} name={tool} size={26} />
+                  ))}
+                </span>
+              </div>
+              <h3 className="text-text mt-5 text-[22px] font-black md:text-[26px]">{w.label}</h3>
+              <p className="text-text-2 mt-2 text-sm leading-[1.75] md:text-[15px]">{w.text}</p>
+            </div>
+            {i < HIRE.workflow.length - 1 && (
+              <span
+                aria-hidden="true"
+                className="text-text-3 absolute top-1/2 right-0 hidden w-8 -translate-y-1/2 text-center text-lg md:block"
+              >
+                →
+              </span>
+            )}
           </RevealItem>
-          <RevealItem>
-            <TechList items={HIRE.tools} size={24} className="text-text-2 mt-6 flex text-sm" />
-          </RevealItem>
-        </Reveal>
-      </div>
+        ))}
+      </Reveal>
     </section>
   )
 }

@@ -97,6 +97,46 @@ function Preview({
   )
 }
 
+/** 手機版的一件：整張卡可點。封面（GitHub 卡不算產品畫面，不放）→ 編號 · 分類 · 狀態 → 名稱 → 一句結果 → 技術。
+    手機沒有「滑過」，所以不做桌機那種跟著游標換的預覽，每件都把該看的直接攤開。 */
+function MobileCard({ item, index, d }: { item: WorkItem; index: number; d: P }) {
+  return (
+    <Link
+      href={`/projects/${item.slug}`}
+      className="bg-surface border-border active:border-border-strong block overflow-hidden rounded-2xl border transition-colors"
+    >
+      {item.preview && !item.card && (
+        <Image
+          src={item.preview}
+          alt=""
+          width={1200}
+          height={600}
+          sizes="100vw"
+          className="border-border aspect-2/1 w-full border-b object-cover object-top"
+        />
+      )}
+      <div className="flex flex-col gap-2 p-4">
+        <div className="text-text-3 flex items-center gap-2 font-mono text-[11px]">
+          <span className="text-accent">{String(index + 1).padStart(2, '0')}</span>
+          <span>·</span>
+          <span>{d.categories[item.category] ?? item.category}</span>
+          <span>·</span>
+          <span>{item.status}</span>
+        </div>
+        <h3 className="text-text text-[22px] leading-tight font-black tracking-[-0.02em]">
+          {item.title}
+        </h3>
+        <p className="text-text-2 line-clamp-2 text-sm leading-[1.7]">
+          {item.result ?? item.description}
+        </p>
+        {item.metrics && (
+          <TechList items={item.metrics} size={16} className="text-text-3 mt-1 flex text-xs" />
+        )}
+      </div>
+    </Link>
+  )
+}
+
 /** /projects：一張目錄。左邊一列一件（空心大編號，滑過填橘），右邊黏著的預覽欄跟著換。
     上方分類 tab 帶數量、搜尋框找專案或技術。 */
 export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
@@ -149,20 +189,30 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
             </button>
           ))}
         </div>
-        <label className="text-text-3 flex items-center gap-2 text-sm">
+        <label className="text-text-3 flex w-full items-center gap-2 text-sm md:w-auto">
           {d.search}
           <input
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={d.searchPlaceholder}
-            className="border-border-strong text-text placeholder:text-text-3 focus-visible:border-accent h-9 w-44 border-b bg-transparent text-sm outline-none md:w-55"
+            className="border-border-strong text-text placeholder:text-text-3 focus-visible:border-accent h-9 min-w-0 flex-1 border-b bg-transparent text-sm outline-none md:w-55 md:flex-none"
           />
         </label>
       </div>
 
       <div className="wrap grid gap-8 pt-2 pb-20 md:grid-cols-12 md:gap-8 md:pb-24">
-        <ol className="md:col-span-7" onPointerLeave={() => setHover(null)}>
+        {/* 手機：卡片列表 */}
+        <ol className="grid gap-4 md:hidden">
+          {items.length === 0 && <li className="text-text-3 py-10 text-sm">{d.empty(q)}</li>}
+          {items.map((item, i) => (
+            <li key={item.slug}>
+              <MobileCard item={item} index={i} d={d} />
+            </li>
+          ))}
+        </ol>
+        {/* 桌機：目錄 + 右邊跟著換的預覽 */}
+        <ol className="hidden md:col-span-7 md:block" onPointerLeave={() => setHover(null)}>
           {items.length === 0 && <li className="text-text-3 py-10 text-sm">{d.empty(q)}</li>}
           <AnimatePresence initial={false}>
             {items.map((item, i) => {
@@ -224,16 +274,6 @@ export function ProjectIndex({ items: WORK_ITEMS }: { items: WorkItem[] }) {
                       →
                     </span>
                   </Link>
-                  {/* 手機：預覽接在目前這一列底下 */}
-                  {on && active && (
-                    <Preview
-                      item={active}
-                      index={i}
-                      title={false}
-                      d={d}
-                      className="border-line border-b py-5 md:hidden"
-                    />
-                  )}
                 </motion.li>
               )
             })}

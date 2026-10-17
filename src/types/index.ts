@@ -96,17 +96,35 @@ export interface HireService {
 /** /hire「客戶怎麼說」：Discord 上的評價，原文照登 */
 export interface HireReview {
   name: string
+  /** 截圖裡的原文，給替代文字和手機版 */
   text: string
+  /** public/ 底下的原始截圖，寬高是原檔像素 */
+  image: string
+  width: number
+  height: number
 }
 
 /** /hire「接案紀錄」：PayPal 收款，付款人打碼、不放金額 */
 export interface HireReceipt {
-  /** 打碼後的付款人，像「J. C.」 */
+  /** public/ 底下打碼過的原始截圖，寬高是原檔像素 */
+  image: string
+  width: number
+  height: number
+  /** 收據上的金額，照原圖（給替代文字） */
+  amount: string
+  /** 打碼後的付款人，像「J. C.」（只用在替代文字） */
   who: string
   month: number
   day: number
   /** 付款附言，照收據原文 */
   memo?: string
+}
+
+/** /hire「怎麼寫」的一步：做什麼 + 用什麼工具 */
+export interface HireWorkflowStep {
+  label: string
+  text: string
+  tools: string[]
 }
 
 export interface HireStep {

@@ -105,7 +105,7 @@ export default async function ProjectPage({
     <article>
       {/* 頁首：截圖鋪滿、壓暗，標題壓在下緣。GitHub 卡那種圖再加一點模糊，別讓它像一張沒放好的圖 */}
       <header
-        className="relative flex min-h-[70svh] flex-col justify-end overflow-hidden md:min-h-[min(720px,88svh)]"
+        className="relative flex min-h-[52svh] flex-col justify-end overflow-hidden md:min-h-[min(720px,88svh)]"
         data-nav-overlay=""
       >
         {item.preview && (
