@@ -32,9 +32,11 @@ export const tr = {
 }
 
 /** 首頁 H1 逐字用：切成「上浮單位」，中日韓逐字、拉丁逐詞（空白跟著前一個詞），英文不會從單字中間斷。
+    句尾標點（，。、！？…）黏在前一個字上當同一個單位：拆成 inline-block 之後瀏覽器的避頭規則就失效了，
+    手機上「。」會自己掉到下一行。
     放這裡（不是 Chars.tsx）是因為 server component 也要算下一行的延遲。 */
 export function charTokens(text: string): string[] {
-  return text.match(/[A-Za-z0-9'’.,!?;:-]+\s*|\s+|./gu) ?? []
+  return text.match(/[A-Za-z0-9'’.,!?;:-]+\s*|\s+|.[，。、！？；：」』）》〉…—]*/gu) ?? []
 }
 
 /** 一行逐字出完的時間（秒）：給下一行當 delay */
