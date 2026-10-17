@@ -168,9 +168,11 @@
   color: var(--color-text-body);
   overflow-x: auto;
   white-space: pre;
-  padding: 10px 0 18px;
+  padding: 14px 20px 16px 4px;
   margin: 0;
   counter-reset: line;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
 }
 .prose-portfolio pre code {
   background: none;

@@ -14,11 +14,10 @@ import { Eyebrow } from '@/components/common/Eyebrow'
 import { MacWindow } from '@/components/common/MacWindow'
 import { Mermaid } from '@/components/common/Mermaid'
 import { MetricChip } from '@/components/common/MetricChip'
-import { Progress } from '@/components/motion/Progress'
 import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { TaskList } from '@/components/common/TaskList'
-import { Toc, type TocHeading } from '@/components/common/Toc'
+import { Toc, TocMobile, type TocHeading } from '@/components/common/Toc'
 import { SITE_CONFIG } from '@/constants'
 import { hasLocale, localePath } from '@/i18n/config'
 import { languages } from '@/i18n/meta'
@@ -202,9 +201,6 @@ export default async function PostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
-      {/* 最上緣一條橘線，跟著整頁捲動長 */}
-      <Progress />
-
       {/* 頁首：置中。麵包屑 / 第一個標籤、標題、日期 · 分鐘 · 標籤。三層錯開進場，正文不動 */}
       <Reveal
         load
@@ -219,7 +215,7 @@ export default async function PostPage({
           {post.frontmatter.tags?.[0] && <> / #{post.frontmatter.tags[0]}</>}
         </RevealItem>
         <RevealItem small>
-          <h1 className="text-text mt-3.5 text-[32px] leading-[1.35] font-black md:mt-6 md:text-[clamp(40px,4vw,56px)] md:leading-[1.3] md:tracking-[-0.02em]">
+          <h1 className="text-text mt-3.5 text-[32px] leading-[1.35] font-black text-balance md:mt-6 md:text-[clamp(40px,4vw,56px)] md:leading-[1.3] md:tracking-[-0.02em]">
             {post.frontmatter.title}
           </h1>
         </RevealItem>
@@ -230,7 +226,7 @@ export default async function PostPage({
           <time dateTime={post.frontmatter.date}>{dotDate}</time>
           <span>{d.minutes(post.readingMinutes)}</span>
           {post.frontmatter.tags && (
-            <span>{post.frontmatter.tags.map((t) => `#${t}`).join('')}</span>
+            <span>{post.frontmatter.tags.map((t) => `#${t}`).join(' ')}</span>
           )}
         </RevealItem>
         {locale === 'en' && post.lang === 'zh' && (
@@ -238,21 +234,15 @@ export default async function PostPage({
         )}
       </Reveal>
 
-      {/* 內文：寬螢幕三欄（目錄 2 / 文章 7 / 相關 3），窄螢幕目錄收成 details */}
-      <div className="wrap grid grid-cols-1 gap-x-12 pb-12 md:pb-20 xl:grid-cols-[220px_minmax(0,760px)_220px] xl:justify-center">
-        <aside className="mb-6 xl:mb-0">
-          <div className="xl:hidden">
-            <Toc headings={headings} compact />
-          </div>
-          <div className="hidden xl:block">
-            <Toc headings={headings} />
-          </div>
-        </aside>
+      {/* 內文：寬螢幕三欄，文章在正中間、目錄 + 相關靠右，左欄留空讓文章置中；
+          窄螢幕只剩文章，目錄改成底部膠囊 */}
+      <div className="wrap grid grid-cols-1 gap-x-10 pb-12 md:pb-20 xl:grid-cols-[minmax(240px,1fr)_minmax(0,760px)_minmax(240px,1fr)]">
         <div
+          id="post-body"
           className={cn(
             'min-w-0',
             post.frontmatter.wide ? 'md:max-w-[60rem]' : 'md:max-w-[46rem]',
-            'md:mx-auto xl:mx-0 xl:max-w-none'
+            'md:mx-auto xl:col-start-2 xl:mx-0 xl:max-w-none'
           )}
         >
           <div className="prose-portfolio">
@@ -262,22 +252,28 @@ export default async function PostPage({
             {d.signature}, {y}.{m}
           </p>
         </div>
-        <aside className="hidden xl:block">
-          {rel.length > 0 && (
-            <div className="border-line text-text-3 sticky top-24 border-t pt-4 font-mono text-xs leading-[2]">
-              {d.related}
-              {rel.map((r) => (
-                <Link
-                  key={r.slug}
-                  href={`/blog/${r.slug}`}
-                  className="text-text-2 hover:text-text block transition-colors"
-                >
-                  → {r.frontmatter.title}
-                </Link>
-              ))}
-            </div>
-          )}
+        {/* 目錄 + 閱讀進度（取代原本頁首那條 3px 橘線）：桌機黏在右欄，手機是底部浮起來的膠囊 */}
+        {/* 寬度跟著右欄走，不另外寫死：比欄寬的話 Safari 會往右溢出、被 body 的 overflow-x 切掉 */}
+        <aside className="hidden min-w-0 xl:col-start-3 xl:block">
+          <div className="sticky top-28">
+            <Toc headings={headings} minutes={post.readingMinutes} />
+            {rel.length > 0 && (
+              <div className="border-line text-text-3 mt-8 border-t pt-4 font-mono text-xs leading-[2]">
+                {d.related}
+                {rel.map((r) => (
+                  <Link
+                    key={r.slug}
+                    href={`/blog/${r.slug}`}
+                    className="text-text-2 hover:text-text block transition-colors"
+                  >
+                    → {r.frontmatter.title}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </aside>
+        <TocMobile headings={headings} minutes={post.readingMinutes} />
       </div>
 
       {next && (

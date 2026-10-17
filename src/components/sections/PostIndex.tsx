@@ -60,7 +60,8 @@ export function PostIndex({ posts, tags }: { posts: BlogPost[]; tags: string[]; 
         <div
           role="group"
           aria-label={d.title}
-          className="-mx-5 flex gap-5 overflow-x-auto px-5 font-mono text-[13px] [scrollbar-width:none] md:mx-0 md:flex-wrap md:gap-6 md:px-0 md:text-sm"
+          // 手機標籤一排橫滑：右緣淡出，看得出還有東西
+          className="-mx-5 flex gap-5 overflow-x-auto px-5 font-mono text-[13px] [mask-image:linear-gradient(90deg,#000_85%,transparent)] [scrollbar-width:none] md:mx-0 md:flex-wrap md:gap-6 md:px-0 md:text-sm md:[mask-image:none]"
         >
           {[ALL, ...tags].map((t) => (
             <button
@@ -77,14 +78,14 @@ export function PostIndex({ posts, tags }: { posts: BlogPost[]; tags: string[]; 
             </button>
           ))}
         </div>
-        <label className="text-text-3 hidden items-center gap-2 text-sm md:flex">
+        <label className="text-text-3 flex w-full items-center gap-2 text-sm md:w-auto">
           {d.search}
           <input
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={d.searchPlaceholder}
-            className="border-border-strong text-text placeholder:text-text-3 focus-visible:border-accent h-9 w-60 border-b bg-transparent text-sm outline-none"
+            className="border-border-strong text-text placeholder:text-text-3 focus-visible:border-accent h-9 min-w-0 flex-1 border-b bg-transparent text-sm outline-none md:w-60 md:flex-none"
           />
         </label>
       </div>
@@ -136,27 +137,36 @@ export function PostIndex({ posts, tags }: { posts: BlogPost[]; tags: string[]; 
                       <span className="flex flex-col gap-2.5">
                         <span
                           className={cn(
-                            'text-text group-hover/post:text-accent leading-[1.35] font-black tracking-[-0.01em] transition-colors',
+                            'text-text group-hover/post:text-accent leading-[1.35] font-black tracking-[-0.01em] text-balance transition-colors',
                             big ? 'text-[26px] md:text-[48px]' : 'text-lg md:text-[26px]'
                           )}
                         >
                           {post.frontmatter.title}
                         </span>
-                        {big && post.frontmatter.description && (
-                          <span className="text-text-2 hidden max-w-[36em] text-[17px] leading-[1.8] md:block">
+                        {/* 每篇都帶摘要，只看標題猜不出在講什麼；最新那篇字大一點、不截斷 */}
+                        {post.frontmatter.description && (
+                          <span
+                            className={cn(
+                              'text-text-2 max-w-[40em] leading-[1.75]',
+                              big
+                                ? 'text-[15px] md:text-[17px] md:leading-[1.8]'
+                                : 'line-clamp-2 text-sm md:text-[15px]'
+                            )}
+                          >
                             {post.frontmatter.description}
                           </span>
                         )}
                       </span>
                       <span className="text-text-3 font-mono text-[11px] leading-[1.9] md:text-right md:text-xs">
-                        {shortDate(post.frontmatter.date)} · {post.readingMinutes}′
-                        <span className="md:block">
-                          {''}
-                          {post.frontmatter.tags
-                            ?.slice(0, 2)
-                            .map((t) => `#${t}`)
-                            .join('')}
-                        </span>
+                        {shortDate(post.frontmatter.date)} · {d.minutes(post.readingMinutes)}
+                        {post.frontmatter.tags?.length ? (
+                          <span className="ml-3 md:ml-0 md:block">
+                            {post.frontmatter.tags
+                              .slice(0, 2)
+                              .map((t) => `#${t}`)
+                              .join(' ')}
+                          </span>
+                        ) : null}
                       </span>
                     </Link>
                   </RevealItem>

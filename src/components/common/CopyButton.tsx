@@ -1,5 +1,6 @@
 'use client'
 
+import { Check } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import { cn } from '@/lib/utils'
@@ -12,11 +13,12 @@ interface CopyButtonProps {
   className?: string
 }
 
-/** 複製按鈕：按下去文字變成「已複製 ✓」、底色翻橘，兩秒後恢復。沒有 clipboard 權限就什麼都不做。 */
+/** 複製按鈕：按下去變成勾勾圖示 +「已複製」、底色翻橘，兩秒後恢復。沒有 clipboard 權限就什麼都不做。
+    勾勾用 lucide 的 Check（跟導覽列的 icon 同一套），不用 ✓ 字元：那個字元每個字型長得不一樣。 */
 export function CopyButton({
   text,
   label = '複製',
-  doneLabel = '已複製 ✓',
+  doneLabel = '已複製',
   liveText = '信箱已複製',
   className,
 }: CopyButtonProps) {
@@ -50,7 +52,14 @@ export function CopyButton({
           className
         )}
       >
-        {copied ? doneLabel : label}
+        {copied ? (
+          <span className="inline-flex items-center gap-1.5">
+            <Check size={18} strokeWidth={2.25} aria-hidden="true" />
+            {doneLabel}
+          </span>
+        ) : (
+          label
+        )}
       </button>
       <span role="status" aria-live="polite" className="sr-only">
         {copied ? liveText : ''}

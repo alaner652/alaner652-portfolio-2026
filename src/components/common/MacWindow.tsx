@@ -6,8 +6,9 @@ import { CopyCode } from '@/components/common/CopyCode'
     名字沿用 MacWindow，因為 MDX 內容裡直接用了它。 */
 export function MacWindow({ children, title }: { children: ReactNode; title?: string }) {
   return (
-    <figure className="code-block bg-bg-deep border-line my-[1.6em] border-y">
-      <figcaption className="text-text-3 flex items-center justify-between py-2 font-mono text-xs">
+    // 整塊包在一個有邊框的框裡、內容左右留白，不再貼著文字欄的邊；長的行在框內橫向捲動，不會跑出欄外
+    <figure className="code-block bg-bg-deep border-border my-[1.6em] max-w-full overflow-hidden rounded-xl border">
+      <figcaption className="text-text-3 border-line flex items-center justify-between border-b py-1.5 pr-2 pl-4 font-mono text-xs">
         <span>{title ?? 'code'}</span>
         <CopyCode />
       </figcaption>

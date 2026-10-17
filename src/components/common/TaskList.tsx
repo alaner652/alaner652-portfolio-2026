@@ -1,3 +1,5 @@
+import { Check } from 'lucide-react'
+
 type Task = { title: string; completed: boolean }
 
 type Props = {
@@ -5,7 +7,7 @@ type Props = {
   tasks: string
 }
 
-/** 文章裡的待辦清單：mono 的 [✓] / [ ]，做完的字亮、沒做的字暗。跟 Card 同一種框。 */
+/** 文章裡的待辦清單：做完的是橘色實心小方框 + 勾勾 icon、沒做的是空心方框；做完的字亮、沒做的字暗。跟 Card 同一種框。 */
 export function TaskList({ title, tasks }: Props) {
   // MDX 傳進來的是字串，格式錯了不該讓整個路由 500
   let items: Task[] = []
@@ -23,10 +25,12 @@ export function TaskList({ title, tasks }: Props) {
         {items.map((task, i) => (
           <li key={i} className="mb-1.5 flex items-start gap-2.5 text-[0.95em] leading-[1.7]">
             <span
-              className={`shrink-0 pt-0.5 font-mono text-[0.8em] ${task.completed ? 'text-accent' : 'text-text-3'}`}
+              className={`mt-[0.35em] flex size-4 shrink-0 items-center justify-center rounded-[4px] border ${
+                task.completed ? 'border-accent bg-accent text-on-accent' : 'border-border-strong'
+              }`}
               aria-hidden="true"
             >
-              {task.completed ? '[✓]' : '[ ]'}
+              {task.completed && <Check size={12} strokeWidth={3} />}
             </span>
             <span className={task.completed ? 'text-text' : 'text-text-2'}>
               <span className="sr-only">{task.completed ? '已完成：' : '未完成：'}</span>
