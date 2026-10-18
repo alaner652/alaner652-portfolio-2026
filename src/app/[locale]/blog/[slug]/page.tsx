@@ -115,7 +115,9 @@ export async function generateMetadata({
   const post = getPostBySlug(slug, l)
   if (!post || post.frontmatter.hidden) return {}
   const path = `/blog/${slug}`
-  const canonicalUrl = localePath(l, path)
+  // 沒有英文版的文章，/en 底下顯示的其實是中文原文：語系和 canonical 都跟著文章實際的語言，
+  // 預覽卡才不會標成英文卻是中文內容，也不會出現兩個內容一樣的網址
+  const canonicalUrl = localePath(post.lang, path)
   return {
     title: post.frontmatter.title,
     description: post.frontmatter.description,
@@ -130,7 +132,7 @@ export async function generateMetadata({
       modifiedTime: post.frontmatter.date,
       tags: post.frontmatter.tags,
       siteName: SITE_CONFIG.name,
-      locale: l === 'en' ? 'en_US' : 'zh_TW',
+      locale: post.lang === 'en' ? 'en_US' : 'zh_TW',
       authors: [SITE_CONFIG.name],
     },
     twitter: {

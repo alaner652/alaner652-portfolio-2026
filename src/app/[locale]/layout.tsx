@@ -11,7 +11,8 @@ import { Footer } from '@/components/layout/Footer'
 import { Nav } from '@/components/layout/Nav'
 import { MotionProviders } from '@/components/motion/Providers'
 import { SITE_CONFIG } from '@/constants'
-import { HTML_LANG, LOCALES, hasLocale } from '@/i18n/config'
+import { DEFAULT_LOCALE, HTML_LANG, LOCALES, hasLocale, localePath } from '@/i18n/config'
+import { languages } from '@/i18n/meta'
 import { getDict } from '@/i18n/dict'
 import { setLocale } from '@/i18n/server'
 import { notFound } from 'next/navigation'
@@ -37,48 +38,57 @@ const notoSansTC = Noto_Sans_TC({
   preload: false,
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_CONFIG.url),
-  title: {
-    default: `${SITE_CONFIG.name} — Software Engineer, Security, Builder`,
-    template: `%s | ${SITE_CONFIG.name}`,
-  },
-  description: SITE_CONFIG.description,
-  keywords: [
-    'alaner652',
-    '全端工程師',
-    'Full Stack Engineer',
-    'Software Engineer',
-    'Agora-AI',
-    'Security Research',
-    'Next.js',
-    'TypeScript',
-    'Taipei',
-  ],
-  authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
-  creator: SITE_CONFIG.name,
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
-  },
-  alternates: {
-    canonical: SITE_CONFIG.url,
-  },
-  openGraph: {
-    title: `${SITE_CONFIG.name} — Software Engineer, Security, Builder`,
-    description: SITE_CONFIG.description,
-    url: SITE_CONFIG.url,
-    siteName: SITE_CONFIG.name,
-    locale: 'zh_TW',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `${SITE_CONFIG.name} — Software Engineer, Security, Builder`,
-    description: SITE_CONFIG.description,
-    creator: `@${SITE_CONFIG.handle}`,
-  },
+/** 全站預設的 metadata：標題、描述、og 語系跟著網址的語系走（/en 要出英文的預覽卡，不是中文）。
+    內頁用 pageMeta 覆蓋自己的那一份；首頁直接用這裡的。 */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale: raw } = await params
+  const locale = hasLocale(raw) ? raw : DEFAULT_LOCALE
+  const { title, description } = getDict(locale).site
+  const url = localePath(locale, '/')
+  return {
+    metadataBase: new URL(SITE_CONFIG.url),
+    title: { default: title, template: `%s | ${SITE_CONFIG.name}` },
+    description,
+    keywords: [
+      'alaner652',
+      'small R',
+      '全端工程師',
+      'Full Stack Engineer',
+      'Software Engineer',
+      'Roblox Scripter',
+      'Security Research',
+      'Next.js',
+      'TypeScript',
+      'Taipei',
+    ],
+    authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
+    creator: SITE_CONFIG.name,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+    },
+    alternates: { canonical: url, languages: languages('/') },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: SITE_CONFIG.name,
+      locale: locale === 'en' ? 'en_US' : 'zh_TW',
+      alternateLocale: locale === 'en' ? 'zh_TW' : 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      creator: `@${SITE_CONFIG.handle}`,
+    },
+  }
 }
 
 export function generateStaticParams() {
