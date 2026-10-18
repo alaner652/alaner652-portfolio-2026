@@ -132,7 +132,7 @@ export const HIRE = {
       備註照收據原文，被 PayPal 截斷的那則保留刪節號。 */
   receipts: [
     {
-      image: '/proof/receipts/receipt-1.jpg',
+      image: '/proof/receipts/paypal-1.jpg',
       amount: '+$95.30 USD',
       width: 1170,
       height: 347,
@@ -141,7 +141,7 @@ export const HIRE = {
       day: 20,
     },
     {
-      image: '/proof/receipts/receipt-2.jpg',
+      image: '/proof/receipts/paypal-2.jpg',
       amount: '+$15.00 USD',
       width: 1170,
       height: 339,
@@ -151,7 +151,7 @@ export const HIRE = {
       memo: 'Good work 👍 Taiwan #1',
     },
     {
-      image: '/proof/receipts/receipt-3.jpg',
+      image: '/proof/receipts/paypal-3.jpg',
       amount: '+NT$2,014',
       width: 1170,
       height: 359,
@@ -161,7 +161,7 @@ export const HIRE = {
       memo: 'Love you brother keep up the great wo…',
     },
     {
-      image: '/proof/receipts/receipt-4.jpg',
+      image: '/proof/receipts/paypal-4.jpg',
       amount: '+$35.00 USD',
       width: 1170,
       height: 327,
@@ -169,6 +169,26 @@ export const HIRE = {
       month: 5,
       day: 29,
       memo: 'Keep up the great work',
+    },
+    // 用 Robux 付的委託：客戶在 Discord 貼出買下我開的 Game Pass（2024-02，dunny）。
+    // 頭像模糊、名字遮掉，跟 PayPal 收據同一種處理（2026-10-19 他說要處理）
+    {
+      image: '/proof/receipts/robux-1.jpg',
+      width: 1276,
+      height: 688,
+      amount: 'R$25,000',
+      who: 'dunny',
+      month: 2,
+      day: 11,
+    },
+    {
+      image: '/proof/receipts/robux-2.jpg',
+      width: 1296,
+      height: 706,
+      amount: 'R$3,000',
+      who: 'dunny',
+      month: 2,
+      day: 20,
     },
   ] satisfies HireReceipt[],
   studio:

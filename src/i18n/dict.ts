@@ -154,7 +154,8 @@ export const zh = {
     reviewsNote: 'Discord 上的評價，原始截圖。',
     reviewsOriginal: '原始截圖 ↗',
     receipts: '接案紀錄',
-    receiptsNote: 'PayPal 收款紀錄原始截圖。付款人頭像和姓名已遮掉。',
+    receiptsNote:
+      'PayPal 收款和 Robux（Game Pass）委託的原始截圖。付款人的頭像和姓名已遮掉。',
     receiptAlt: (date: string, amount: string, memo?: string) =>
       `PayPal 收款紀錄：${date}，已收到款項 ${amount}${memo ? `，附言「${memo}」` : ''}。付款人已遮掉。`,
     received: '已收到款項',
@@ -325,7 +326,8 @@ export const en: Dict = {
     reviewsNote: 'Reviews left on Discord, original screenshots.',
     reviewsOriginal: 'Original ↗',
     receipts: 'Commission record',
-    receiptsNote: 'Original PayPal receipts. Payer avatar and name covered.',
+    receiptsNote:
+      'Original screenshots of PayPal payments and Robux (Game Pass) commissions. Payer avatars and names are covered.',
     receiptAlt: (date, amount, memo) =>
       `PayPal receipt: ${date}, payment received ${amount}${memo ? `, note "${memo}"` : ''}. Payer covered.`,
     received: 'Payment received',
