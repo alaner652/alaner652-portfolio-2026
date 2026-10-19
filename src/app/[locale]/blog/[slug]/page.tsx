@@ -1,5 +1,4 @@
 import GithubSlugger from 'github-slugger'
-import { LLink as Link } from '@/i18n/client'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { isValidElement, type ReactNode } from 'react'
@@ -14,11 +13,12 @@ import { Eyebrow } from '@/components/common/Eyebrow'
 import { MacWindow } from '@/components/common/MacWindow'
 import { Mermaid } from '@/components/common/Mermaid'
 import { MetricChip } from '@/components/common/MetricChip'
-import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { RevealWrapper } from '@/components/common/RevealWrapper'
 import { TaskList } from '@/components/common/TaskList'
 import { Toc, TocMobile, type TocHeading } from '@/components/common/Toc'
+import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { SITE_CONFIG } from '@/constants'
+import { LLink as Link } from '@/i18n/client'
 import { hasLocale, localePath } from '@/i18n/config'
 import { languages } from '@/i18n/meta'
 import { initLocale, t } from '@/i18n/server'
@@ -175,6 +175,8 @@ export default async function PostPage({
     RevealWrapper,
   }
 
+  // 語言和網址跟著文章實際的語言走（跟 generateMetadata 的 canonical 同一套）
+  const postUrl = `${SITE_CONFIG.url}${localePath(post.lang, `/blog/${slug}`)}`
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -184,10 +186,10 @@ export default async function PostPage({
     dateModified: post.frontmatter.date,
     author: { '@type': 'Person', name: SITE_CONFIG.name, url: SITE_CONFIG.url },
     publisher: { '@type': 'Person', name: SITE_CONFIG.name, url: SITE_CONFIG.url },
-    url: `${SITE_CONFIG.url}/blog/${slug}`,
+    url: postUrl,
     keywords: post.frontmatter.tags?.join(','),
-    inLanguage: 'zh-Hant-TW',
-    image: `${SITE_CONFIG.url}/blog/${slug}/opengraph-image`,
+    inLanguage: post.lang === 'en' ? 'en' : 'zh-Hant-TW',
+    image: `${postUrl}/opengraph-image`,
   }
 
   const next = newer ?? older

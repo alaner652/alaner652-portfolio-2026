@@ -397,6 +397,33 @@ export function Workflow() {
 }
 
 /** Roblox 以外的需求：一句話 + 連到作品集 */
+/** 讀完 FAQ 的人最想動手的時候：直接一顆 Discord 按鈕，不用捲回頁首找。 */
+export function EndCta() {
+  const d = t().hire
+  return (
+    <section className="wrap pb-10 md:pb-12">
+      <Reveal className="border-line flex flex-col gap-6 border-t pt-10 md:flex-row md:items-end md:justify-between md:gap-10 md:pt-16">
+        <div>
+          <h2 className="text-text text-[32px] leading-[1.15] font-black tracking-[-0.03em] md:text-[clamp(40px,4.4vw,64px)]">
+            {d.endTitle}
+          </h2>
+          <p className="text-text-2 mt-3 max-w-[34em] text-[15px] leading-[1.8] md:mt-4 md:text-lg">
+            {d.endText}
+          </p>
+        </div>
+        <a
+          href={SITE_CONFIG.discord}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(BUTTON_PRIMARY, 'shrink-0 justify-center')}
+        >
+          {d.cta}
+        </a>
+      </Reveal>
+    </section>
+  )
+}
+
 export function OtherWork() {
   const d = t().hire
   return (

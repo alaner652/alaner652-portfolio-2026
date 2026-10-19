@@ -1,5 +1,6 @@
 'use client'
 
+import { ChevronUp } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
@@ -242,15 +243,11 @@ export function TocMobile({ headings, minutes }: { headings: TocHeading[]; minut
               <span className="text-text-3 shrink-0 font-mono text-[11px] tabular-nums">
                 {Math.round(progress * 100)}%
               </span>
-              <span
+              <ChevronUp
+                size={16}
                 aria-hidden="true"
-                className={cn(
-                  'text-text-2 shrink-0 text-xs transition-transform',
-                  open && 'rotate-180'
-                )}
-              >
-                ▲
-              </span>
+                className={cn('text-text-2 shrink-0 transition-transform', open && 'rotate-180')}
+              />
             </motion.button>
           )}
         </AnimatePresence>

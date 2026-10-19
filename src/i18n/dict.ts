@@ -162,6 +162,8 @@ export const zh = {
     receiptDate: (m: number, d: number) => `${m}月${d}日`,
     studio: '工作室',
     workflow: '怎麼寫',
+    endTitle: '有想做的系統？',
+    endText: '傳一段你想要的效果（參考影片最好），我看完回你做法、報價和大概多久。不用先寫規格書。',
     otherTitle: '需要 Roblox 以外的？',
     otherText: '網頁產品、LINE Bot、自動化、系統整合、授權範圍內的資安檢測也做過，案例都在作品集。',
     otherCta: '看作品集 →',
@@ -335,6 +337,9 @@ export const en: Dict = {
       `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m - 1]} ${d}`,
     studio: 'Studio',
     workflow: 'How I build',
+    endTitle: 'Got a system in mind?',
+    endText:
+      "Send me what you want it to feel like (a reference clip is best). I'll reply with an approach, a quote and a rough timeline. No spec doc needed.",
     otherTitle: 'Need something outside Roblox?',
     otherText:
       'Web products, LINE bots, automation, system integration and authorized security testing too; the cases are in my portfolio.',
