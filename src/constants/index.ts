@@ -317,6 +317,7 @@ export const WORK_ITEMS: WorkItem[] = [
     description:
       '教職員用學校帳號登入，看每間電腦教室一週的課表和已借出的節次，按節申請、管理員審核。課表與身分從學校資料庫唯讀讀取，申請與紀錄存在自己的 SQLite；前後端打包成一個 jar，用 Docker 部署在學校的 Ubuntu 伺服器。每個選擇都先問一句：沒有人盯著的時候，它撐得住嗎？',
     metrics: ['Java', 'Spring Boot', 'React', 'TypeScript', 'SQLite', 'Docker'],
+    link: 'https://labslot.tpcu.edu.tw/',
     preview: '/shots/works/labslot/cover.jpg',
     coverTone: 'light',
     gallery: ['/shots/works/labslot/more-1.jpg', '/shots/works/labslot/more-2.jpg'],
