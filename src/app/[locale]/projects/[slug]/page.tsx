@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import { MDXRemote } from 'next-mdx-remote/rsc'
 
 import { TechList } from '@/components/common/TechList'
 import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
@@ -10,6 +11,8 @@ import { content } from '@/i18n/content'
 import type { getDict } from '@/i18n/dict'
 import { languages } from '@/i18n/meta'
 import { initLocale, t } from '@/i18n/server'
+import { getCaseStudy } from '@/lib/mdx'
+import { mdxComponents, mdxOptions } from '@/lib/mdx-render'
 import { cn } from '@/lib/utils'
 
 export function generateStaticParams() {
@@ -76,14 +79,15 @@ function Sec({ no, title, children }: { no: string; title: string; children: Rea
   )
 }
 
-/** 作品詳情（簡化版）：滿版截圖當底的頁首 → 一列事實（分類／技術／連結）→ 概述 → 畫面 → 下一個作品。
-    內容全部來自 WORK_ITEMS；之後要寫長一點的「問題／解法／學到的事」再加欄位。 */
+/** 作品詳情：滿版截圖當底的頁首 → 一列事實（分類／技術／連結）→ 概述 → 中段 → 畫面 → 下一個作品。
+    中段：有案例（src/content/projects/{slug}.mdx）就照它的 ## 切成編號區塊；沒有就用 WORK_ITEMS 的
+    highlights／lessons（「我做的事」「學到的事」）。編號照實際出現的區塊連號。 */
 export default async function ProjectPage({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>
 }) {
-  await initLocale(params)
+  const locale = await initLocale(params)
   const { slug } = await params
   const d = t().projects
   const items = content().WORK_ITEMS
@@ -92,6 +96,7 @@ export default async function ProjectPage({
   const item = items[index]
   const next = items[(index + 1) % items.length]
   const links = [item.link, item.demo].filter((l): l is string => Boolean(l))
+  const caseStudy = getCaseStudy(slug, locale)
   // GitHub 卡不算產品畫面，不放進「畫面」；有影片時封面已經是影片的 poster，不再重複列一張
   const screens = [
     // 本機 mp4 會拿封面當 poster，就不重複列；YouTube 有自己的縮圖，封面照放
@@ -100,6 +105,31 @@ export default async function ProjectPage({
       : []),
     ...(item.gallery ?? []),
   ]
+
+  const bullets = (list: string[], border: string) => (
+    <ul className="text-text-body grid gap-4 text-[15px] leading-[1.85] md:text-[17px]">
+      {list.map((h) => (
+        <li key={h} className={cn('border-l-2 pl-4', border)}>
+          {h}
+        </li>
+      ))}
+    </ul>
+  )
+  const middle: { title: string; body: React.ReactNode }[] = caseStudy
+    ? caseStudy.sections.map((sec) => ({
+        title: sec.title,
+        body: (
+          <div className="prose-portfolio prose-section">
+            <MDXRemote source={sec.body} components={mdxComponents} options={mdxOptions} />
+          </div>
+        ),
+      }))
+    : [
+        ...(item.highlights
+          ? [{ title: d.highlights, body: bullets(item.highlights, 'border-accent') }]
+          : []),
+        ...(item.lessons ? [{ title: d.lessons, body: bullets(item.lessons, 'border-line') }] : []),
+      ]
 
   return (
     <article>
@@ -118,7 +148,8 @@ export default async function ProjectPage({
               sizes="100vw"
               className={cn(
                 'object-cover object-top opacity-50',
-                item.card && 'scale-110 blur-[6px]'
+                item.card && 'scale-110 blur-[6px]',
+                item.coverTone === 'light' && 'scale-105 opacity-25 blur-[3px]'
               )}
             />
             <div
@@ -149,11 +180,11 @@ export default async function ProjectPage({
       <div className="border-line border-y">
         <dl className="wrap grid gap-x-6 text-[15px] md:grid-cols-3">
           <div className="border-line flex justify-between gap-4 border-b py-3 md:block md:border-r md:border-b-0 md:py-5">
-            <dt className="text-text-3 text-[13px]">{d.category}</dt>
+            <dt className="text-text-3 shrink-0 text-[13px]">{d.category}</dt>
             <dd className="text-text md:mt-1">{d.categories[item.category] ?? item.category}</dd>
           </div>
           <div className="border-line flex justify-between gap-4 border-b py-3 md:block md:border-r md:border-b-0 md:py-5 md:pl-6">
-            <dt className="text-text-3 text-[13px]">{d.tech}</dt>
+            <dt className="text-text-3 shrink-0 text-[13px]">{d.tech}</dt>
             <dd className="text-text text-right md:mt-1 md:text-left">
               {item.metrics ? (
                 <TechList items={item.metrics} size={18} className="justify-end md:justify-start" />
@@ -163,7 +194,7 @@ export default async function ProjectPage({
             </dd>
           </div>
           <div className="flex justify-between gap-4 py-3 md:block md:py-5 md:pl-6">
-            <dt className="text-text-3 text-[13px]">{d.links}</dt>
+            <dt className="text-text-3 shrink-0 text-[13px]">{d.links}</dt>
             <dd className="text-text flex gap-4 md:mt-1">
               {links.length ? (
                 links.map((href) => (
@@ -191,8 +222,13 @@ export default async function ProjectPage({
             {item.description}
           </p>
         </Sec>
+        {middle.map((m, i) => (
+          <Sec key={m.title} no={String(i + 2).padStart(2, '0')} title={m.title}>
+            {m.body}
+          </Sec>
+        ))}
         {(screens.length > 0 || item.video) && (
-          <Sec no="02" title={d.screens}>
+          <Sec no={String(middle.length + 2).padStart(2, '0')} title={d.screens}>
             {/* 封面在前，網站其他分頁接在後面，一張一列照順序往下排 */}
             <div className="grid gap-4 md:gap-6">
               {/* 影片按了才載：preload=metadata 只拿長度和第一格，不拖慢頁面 */}

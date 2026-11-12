@@ -134,6 +134,21 @@
   font-weight: 500;
   color: var(--color-text);
 }
+/* 作品案例的一段（詳情頁的編號區塊裡）：標題已經在左欄，所以不放大第一段；字級跟詳情頁其他區塊一致 */
+.prose-portfolio.prose-section {
+  font-size: 15px;
+}
+@media (min-width: 768px) {
+  .prose-portfolio.prose-section {
+    font-size: 17px;
+  }
+}
+.prose-portfolio.prose-section > p:first-child {
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
 .prose-portfolio .heading-anchor {
   color: inherit;
   text-decoration: none;

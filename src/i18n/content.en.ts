@@ -2,18 +2,47 @@
    constants/index.ts 是原文；這裡只放要換掉的欄位，用 slug（作品）或順序（其他）對回去。
    專案名稱不翻，當品牌名。 */
 
-export const WORK_EN: Record<string, { status: string; result?: string; description: string }> = {
+export const WORK_EN: Record<
+  string,
+  { status: string; result?: string; description: string; highlights?: string[]; lessons?: string[] }
+> = {
+  labslot: {
+    status: 'Live on campus',
+    result:
+      'A computer-lab booking system for a school, running on its own server, without changing a line of the school’s existing systems.',
+    description:
+      'Staff sign in with their school account, see each computer lab’s week (scheduled classes and periods already booked), request periods, and an administrator approves. Timetables and roles are read from the school database, read-only; requests and the audit log live in LabSlot’s own SQLite. Frontend and backend ship as one jar, deployed with Docker on the school’s Ubuntu server. Every choice started with one question: will this hold up when nobody is watching it?',
+  },
   'build-the-cat-gunner': {
     status: 'Live',
     result: 'My first self-published Roblox game, after years of client work.',
     description:
-      "Lead a squad of cats and fight your way through: roll dice to fuse guns from D up to XX, a boss every 10 stages, rebirth when you reach the end. The first game published under Alaner's Studio, launched October 2026 and still being updated.",
+      "Lead a squad of cats and fight your way through: roll dice to fuse guns from D up to XX, a boss every 10 stages, rebirth when you reach the end. The first game published under Alaner's Studio, launched October 2026.",
   },
   'tpcu-mcp': {
     status: 'Open source',
     result: 'Agora-AI, rethought: no backend, just an MCP server.',
     description:
       'Wraps the school system (timetable, attendance, grades, leave requests, work-study clock-ins) into 18 MCP tools, so MCP-capable AI apps like Claude Code and Claude Desktop can query and act straight from the chat. stdio transport, no extra backend; credentials stay in memory and never touch disk. Tools with side effects carry destructiveHint and ask the user first. Page flows and parsing rules carried over from Agora-AI, rewritten in TypeScript as a standalone project.',
+  },
+  'taipei-codefest': {
+    status: 'Hackathon award',
+    result:
+      'Town Pass has so many services that most people struggle to find their way, let alone people with disabilities or older residents; so we built more than an agent and made the service usable. Honorable Mention, Taipei CodeFest 2026.',
+    description:
+      'An accessible assistant inside Town Pass: say a sentence or tap a suggestion to find accessible toilets or parking, or head to a Town Pass service with the details it already knows; nothing opens until the user confirms, and nothing is submitted for them. Beyond the agent we added accessibility itself: screen-reader support, larger text, haptic and voice feedback. The model runs on the phone, so conversations never reach the cloud. My first hackathon, team of five; I handled the pitch, the agent design and tool integration, starting from the MVP and wrapping Town Pass services and open data into 16 read-only tools.',
+    highlights: [
+      'I wrote the MVP: Town Pass services wrapped as read-only MCP tools and hooked up to Claude to prove the idea; once it worked, I switched to direct function calls so it could run in the browser and on the phone.',
+      'After talking with a mentor we changed how services are connected, to lower the cost of maintaining them: every service and open dataset is a read-only tool, and timeouts, caching and format checks go through one loading layer.',
+      'The model never touches URLs or location: URLs come only from a list in the code, and coordinates are used in the browser just for distance.',
+      'Read-only by design: queries show directly, other actions wait for the user to confirm, and pages that submit, pay or show personal data are links only.',
+      'Proposed a shared service tool registry, where a model on the host parses pages or API docs into tools step by step, so new services need no hand wiring. The team refactored in that direction and a teammate built it.',
+    ],
+    lessons: [
+      'Teamwork is a skill of its own. I used to build alone end to end; this time much of the effort went into aligning and merging.',
+      'AI speeds things up but widens gaps in understanding: without low-level experience it is hard to tell a right answer from one that merely runs.',
+      'Building it is far from shipping it: Android only, some services still on demo data, and an architecture that feels patched together.',
+    ],
   },
   'girls-band-shot': {
     status: 'Live',
@@ -85,13 +114,7 @@ export const JOURNEY_EN: { track: string; title: string; detail: string }[] = [
     track: 'Games',
     title: 'Opened Roblox for the first time',
     detail:
-      "Playing at first. Then I found out games could be made, and that's where looking up English tutorials and YouTube began.",
-  },
-  {
-    track: 'School change',
-    title: 'Sports class, then a transfer',
-    detail:
-      'First semester in a sports class, transferred the second. I was deep into Roblox and spent most of my time there.',
+      "Playing at first. Then I found out games could be made, and that's where looking up English tutorials and YouTube began. In 2020 I spent the first semester in a sports class and transferred the second. I was deep into Roblox and spent most of my time there.",
   },
   {
     track: 'Games',
@@ -103,12 +126,7 @@ export const JOURNEY_EN: { track: string; title: string; detail: string }[] = [
     track: 'Freelance',
     title: 'From Robux to paid commissions',
     detail:
-      'Started taking commissions in 2022, paid in Robux at first, plus some unpaid collaborations. Later I worked regularly with developers around the world, all in English, on skill systems, combat feel and FPS frameworks; paid work started in 2024.',
-  },
-  {
-    track: 'Web',
-    title: 'Started on the web',
-    detail: 'Began learning front end and the web, the first things outside games.',
+      'Started taking commissions in 2022, paid in Robux at first, plus some unpaid collaborations. Later I worked regularly with developers around the world, all in English, on skill systems, combat feel and FPS frameworks; paid work started in 2024. In 2023 I also began learning front end and the web, the first things outside games.',
   },
   {
     track: 'Games',
@@ -204,19 +222,8 @@ export const HIRE_EN = {
       deliverable: 'A game ready to publish',
     },
   ],
-  workflow: [
-    { label: 'Write', text: 'Strict Luau in a real editor, not edited inside Studio.' },
-    {
-      label: 'Check',
-      text: 'luau-lsp catches type errors; Selene and StyLua keep the style consistent.',
-    },
-    { label: 'Test', text: 'Pure logic runs automated tests outside Studio with Lune.' },
-    {
-      label: 'Sync',
-      text: 'Rojo syncs it into Studio, Wally manages packages, Git keeps every change.',
-    },
-  ],
-  workflowNote: 'Tunable numbers live in config, so you can change them without touching code.',
+  servicesNote:
+    'Strict Luau in a real editor, automated tests with Lune, synced into Studio with Rojo; tunable numbers live in config.',
   steps: [
     {
       label: 'Talk',

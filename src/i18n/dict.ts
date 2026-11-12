@@ -67,6 +67,8 @@ export const zh = {
     links: '連結',
     noLinks: '沒有公開連結',
     overview: '概述',
+    highlights: '我做的事',
+    lessons: '學到的事',
     screens: '畫面',
     next: '下一個作品',
     screenAlt: (t: string) => `${t} 的畫面`,
@@ -154,19 +156,14 @@ export const zh = {
     reviewsNote: 'Discord 上的評價，原始截圖。',
     reviewsOriginal: '原始截圖 ↗',
     receipts: '接案紀錄',
-    receiptsNote:
-      'PayPal 收款和 Robux（Game Pass）委託的原始截圖。付款人的頭像和姓名已遮掉。',
+    receiptsNote: 'PayPal 收款和 Robux（Game Pass）委託的原始截圖。付款人的頭像和姓名已遮掉。',
     receiptAlt: (date: string, amount: string, memo?: string) =>
       `PayPal 收款紀錄：${date}，已收到款項 ${amount}${memo ? `，附言「${memo}」` : ''}。付款人已遮掉。`,
     received: '已收到款項',
     receiptDate: (m: number, d: number) => `${m}月${d}日`,
     studio: '工作室',
-    workflow: '怎麼寫',
     endTitle: '有想做的系統？',
     endText: '傳一段你想要的效果（參考影片最好），我看完回你做法、報價和大概多久。不用先寫規格書。',
-    otherTitle: '需要 Roblox 以外的？',
-    otherText: '網頁產品、LINE Bot、自動化、系統整合、授權範圍內的資安檢測也做過，案例都在作品集。',
-    otherCta: '看作品集 →',
     description:
       '找 small R 接 Roblox 案：戰鬥系統、技能與打擊感、遊戲系統，也能接整個遊戲。客戶評價、接案紀錄和作品都在這頁。按案報價，PayPal 收款。',
   },
@@ -242,6 +239,8 @@ export const en: Dict = {
     links: 'Links',
     noLinks: 'No public links',
     overview: 'Overview',
+    highlights: 'What I built',
+    lessons: 'What I learned',
     screens: 'Screens',
     next: 'Next project',
     screenAlt: (t) => `Screenshot of ${t}`,
@@ -336,14 +335,9 @@ export const en: Dict = {
     receiptDate: (m, d) =>
       `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m - 1]} ${d}`,
     studio: 'Studio',
-    workflow: 'How I build',
     endTitle: 'Got a system in mind?',
     endText:
       "Send me what you want it to feel like (a reference clip is best). I'll reply with an approach, a quote and a rough timeline. No spec doc needed.",
-    otherTitle: 'Need something outside Roblox?',
-    otherText:
-      'Web products, LINE bots, automation, system integration and authorized security testing too; the cases are in my portfolio.',
-    otherCta: 'See the portfolio →',
     description:
       'Hire small R for Roblox: combat systems, skills and hit feel, game systems, or a whole game. Client reviews, commission record and work on one page. Quoted per project, paid via PayPal.',
   },

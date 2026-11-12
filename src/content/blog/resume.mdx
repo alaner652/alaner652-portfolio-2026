@@ -46,38 +46,44 @@ hidden: true
 
 ## 專案
 
+{/* 每個專案最多三點：我負責什麼、做了什麼、量化結果。數字只用已經公開寫過的，不另外編。 */}
+
 ### Build The Cat Gunner — Roblox 遊戲
 
 _Luau · Rojo · Wally · Lune · react-lua_
 
-- 自己發行的第一款 Roblox 遊戲（Alaner's Studio），一人開發、AI 輔助，2026 年 10 月上線。
-- 伺服器權威架構：client 只送意圖，每個 remote 都做頻率限制、型別、所有權與餘額檢查。
-- 36 個純邏輯模組配 39 份 Lune 測試；ProfileStore 存檔。
-- 腳本之外，企劃、UI、數值平衡、投廣告和上線後的數據分析也自己做。
+- 一人開發並自行發行，2026 年 10 月上線；腳本、企劃、UI、數值平衡、投廣告與上線後數據分析都自己做。
+- 伺服器權威架構：client 只送意圖，每個 remote 都檢查頻率、型別、所有權與餘額。
+- 36 個純邏輯模組配 39 份 Lune 測試。
+
+### 城市通安心助手 — 2026 臺北城市通微服務大黑客松佳作
+
+_TypeScript · Vue · MCP · zod · Vitest_
+
+- 負責提案發想、agent 設計和工具串接，五人團隊獲佳作。
+- 先用 MCP 接 Claude 寫出 MVP，再改成直接函式呼叫，把台北通服務與開放資料包成 16 支唯讀工具，不需要 server。
+- 提出共用服務工具庫的方向，讓新服務不用逐一手動串接；團隊照這個方向重構。
 
 ### Agora-AI — 校務 AI 助理
 
 _FastAPI · Next.js · Docker · SQLite · Gemini API_
 
-- 逆向沒有公開文件的校務系統，包成好用的 API。
-- 做成能用自然語言問課表、成績、缺勤與請假的 AI agent——10 個工具。
-- Docker 容器化後，透過 Cloudflare Tunnel 部署到學校 VM。
-- 目前暫停，想重新想清楚範圍再繼續。
+- 逆向沒有公開文件的校務系統，包成 10 個 agent 工具，用自然語言就能查課表、成績、缺勤與請假。
+- Docker 容器化，透過 Cloudflare Tunnel 部署到學校 VM；目前暫停，重新規劃範圍。
 
 ### 早餐店點餐系統
 
 _Next.js · Drizzle ORM · SQLite · LINE Messaging API_
 
 - 掃 QR code 點餐，訂單狀態即時透過 LINE 推給店主。
-- 訂單生命週期用狀態機建模，透過 SSE 同步給前端。
-- 用 Drizzle ORM 設計 9 張表；訂單存快照欄位，之後改菜單不會動到歷史紀錄。
+- 訂單用狀態機建模、SSE 同步前端；Drizzle ORM 設計 9 張表，訂單存快照，改菜單不影響歷史紀錄。
 
 ### 一句一幀 — 台詞截圖搜尋
 
 _Next.js · Python · EasyOCR · ffmpeg_
 
 - 用 OCR 建立字幕索引，跨三部作品搜尋台詞對應的畫面。
-- 把預先產好的畫面改成 ffmpeg 即時生成加 LRU cache，圖片儲存從 4 GB 降到 0。
+- 改成 ffmpeg 即時生成加 LRU cache，圖片儲存從 4 GB 降到 0。
 
 ---
 

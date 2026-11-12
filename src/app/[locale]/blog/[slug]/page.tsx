@@ -1,20 +1,7 @@
 import GithubSlugger from 'github-slugger'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { isValidElement, type ReactNode } from 'react'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeSlug from 'rehype-slug'
-import remarkGfm from 'remark-gfm'
-import type { PluggableList } from 'unified'
 
-import { Card } from '@/components/common/Card'
-import { Columns } from '@/components/common/Columns'
-import { Eyebrow } from '@/components/common/Eyebrow'
-import { MacWindow } from '@/components/common/MacWindow'
-import { Mermaid } from '@/components/common/Mermaid'
-import { MetricChip } from '@/components/common/MetricChip'
-import { RevealWrapper } from '@/components/common/RevealWrapper'
-import { TaskList } from '@/components/common/TaskList'
 import { Toc, TocMobile, type TocHeading } from '@/components/common/Toc'
 import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
 import { SITE_CONFIG } from '@/constants'
@@ -23,58 +10,9 @@ import { hasLocale, localePath } from '@/i18n/config'
 import { languages } from '@/i18n/meta'
 import { initLocale, t } from '@/i18n/server'
 import { getAllPosts, getPostBySlug } from '@/lib/mdx'
+import { mdxComponents, mdxOptions } from '@/lib/mdx-render'
 import { cn } from '@/lib/utils'
 import type { BlogPost } from '@/types'
-
-/** 程式碼區塊：mermaid 交給 Mermaid；其他的每行包一個 span 讓 CSS 畫行號，外面套 MacWindow（語言 + 複製）。 */
-function Pre({ children }: { children: ReactNode }) {
-  if (isValidElement(children)) {
-    const { className, children: code } = children.props as {
-      className?: string
-      children?: unknown
-    }
-    if (className === 'language-mermaid' && typeof code === 'string') {
-      return <Mermaid chart={code} />
-    }
-    const lang =
-      typeof className === 'string' && className.startsWith('language-')
-        ? className.slice(9)
-        : undefined
-    const body =
-      typeof code === 'string' ? (
-        <code className={className}>
-          {code
-            .replace(/\n$/, '')
-            .split('\n')
-            .map((line, i) => (
-              <span key={i} className="code-line">
-                {line}
-                {'\n'}
-              </span>
-            ))}
-        </code>
-      ) : (
-        children
-      )
-    return (
-      <MacWindow title={lang}>
-        <pre>{body}</pre>
-      </MacWindow>
-    )
-  }
-  return <pre>{children}</pre>
-}
-
-const mdxOptions = {
-  mdxOptions: {
-    remarkPlugins: [remarkGfm],
-    // 標題自動產生 id 並掛上錨點，長文才能建目錄與深連結
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: 'wrap', properties: { className: 'heading-anchor' } }],
-    ] as PluggableList,
-  },
-}
 
 /** 從 MDX 原始碼撈 h2 當目錄。slug 用跟 rehype-slug 同一套 github-slugger，id 才對得上；
     先把程式碼區塊拿掉，不然 log 裡的 ## 會被當成標題。 */
@@ -162,18 +100,6 @@ export default async function PostPage({
   // 列表新的在前：上一篇是更早寫的，下一篇是更新的
   const older = index >= 0 ? posts[index + 1] : undefined
   const newer = index > 0 ? posts[index - 1] : undefined
-
-  const mdxComponents = {
-    TaskList,
-    Mermaid,
-    MacWindow,
-    pre: Pre,
-    Card,
-    Columns,
-    Eyebrow,
-    MetricChip,
-    RevealWrapper,
-  }
 
   // 語言和網址跟著文章實際的語言走（跟 generateMetadata 的 canonical 同一套）
   const postUrl = `${SITE_CONFIG.url}${localePath(post.lang, `/blog/${slug}`)}`

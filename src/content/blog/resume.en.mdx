@@ -46,38 +46,44 @@ Full-stack engineer focused on security, automation and reverse engineering. I f
 
 ## Projects
 
+{/* At most three points per project: my role, what I built, a measurable result. Only numbers already stated publicly. */}
+
 ### Build The Cat Gunner — Roblox game
 
 _Luau · Rojo · Wally · Lune · react-lua_
 
-- My first self-published Roblox game (Alaner's Studio), solo and AI-assisted, launched October 2026.
-- Server-authoritative: the client only sends intent; every remote checks rate limit, types, ownership and balance.
-- 36 pure logic modules covered by 39 Lune test suites; ProfileStore for saves.
-- Beyond scripting: game design, UI, balancing, ads and post-launch data analysis.
+- Built solo and self-published, launched October 2026; scripting, game design, UI, balancing, ads and post-launch analytics all on my own.
+- Server-authoritative: the client only sends intent, and every remote checks rate limit, types, ownership and balance.
+- 36 pure logic modules covered by 39 Lune test suites.
+
+### Town Pass Assistant — Honorable Mention, Taipei CodeFest 2026
+
+_TypeScript · Vue · MCP · zod · Vitest_
+
+- Led the pitch, the agent design and tool integration; our team of five won Honorable Mention.
+- Built the MVP as MCP tools driven by Claude, then moved to direct function calls: 16 read-only tools over Town Pass services and open data, no server needed.
+- Proposed a shared service tool registry so new services need no hand wiring; the team refactored in that direction.
 
 ### Agora-AI — campus AI assistant
 
 _FastAPI · Next.js · Docker · SQLite · Gemini API_
 
-- Reverse engineered the undocumented school system and wrapped it into a usable API.
-- Built an AI agent with 10 tools that answers natural-language questions about timetables, grades, attendance and leave.
-- Containerized with Docker and deployed to a school VM through Cloudflare Tunnel.
-- Paused for now while I rethink the scope.
+- Reverse engineered the undocumented school system into 10 agent tools that answer natural-language questions about timetables, grades, attendance and leave.
+- Containerized with Docker and deployed to a school VM through Cloudflare Tunnel; paused while I rethink the scope.
 
 ### Breakfast shop ordering system
 
 _Next.js · Drizzle ORM · SQLite · LINE Messaging API_
 
 - Scan a QR code to order; order status is pushed to the owner over LINE in real time.
-- Order lifecycle modeled as a state machine and synced to the front end over SSE.
-- Nine tables designed with Drizzle ORM; orders store snapshot fields so later menu edits never alter past records.
+- Orders modeled as a state machine and synced over SSE; nine tables in Drizzle ORM, with snapshots so menu edits never alter past orders.
 
 ### Girls Band Shot — subtitle screenshot search
 
 _Next.js · Python · EasyOCR · ffmpeg_
 
-- Built a subtitle index with OCR to search for the frame matching a line across three series.
-- Replaced pre-rendered frames with on-demand ffmpeg generation plus an LRU cache, cutting image storage from 4 GB to zero.
+- Built a subtitle index with OCR to find the frame for any line across three series.
+- Switched to on-demand ffmpeg generation plus an LRU cache, cutting image storage from 4 GB to zero.
 
 ---
 

@@ -1,5 +1,4 @@
 import type {
-  HireWorkflowStep,
   HireReceipt,
   HireReview,
   Photo,
@@ -33,9 +32,6 @@ export const SITE_CONFIG: SiteConfig = {
   timezone: 'GMT+8',
   copyright: '© 2026 small R · 台北',
 }
-
-/** 首頁 Hero 底下「最近」那一句，自己每週改。 */
-export const RECENT = '第一次把自己的 Roblox 遊戲推上線'
 
 export const NAV_LINKS: NavLink[] = [
   { label: '關於', href: '/about' },
@@ -216,22 +212,9 @@ export const HIRE = {
       examples: ['Build The Cat Gunner'],
     },
   ] satisfies HireService[],
-  /** 怎麼寫：從寫程式碼到進 Studio 的四步，每步配工具 logo（名稱對得到 skill-icons.json 才有 logo） */
-  workflow: [
-    { label: '寫', text: '在編輯器寫 strict Luau，不直接在 Studio 裡改。', tools: ['Luau'] },
-    {
-      label: '檢查',
-      text: 'luau-lsp 抓型別錯誤，Selene、StyLua 管程式風格。',
-      tools: ['luau-lsp', 'StyLua'],
-    },
-    { label: '測試', text: '純邏輯用 Lune 在 Studio 外跑自動化測試。', tools: ['Lune'] },
-    {
-      label: '同步',
-      text: 'Rojo 同步進 Studio，Wally 管套件，Git 記下每一次修改。',
-      tools: ['Rojo', 'Wally', 'Git', 'Roblox Studio'],
-    },
-  ] satisfies HireWorkflowStep[],
-  workflowNote: '可調的數值都放在 config，不用翻程式碼就能改。',
+  /** 「接什麼」標題底下的一句：原本「怎麼寫」那一段（2026-11-10 拿掉）縮成這一行，字照原文。 */
+  servicesNote:
+    '在編輯器寫 strict Luau，Lune 跑自動化測試，Rojo 同步進 Studio；可調的數值都放在 config。',
   steps: [
     {
       label: '聊需求',
@@ -277,12 +260,67 @@ export const HIRE = {
   cases: ['soullike', 'Build The Cat Gunner', 'Cooking Game'],
 }
 
-/** 所有專案一份清單，照「最新、最完整的優先」排，停掉的也留著。前三個標 featured 上首頁。
+/** 所有專案一份清單，照「影響力（外部認可、真實使用者、付費）× 技術深度」排，停掉的也留著。
+    前三個標 featured 上首頁。排名標準與上次的數據見 memory 的 portfolio-ranking（2026-11-10 起）。
     電算中心的資安工作不在這裡：那是經歷，不是作品，寫在 JOURNEY 和 OFFERS。
     category 對應清單上方的篩選 chip；preview 由 `npm run shots` 產生：有產品畫面的放畫面，
     沒有的放 GitHub 的 repo 卡（2026-10-15 決定：沒圖的列空著更糟）。
     result 是一句結果，全部取自 description 裡已經寫的事，不另外加數字。 */
 export const WORK_ITEMS: WorkItem[] = [
+  {
+    // 2026 臺北城市通微服務大黑客松佳作（2026-11-08），五人團隊「全員被電組」。repo 在隊友帳號下，
+    // 只寫他自己 commit 裡做的事：MVP 在 ~/small-R/side-projects/codefest_MCP（Ynoob87 20 個 commit，先 MCP 接 Claude、後改直接函式呼叫），
+    // 正式 repo 是 Ynoob87 的 12 個 commit（tools/townpass、工具接進 agent、聊天框版面）；
+    // 停車場和公廁改接官方資料、open_official_service、填表、語音都是隊友做的，不要寫進來。
+    // 例外：共用服務工具庫（tools/townpass/src/registry）是他提的想法、justin 實作，只能寫「我提出、隊友實作」。
+    // 參賽證明（certificate）只露他自己的名字、四位隊友模糊（2026-11-10 他要的）；合照有隊友的臉（more-1）
+    status: '黑客松佳作',
+    tone: 'open',
+    category: 'AI',
+    slug: 'taipei-codefest',
+    featured: true,
+    title: '城市通安心助手',
+    result:
+      '城市通服務太多，一般人都難下手，身障者和長者更難；所以不只做 agent，也讓整個服務用得了。2026 臺北城市通微服務大黑客松佳作。',
+    description:
+      '城市通裡的無障礙助理：說一句話或點一下，就能找到無障礙廁所、身障車位，或帶著已知的資料前往台北通服務，確認後才前往、不代為送出。agent 之外也補上無障礙：螢幕閱讀器讀得到、字級可放大、震動與語音回饋。模型在手機本機執行，對話不送雲端。第一次參加，五人團隊；我負責提案發想、agent 設計和工具串接，從 MVP 做起，把台北通服務和開放資料包成 16 支唯讀工具。',
+    highlights: [
+      'MVP 是我先寫的：把台北通服務包成唯讀 MCP 工具、接上 Claude，先把構想跑起來；驗證可行後改成直接函式呼叫，才能在瀏覽器和手機上跑。',
+      '跟業師討論後調整串接方式，降低後續維護門檻：服務和開放資料一律包成唯讀工具，逾時、快取、格式驗證交給同一層讀取處理。',
+      '模型碰不到網址和定位：網址只來自程式內的清單，座標只在瀏覽器裡算距離。',
+      '只做唯讀：查詢直接顯示，其他動作先讓使用者確認；會送件、付款或顯示個資的頁面只給連結。',
+      '提出共用服務工具庫的方向：由主機上的模型把頁面或 API 文件逐步解析成工具，新服務不用一個個手動串。團隊照這個方向重構，由隊友實作。',
+    ],
+    lessons: [
+      '團隊合作本身是要學的能力。以前多半一個人做到底，這次很多時間花在對齊和整合。',
+      'AI 讓開發變快，也放大理解落差：沒有底層經驗，很難分辨方案是對的還是只是「能跑」。',
+      '做出來離能上線還很遠：只支援 Android、部分服務還是示範資料，架構也還有點拼湊。',
+    ],
+    metrics: ['TypeScript', 'Vue', 'MCP', 'Vitest'],
+    link: 'https://github.com/Twcat0503/2026_taipei_codefest',
+    preview: '/shots/works/taipei-codefest/cover-2.jpg',
+    gallery: [
+      '/shots/works/taipei-codefest/more-1.jpg',
+      '/shots/works/taipei-codefest/certificate.jpg',
+    ],
+  },
+  {
+    // 替學校做的電腦教室借用系統（2026-11 上線）。repo 是私人的、正式站在校內，所以沒有公開連結。
+    // 不寫學校名稱、網址、教室代碼、人數，也不寫學校系統的資料表或弱點；截圖全是 DATA_MODE=demo 的示範資料。
+    // 完整案例在 src/content/projects/labslot.mdx（英文版 labslot.en.mdx）
+    status: '校內上線',
+    tone: 'live',
+    category: 'Web',
+    slug: 'labslot',
+    title: 'LabSlot',
+    result: '替學校做的電腦教室借用系統，部署在校內伺服器；學校原本的系統一行都沒改。',
+    description:
+      '教職員用學校帳號登入，看每間電腦教室一週的課表和已借出的節次，按節申請、管理員審核。課表與身分從學校資料庫唯讀讀取，申請與紀錄存在自己的 SQLite；前後端打包成一個 jar，用 Docker 部署在學校的 Ubuntu 伺服器。每個選擇都先問一句：沒有人盯著的時候，它撐得住嗎？',
+    metrics: ['Java', 'Spring Boot', 'React', 'TypeScript', 'SQLite', 'Docker'],
+    preview: '/shots/works/labslot/cover.jpg',
+    coverTone: 'light',
+    gallery: ['/shots/works/labslot/more-1.jpg', '/shots/works/labslot/more-2.jpg'],
+  },
   {
     status: '運作中',
     tone: 'live',
@@ -292,7 +330,7 @@ export const WORK_ITEMS: WorkItem[] = [
     title: 'Build The Cat Gunner',
     result: '接案之後第一款自己發行的 Roblox 遊戲。',
     description:
-      "帶著貓咪小隊一路打：擲骰合成槍枝從 D 升到 XX，每 10 關一隻 Boss，打到底就重生再來。接案之後第一款以 Alaner's Studio 名義自己發行的遊戲，2026 年 10 月上線，持續更新中。",
+      "帶著貓咪小隊一路打：擲骰合成槍枝從 D 升到 XX，每 10 關一隻 Boss，打到底就重生再來。接案之後第一款以 Alaner's Studio 名義自己發行的遊戲，2026 年 10 月上線。",
     metrics: ['Luau', 'Roblox Studio'],
     link: 'https://www.roblox.com/games/104411764341408',
     preview: '/shots/works/build-the-cat-gunner/cover.png',
@@ -316,7 +354,6 @@ export const WORK_ITEMS: WorkItem[] = [
     tone: 'live',
     category: 'Web',
     slug: 'girls-band-shot',
-    featured: true,
     title: '一句一幀',
     result: '三個各做各的舊專案，併成一套搬到網頁上。',
     description:
@@ -339,6 +376,21 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://github.com/alaner652/order',
     preview: '/shots/works/order/cover.png',
     card: true,
+  },
+  {
+    status: '可遊玩的原型',
+    tone: 'live',
+    category: '遊戲',
+    slug: 'soullike',
+    title: 'soullike',
+    result: '一場打得完的魂系頭目戰：連段、格擋、處決，還有會讀你動作的敵人。',
+    description:
+      'Roblox 上的魂系動作遊戲，目標是盡可能重現魂系的戰鬥手感，花了很多時間研究每一代的特色和數值。五段連段、重擊、格擋、翻滾無敵幀、背刺與處決；敵人有架勢條，打穿會破防。攻擊判定的時機從動畫的 keyframe marker 推出來，不手寫。敵人靠視野、聽覺、視線三件事發現你，還會延遲揮擊打亂節奏。玩家和敵人共用一套資料驅動的狀態機，傷害、無敵與超甲窗口全部由伺服器計算。離完美重現還有一大段路：有些動作甚至還沒有對應的動畫可以做。一人開發、AI 輔助。',
+    metrics: ['Luau', 'Roblox Studio', 'Rojo'],
+    link: 'https://www.roblox.com/games/87345305308537/soullike',
+    preview: '/shots/works/soullike/cover.jpg',
+    // 實機影片：等上傳到 YouTube 後填網址（video: 'https://youtu.be/…'）。裁好的檔在 docs/soullike-demo-cropped.mp4
+    gallery: [1, 2, 3, 4].map((n) => `/shots/works/soullike/more-${n}.jpg`),
   },
   {
     slug: 'alaner652-portfolio',
@@ -370,6 +422,33 @@ export const WORK_ITEMS: WorkItem[] = [
     card: true,
   },
   {
+    status: '接案作品',
+    tone: 'idle',
+    category: '遊戲',
+    slug: 'cooking-game',
+    title: 'Cooking Game',
+    result: '用 Luau 做出整套遊戲系統與互動邏輯。',
+    description:
+      '接案期間在 Roblox 上開發的料理主題遊戲，用 Luau 實作遊戲系統與互動邏輯。影片是當時的展示。',
+    metrics: ['Luau', 'Roblox Studio'],
+    link: 'https://youtu.be/gYcwkoDgL_g',
+    preview: '/shots/works/cooking-game/cover.jpg',
+  },
+  {
+    status: '已下線',
+    tone: 'idle',
+    category: 'AI',
+    slug: 'foodie-ai',
+    title: 'Foodie AI',
+    result: '架構撐不住、後端掛了，但學到「跑得起來」和「撐得住」是兩件事。',
+    description:
+      '語意餐廳推薦。想法我現在還是覺得可以，但架構撐不住，後端早就掛了。第一次搞懂「跑得起來」和「撐得住」是兩件事。',
+    link: 'https://github.com/alaner652/FoodieAI',
+    demo: 'https://www.youtube.com/watch?v=780-adKzw94',
+    preview: '/shots/works/foodie-ai/cover.png',
+    card: true,
+  },
+  {
     status: '已停用',
     tone: 'idle',
     category: '工具',
@@ -394,76 +473,17 @@ export const WORK_ITEMS: WorkItem[] = [
     link: 'https://www.youtube.com/watch?v=2rXTrJ6X4a8',
     preview: '/shots/works/ave-mujica-bot/cover.jpg',
   },
-  {
-    status: '已下線',
-    tone: 'idle',
-    category: 'AI',
-    slug: 'foodie-ai',
-    title: 'Foodie AI',
-    result: '架構撐不住、後端掛了，但學到「跑得起來」和「撐得住」是兩件事。',
-    description:
-      '語意餐廳推薦。想法我現在還是覺得可以，但架構撐不住，後端早就掛了。第一次搞懂「跑得起來」和「撐得住」是兩件事。',
-    link: 'https://github.com/alaner652/FoodieAI',
-    demo: 'https://www.youtube.com/watch?v=780-adKzw94',
-    preview: '/shots/works/foodie-ai/cover.png',
-    card: true,
-  },
-  {
-    status: '開源',
-    tone: 'open',
-    category: '工具',
-    slug: 'osu-map-manager',
-    title: 'osu! Map Manager',
-    result: '打包成 exe，朋友不用裝 Python 也能跑。',
-    description: '純粹自己要用才寫的譜面管理工具，打包成 exe，朋友不用裝 Python 也能跑。',
-    link: 'https://github.com/alaner652/osu_map_manager',
-    preview: '/shots/works/osu-map-manager/cover.png',
-    card: true,
-  },
-  {
-    status: '可遊玩的原型',
-    tone: 'live',
-    category: '遊戲',
-    slug: 'soullike',
-    title: 'soullike',
-    result: '一場打得完的魂系頭目戰：連段、格擋、處決，還有會讀你動作的敵人。',
-    description:
-      'Roblox 上的魂系動作遊戲，目標是盡可能重現魂系的戰鬥手感，花了很多時間研究每一代的特色和數值。五段連段、重擊、格擋、翻滾無敵幀、背刺與處決；敵人有架勢條，打穿會破防。攻擊判定的時機從動畫的 keyframe marker 推出來，不手寫。敵人靠視野、聽覺、視線三件事發現你，還會延遲揮擊打亂節奏。玩家和敵人共用一套資料驅動的狀態機，傷害、無敵與超甲窗口全部由伺服器計算。離完美重現還有一大段路：有些動作甚至還沒有對應的動畫可以做。一人開發、AI 輔助。',
-    metrics: ['Luau', 'Roblox Studio', 'Rojo'],
-    link: 'https://www.roblox.com/games/87345305308537/soullike',
-    preview: '/shots/works/soullike/cover.jpg',
-    // 實機影片：等上傳到 YouTube 後填網址（video: 'https://youtu.be/…'）。裁好的檔在 docs/soullike-demo-cropped.mp4
-    gallery: [1, 2, 3, 4].map((n) => `/shots/works/soullike/more-${n}.jpg`),
-  },
-  {
-    status: '接案作品',
-    tone: 'idle',
-    category: '遊戲',
-    slug: 'cooking-game',
-    title: 'Cooking Game',
-    result: '用 Luau 做出整套遊戲系統與互動邏輯。',
-    description:
-      '接案期間在 Roblox 上開發的料理主題遊戲，用 Luau 實作遊戲系統與互動邏輯。影片是當時的展示。',
-    metrics: ['Luau', 'Roblox Studio'],
-    link: 'https://youtu.be/gYcwkoDgL_g',
-    preview: '/shots/works/cooking-game/cover.jpg',
-  },
 ]
 
 /** /about「經歷」：照時間講，舊的在上，寫那一年在幹嘛。學歷的正式版只在 /resume（EDUCATION）。 */
 export const JOURNEY: JourneyEntry[] = [
   {
-    period: '2019',
+    period: '2019 — 2020',
     track: '遊戲',
     title: '第一次打開 Roblox',
     milestone: true,
-    detail: '先是玩。後來發現遊戲是可以自己做的，也是從這裡開始查英文教學、看 YouTube。',
-  },
-  {
-    period: '2020',
-    track: '轉學',
-    title: '體育班，然後轉學',
-    detail: '上學期在體育班，下學期轉學。那陣子很迷 Roblox，大部分時間都泡在裡面。',
+    detail:
+      '先是玩。後來發現遊戲是可以自己做的，也是從這裡開始查英文教學、看 YouTube。2020 年上學期在體育班，下學期轉學。那陣子很迷 Roblox，大部分時間都泡在裡面。',
   },
   {
     period: '2021',
@@ -478,13 +498,7 @@ export const JOURNEY: JourneyEntry[] = [
     title: '從 Robux 到正式接案',
     milestone: true,
     detail:
-      '2022 年開始接案，一開始收 Robux，也做過不收錢的合作。後來和幾個各地的開發者固定合作做遊戲，全英文溝通，負責技能系統、打擊感和 FPS 框架；2024 年起正式收費。',
-  },
-  {
-    period: '2023',
-    track: 'Web',
-    title: '開始碰網頁',
-    detail: '開始接觸前端、網頁這些遊戲以外的領域。',
+      '2022 年開始接案，一開始收 Robux，也做過不收錢的合作。後來和幾個各地的開發者固定合作做遊戲，全英文溝通，負責技能系統、打擊感和 FPS 框架；2024 年起正式收費。2023 年也開始接觸前端、網頁這些遊戲以外的領域。',
   },
   {
     period: '2024',

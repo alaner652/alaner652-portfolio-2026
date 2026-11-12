@@ -18,6 +18,10 @@ export interface WorkItem {
   category: ProjectCategory
   title: string
   description: string
+  /** 詳情頁「我做的事」：一條一件事，寫描述放不下的細節。只有詳情頁讀，卡片不顯示。 */
+  highlights?: string[]
+  /** 詳情頁「學到的事」：做完回頭看的反思，含還沒做好的地方。只有詳情頁讀。 */
+  lessons?: string[]
   /** 一句結果：做完之後世界哪裡不一樣了。卡片和精選列把它放在描述前面，
       因為訪客先看結果再決定要不要讀細節。沒有可說的結果就不填，不要硬湊。 */
   result?: string
@@ -38,6 +42,8 @@ export interface WorkItem {
   gallery?: string[]
   /** preview 是 GitHub 的 repo 卡，不是產品畫面。列表照放，但不拿來當 /projects 的主視覺。 */
   card?: boolean
+  /** 封面是淺色介面（後台、表單這類系統的截圖）：詳情頁頁首壓得更暗、稍微模糊，標題才不會跟畫面裡的字打架。 */
+  coverTone?: 'light' 
   /** 首頁精選。挑三個能替 OFFERS 那三條主張作證的，順序照 WORK_ITEMS。 */
   featured?: boolean
 }
@@ -118,13 +124,6 @@ export interface HireReceipt {
   day: number
   /** 付款附言，照收據原文 */
   memo?: string
-}
-
-/** /hire「怎麼寫」的一步：做什麼 + 用什麼工具 */
-export interface HireWorkflowStep {
-  label: string
-  text: string
-  tools: string[]
 }
 
 export interface HireStep {

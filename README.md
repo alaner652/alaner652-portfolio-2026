@@ -61,6 +61,8 @@ summary: ''
 ---
 ```
 
+Project case studies (the long version of `/projects/<slug>`) are `.mdx` files in `src/content/projects/`, named after the project's slug (`<slug>.en.mdx` for English). Each `## heading` becomes a numbered section on the project page; trade-offs use the `<Decision chose="…" over="…">` component. No frontmatter: the title, result, tech and screenshots still come from `WORK_ITEMS`. See `.claude/skills/new-case/SKILL.md`.
+
 ## Deploy
 
 Vercel — zero config, auto-detects Next.js.

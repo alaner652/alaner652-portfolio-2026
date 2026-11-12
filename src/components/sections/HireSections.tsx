@@ -1,6 +1,5 @@
 import Image from 'next/image'
 
-import { SkillIcon } from '@/components/common/SkillIcon'
 import { WorkRows } from '@/components/home/WorkRows'
 import { Accordion } from '@/components/motion/Accordion'
 import { Reveal, RevealItem, itemStagger } from '@/components/motion/Reveal'
@@ -8,7 +7,7 @@ import { SITE_CONFIG, WORK_ITEMS } from '@/constants'
 import { LLink as Link } from '@/i18n/client'
 import { content } from '@/i18n/content'
 import { t } from '@/i18n/server'
-import { BUTTON_PRIMARY, BUTTON_SECONDARY } from '@/lib/button'
+import { BUTTON_PRIMARY } from '@/lib/button'
 import { cn } from '@/lib/utils'
 
 const NO = (i: number) => String(i + 1).padStart(2, '0')
@@ -81,7 +80,7 @@ export function Services() {
   const { HIRE } = content()
   return (
     <section className="wrap pt-12 md:pt-24" id="services">
-      <SecHead title={d.services} />
+      <SecHead title={d.services} note={HIRE.servicesNote} />
       {/* 桌面 */}
       <div className="hidden md:block">
         {HIRE.services.map((s, i) => (
@@ -354,49 +353,6 @@ export function Receipts() {
   )
 }
 
-/** 怎麼寫：從寫程式碼到進 Studio 的四步，一步一格、箭頭串起來（手機改成直的），
-    每格上面是那一步用的工具 logo，底下一句 config 的說明。 */
-export function Workflow() {
-  const d = t().hire
-  const { HIRE } = content()
-  return (
-    <section className="wrap pt-12 md:pt-24" id="workflow">
-      <SecHead title={d.workflow} note={HIRE.workflowNote} />
-      <Reveal as="ol" stagger={itemStagger} className="grid gap-3 md:grid-cols-4 md:gap-0">
-        {HIRE.workflow.map((w, i) => (
-          <RevealItem
-            as="li"
-            key={w.label}
-            className={cn('relative flex md:pr-8', i === HIRE.workflow.length - 1 && 'md:pr-0')}
-          >
-            <div className="bg-surface border-border flex w-full flex-col rounded-2xl border p-5 md:p-6">
-              <div className="flex items-center justify-between">
-                <span className="text-accent font-mono text-[13px]">{NO(i)}</span>
-                <span className="flex gap-1.5">
-                  {w.tools.map((tool) => (
-                    <SkillIcon key={tool} name={tool} size={26} />
-                  ))}
-                </span>
-              </div>
-              <h3 className="text-text mt-5 text-[22px] font-black md:text-[26px]">{w.label}</h3>
-              <p className="text-text-2 mt-2 text-sm leading-[1.75] md:text-[15px]">{w.text}</p>
-            </div>
-            {i < HIRE.workflow.length - 1 && (
-              <span
-                aria-hidden="true"
-                className="text-text-3 absolute top-1/2 right-0 hidden w-8 -translate-y-1/2 text-center text-lg md:block"
-              >
-                →
-              </span>
-            )}
-          </RevealItem>
-        ))}
-      </Reveal>
-    </section>
-  )
-}
-
-/** Roblox 以外的需求：一句話 + 連到作品集 */
 /** 讀完 FAQ 的人最想動手的時候：直接一顆 Discord 按鈕，不用捲回頁首找。 */
 export function EndCta() {
   const d = t().hire
@@ -419,25 +375,6 @@ export function EndCta() {
         >
           {d.cta}
         </a>
-      </Reveal>
-    </section>
-  )
-}
-
-export function OtherWork() {
-  const d = t().hire
-  return (
-    <section className="wrap pb-12 md:pb-24" id="other">
-      <Reveal className="bg-surface border-border flex flex-col gap-5 rounded-2xl border p-6 md:flex-row md:items-center md:justify-between md:gap-10 md:p-10">
-        <div>
-          <h2 className="text-text text-[24px] font-black md:text-[32px]">{d.otherTitle}</h2>
-          <p className="text-text-2 mt-2 max-w-[36em] text-[15px] leading-[1.8] md:text-base">
-            {d.otherText}
-          </p>
-        </div>
-        <Link href="/projects" className={cn(BUTTON_SECONDARY, 'shrink-0 justify-center')}>
-          {d.otherCta}
-        </Link>
       </Reveal>
     </section>
   )
