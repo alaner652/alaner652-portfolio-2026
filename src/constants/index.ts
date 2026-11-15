@@ -336,6 +336,8 @@ export const WORK_ITEMS: WorkItem[] = [
       '教師出題、承辦人排考試並印登入單，考生在電腦教室用准考證號和登入碼作答；選擇與填空自動批改，申論題由一到多位老師匿名評分。計時、交卷、批改都只在伺服器做，送給考生的試卷不含答案。整套跑在校內一台 VM 上，不需要網際網路。接下來是到電腦教室實際演練。',
     metrics: ['Java', 'Spring Boot', 'Vue', 'PostgreSQL', 'Docker'],
     preview: '/shots/works/testa/cover.jpg',
+    // 介紹影片：86 秒、無配音，畫面是示範資料的截圖加動畫。他選擇直接放進 repo，不走 YouTube（2026-11-15），所以壓到約 10 MB
+    video: '/shots/works/testa/intro.mp4',
     coverTone: 'light',
     gallery: [1, 2, 3].map((n) => `/shots/works/testa/more-${n}.jpg`),
   },
