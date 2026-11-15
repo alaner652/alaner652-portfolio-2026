@@ -544,7 +544,7 @@ export const JOURNEY: JourneyEntry[] = [
     title: '還沒開始的一年',
     milestone: true,
     detail:
-      '4 到 6 月在校務系統找到漏洞，透過 HITCON ZeroDay 通報，之後被電算中心找進去，現在還在做。遊戲這邊不再只寫腳本：和 CubexStudios 做工作室自己的遊戲，也自己發行了 Build The Cat Gunner，企劃、UI、數值平衡、投廣告、上線後看數據都自己來。打工、創業、自學繼續並行。',
+      '4 到 6 月在校務系統找到漏洞，透過 HITCON ZeroDay 通報，之後被電算中心找進去，現在還在做。遊戲這邊不再只寫腳本：和 CubexStudios 做工作室自己的遊戲，也自己發行了 Build The Cat Gunner，企劃、UI、數值平衡、投廣告、上線後看數據都自己來。也替學校做了電腦教室借用系統 LabSlot，和招生考試要用的線上考試系統 Testa。打工、創業、自學繼續並行。',
     current: true,
   },
 ]

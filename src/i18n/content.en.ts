@@ -157,7 +157,7 @@ export const JOURNEY_EN: { track: string; title: string; detail: string }[] = [
     track: 'Now',
     title: "A year that hasn't started yet",
     detail:
-      "Between April and June I found vulnerabilities in the school system and reported them through HITCON ZeroDay; the computing center brought me in, and I'm still there. In games I'm no longer just the scripter: I'm building the studio's own games with CubexStudios, and I shipped Build The Cat Gunner myself, handling design, UI, balancing, ads and post-launch data. Part-time work, startup ideas and self-study go on in parallel.",
+      "Between April and June I found vulnerabilities in the school system and reported them through HITCON ZeroDay; the computing center brought me in, and I'm still there. In games I'm no longer just the scripter: I'm building the studio's own games with CubexStudios, and I shipped Build The Cat Gunner myself, handling design, UI, balancing, ads and post-launch data. I also built two systems for the school: LabSlot, a computer-lab booking system, and Testa, an online exam system for its admission exam. Part-time work, startup ideas and self-study go on in parallel.",
   },
 ]
 

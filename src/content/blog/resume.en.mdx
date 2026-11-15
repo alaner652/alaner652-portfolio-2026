@@ -64,6 +64,22 @@ _TypeScript · Vue · MCP · zod · Vitest_
 - Built the MVP as MCP tools driven by Claude, then moved to direct function calls: 16 read-only tools over Town Pass services and open data, no server needed.
 - Proposed a shared service tool registry so new services need no hand wiring; the team refactored in that direction.
 
+### Testa — online exam system for a school admission exam
+
+_Java · Spring Boot · Vue · PostgreSQL · Docker_
+
+- Built solo, from authoring and sitting the exam to proctoring, grading and publishing results; feature-complete and heading into an on-site rehearsal.
+- Timing, submission and grading happen only on the server, and papers sent to candidates carry no answers; essays are graded anonymously by one or more teachers.
+- Verified on production images with 300 candidates at once (p99 12 ms) and a full exam with no Internet.
+
+### LabSlot — computer-lab booking system for a school
+
+_Java · Spring Boot · React · SQLite · Docker_
+
+- Built solo and deployed on the school's own server, now live; not a line of the school's existing systems was changed.
+- Timetables and roles are read from the school database read-only, and credentials are forwarded to the school's sign-in; no school password is stored.
+- A partial unique index in the database prevents double bookings; daily backups, with the restore rehearsed before launch.
+
 ### Agora-AI — campus AI assistant
 
 _FastAPI · Next.js · Docker · SQLite · Gemini API_
