@@ -13,6 +13,13 @@ export const WORK_EN: Record<
     description:
       'Staff sign in with their school account, see each computer lab’s week (scheduled classes and periods already booked), request periods, and an administrator approves. Timetables and roles are read from the school database, read-only; requests and the audit log live in LabSlot’s own SQLite. Frontend and backend ship as one jar, deployed with Docker on the school’s Ubuntu server. Every choice started with one question: will this hold up when nobody is watching it?',
   },
+  testa: {
+    status: 'Pre-launch',
+    result:
+      'An online exam system for a school’s admission exam: feature-complete, and verified on production images with 300 candidates at once and a full exam with no Internet.',
+    description:
+      'Teachers write questions, an exam officer schedules the exam and prints login slips, and candidates sit it in a computer lab with a candidate number and login code. Choice and fill-in questions grade themselves; essays are graded anonymously by one or more teachers. Timing, submission and grading happen only on the server, and papers sent to candidates never contain answers. Everything runs on one VM inside the school, with no Internet needed. Next comes a rehearsal in a real lab.',
+  },
   'build-the-cat-gunner': {
     status: 'Live',
     result: 'My first self-published Roblox game, after years of client work.',
