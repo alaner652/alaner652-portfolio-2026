@@ -15,6 +15,7 @@ flowchart LR
     U[Browser<br/>candidates · staff] --> N[Nginx<br/>static files · rate limit]
     N -->|/api| S[Spring Boot<br/>timing · submission · grading]
     S --> D[(PostgreSQL<br/>banks · answers · sessions)]
+    S -. optional .-> M[Small local model<br/>AI paper import]
     B[Daily backup] --> D
 ```
 
@@ -36,7 +37,7 @@ A few hundred candidates fit easily on one machine; several machines would bring
 
 <Decision chose="Candidate number plus a login code, printed as a slip" over="An account for every candidate, or the school's own sign-in" lang="en">
 
-Candidates are not students yet and have no school account, and asking them to register adds one more step that can go wrong. The exam officer imports the roster (Excel or CSV, Big5 included), the system generates login codes, and slips are printed and placed on the desks. A candidate can have only one active session, too many wrong codes lock the candidate out, and a proctor can reset it.
+Candidates are not students yet and have no school account, and asking them to register adds one more step that can go wrong. The exam officer imports the roster (Excel or CSV, Big5 included), and login codes are generated only when the slips are printed: the database keeps only a hash, the code appears only on that slip, and reprinting issues a new one. A candidate can have only one active session, too many wrong codes lock the candidate out, and a proctor can reset it.
 
 </Decision>
 
@@ -58,9 +59,21 @@ Essays need teacher review, and the school announces results on its own website.
 
 </Decision>
 
+<Decision chose="AI only drafts; code reads the answers from the file, and the teacher confirms every question" over="Send the paper to a model and put the result straight into the bank" lang="en">
+
+Teachers have stacks of old papers, and retyping them question by question takes hours, so there is an optional AI import: once an administrator turns it on, a teacher uploads a Word or PDF file and a small local model (4B, no GPU needed) turns it into draft questions. The rule is to use code wherever code can do the job: reading the file, checking types and points, and finding the answers. Testing with public national exam papers showed that when a paper has no answers, the model fills in the choice answers anyway, and got 9 of 10 right; a good guess is worse than a bad one, because a teacher is likely to accept it. So a choice answer is now kept only when the file holds it (code recognises answer tables, "1.C 2.A" and "答：C"), and otherwise cleared and marked. A paper and its answer sheet can be uploaded together; questions that disagree with the answer table are marked, not silently changed, and with the answer sheet all 10 were right. Drafts enter the bank only after the teacher confirms them, and candidate data never goes to a model.
+
+</Decision>
+
+<Decision chose="Everything a site may need to adjust lives in the admin pages, in plain words" over="Settings in a file on the server" lang="en">
+
+The people who will run Testa are school staff, not engineers. So the AI endpoint, the grader disagreement threshold, data retention, sign-in lockout and the backup schedule are picked from menus in the system settings, with the defaults marked; restoring and deleting backups also happens in the admin pages, behind a confirmation, and the most destructive actions ask for typed text. The operation manual lives inside the system with short videos, and a script regenerates its screenshots and clips from demo data whenever the UI changes.
+
+</Decision>
+
 ## Before launch
 
-It has not launched at the school yet. Everything that can be checked in development has been checked on the production images:
+It is deployed on the school’s VM but has not run a real exam yet. Everything that can be checked in development has been checked on the production images:
 
 **300 candidates at once.** 300 candidates signing in, answering and submitting at the same time with no failures; p99 through Nginx is 12 ms.
 
@@ -68,10 +81,11 @@ It has not launched at the school yet. Everything that can be checked in develop
 
 **An automated end-to-end exam.** One script runs a whole exam, from first-run setup, authoring and roster import to answering, grading, publishing and archiving; backend integration tests run against real PostgreSQL in CI on every push.
 
-Next is deploying on the school's VM and running a mock exam in a real lab with the Internet actually cut off: internal DNS and routing from every lab, browsers on Windows, and login slips printed on the school's printers can only be tested on site.
+Next is a mock exam in a real lab with the Internet actually cut off: internal DNS and routing from every lab, browsers on Windows, and login slips printed on the school's printers can only be tested on site.
 
 ## What I learned
 
 - **Put each rule in one place and let tests guard it.** Timing only on the backend, one permission guard, no answers in papers: these hold because they live in one place under test, not because someone remembers them every time.
 - **Requirements change, so ask what might change.** The number of graders went from three to one or more, and score access became a per-exam choice; making the likely changes settings kept each change small.
+- **Check what a model says with code, and drop what has no source.** A small model that guesses right is easier to trust blindly than one that guesses wrong.
 - **Test everything development can test first, so the site trial is only about the site.** Load, offline, restarts and restores were all checked in development, leaving the lab rehearsal free to focus on the network and the hardware.

@@ -16,9 +16,9 @@ export const WORK_EN: Record<
   testa: {
     status: 'Pre-launch',
     result:
-      'An online exam system for a school’s admission exam: feature-complete, and verified on production images with 300 candidates at once and a full exam with no Internet.',
+      'An online exam system for a school’s admission exam: deployed on the school’s VM, and verified on production images with 300 candidates at once and a full exam with no Internet.',
     description:
-      'Teachers write questions, an exam officer schedules the exam and prints login slips, and candidates sit it in a computer lab with a candidate number and login code. Choice and fill-in questions grade themselves; essays are graded anonymously by one or more teachers. Timing, submission and grading happen only on the server, and papers sent to candidates never contain answers. Everything runs on one VM inside the school, with no Internet needed. Next comes a rehearsal in a real lab.',
+      'Teachers write questions, an exam officer schedules the exam and prints login slips, and candidates sit it in a computer lab with a candidate number and login code. Choice and fill-in questions grade themselves; essays are graded anonymously by one or more teachers. Timing, submission and grading happen only on the server, and papers sent to candidates never contain answers. Everything runs on one VM inside the school and works with or without the Internet; an optional AI import turns old papers into questions with a small local model, keeping only the answers the paper itself holds. Next comes a rehearsal in a real lab.',
   },
   'build-the-cat-gunner': {
     status: 'Live',

@@ -323,7 +323,7 @@ export const WORK_ITEMS: WorkItem[] = [
     gallery: ['/shots/works/labslot/more-1.jpg', '/shots/works/labslot/more-2.jpg'],
   },
   {
-    // 替學校招生考試做的線上考試系統（repo tpcu-testa，私人），目標 2026 年底上線；還沒在校內演練，所以不寫「上線」。
+    // 替學校招生考試做的線上考試系統（repo tpcu-testa，私人），目標 2026 年底上線；2026-11-16 部署到學校的 VM，但還沒辦過考試、也還沒在校內演練，所以不寫「上線」。
     // 數字全部取自 repo 的 docs/status.md（300 人負載、斷網、重啟、備份還原）。截圖是 dev profile 的示範資料（假名字）。
     // 不寫學校名稱、網址、考試人數。完整案例在 src/content/projects/testa.mdx（英文版 testa.en.mdx）
     status: '準備上線',
@@ -331,9 +331,9 @@ export const WORK_ITEMS: WorkItem[] = [
     category: 'Web',
     slug: 'testa',
     title: 'Testa',
-    result: '替學校招生考試做的線上考試系統：功能完成，在正式環境的映像檔上驗過 300 人同時作答與斷網考完一整場。',
+    result: '替學校招生考試做的線上考試系統：已部署到學校的 VM，在正式環境的映像檔上驗過 300 人同時作答與斷網考完一整場。',
     description:
-      '教師出題、承辦人排考試並印登入單，考生在電腦教室用准考證號和登入碼作答；選擇與填空自動批改，申論題由一到多位老師匿名評分。計時、交卷、批改都只在伺服器做，送給考生的試卷不含答案。整套跑在校內一台 VM 上，不需要網際網路。接下來是到電腦教室實際演練。',
+      '教師出題、承辦人排考試並印登入單，考生在電腦教室用准考證號和登入碼作答；選擇與填空自動批改，申論題由一到多位老師匿名評分。計時、交卷、批改都只在伺服器做，送給考生的試卷不含答案。整套跑在校內一台 VM 上，有沒有外網都能運作；另有選用的 AI 匯入，用本機小模型把舊考卷整理成題目，答案只採用原檔裡寫的。接下來是到電腦教室實際演練。',
     metrics: ['Java', 'Spring Boot', 'Vue', 'PostgreSQL', 'Docker'],
     preview: '/shots/works/testa/cover.jpg',
     // 介紹影片：86 秒、無配音，畫面是示範資料的截圖加動畫。他選擇直接放進 repo，不走 YouTube（2026-11-15），所以壓到約 10 MB
